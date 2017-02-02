@@ -9,7 +9,7 @@ include_directories(tracking_lib)
 # Build tracking lib
 add_subdirectory(tracking_lib)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp MyBridge.cpp MyBridge.h MyBeacon.cpp MyBeacon.h)
 add_executable(tester ${SOURCE_FILES})
 
 target_link_libraries(tester tracking_lib)

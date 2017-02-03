@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(tester)
+project(testerall)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -9,7 +9,8 @@ include_directories(tracking_lib)
 # Build tracking lib
 add_subdirectory(tracking_lib)
 
-set(SOURCE_FILES main.cpp MyBridge.cpp MyBridge.h MyBeacon.cpp MyBeacon.h)
-add_executable(tester ${SOURCE_FILES})
+# Build tester
+add_subdirectory(tester)
 
-target_link_libraries(tester tracking_lib)
+# Build faker
+add_subdirectory(faker)

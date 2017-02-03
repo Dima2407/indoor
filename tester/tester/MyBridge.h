@@ -7,7 +7,7 @@
 
 #include "MyBeacon.h"
 
-/** \brief My interface to tracking_lib
+/** \brief My interface to tracking_lib (static methods only)
  *
  *   Should allow to work with beacons etc. without resorting to using tracking_lib classes and datatypes directly
  */
@@ -18,7 +18,7 @@ namespace tester {
         static void init();
 
         /// Add a new beacon
-        static void newBeacon(long long hash, double txPower, double damp, double x, double y, double z);
+        static void newBeacon(double x, double y, double z, long long hash, double txPower, double damp);
 
         /// Add a new beacon from MyBeacon object
         static void newBeacon(MyBeacon &beacon);

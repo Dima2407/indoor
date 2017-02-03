@@ -11,7 +11,7 @@ namespace tester{
         Navigator::instance()->beacon().clear();
     }
 
-    void MyBridge::newBeacon(long long hash, double txPower, double damp, double x, double y, double z) {
+    void MyBridge::newBeacon(double x, double y, double z, long long hash, double txPower, double damp) {
 
         // Create a new beacon object
         Sensors::Hardware::Beacon b(hash, damp, txPower);
@@ -27,7 +27,7 @@ namespace tester{
     }
 
     void MyBridge::newBeacon(MyBeacon &beacon) {
-        newBeacon(beacon.hash, beacon.txPower, beacon.damp, beacon.x, beacon.y, beacon.z);
+        newBeacon(beacon.x, beacon.y, beacon.z, beacon.hash, beacon.txPower, beacon.damp);
     }
 
     void MyBridge::newMeasurement(long long hash, double txPower, double rssi, long long timestamp) {

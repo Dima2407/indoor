@@ -12,6 +12,9 @@ namespace Sensors {
 /** \brief Beacons sensor. Contains a list of Hardware::Beacon.
  *
  *  Inherits things like addState() and updateState(), while overriding proceedMeasurements()
+ *
+ * Note: apparently BeaconSensor uses txPower from measurements
+ * while txPower of beacon is ignored, while damp is taken from the beacon data
  */
 class BeaconSensor : public AbstractSensor {
     public:

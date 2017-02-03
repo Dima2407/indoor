@@ -8,6 +8,9 @@
 /** \brief A singleton class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor
  *
  * Sensors::AccelerometerSensor seems to be disabled at present.
+ *
+ * Note: apparently BeaconSensor uses txPower from measurements
+ * while txPower of beacon is ignored, while damp is taken from the beacon data
  */
 class Navigator {
     typedef std::list<SmartPtr<Sensors::AbstractSensor> > SensorsContainer;

@@ -37,16 +37,16 @@ namespace tester {
         static double distance(double txPower, double damp, double rssi);
 
         /// Distance to the beacon from RSSI and beacon data
-        double distanceTo(double rssi);
+        double distanceTo(double rssi) const;
 
         /// RSSI from txPower, damp, distance (Inverse of distance)
         static double calcRssi(double txPower, double damp, double dist);
 
         /// RSSI from distance from current beacon
-        double calcRssiDist(double dist);
+        double calcRssiDist(double dist) const;
 
         /// RSSI from point position
-        double calcRssiPos(double pX, double pY, double pZ);
+        double calcRssiPos(double pX, double pY, double pZ) const;
     };
 
 }

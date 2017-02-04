@@ -16,8 +16,11 @@ int main(){
     // Read in_faker.dat
     FakeEngine::readInput();
 
-    // Run the actual calculation (create Events)
+    // Run the actual calculation (create events)
     FakeEngine::run();
+
+    // Write the results
+    FakeEngine::writeResults();
 
     return 0;
 }

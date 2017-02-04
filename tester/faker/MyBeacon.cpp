@@ -12,7 +12,7 @@ namespace tester {
         return std::pow(10.0, (txPower - rssi) / (10.0 * damp));
     }
 
-    double MyBeacon::distanceTo(double rssi) {
+    double MyBeacon::distanceTo(double rssi)  const{
         return distance(txPower, damp, rssi);
     }
 
@@ -21,11 +21,11 @@ namespace tester {
         return txPower - 10.0 * damp * std::log10(dist);
     }
 
-    double MyBeacon::calcRssiDist(double dist) {
+    double MyBeacon::calcRssiDist(double dist) const {
         return calcRssi(txPower, damp, dist);
     }
 
-    double MyBeacon::calcRssiPos(double pX, double pY, double pZ) {
+    double MyBeacon::calcRssiPos(double pX, double pY, double pZ)  const{
         // Distance from beacon to (pX, pY, pZ) squared
         double d2 = (pX - x) * (pX - x) + (pY - y) * (pY - y) + (pZ - z) * (pZ - z);
 

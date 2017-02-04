@@ -55,10 +55,16 @@ namespace faker {
         static bool beaconExists(long long hash);
 
         /// Find beacon by hash
-        static tester::MyBeacon & findBeacon(long long hash);
+        static const tester::MyBeacon & findBeacon(long long hash);
 
         /// Do the actual calculation
         static void run();
+
+        /// Create events for a given MyBeacon and BeaconTime
+        static void createEvents(const tester::MyBeacon & beacon, const BeaconTime & beaconTime);
+
+        // Write results (events)
+        static void writeResults();
     };
 }
 

@@ -13,7 +13,9 @@ bool faker::Event::operator<(const faker::Event &rhs) const {
     return timestamp < rhs.timestamp;
 }
 
-std::ostream &operator<<(std::ostream &os, const faker::Event &event) {
-    os << event.hash << " " << event.txPower << " " << event.rssi << " " << event.timestamp;
-    return os;
+namespace faker {
+    std::ostream &operator<<(std::ostream &os, const faker::Event &event) {
+        os << event.hash << " " << event.txPower << " " << event.rssi << " " << event.timestamp;
+        return os;
+    }
 }

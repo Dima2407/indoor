@@ -38,7 +38,7 @@ namespace faker {
         /// Lest of beacon time data
         static std::vector<BeaconTime> beaconTimes;
         /// List of events
-        static std::vector<Event> events;
+        static std::vector<tester::Event> events;
 
         /////////////////////////
 

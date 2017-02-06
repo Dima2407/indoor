@@ -15,4 +15,4 @@ set(SOURCE_FILES abstractsensor.cpp accelerometersensor.cpp amath.cpp beacon.cpp
         bmath.cpp common_types.cpp imath.cpp kalman_interface.cpp navigator.cpp objectstate.cpp
         smartptr.cpp utilities.cpp)
 
-add_library(tracking_lib ${SOURCE_FILES})
+add_library(tracking_lib STATIC ${SOURCE_FILES})

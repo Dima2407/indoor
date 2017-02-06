@@ -8,35 +8,31 @@
 #include <vector>
 
 #include "MyBeacon.h"
+#include "Event.h"
 
 namespace tester {
-    /** \brief The singleton main class of tester
+    /** \brief The main class of tester
      *
-     * Do I need a singleton here? Not really, though it makes sense.
-     * Goood exercise for me.
      */
     class Engine {
     public:
-        /// Get singleton instance (and no pointers !)
-        static Engine & getInstance(){
-            static Engine instance;
-
-            return instance;
-        }
 
         /// Read beacon data
-        void readBeacons();
+        void readBeaconsDAT();
 
+        /// Read measurement data
+        void readMeasurementsDAT(const char *fileName);
+
+        /// Run and get the result
+        void run();
 
     private:
-        // Global data
+        // Global data (with default constructors)
         /// List of beacons
         std::vector<MyBeacon> beacons;
 
-        /// Ban everything
-        Engine(){}
-        Engine(Engine const &);
-        void operator=(Engine const &);
+        /// List of events (timestamped measurements)
+        std::vector<Event> events;
     };
 }
 

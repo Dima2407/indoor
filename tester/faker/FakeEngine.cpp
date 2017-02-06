@@ -3,7 +3,6 @@
 //
 
 #include "FakeEngine.h"
-#include "BeaconTime.h"
 
 #include <iostream>
 #include <fstream>
@@ -15,12 +14,15 @@ namespace faker {
     // Stupid stupid C++, no problems like that in Java !
     // Next time I'll use a singleton, I swear
     // Or just a sub-namespace w/o classes
+    // Just kidding, I know globals and singletons are evil
+    // Next time I'll use a normal class
+
     std::vector<tester::MyBeacon> FakeEngine::beacons;
     Vec3 FakeEngine::point1, FakeEngine::point2;
     double FakeEngine::t1, FakeEngine::t2;
     double FakeEngine::ticksPerTimeUnit;
     std::vector<BeaconTime> FakeEngine::beaconTimes;
-    std::vector<Event> FakeEngine::events;
+    std::vector<tester::Event> FakeEngine::events;
 
 
     void FakeEngine::readBeacons() {
@@ -163,6 +165,7 @@ namespace faker {
 
     void FakeEngine::createEvents(const tester::MyBeacon &beacon, const BeaconTime &beaconTime) {
         using namespace std;
+        using namespace tester;
 
         // Find start and end times (ooverlap of global and beacon range)
         double startTime = max(beaconTime.getT1(), t1);
@@ -180,6 +183,7 @@ namespace faker {
 
     void FakeEngine::writeResults() {
         using namespace std;
+        using namespace tester;
 
         if (events.size()<1) {
             cout << "Warning! No events to write." << endl;

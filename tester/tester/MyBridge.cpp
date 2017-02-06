@@ -26,7 +26,7 @@ namespace tester{
         Navigator::instance()->beacon().addBeacon(b);
     }
 
-    void MyBridge::newBeacon(MyBeacon &beacon) {
+    void MyBridge::newBeacon(MyBeacon const &beacon) {
         newBeacon(beacon.x, beacon.y, beacon.z, beacon.hash, beacon.txPower, beacon.damp);
     }
 

@@ -25,7 +25,22 @@ namespace faker {
         }
     }
 
-    void FakeEngine::readInput() {
+
+    void FakeEngine::readTimes() {
+        using namespace std;
+        using namespace tester;
+
+        beaconTimeList.readAuto("in_times.dat");
+
+        //  Check that there are at least 3 beacons in beaconTimes
+        if (beaconTimeList.getBeaconTimes().size() < 3) {
+            cerr << "ERROR: Need time data for at least 3 beacons in !" << endl;
+            exit(1);
+        }
+    }
+
+
+    void FakeEngine::readConfig() {
         using namespace std;
         using namespace tester;
 
@@ -52,24 +67,8 @@ namespace faker {
             exit(1);
         }
 
-        // Read beaconTimes
-        cout << endl << "Reading beacon time data :" << endl << endl;
-
-        BeaconTime bt;
-
-        beaconTimes.clear(); // Just in case
-        while (in >> bt) {
-            beaconTimes.push_back(bt); // Add to list
-            cout << bt << endl;
-        }
-
-        //  Check that there are at least 3 beacons in beaconTimes
-        if (beaconTimes.size() < 3) {
-            cerr << "ERROR: Need time data for at least 3 beacons in !" << endl;
-            exit(1);
-        }
-
         in.close();
+
     }
 
 
@@ -84,7 +83,7 @@ namespace faker {
 
         eventList.clear(); // Just in case
         // Create events for each beacon in beaconTimes
-        for (BeaconTime const &bt: beaconTimes) {
+        for (BeaconTime const &bt: beaconTimeList.getBeaconTimes()) {
             // Do nothing if wrong hash
             if (beaconList.beaconExists(bt.getHash())) {
                 // Find the beacon by hash

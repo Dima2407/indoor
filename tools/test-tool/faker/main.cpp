@@ -18,7 +18,9 @@ int main(){
     // Read in_beacons.dat
     engine.readBeacons();
     // Read in_faker.dat
-    engine.readInput();
+    engine.readConfig();
+    // Read in_times.dat
+    engine.readTimes();
 
     // Run the actual calculation (create events)
     engine.run();

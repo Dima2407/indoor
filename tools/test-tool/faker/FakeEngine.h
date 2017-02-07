@@ -14,6 +14,7 @@
 #include "BeaconTime.h"
 #include "Event.h"
 #include "MyBeaconList.h"
+#include "BeaconTimeList.h"
 
 namespace faker {
 
@@ -28,7 +29,10 @@ namespace faker {
         void readBeacons();
 
         /// Read faker input file in_faker.dat
-        void readInput();
+        void readConfig();
+
+        /// Read beacon times
+        void readTimes();
 
         /// Calculate trajectory Vec3(t), linear at present
         tester::Vec3 trajectory(double t);
@@ -51,14 +55,15 @@ namespace faker {
         /// List of events
         tester::EventList eventList;
 
+        /// Lest of beacon time data
+        BeaconTimeList beaconTimeList;
+
         /// Start and finish of our route
         tester::Vec3 point1, point2;
         /// Start and finish time in arbitrary units (e.g. seconds)
         double t1, t2;
         /// Number of timestamp ticks per time unit
         double ticksPerTimeUnit;
-        /// Lest of beacon time data
-        std::vector<BeaconTime> beaconTimes;
 
     };
 }

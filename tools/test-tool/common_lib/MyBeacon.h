@@ -9,6 +9,8 @@
  *
  * It is completely separate from any classes in tracking_lib
  */
+#include <ostream>
+
 namespace tester {
 
     struct MyBeacon {
@@ -32,6 +34,8 @@ namespace tester {
                                                                                                   hash(hash),
                                                                                                   txPower(txPower),
                                                                                                   damp(damp) {}
+
+        friend std::ostream &operator<<(std::ostream &os, const MyBeacon &beacon);
 
         /// The distance function (from rssi, txPower, damp)
         static double distance(double txPower, double damp, double rssi);

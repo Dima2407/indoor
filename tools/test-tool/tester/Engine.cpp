@@ -6,6 +6,7 @@
 #include "MyBridge.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace tester {
 
@@ -14,7 +15,10 @@ namespace tester {
 
 
         // Read beacons from a DAT file
-        assert(beaconList.readDAT("in_beacons.dat"));
+        assert(beaconList.readAuto("in_beacons.json"));
+        //cout << "result =" << beaconList.readAuto("in_beacons.json") << endl;
+
+        //exit(0);
 
         //  Check that there are at least 3 beacons
         if (beaconList.getBeacons().size() < 3) {

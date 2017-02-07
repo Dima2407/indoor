@@ -32,5 +32,11 @@ namespace tester {
         return calcRssiDist(std::sqrt(d2));
     }
 
+    std::ostream &operator<<(std::ostream &os, const MyBeacon &beacon) {
+        os << "x: " << beacon.x << " y: " << beacon.y << " z: " << beacon.z << " hash: " << beacon.hash << " txPower: "
+           << beacon.txPower << " damp: " << beacon.damp;
+        return os;
+    }
+
 
 }

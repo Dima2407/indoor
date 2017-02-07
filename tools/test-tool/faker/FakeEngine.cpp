@@ -15,10 +15,8 @@ namespace faker {
         using namespace std;
         using namespace tester;
 
-        const char *fileName = "in_beacons.dat";
-
-        // Read beacons from input file
-        assert(beaconList.readDAT(fileName));
+        // Read beacons from input file (dat or json)
+        assert(beaconList.readAuto("in_beacons.json"));
 
         //  Check that there are at least 3 beacons
         if (beaconList.getBeacons().size() < 3) {

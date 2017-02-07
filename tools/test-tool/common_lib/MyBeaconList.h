@@ -6,8 +6,10 @@
 #define TESTTOOL_MYBEACONLIST_H
 
 #include <vector>
+#include <string>
 
 #include "MyBeacon.h"
+#include "Util.h"
 
 
 namespace tester {
@@ -19,17 +21,32 @@ namespace tester {
     class MyBeaconList {
     public:
 
-        /// Read beacons from a DAT file (true if successful)
-        bool readDAT(const char * fileName);
+        /// Read beacons from a file, using JSON if proper extension, using DAT otherwise
+        bool readAuto(std::string const &fileName);
 
-        /// Read beacons from a JSON file (true if successful)
-        bool readJSON(const char * fileName);
+        /// Read beacons from a DAT file (true if successful)
+        bool readDAT(std::string const &fileName);
+
+        /** \brief Read beacons from a JSON file (true if successful)
+         *
+         * File format (example with 4 beacons)
+          [
+            {"xyz": [0.0,  0.0,  0.0], "hash": 1, "TXpower": 1.5, "damp":  1.1},
+            {"xyz": [1.0,  0.0,  0.0], "hash": 2, "TXpower": 2.1, "damp":  1.7},
+            {"xyz": [0.0,  1.0,  0.0], "hash": 3, "TXpower": 0.5, "damp":  2.3},
+            {"xyz": [1.0,  1.0,  0.0], "hash": 4, "TXpower": 0.7, "damp":  2.9}
+          ]
+         *
+         * @param fileName    File name
+         * @return            true is successful
+         */
+        bool readJSON(std::string const &fileName);
 
         /// Check if beacon with hash exists in beacons
         bool beaconExists(long long hash);
 
         /// Find beacon by hash (assert error if not found)
-        const MyBeacon & findBeacon(long long hash);
+        const MyBeacon &findBeacon(long long hash);
 
         /// Getter
         const std::vector<MyBeacon> &getBeacons() const {

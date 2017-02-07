@@ -15,12 +15,8 @@ int main(){
     // Create a new fake engine
     FakeEngine engine;
 
-    // Read in_beacons.dat
-    engine.readBeacons();
-    // Read in_faker.dat
-    engine.readConfig();
-    // Read in_times.dat
-    engine.readTimes();
+    // Read config, beacons & beacon times
+    engine.readData();
 
     // Run the actual calculation (create events)
     engine.run();

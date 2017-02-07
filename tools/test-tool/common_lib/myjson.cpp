@@ -78,7 +78,7 @@ namespace tester{
             // Get property iterator by name
             auto propIt = obj.FindMember(name);
             if (propIt == obj.MemberEnd()) {
-                cerr << "ERROR in readLL : Cannot find Vec3 property :'" << name << "'." << endl;
+                cerr << "ERROR in readLL : Cannot find Int64 property :'" << name << "'." << endl;
                 return false;
             }
             Value const & v = propIt->value; // Found the value
@@ -90,6 +90,62 @@ namespace tester{
             }
 
             ll = v.GetInt64();
+
+            return true; // Success
+        }
+
+        bool readString(rapidjson::Value const &obj, const char *name, std::string &str) {
+            using namespace std;
+            using namespace rapidjson;
+
+            if (!obj.IsObject()) {
+                cerr << "ERROR in readString : obj must be Object. " << endl;
+                return false;
+            }
+
+            // Get property iterator by name
+            auto propIt = obj.FindMember(name);
+            if (propIt == obj.MemberEnd()) {
+                cerr << "ERROR in readString : Cannot find String property :'" << name << "'." << endl;
+                return false;
+            }
+            Value const & v = propIt->value; // Found the value
+
+            // v must be a string
+            if (! v.IsString()) {
+                cerr << "ERROR in readString : Property '" << name << "' must be a string." << endl;
+                return false;
+            }
+
+            str = v.GetString();
+
+            return true; // Success
+        }
+
+        bool readInt(rapidjson::Value const &obj, const char *name, int &i) {
+            using namespace std;
+            using namespace rapidjson;
+
+            if (!obj.IsObject()) {
+                cerr << "ERROR in readInt : obj must be Object. " << endl;
+                return false;
+            }
+
+            // Get property iterator by name
+            auto propIt = obj.FindMember(name);
+            if (propIt == obj.MemberEnd()) {
+                cerr << "ERROR in readInt : Cannot find Int property :'" << name << "'." << endl;
+                return false;
+            }
+            Value const & v = propIt->value; // Found the value
+
+            // v must be a number
+            if (! v.IsInt64()) {
+                cerr << "ERROR in readInt : Property '" << name << "' must be an int number." << endl;
+                return false;
+            }
+
+            i = v.GetInt();
 
             return true; // Success
         }

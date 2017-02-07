@@ -1,7 +1,7 @@
 {
   "inBeaconsFile": "in_beacons.json",
   "inTimesFile": "in_times.dat",
-  "outEventsFile": "out_measure.dat",
+  "outEventsFile": "out_event.dat",
   "t1": 0.0,
   "point1": [ 0.2, 0.2, 0.0],
   "t2": 1.0,

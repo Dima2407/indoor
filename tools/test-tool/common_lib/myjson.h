@@ -8,6 +8,9 @@
 #define TESTTOOL_MYJSON_H
 
 #include <rapidjson/document.h>
+
+#include <string>
+
 #include "Vec3.h"
 
 namespace tester{
@@ -40,6 +43,24 @@ namespace tester{
          * @return              True if successful
          */
         bool readLL(rapidjson::Value const & obj, const char * name, long long & ll);
+
+        /** \brief  Read an intproperty named 'name' if the rapidjson object v
+         *
+         * @param[in]    obj    A rapidJSON object
+         * @param[in]    name   Name of property
+         * @param[out]   i      Result
+         * @return              True if successful
+         */
+        bool readInt(rapidjson::Value const & obj, const char * name, int & i);
+
+        /** \brief  Read a strig property named 'name' if the rapidjson object v
+         *
+         * @param[in]    obj    A rapidJSON object
+         * @param[in]    name   Name of property
+         * @param[out]   str    Result
+         * @return              True if successful
+         */
+        bool readString(rapidjson::Value const & obj, const char * name, std::string & ll);
 
     }
 }

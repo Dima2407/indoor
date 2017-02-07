@@ -29,6 +29,8 @@ namespace faker {
             beaconTimes.push_back(bt); // Add to list
             cout << bt << endl;
         }
+
+        return true;
     }
 
     bool BeaconTimeList::readAuto(std::string const &fileName) {

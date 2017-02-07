@@ -10,8 +10,10 @@
 
 namespace tester {
 
-    bool EventList::readDAT(const char *fileName) {
+    bool EventList::readDAT(std::string const & fileName) {
         using namespace std;
+
+        cout << endl << "Reading events from DAT file : " << fileName << endl << endl;
 
         ifstream in(fileName);
 
@@ -29,12 +31,14 @@ namespace tester {
         return true;
     }
 
-    bool EventList::readJSON(const char *fileName) {
+    bool EventList::readJSON(std::string const & fileName) {
         return false;
     }
 
-    bool EventList::writeDAT(const char *fileName) {
+    bool EventList::writeDAT(std::string const & fileName) {
         using namespace std;
+
+        cout << endl << "Writing events to DAT file : " << fileName << endl << endl;
 
         // Write events to the file
         ofstream out(fileName);
@@ -58,7 +62,7 @@ namespace tester {
         return true;
     }
 
-    bool EventList::writeJSON(const char *fileName) {
+    bool EventList::writeJSON(std::string const & fileName) {
         return false;
     }
 

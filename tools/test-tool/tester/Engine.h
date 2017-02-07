@@ -12,6 +12,7 @@
 #include "Event.h"
 #include "MyBeaconList.h"
 #include "EventList.h"
+#include "TesterConnfig.h"
 
 namespace tester {
     /** \brief The main class of tester
@@ -20,11 +21,8 @@ namespace tester {
     class Engine {
     public:
 
-        /// Read beacon data
-        void readBeacons();
-
-        /// Read measurement data
-        void readEvents();
+        /// Read data: config, beacons, events
+        void readData();
 
         /// Run and get the result
         void run();
@@ -34,6 +32,9 @@ namespace tester {
 
     private:
         // Global data (with default constructors)
+        /// Configuration
+        TesterConnfig testerConnfig;
+
         /// List of beacons
         MyBeaconList beaconList;
 

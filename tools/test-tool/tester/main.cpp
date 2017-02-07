@@ -13,10 +13,9 @@ int main() {
     // Create tester engine
     Engine engine;
 
-    engine.readBeacons();
-    engine.readEvents();
-    engine.run();
-    engine.writeData();
+    engine.readData(); // Read data
+    engine.run();   // Run
+    engine.writeData();  // Write results
 
     return 0;
 }

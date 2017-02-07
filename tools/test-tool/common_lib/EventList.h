@@ -17,16 +17,16 @@ namespace tester {
     public:
 
         /// Read events from a DAT file (true if successful)
-        bool readDAT(const char * fileName);
+        bool readDAT(std::string const & fileName);
 
         /// Read events from a JSON file (true if successful)
-        bool readJSON(const char * fileName);
+        bool readJSON(std::string const &  fileName);
 
         /// Write events to a DAT file (true if successful)
-        bool writeDAT(const char * fileName);
+        bool writeDAT(std::string const &  fileName);
 
         /// Write events to a JSON file (true if successful)
-        bool writeJSON(const char * fileName);
+        bool writeJSON(std::string const &  fileName);
 
         /// Getter
         const std::vector<Event> &getEvents() const {

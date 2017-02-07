@@ -10,31 +10,25 @@
 
 namespace tester {
 
-    void Engine::readBeacons() {
+    void Engine::readData() {
         using namespace std;
 
+        // Read config
+        testerConnfig.readJSON("in_testerconfig.json");
 
-        // Read beacons from a DAT file
-        assert(beaconList.readAuto("in_beacons.json"));
-        //cout << "result =" << beaconList.readAuto("in_beacons.json") << endl;
-
-        //exit(0);
+        // Read beacons from a DAT or JSON file
+        assert(beaconList.readAuto(testerConnfig.getInBeaconsFile()));
 
         //  Check that there are at least 3 beacons
         if (beaconList.getBeacons().size() < 3) {
-            cerr << "ERROR: Need at least 3 beacons !" << endl;
-            exit(1);
+            cerr << "WARNING: Need at least 3 beacons !" << endl;
+            //exit(1);
         }
 
+        // Read events
+        assert(eventList.readDAT(testerConnfig.getInEventsFile()));
     }
 
-    void Engine::readEvents() {
-        using namespace std;
-
-        const char *fileName = "out_measure.dat";
-
-        assert(eventList.readDAT(fileName));
-    }
 
     void Engine::run() {
         using namespace std;

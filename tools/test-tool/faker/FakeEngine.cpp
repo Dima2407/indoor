@@ -11,71 +11,26 @@
 
 namespace faker {
 
-    void FakeEngine::readBeacons() {
+    void FakeEngine::readData() {
         using namespace std;
         using namespace tester;
 
+        // Read configuration
+        assert(fakerConfig.readJSON("in_fakerconfig.json"));
+
         // Read beacons from input file (dat or json)
-        assert(beaconList.readAuto("in_beacons.json"));
+        assert(beaconList.readAuto(fakerConfig.getInBeaconsFile()));
 
         //  Check that there are at least 3 beacons
         if (beaconList.getBeacons().size() < 3) {
-            cerr << "ERROR: Need at least 3 beacons !" << endl;
-            exit(1);
-        }
-    }
-
-
-    void FakeEngine::readTimes() {
-        using namespace std;
-        using namespace tester;
-
-        beaconTimeList.readAuto("in_times.dat");
-
-        //  Check that there are at least 3 beacons in beaconTimes
-        if (beaconTimeList.getBeaconTimes().size() < 3) {
-            cerr << "ERROR: Need time data for at least 3 beacons in !" << endl;
-            exit(1);
-        }
-    }
-
-
-    void FakeEngine::readConfig() {
-        using namespace std;
-        using namespace tester;
-
-        // Open file
-        const char *fileName = "in_faker.dat";
-        ifstream in(fileName);
-        if (!in) {
-            cerr << "ERROR: Cannot open input file : " << fileName << endl;
-            exit(1);
+            cerr << "WARNING: Need at least 3 beacons for normal operation." << endl;
+            // exit(1);
         }
 
-        // Read the data
-        cout << endl << "Reading configuration :" << endl << endl;
-
-        in >> t1 >> t2 >> ticksPerTimeUnit;
-        cout << "t1 = " << t1 << ", t2 = " << t2 << ", ticksPerTimeUnit = " << ticksPerTimeUnit << endl;
-
-        in >> point1 >> point2;
-        cout << "point1 = " << point1 << endl;
-        cout << "point2 = " << point2 << endl;
-
-        if (!in) {
-            cerr << "ERROR: Corrupt file : " << fileName << endl;
-            exit(1);
-        }
-
-        in.close();
-
+        // Read beacon times
+        assert(beaconTimeList.readAuto(fakerConfig.getInTimesFile()));
     }
 
-
-    tester::Vec3 FakeEngine::trajectory(double t) {
-        // Linear at present
-        return point1 * ((t2 - t) / (t2 - t1)) + point2 * ((t - t1) / (t2 - t1));
-    }
 
     void FakeEngine::run() {
         using namespace std;
@@ -107,23 +62,27 @@ namespace faker {
         using namespace std;
         using namespace tester;
 
+
+        LinearTrajectory const &traj = fakerConfig.getTrajectory();
+
         // Find start and end times (ooverlap of global and beacon range)
-        double startTime = max(beaconTime.getT1(), t1);
-        double endTime = min(beaconTime.getT2(), t2);
+        double startTime = max(beaconTime.getT1(), traj.t1);
+        double endTime = min(beaconTime.getT2(), traj.t2);
 
         for (double time = startTime; time < endTime; time += beaconTime.getPeriod()) {
             // Find a trajectory point
-            Vec3 point = trajectory(time);
+            Vec3 point = traj.trajectory(time);
             // Create a fake rssi for this point
             double rssi = beacon.calcRssiPos(point.x, point.y, point.z);
 
             // Create a new event, while converting time to timestamp
-            eventList.getEvents().push_back(Event(beacon.hash, beacon.txPower, rssi, (long long)(time*ticksPerTimeUnit)));
+            eventList.getEvents().push_back(Event(beacon.hash, beacon.txPower, rssi,
+                                                  (long long) (time * fakerConfig.getTicks())));
         }
     }
 
     void FakeEngine::writeResults() {
-        assert(eventList.writeDAT("out_measure.dat"));
+        assert(eventList.writeDAT(fakerConfig.getOutEventsFile()));
     }
 
 }

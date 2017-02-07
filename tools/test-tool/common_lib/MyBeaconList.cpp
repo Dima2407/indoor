@@ -55,7 +55,7 @@ namespace tester {
             return false;
         }
 
-        cout << "Reading beacons from JSON file : " << fileName << endl << endl;
+        cout << endl << "Reading beacons from JSON file : " << fileName << endl << endl;
 
         // Parse JSON from input file
         // Note: accoding to rapidjson docs it's faster to use C FILE

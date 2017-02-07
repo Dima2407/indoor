@@ -6,6 +6,7 @@
 #define TESTTOOL_VEC3LIST_H
 
 #include <vector>
+#include <string>
 
 #include "Vec3.h"
 
@@ -15,7 +16,7 @@ namespace tester {
     public:
 
         /// Write points to a DAT file (true if successful)
-        bool writeDAT(const char * fileName);
+        bool writeDAT(std::string const & fileName);
 
         /// Getter
         const std::vector<Vec3> &getPoints() const {

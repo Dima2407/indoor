@@ -1,3 +1,8 @@
 *.a
 *.o
 *.exe
+/.idea/
+/build/
+/.gradle/
+*.iml
+/local.properties

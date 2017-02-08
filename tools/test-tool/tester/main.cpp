@@ -14,7 +14,7 @@ int main() {
     Engine engine;
 
     engine.readData(); // Read data
-    engine.run();   // Run
+    engine.runLocation();   // Run
     engine.writeData();  // Write results
 
     return 0;

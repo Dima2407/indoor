@@ -30,26 +30,48 @@ namespace tester {
     }
 
 
-    void Engine::run() {
+    void Engine::runLocation() {
         using namespace std;
 
         // Send beacons to the bridge
         MyBridge::init();
-        for (MyBeacon const & b: beaconList.getBeacons()) MyBridge::newBeacon(b);
+        for (MyBeacon const &b: beaconList.getBeacons()) MyBridge::newBeacon(b);
+
+        // Timestamp of the 1st event
+        timeOrigin = eventList.getEvents()[0].timestamp;
 
         // Send measurements to the bridge and get XYZ after each measurements
 
-        vec3List.clear(); // Just in case
-        for (Event const & e: eventList.getEvents()) {
+        txyzActual.clear(); // Just in case
+
+        // Loop over all events
+        for (int i = 0; i < eventList.getEvents().size(); i++) {
+
+            Event const &e = eventList.getEvents()[i]; // Event # i
+
             MyBridge::newMeasurement(e.hash, e.txPower, e.rssi, e.timestamp);
-            // Store position after each measurement
-            vec3List.getPoints().push_back(Vec3(MyBridge::getX(), MyBridge::getY(), MyBridge::getZ()));
+
+            // Store time, position after each measurement
+            // skiping first skipEvents ones
+            // That's why we need i here, and not a for each loop
+            if (i >= testerConnfig.getSkipEvents()) {
+                // Time, starting from 0.0, in arbitrary time units given by ticks (e.g. seconds)
+                double t = (e.timestamp - timeOrigin) / testerConnfig.getTicks();
+
+                txyzActual.getPoints().push_back(Vec3t(t, MyBridge::getX(), MyBridge::getY(), MyBridge::getZ()));
+            }
         }
 
     }
 
+
+    void Engine::runDelta() {
+
+    }
+
+
     void Engine::writeData() {
-        vec3List.writeDAT("out_xyz.dat");
+        txyzActual.writeDAT("out_txyz_actual.dat");
     }
 
 

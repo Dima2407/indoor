@@ -6,8 +6,8 @@
 #define TESTERALL_ENGINE_H
 
 #include <vector>
-#include <Vec3List.h>
 
+#include "Vec3tList.h"
 #include "MyBeacon.h"
 #include "Event.h"
 #include "MyBeaconList.h"
@@ -24,8 +24,11 @@ namespace tester {
         /// Read data: config, beacons, events
         void readData();
 
-        /// Run and get the result
-        void run();
+        /// Run tracking_lib and get the result XYZ(t)
+        void runLocation();
+
+        /// Compare the calculated XYZ to the expected one ang get the deltas
+        void runDelta();
 
         /// Write the output data
         void writeData();
@@ -41,8 +44,20 @@ namespace tester {
         /// List of events (timestamped measurements)
         EventList eventList;
 
-        /// List of XYZ points from location
-        Vec3List vec3List;
+        /// List of TXYZ points  (actual i.e. from location)
+        Vec3tList txyzActual;
+
+        /// List of TXYZ points  (expected i.e. from trajectory)
+        Vec3tList txyzExpected;
+
+        /// List of TXYZ points  (delta i.e. the difference)
+        Vec3tList txyzDelta;
+
+        /// Max delta
+
+
+        /// Timestamp of the first event
+        long long timeOrigin;
     };
 }
 

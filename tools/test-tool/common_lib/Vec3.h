@@ -6,6 +6,7 @@
 #define TESTERALL_VEC3_H
 
 #include <iostream>
+#include <cmath>
 
 namespace tester {
     /** \brief A 3-vector (x, y, z)
@@ -22,10 +23,17 @@ namespace tester {
 
         Vec3() {}
 
-        // Operations Vec3 + Vec3 and Vec3 * double
+        /// Vector length
+        double len(){
+            return std::sqrt(x*x + y*y +z*z);
+        }
+
+        /// Operations Vec3 +- Vec3 and Vec3 * double
         Vec3 &operator+=(const Vec3 &rhs);
+        Vec3 &operator-=(const Vec3 &rhs);
 
         const Vec3 operator+(const Vec3 &rhs) const;
+        const Vec3 operator-(const Vec3 &rhs) const;
 
         Vec3 &operator*=(const double rhs);
 

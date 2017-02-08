@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "DoublePair.h"
 #include "Vec3tList.h"
 #include "MyBeacon.h"
 #include "Event.h"
@@ -34,7 +35,17 @@ namespace tester {
         void writeData();
 
     private:
+        /// Convert timestamp -> time, requires timeOrigin, ticks
+        double stamp2Time(long long timestamp){
+            return (timestamp - timeOrigin) / testerConnfig.getTicks();
+        }
+
+
         // Global data (with default constructors)
+
+        /// Timestamp of the first event
+        long long timeOrigin;
+
         /// Configuration
         TesterConnfig testerConnfig;
 
@@ -53,11 +64,15 @@ namespace tester {
         /// List of TXYZ points  (delta i.e. the difference)
         Vec3tList txyzDelta;
 
+        /// List of T, Delta points
+        std::vector<DoublePair> tDelta;
+
         /// Max delta
+        double maxDelta;
 
+        /// Square averge delta
+        double averageDelta;
 
-        /// Timestamp of the first event
-        long long timeOrigin;
     };
 }
 

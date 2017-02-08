@@ -16,9 +16,22 @@ namespace tester {
         return *this;
     }
 
+    Vec3 &Vec3::operator-=(const Vec3 &rhs) {
+        x -= rhs.x;
+        y -= rhs.y;
+        z -= rhs.z;
+        return *this;
+    }
+
     const Vec3 Vec3::operator+(const Vec3 &rhs) const {
         Vec3 result = *this; // Clone
         result += rhs;
+        return result;
+    }
+
+    const Vec3 Vec3::operator-(const Vec3 &rhs) const {
+        Vec3 result = *this; // Clone
+        result -= rhs;
         return result;
     }
 

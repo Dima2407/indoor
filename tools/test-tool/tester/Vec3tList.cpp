@@ -23,7 +23,7 @@ namespace tester {
         }
 
         for (Vec3t const & point: points){
-            out << fixed << point << endl;
+            out << point << endl;
         }
 
         if (!out) {

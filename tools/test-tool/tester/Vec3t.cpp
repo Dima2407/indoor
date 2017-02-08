@@ -9,7 +9,7 @@
 namespace tester {
 
     std::ostream & operator<<(std::ostream &os, const Vec3t &vt) {
-        os << std::setw(12) <<  vt.t << " " << vt.r;
+        os << std::setw(12) <<  vt.t << " " << std::setw(12) << vt.r;
         return os;
     }
 }

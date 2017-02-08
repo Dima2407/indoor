@@ -7,6 +7,8 @@
 
 #include <cassert>
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 
 namespace tester {
 
@@ -40,6 +42,11 @@ namespace tester {
         // Timestamp of the 1st event
         timeOrigin = eventList.getEvents()[0].timestamp;
 
+        // Set t1 and t2 for the trajectoty
+        testerConnfig.getTrajectory().t1 = 0;
+        // t2 is the last timestamp, converted
+        testerConnfig.getTrajectory().t2 = stamp2Time(eventList.getEvents().back().timestamp);
+
         // Send measurements to the bridge and get XYZ after each measurements
 
         txyzActual.clear(); // Just in case
@@ -56,7 +63,7 @@ namespace tester {
             // That's why we need i here, and not a for each loop
             if (i >= testerConnfig.getSkipEvents()) {
                 // Time, starting from 0.0, in arbitrary time units given by ticks (e.g. seconds)
-                double t = (e.timestamp - timeOrigin) / testerConnfig.getTicks();
+                double t = stamp2Time(e.timestamp);
 
                 txyzActual.getPoints().push_back(Vec3t(t, MyBridge::getX(), MyBridge::getY(), MyBridge::getZ()));
             }
@@ -66,12 +73,57 @@ namespace tester {
 
 
     void Engine::runDelta() {
+        double sumDelta2=0; // Sum of all delta^2 for averaging
+
+        maxDelta=0;
+
+        txyzExpected.clear();  // Just in case
+        txyzDelta.clear();
+        tDelta.clear();
+
+        // Loop over all actual txyz points
+        for (Vec3t const & vat: txyzActual.getPoints()) {
+
+            double t = vat.t; // Time
+            // Expected trajectory point
+            Vec3 ve = testerConnfig.getTrajectory().trajectory(t);
+            // Vector delta
+            Vec3 vd =  vat.r - ve;
+            // Scalar delta
+            double d = vd.len();
+
+            sumDelta2 += d*d; // Do the sum
+
+            if (d > maxDelta) maxDelta = d;
+
+            // Store data
+            txyzExpected.getPoints().push_back(Vec3t(t, ve));
+            txyzDelta.getPoints().push_back(Vec3t(t, vd));
+            tDelta.push_back(DoublePair(t, d));
+        }
+
+        // Calculate square averaged delta
+        averageDelta = sqrt(sumDelta2 / txyzActual.getPoints().size());
 
     }
 
 
     void Engine::writeData() {
+        using namespace std;
+
         txyzActual.writeDAT("out_txyz_actual.dat");
+        txyzExpected.writeDAT("out_txyz_expected.dat");
+        txyzDelta.writeDAT("out_txyz_delta.dat");
+
+        // Write scalar delta
+        ofstream out("out_tdelta.dat");
+        for (DoublePair const & dp: tDelta) {
+            out << setw(12) << dp.t  << setw(12) << dp.v << endl;
+        }
+        out.close();
+
+        cout << "Max delta = " << maxDelta << endl;
+        cout << "Avg delta = " << averageDelta << endl;
     }
 
 

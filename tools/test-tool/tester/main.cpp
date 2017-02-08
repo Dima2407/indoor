@@ -14,7 +14,8 @@ int main() {
     Engine engine;
 
     engine.readData(); // Read data
-    engine.runLocation();   // Run
+    engine.runLocation();   // Run location
+    engine.runDelta();   // Run delta
     engine.writeData();  // Write results
 
     return 0;

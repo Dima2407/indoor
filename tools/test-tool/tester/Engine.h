@@ -13,7 +13,7 @@
 #include "Event.h"
 #include "MyBeaconList.h"
 #include "EventList.h"
-#include "TesterConnfig.h"
+#include "TesterConfig.h"
 
 namespace tester {
     /** \brief The main class of tester
@@ -47,7 +47,7 @@ namespace tester {
         long long timeOrigin;
 
         /// Configuration
-        TesterConnfig testerConnfig;
+        TesterConfig testerConnfig;
 
         /// List of beacons
         MyBeaconList beaconList;

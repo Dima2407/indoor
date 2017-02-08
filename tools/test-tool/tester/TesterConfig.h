@@ -10,7 +10,7 @@
 
 namespace tester {
     /// The configuration of tester
-    class TesterConnfig {
+    class TesterConfig {
     public:
         /** \brief Read Tester config from JSON
          *

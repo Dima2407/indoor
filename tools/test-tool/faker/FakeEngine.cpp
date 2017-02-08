@@ -82,7 +82,7 @@ namespace faker {
     }
 
     void FakeEngine::writeResults() {
-        assert(eventList.writeDAT(fakerConfig.getOutEventsFile()));
+        assert(eventList.writeAuto(fakerConfig.getOutEventsFile()));
     }
 
 }

@@ -4,6 +4,7 @@
 
 #include "MyBeaconList.h"
 #include "myjson.h"
+#include "Util.h"
 
 #include <iostream>
 #include <fstream>
@@ -70,7 +71,7 @@ namespace tester {
 
         // cout << "document type = " << kTypeNames[d.GetType()] << endl;
         if (!d.IsArray()) {
-            cerr << "ERROR in " << fileName<< ": JSON document must be Array. " << endl;
+            cerr << "ERROR in " << fileName << ": JSON document must be Array. " << endl;
             return false;
         }
 
@@ -79,7 +80,7 @@ namespace tester {
 
         // Loop over all beacons in the array C++11 style
         // b = beacon DOM object
-        for (auto & b: d.GetArray()){
+        for (auto &b: d.GetArray()) {
             MyBeacon beacon; // The beacon object to create
 
             Vec3 vec3;
@@ -91,7 +92,16 @@ namespace tester {
             beacon.y = vec3.y;
             beacon.z = vec3.z;
 
-            if (!myjson::readLL(b, "hash", beacon.hash)) return false;
+            // Read "hash" OR "MACaddress"
+            if (!myjson::readLL(b, "hash", beacon.hash, false)) {
+
+                // If no "hash", try "MACaddress"
+                string mac;
+                if (!myjson::readString(b, "MACaddress", mac)) return false;
+
+                if (!Util::parseMAC(mac, beacon.hash)) return false;
+            }
+
             if (!myjson::readDouble(b, "TXpower", beacon.txPower)) return false;
             if (!myjson::readDouble(b, "damp", beacon.damp)) return false;
 

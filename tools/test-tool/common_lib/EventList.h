@@ -22,11 +22,17 @@ namespace tester {
         /// Read events from a JSON file (true if successful)
         bool readJSON(std::string const &  fileName);
 
+        /// Read events from a JSON or DAT file (true if successful)
+        bool readAuto(std::string const &  fileName);
+
         /// Write events to a DAT file (true if successful)
         bool writeDAT(std::string const &  fileName);
 
         /// Write events to a JSON file (true if successful)
         bool writeJSON(std::string const &  fileName);
+
+        /// Write events to a DAT or JSON file (true if successful)
+        bool writeAuto(std::string const &  fileName);
 
         /// Getter
         const std::vector<Event> &getEvents() const {

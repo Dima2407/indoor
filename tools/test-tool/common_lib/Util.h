@@ -17,10 +17,17 @@ namespace tester {
         /// Make a lowercase copy of a string
         static std::string lowerCase(std::string s);
 
-
-
         /// Check if fileName has extension .ext, ignoring case
         static bool hasExt(std::string const & fileName, std::string const & ext);
+
+
+        /** \brief Parse a MAC address string, e.g. "01:17:C5:59:B0:C0" as long long
+         *
+         * @param[in]  mac         MAC as string
+         * @param[out] result      MAC as long long
+         * @return                 true is success
+         */
+        static bool parseMAC(std::string const &mac, long long & result);
     };
 
 }

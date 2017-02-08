@@ -40,9 +40,12 @@ namespace tester{
          * @param[in]    obj    A rapidJSON object
          * @param[in]    name   Name of property
          * @param[out]   ll     Result
+         * @param[in]   verbose true to print error message
+
          * @return              True if successful
          */
-        bool readLL(rapidjson::Value const & obj, const char * name, long long & ll);
+        bool readLL(rapidjson::Value const & obj, const char * name, long long & ll, bool verbose=true);
+
 
         /** \brief  Read an intproperty named 'name' if the rapidjson object v
          *

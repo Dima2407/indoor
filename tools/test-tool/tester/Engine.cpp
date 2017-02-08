@@ -28,7 +28,7 @@ namespace tester {
         }
 
         // Read events
-        assert(eventList.readDAT(testerConnfig.getInEventsFile()));
+        assert(eventList.readAuto(testerConnfig.getInEventsFile()));
     }
 
 
@@ -55,6 +55,10 @@ namespace tester {
         for (int i = 0; i < eventList.getEvents().size(); i++) {
 
             Event const &e = eventList.getEvents()[i]; // Event # i
+
+            if (!beaconList.beaconExists(e.hash)) {
+                cerr << "Warning: Event for non-existent beacon, hash = " << e.hash << endl;
+            }
 
             MyBridge::newMeasurement(e.hash, e.txPower, e.rssi, e.timestamp);
 
@@ -118,7 +122,7 @@ namespace tester {
         // Write scalar delta
         ofstream out("out_tdelta.dat");
         for (DoublePair const & dp: tDelta) {
-            out << setw(12) << dp.t  << setw(12) << dp.v << endl;
+            out << fixed << setw(12) << dp.t  << setw(12) << dp.v << endl;
         }
         out.close();
 

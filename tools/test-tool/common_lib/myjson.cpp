@@ -66,19 +66,19 @@ namespace tester{
             return true; // Success
         }
 
-        bool readLL(rapidjson::Value const &obj, const char *name, long long &ll) {
+        bool readLL(rapidjson::Value const &obj, const char *name, long long &ll, bool verbose) {
             using namespace std;
             using namespace rapidjson;
 
             if (!obj.IsObject()) {
-                cerr << "ERROR in readLL : obj must be Object. " << endl;
+                if (verbose) cerr << "ERROR in readLL : obj must be Object. " << endl;
                 return false;
             }
 
             // Get property iterator by name
             auto propIt = obj.FindMember(name);
             if (propIt == obj.MemberEnd()) {
-                cerr << "ERROR in readLL : Cannot find Int64 property :'" << name << "'." << endl;
+                if (verbose) cerr << "ERROR in readLL : Cannot find Int64 property :'" << name << "'." << endl;
                 return false;
             }
             Value const & v = propIt->value; // Found the value

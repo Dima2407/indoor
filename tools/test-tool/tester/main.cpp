@@ -1,10 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
-#include "../common_lib/MyBeacon.h"
+#include "MyBeacon.h"
 #include "MyBridge.h"
 #include "Engine.h"
+#include "Util.h"
 
 int main() {
     using namespace std;

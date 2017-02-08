@@ -8,13 +8,13 @@
 #include <iostream>
 #include <fstream>
 
-#include "TesterConnfig.h"
+#include "TesterConfig.h"
 #include "myjson.h"
 
 namespace tester {
 
 
-    bool TesterConnfig::readJSON(std::string fileName) {
+    bool TesterConfig::readJSON(std::string fileName) {
 
         using namespace std;
         using namespace rapidjson;

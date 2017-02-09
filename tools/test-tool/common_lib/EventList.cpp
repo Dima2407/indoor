@@ -97,7 +97,7 @@ namespace tester {
                 // Read other data
                 if (!myjson::readDouble(e, "TXpower", event.txPower)) return false;
                 if (!myjson::readDouble(e, "RSSI", event.rssi)) return false;
-                if (!myjson::readLL(e, "timestamp", event.timestamp)) return false;
+                if (!myjson::readLL(e, "TimeStamp", event.timestamp)) return false;
 
                 events.push_back(event);
             }
@@ -185,7 +185,7 @@ namespace tester {
 
                     Value timestampVal;
                     timestampVal.SetInt64(event.timestamp);
-                    eventObj.AddMember("timestamp", timestampVal, allocator);
+                    eventObj.AddMember("TimeStamp", timestampVal, allocator);
 
                     hashArray.PushBack(eventObj, allocator);
                 }

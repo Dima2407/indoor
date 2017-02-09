@@ -54,6 +54,10 @@ namespace tester {
             return skipEvents;
         }
 
+        bool isTxFromBeacons() const {
+            return txFromBeacons;
+        }
+
     private:
         /// Input: beacons file name
         std::string inBeaconsFile;
@@ -69,6 +73,9 @@ namespace tester {
 
         /// Number of first events to skip
         int skipEvents;
+
+        /// If true, use txPower from beacons file, not from events file
+        bool txFromBeacons;
 
     };
 }

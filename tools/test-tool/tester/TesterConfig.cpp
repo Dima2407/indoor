@@ -54,6 +54,9 @@ namespace tester {
         if (!myjson::readInt(d, "skipEvents", skipEvents)) return false;
         cout << "skipEvents = " << skipEvents << endl;
 
+        if (!myjson::readBool(d, "txFromBeacons", txFromBeacons)) return false;
+        cout << "txFromBeacons = " << (txFromBeacons ? "true" : "false") << endl;
+
         return true;
     }
 }

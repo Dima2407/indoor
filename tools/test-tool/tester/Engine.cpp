@@ -39,6 +39,12 @@ namespace tester {
         MyBridge::init();
         for (MyBeacon const &b: beaconList.getBeacons()) MyBridge::newBeacon(b);
 
+        // Check if there are events
+        if (eventList.getEvents().size() == 0){
+            cerr << "ERROR: No events, nothing to do. Exiting." << endl;
+            exit(1);
+        }
+
         // Timestamp of the 1st event
         timeOrigin = eventList.getEvents()[0].timestamp;
 
@@ -54,10 +60,13 @@ namespace tester {
         // Loop over all events
         for (int i = 0; i < eventList.getEvents().size(); i++) {
 
-            Event const &e = eventList.getEvents()[i]; // Event # i
+            Event &e = eventList.getEvents()[i]; // Event # i
 
             if (!beaconList.beaconExists(e.hash)) {
                 cerr << "Warning: Event for non-existent beacon, hash = " << e.hash << endl;
+            } else if (testerConnfig.isTxFromBeacons()) {
+                // Replace the TX power for this event with the one from the respective beacon
+                e.txPower = beaconList.findBeacon(e.hash).txPower;
             }
 
             MyBridge::newMeasurement(e.hash, e.txPower, e.rssi, e.timestamp);

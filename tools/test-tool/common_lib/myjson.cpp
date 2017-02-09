@@ -140,12 +140,40 @@ namespace tester{
             Value const & v = propIt->value; // Found the value
 
             // v must be a number
-            if (! v.IsInt64()) {
+            if (! v.IsInt()) {
                 cerr << "ERROR in readInt : Property '" << name << "' must be an int number." << endl;
                 return false;
             }
 
             i = v.GetInt();
+
+            return true; // Success
+        }
+
+        bool readBool(rapidjson::Value const &obj, const char *name, bool &b, bool verbose) {
+            using namespace std;
+            using namespace rapidjson;
+
+            if (!obj.IsObject()) {
+                if (verbose) cerr << "ERROR in readBool : obj must be Object. " << endl;
+                return false;
+            }
+
+            // Get property iterator by name
+            auto propIt = obj.FindMember(name);
+            if (propIt == obj.MemberEnd()) {
+                if (verbose) cerr << "ERROR in readBool : Cannot find bool property :'" << name << "'." << endl;
+                return false;
+            }
+            Value const & v = propIt->value; // Found the value
+
+            // v must be a number
+            if (! v.IsBool()) {
+                cerr << "ERROR in readLL : Property '" << name << "' must be a bool." << endl;
+                return false;
+            }
+
+            b = v.GetBool();
 
             return true; // Success
         }

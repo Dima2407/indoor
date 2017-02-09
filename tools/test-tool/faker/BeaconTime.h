@@ -15,6 +15,8 @@ namespace faker {
  * Faker time units (e.g. seconds) are used here, not timestamp units !!!
  * */
     class BeaconTime {
+
+        friend class BeaconTimeList;
     public:
 
         /// Full constructor

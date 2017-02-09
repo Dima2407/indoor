@@ -17,6 +17,9 @@ namespace faker {
         /// Read times from a DAT file (true if successful)
         bool readDAT(std::string const & fileName);
 
+        /// Read times from a JSON file (true if successful)
+        bool readJSON(std::string const & fileName);
+
         /// Read times from a DAT or JSON file (true if successful)
         bool readAuto(std::string const & fileName);
 

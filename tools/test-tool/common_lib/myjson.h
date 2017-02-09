@@ -65,6 +65,16 @@ namespace tester{
          */
         bool readString(rapidjson::Value const & obj, const char * name, std::string & ll);
 
+        /** \brief Read a bool property named 'name' if the rapidjson object v
+         *
+         * @param[in]    obj         A rapidJSON object
+         * @param[in]    name        Name of property
+         * @param[out]   b           Result
+         * @param[in]    verbose     true to print error message
+         * @return                   true if success
+         */
+        bool readBool(rapidjson::Value const & obj, const char * name, bool & b, bool verbose=true);
+
     }
 }
 

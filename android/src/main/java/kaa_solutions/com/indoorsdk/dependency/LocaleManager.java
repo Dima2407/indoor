@@ -27,6 +27,11 @@ public class LocaleManager implements ILocalManager {
         return beaconManager;
     }
 
+    @Override
+    public IWifiManager getWifiManager() {
+        return wifiManager;
+    }
+
     public LocaleManager(Context context) {
         dataManager = new DataManager();
         beaconManager = new BeaconManage(context);

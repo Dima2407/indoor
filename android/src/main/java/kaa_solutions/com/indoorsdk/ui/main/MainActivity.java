@@ -1,5 +1,6 @@
 package kaa_solutions.com.indoorsdk.ui.main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,5 +57,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     @Override
     public void setOnChangeConfig(IOnChangeSettingListener listener) {
         adapter.setOnChangeListener(listener);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 }

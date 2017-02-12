@@ -7,5 +7,5 @@ import kaa_solutions.com.indoorsdk.local.interfaces.IBaseSetting;
  */
 
 public interface IWifiManager extends IBaseSetting {
-
+    void setWifiScanResultListener(IWifiScanResultListener wifiScanResult);
 }

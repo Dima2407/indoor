@@ -8,5 +8,6 @@ public interface DebugConfig {
     boolean IS_DEBUG = true;
 
     boolean BEACON_IS_DEBUG = false;
+    boolean WIFI_IS_DEBUG = false;
     boolean MAIN_ACTIVITY_DEBUG = true;
 }

@@ -1,5 +1,6 @@
 package kaa_solutions.com.indoorsdk.ui.main.interfaces;
 
+import android.app.Activity;
 import android.content.Context;
 
 import java.util.Collection;
@@ -19,5 +20,5 @@ public interface IMainActivity {
     void setOnChangeConfig(IOnChangeSettingListener listener);
 
 
-
+    Activity getActivity();
 }

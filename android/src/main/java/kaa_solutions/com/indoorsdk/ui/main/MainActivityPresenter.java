@@ -15,6 +15,8 @@ import java.util.List;
 import kaa_solutions.com.indoorsdk.dependency.ModuleManager;
 import kaa_solutions.com.indoorsdk.dependency.interfaces.ILocalManager;
 import kaa_solutions.com.indoorsdk.local.beacon.interfaces.IOnBeaconListener;
+import kaa_solutions.com.indoorsdk.local.gps.interfaces.ILocationChangeListener;
+import kaa_solutions.com.indoorsdk.local.gps.model.Position;
 import kaa_solutions.com.indoorsdk.local.interfaces.IBaseSetting;
 import kaa_solutions.com.indoorsdk.local.wifi.interfaces.IWifiScanResultListener;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivity;
@@ -59,6 +61,7 @@ public class MainActivityPresenter implements IMainActivityPresenter, IOnChangeS
         settingHashMap = new HashMap<>();
         settingHashMap.put(localManager.getBeaconManager().getSettingType(), localManager.getBeaconManager());
         settingHashMap.put(localManager.getWifiManager().getSettingType(), localManager.getWifiManager());
+        settingHashMap.put(localManager.getGPSManager().getSettingType(), localManager.getGPSManager());
 
         localManager.getBeaconManager().setOnBeaconListener(new IOnBeaconListener() {
             @Override
@@ -81,6 +84,12 @@ public class MainActivityPresenter implements IMainActivityPresenter, IOnChangeS
                         Log.d(TAG, "onReceive: BSSID: " + result.BSSID + " SSID:" + result.SSID + " level:" + result.level);
                     }
                 }
+            }
+        });
+        localManager.getGPSManager().setPositionListener(new ILocationChangeListener() {
+            @Override
+            public void locationUpdate(Position position) {
+                Log.d(TAG, "locationUpdate: x:"+position.getLat()+ " y:"+position.getLng());
             }
         });
 

@@ -2,6 +2,7 @@ package kaa_solutions.com.indoorsdk.dependency.interfaces;
 
 import kaa_solutions.com.indoorsdk.local.beacon.interfaces.IBeaconManager;
 import kaa_solutions.com.indoorsdk.local.data.interfaces.IDataManager;
+import kaa_solutions.com.indoorsdk.local.gps.interfaces.IGPSManager;
 import kaa_solutions.com.indoorsdk.local.wifi.interfaces.IWifiManager;
 
 /**
@@ -12,6 +13,8 @@ public interface ILocalManager {
     IBeaconManager getBeaconManager();
 
     IWifiManager getWifiManager();
+
+    IGPSManager getGPSManager();
 
     IDataManager getDataManager();
 }

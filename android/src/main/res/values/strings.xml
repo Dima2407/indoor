@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">IndoorSdk</string>
+    <string name="not_show_value">Not show value</string>
+    <string name="show_value">Show value</string>
 </resources>

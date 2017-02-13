@@ -12,21 +12,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import kaa_solutions.com.indoorsdk.dependency.ModuleManager;
-import kaa_solutions.com.indoorsdk.dependency.interfaces.ILocalManager;
-import kaa_solutions.com.indoorsdk.local.beacon.interfaces.IOnBeaconListener;
-import kaa_solutions.com.indoorsdk.local.gps.interfaces.ILocationChangeListener;
-import kaa_solutions.com.indoorsdk.local.gps.model.Position;
-import kaa_solutions.com.indoorsdk.local.interfaces.IBaseSetting;
-import kaa_solutions.com.indoorsdk.local.wifi.interfaces.IWifiScanResultListener;
+import pro.i_it.indoor.dependency.LocaleManager;
+import pro.i_it.indoor.dependency.ModuleManager;
+import pro.i_it.indoor.local.beacon.interfaces.OnBeaconListener;
+import pro.i_it.indoor.local.gps.interfaces.LocationChangeListener;
+import pro.i_it.indoor.local.gps.model.Position;
+import pro.i_it.indoor.local.interfaces.BaseSetting;
+import pro.i_it.indoor.local.wifi.interfaces.WifiScanResultListener;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivity;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivityPresenter;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IOnChangeSettingListener;
-import kaa_solutions.com.indoorsdk.ui.main.model.SettingModel;
+import pro.i_it.indoor.model.SettingModel;
 
-import static kaa_solutions.com.indoorsdk.config.DebugConfig.IS_DEBUG;
-import static kaa_solutions.com.indoorsdk.config.DebugConfig.MAIN_ACTIVITY_DEBUG;
-import static kaa_solutions.com.indoorsdk.config.DebugConfig.WIFI_IS_DEBUG;
+import static pro.i_it.indoor.config.DebugConfig.IS_DEBUG;
+import static pro.i_it.indoor.config.DebugConfig.MAIN_ACTIVITY_DEBUG;
+import static pro.i_it.indoor.config.DebugConfig.WIFI_IS_DEBUG;
 
 /**
  * Created by syn on 09.02.17.
@@ -35,8 +35,8 @@ import static kaa_solutions.com.indoorsdk.config.DebugConfig.WIFI_IS_DEBUG;
 public class MainActivityPresenter implements IMainActivityPresenter, IOnChangeSettingListener {
     private static final String TAG = MainActivityPresenter.class.getSimpleName();
     private IMainActivity view;
-    private ILocalManager localManager;
-    private HashMap<Integer, IBaseSetting> settingHashMap;
+    private LocaleManager localManager;
+    private HashMap<Integer, BaseSetting> settingHashMap;
 
     @Override
 
@@ -63,7 +63,7 @@ public class MainActivityPresenter implements IMainActivityPresenter, IOnChangeS
         settingHashMap.put(localManager.getWifiManager().getSettingType(), localManager.getWifiManager());
         settingHashMap.put(localManager.getGPSManager().getSettingType(), localManager.getGPSManager());
 
-        localManager.getBeaconManager().setOnBeaconListener(new IOnBeaconListener() {
+        localManager.getBeaconManager().setOnBeaconListener(new OnBeaconListener() {
             @Override
             public void beaconUpdate(Collection<Beacon> beacons) {
                 if (IS_DEBUG && MAIN_ACTIVITY_DEBUG) {
@@ -76,7 +76,7 @@ public class MainActivityPresenter implements IMainActivityPresenter, IOnChangeS
             }
         });
 
-        localManager.getWifiManager().setWifiScanResultListener(new IWifiScanResultListener() {
+        localManager.getWifiManager().setWifiScanResultListener(new WifiScanResultListener() {
             @Override
             public void scanResult(List<ScanResult> results) {
                 if (IS_DEBUG && WIFI_IS_DEBUG) {
@@ -86,7 +86,7 @@ public class MainActivityPresenter implements IMainActivityPresenter, IOnChangeS
                 }
             }
         });
-        localManager.getGPSManager().setPositionListener(new ILocationChangeListener() {
+        localManager.getGPSManager().setPositionListener(new LocationChangeListener() {
             @Override
             public void locationUpdate(Position position) {
                 Log.d(TAG, "locationUpdate: x:"+position.getLat()+ " y:"+position.getLng());

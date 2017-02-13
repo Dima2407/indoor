@@ -2,7 +2,7 @@ package kaa_solutions.com.indoorsdk;
 
 import android.content.Context;
 
-import kaa_solutions.com.indoorsdk.dependency.ModuleManager;
+import pro.i_it.indoor.dependency.ModuleManager;
 
 /**
  * Created by syn on 09.02.17.

@@ -15,7 +15,7 @@ import java.util.Collection;
 import kaa_solutions.com.indoorsdk.R;
 import kaa_solutions.com.indoorsdk.ui.main.adapters.interfaces.ISettingAdapter;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IOnChangeSettingListener;
-import kaa_solutions.com.indoorsdk.ui.main.model.SettingModel;
+import pro.i_it.indoor.model.SettingModel;
 
 /**
  * Created by syn on 09.02.17.

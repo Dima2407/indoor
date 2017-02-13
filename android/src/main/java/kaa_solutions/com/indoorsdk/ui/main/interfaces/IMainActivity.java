@@ -5,7 +5,7 @@ import android.content.Context;
 
 import java.util.Collection;
 
-import kaa_solutions.com.indoorsdk.ui.main.model.SettingModel;
+import pro.i_it.indoor.model.SettingModel;
 
 /**
  * Created by syn on 09.02.17.

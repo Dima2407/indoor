@@ -15,7 +15,7 @@ import kaa_solutions.com.indoorsdk.ui.main.adapters.interfaces.ISettingAdapter;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivity;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivityPresenter;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IOnChangeSettingListener;
-import kaa_solutions.com.indoorsdk.ui.main.model.SettingModel;
+import pro.i_it.indoor.model.SettingModel;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
     private IMainActivityPresenter presenter;

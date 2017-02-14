@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['init',['init',['../classtester_1_1_my_bridge.html#aa769bab1d981b885037b66b250ce6b8c',1,'tester::MyBridge']]],
-  ['istxfrombeacons',['isTxFromBeacons',['../classtester_1_1_tester_config.html#ac85a481111eba48c3466621549ac5159',1,'tester::TesterConfig']]]
+  ['main',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]]
 ];

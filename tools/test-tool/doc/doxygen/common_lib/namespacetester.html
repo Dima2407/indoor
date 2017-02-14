@@ -89,6 +89,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_beacon_list.html">MyBeaconList</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector of <a class="el" href="structtester_1_1_my_beacon.html" title="Beacon class for tester. ">tester::MyBeacon</a> with file IO routines (DAT, JSON)  <a href="classtester_1_1_my_beacon_list.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_poly_trajectory.html">PolyTrajectory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polyline trajectory based on a <a class="el" href="classtester_1_1_vec3t_list.html" title="Vec3t list with IO. ">Vec3tList</a> object.  <a href="classtester_1_1_poly_trajectory.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_util.html">Util</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class with misc static routines.  <a href="classtester_1_1_util.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,6 +100,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3_list.html">Vec3List</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of <a class="el" href="classtester_1_1_vec3.html" title="A 3-vector (x, y, z) ">Vec3</a> with IO.  <a href="classtester_1_1_vec3_list.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t.html">Vec3t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classtester_1_1_vec3.html" title="A 3-vector (x, y, z) ">Vec3</a> r + time t.  <a href="classtester_1_1_vec3t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t_list.html">Vec3tList</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtester_1_1_vec3t.html" title="A Vec3 r + time t. ">Vec3t</a> list with IO.  <a href="classtester_1_1_vec3t_list.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -111,10 +120,42 @@ Functions</h2></td></tr>
 <tr class="separator:ab5760827bdfddccb1a9f102a30642b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5710bc45ae5c2e08b90e378f0c3f4083"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetester.html#a5710bc45ae5c2e08b90e378f0c3f4083">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtester_1_1_vec3.html">Vec3</a> &amp;vec3)</td></tr>
 <tr class="separator:a5710bc45ae5c2e08b90e378f0c3f4083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93f201a0608f91ef115bb7c4120ccce"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetester.html#ae93f201a0608f91ef115bb7c4120ccce">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtester_1_1_vec3t.html">Vec3t</a> &amp;vt)</td></tr>
+<tr class="separator:ae93f201a0608f91ef115bb7c4120ccce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a357ceb5779ce680ce02e341e9cfadd59"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetester.html#a357ceb5779ce680ce02e341e9cfadd59">operator&gt;&gt;</a> (std::istream &amp;is, <a class="el" href="classtester_1_1_vec3t.html">Vec3t</a> &amp;vt)</td></tr>
+<tr class="separator:a357ceb5779ce680ce02e341e9cfadd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ae93f201a0608f91ef115bb7c4120ccce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93f201a0608f91ef115bb7c4120ccce">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; tester::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtester_1_1_vec3t.html">Vec3t</a> &amp;&#160;</td>
+          <td class="paramname"><em>vt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa892203e02aa0fffc5be8c73082c29bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa892203e02aa0fffc5be8c73082c29bc">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa892203e02aa0fffc5be8c73082c29bc">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +183,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="aa692be4d1f32751c44801d005473c06b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa692be4d1f32751c44801d005473c06b">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa692be4d1f32751c44801d005473c06b">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +211,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a5710bc45ae5c2e08b90e378f0c3f4083"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5710bc45ae5c2e08b90e378f0c3f4083">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5710bc45ae5c2e08b90e378f0c3f4083">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,8 +238,36 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a357ceb5779ce680ce02e341e9cfadd59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a357ceb5779ce680ce02e341e9cfadd59">&#9670;&nbsp;</a></span>operator>>() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream&amp; tester::operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>is</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtester_1_1_vec3t.html">Vec3t</a> &amp;&#160;</td>
+          <td class="paramname"><em>vt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a889af8544b9b138535a619dba21a2c9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a889af8544b9b138535a619dba21a2c9d">&#9670;&nbsp;</a></span>operator>>() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a889af8544b9b138535a619dba21a2c9d">&#9670;&nbsp;</a></span>operator>>() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,7 +295,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="ab5760827bdfddccb1a9f102a30642b17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5760827bdfddccb1a9f102a30642b17">&#9670;&nbsp;</a></span>operator>>() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5760827bdfddccb1a9f102a30642b17">&#9670;&nbsp;</a></span>operator>>() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

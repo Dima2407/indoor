@@ -96,7 +96,7 @@ DAT file format, one line/event:
 __hash__  __TXpower__   __RSSI__   __TimeStamp__ 
 
 
-## 4. 4. Route input file (DAT) (see __in\_txyz\_route.dat__)
+## 4. Route input file (DAT) (see __in\_txyz\_route.dat__)
 
 This is a simple DAT file which specifies the polyline route. Its format is
 

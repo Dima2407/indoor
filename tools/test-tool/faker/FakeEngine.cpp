@@ -27,6 +27,9 @@ namespace faker {
             // exit(1);
         }
 
+        // Read trajectory
+        assert(fakerConfig.getTrajectory().readAuto(fakerConfig.getInRouteFile()));
+
         // Read beacon times
         assert(beaconTimeList.readAuto(fakerConfig.getInTimesFile()));
     }
@@ -63,11 +66,11 @@ namespace faker {
         using namespace tester;
 
 
-        LinearTrajectory const &traj = fakerConfig.getTrajectory();
+        PolyTrajectory const &traj = fakerConfig.getTrajectory();
 
         // Find start and end times (ooverlap of global and beacon range)
-        double startTime = max(beaconTime.getT1(), traj.t1);
-        double endTime = min(beaconTime.getT2(), traj.t2);
+        double startTime = max(beaconTime.getT1(), traj.startTime());
+        double endTime = min(beaconTime.getT2(), traj.endTime());
 
         for (double time = startTime; time < endTime; time += beaconTime.getPeriod()) {
             // Find a trajectory point

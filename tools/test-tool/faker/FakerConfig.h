@@ -6,7 +6,7 @@
 #define TESTTOOL_FAKERCONFIG_H
 
 #include "Vec3.h"
-#include "LinearTrajectory.h"
+#include "PolyTrajectory.h"
 
 #include <string>
 
@@ -33,7 +33,12 @@ namespace faker {
          */
         bool readJSON(std::string fileName);
 
-        const tester::LinearTrajectory &getTrajectory() const {
+        /// Getters
+        const tester::PolyTrajectory &getTrajectory() const {
+            return trajectory;
+        }
+
+        tester::PolyTrajectory &getTrajectory(){
             return trajectory;
         }
 
@@ -53,9 +58,13 @@ namespace faker {
             return outEventsFile;
         }
 
+        const std::string &getInRouteFile() const {
+            return inRouteFile;
+        }
+
     private:
-        /// Linear trajectory data: t1, t2, point1, point2
-        tester::LinearTrajectory trajectory;
+        /// Polylinear trajectory data: array of (t, x, y, z)
+        tester::PolyTrajectory trajectory;
 
         /// Number of timestamp ticks per time unit, normally 1000
         double ticks;
@@ -65,6 +74,9 @@ namespace faker {
 
         // Input: beacon times file name
         std::string inTimesFile;
+
+        // Input: route file name
+        std::string inRouteFile;
 
         // Output: events file name
         std::string outEventsFile;

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "Vec3t.h"
 
@@ -14,6 +15,9 @@ namespace tester {
     /// Vec3t list with IO
     class Vec3tList {
     public:
+
+        /// Read the list from a DAT file, return true if success
+        bool readDAT(std::string const & fileName);
 
         /// Write the list to DAT file, return true if success
         bool writeDAT(std::string const & fileName);
@@ -31,6 +35,11 @@ namespace tester {
         /// Clear the list
         void clear(){
             points.clear();
+        }
+
+        /// Sort the list by time
+        void sort(){
+            std::sort(points.begin(), points.end());
         }
 
     private:

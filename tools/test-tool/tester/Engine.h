@@ -18,6 +18,9 @@
 namespace tester {
     /** \brief The main class of tester
      *
+     *  Note: tester assumes that the event with lowest timestamp
+     *  is identical to the first time of the route
+     *  I.e. that timeStampOrigin corresponds to TimeOrigin
      */
     class Engine {
     public:
@@ -35,19 +38,22 @@ namespace tester {
         void writeData();
 
     private:
-        /// Convert timestamp -> time, requires timeOrigin, ticks
+        /// Convert timestamp -> time, so that timeStampOrigin -> timeOrigin
         double stamp2Time(long long timestamp){
-            return (timestamp - timeOrigin) / testerConnfig.getTicks();
+            return  timeOrigin + (timestamp - timeStampOrigin) / testerConfig.getTicks();
         }
 
 
         // Global data (with default constructors)
 
         /// Timestamp of the first event
-        long long timeOrigin;
+        long long timeStampOrigin;
+
+        /// Time of the first route point
+        double timeOrigin;
 
         /// Configuration
-        TesterConfig testerConnfig;
+        TesterConfig testerConfig;
 
         /// List of beacons
         MyBeaconList beaconList;

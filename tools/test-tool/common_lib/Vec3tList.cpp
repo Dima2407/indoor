@@ -35,4 +35,30 @@ namespace tester {
 
         return true;
     }
+
+    bool Vec3tList::readDAT(std::string const &fileName) {
+        using namespace std;
+
+        cout << endl << "Reading the (t,r) data from DAT file " << fileName << endl << endl;
+
+        // Open file
+        ifstream in(fileName);
+
+        if (!in) {
+            cerr << "ERROR: Cannot open input file : " << fileName << endl;
+            return false;
+        }
+
+        Vec3t point;
+
+        points.clear(); // Clear the list
+
+        // Read data until EOF
+        while (in >> point) {
+            cout << "ppoint = " << point << endl;
+            points.push_back(point); // Add to list
+        }
+
+        return true;
+    }
 }

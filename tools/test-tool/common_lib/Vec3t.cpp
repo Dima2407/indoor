@@ -12,4 +12,10 @@ namespace tester {
         os << std::setw(12) <<  vt.t << " " << std::setw(12) << vt.r;
         return os;
     }
+
+    std::istream &operator>>(std::istream &is, Vec3t &vt) {
+        is >> vt.t >> vt.r;
+        return is;
+    }
+
 }

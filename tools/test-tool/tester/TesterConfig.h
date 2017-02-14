@@ -6,7 +6,7 @@
 #define TESTTOOL_TESTERCONNFIG_H
 
 
-#include "LinearTrajectory.h"
+#include "PolyTrajectory.h"
 
 namespace tester {
     /// The configuration of tester
@@ -38,11 +38,15 @@ namespace tester {
             return inEventsFile;
         }
 
-        const LinearTrajectory &getTrajectory() const {
+        const std::string &getInRouteFile() const {
+            return inRouteFile;
+        }
+
+        const PolyTrajectory &getTrajectory() const {
             return trajectory;
         }
 
-        LinearTrajectory &getTrajectory() {
+        PolyTrajectory &getTrajectory() {
             return trajectory;
         }
 
@@ -65,8 +69,11 @@ namespace tester {
         /// Input: events file name
         std::string inEventsFile;
 
-        /// Linear trajectory, times t1, t2 should be calculated, not read
-        LinearTrajectory trajectory;
+        /// Input: route file name
+        std::string inRouteFile;
+
+        /// PolyLinear trajectory
+        PolyTrajectory trajectory;
 
         /// Number of timestamp ticks per time unit, normally 1000
         double ticks;

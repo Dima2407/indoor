@@ -26,7 +26,7 @@ namespace faker {
     public:
         /////////////////////////
 
-        /// Read configuration, beacons and beacon times
+        /// Read configuration, beacons, route and beacon times
         void readData();
 
         /// Do the actual calculation

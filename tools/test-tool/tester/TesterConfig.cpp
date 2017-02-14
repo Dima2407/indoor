@@ -40,13 +40,8 @@ namespace tester {
         // Parse all data using myjson utils
         if (!myjson::readString(d, "inBeaconsFile", inBeaconsFile)) return false;
         if (!myjson::readString(d, "inEventsFile", inEventsFile)) return false;
+        if (!myjson::readString(d, "inRouteFile", inRouteFile)) return false;
 
-
-        if (!myjson::readVec3(d, "point1", trajectory.point1)) return false;
-        cout << "point1 = " << trajectory.point1 << endl;
-
-        if (!myjson::readVec3(d, "point2", trajectory.point2)) return false;
-        cout << "point2 = " << trajectory.point2 << endl;
 
         if (!myjson::readDouble(d, "ticks", ticks)) return false;
         cout << "ticks = " << ticks << endl;

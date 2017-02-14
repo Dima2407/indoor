@@ -16,10 +16,13 @@ namespace tester {
         using namespace std;
 
         // Read config
-        testerConnfig.readJSON("in_testerconfig.json");
+        testerConfig.readJSON("in_testerconfig.json");
 
         // Read beacons from a DAT or JSON file
-        assert(beaconList.readAuto(testerConnfig.getInBeaconsFile()));
+        assert(beaconList.readAuto(testerConfig.getInBeaconsFile()));
+
+        // Read the route from a DAT file
+        assert(testerConfig.getTrajectory().readAuto(testerConfig.getInRouteFile()));
 
         //  Check that there are at least 3 beacons
         if (beaconList.getBeacons().size() < 3) {
@@ -28,7 +31,7 @@ namespace tester {
         }
 
         // Read events
-        assert(eventList.readAuto(testerConnfig.getInEventsFile()));
+        assert(eventList.readAuto(testerConfig.getInEventsFile()));
     }
 
 
@@ -45,13 +48,15 @@ namespace tester {
             exit(1);
         }
 
-        // Timestamp of the 1st event
-        timeOrigin = eventList.getEvents()[0].timestamp;
 
-        // Set t1 and t2 for the trajectoty
-        testerConnfig.getTrajectory().t1 = 0;
-        // t2 is the last timestamp, converted
-        testerConnfig.getTrajectory().t2 = stamp2Time(eventList.getEvents().back().timestamp);
+        // Note: tester assumes that the event with lowest timestamp
+        //  is identical to the first time of the route
+        // I.e. that timeStampOrigin corresponds to TimeOrigin
+
+        // Timestamp of the 1st event
+        timeStampOrigin = eventList.getEvents()[0].timestamp;
+        // Time of the first route point
+        timeOrigin = testerConfig.getTrajectory().startTime();
 
         // Send measurements to the bridge and get XYZ after each measurements
 
@@ -64,7 +69,7 @@ namespace tester {
 
             if (!beaconList.beaconExists(e.hash)) {
                 cerr << "Warning: Event for non-existent beacon, hash = " << e.hash << endl;
-            } else if (testerConnfig.isTxFromBeacons()) {
+            } else if (testerConfig.isTxFromBeacons()) {
                 // Replace the TX power for this event with the one from the respective beacon
                 e.txPower = beaconList.findBeacon(e.hash).txPower;
             }
@@ -74,8 +79,9 @@ namespace tester {
             // Store time, position after each measurement
             // skiping first skipEvents ones
             // That's why we need i here, and not a for each loop
-            if (i >= testerConnfig.getSkipEvents()) {
-                // Time, starting from 0.0, in arbitrary time units given by ticks (e.g. seconds)
+            if (i >= testerConfig.getSkipEvents()) {
+                // Time, starting from timeOrigin, in arbitrary time units given by ticks (e.g. seconds)
+                // So that timeStampOrigin -> timeOrigin
                 double t = stamp2Time(e.timestamp);
 
                 txyzActual.getPoints().push_back(Vec3t(t, MyBridge::getX(), MyBridge::getY(), MyBridge::getZ()));
@@ -99,7 +105,7 @@ namespace tester {
 
             double t = vat.t; // Time
             // Expected trajectory point
-            Vec3 ve = testerConnfig.getTrajectory().trajectory(t);
+            Vec3 ve = testerConfig.getTrajectory().trajectory(t);
             // Vector delta
             Vec3 vd =  vat.r - ve;
             // Scalar delta

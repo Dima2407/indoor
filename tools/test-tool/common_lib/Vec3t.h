@@ -29,6 +29,14 @@ namespace tester {
 
         /// Write to osteam
         friend std::ostream &operator<<(std::ostream &os, const Vec3t &vt);
+
+        /// Read from istream
+        friend std::istream &operator>>(std::istream &is, Vec3t &vt);
+
+        /// The compare operator, order by time t, might use it for sorting
+        bool operator<(const Vec3t &rhs) const{
+            return t < rhs.t;
+        }
     };
 }
 

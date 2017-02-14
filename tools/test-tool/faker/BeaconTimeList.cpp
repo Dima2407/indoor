@@ -24,16 +24,20 @@ namespace faker {
 
         if (!in) {
             cerr << "ERROR: Cannot open input file : " << fileName << endl;
-            exit(1);
+            return false;
         }
 
         BeaconTime bt;
 
         beaconTimes.clear(); // Just in case
+
+        // Read data until EOF
         while (in >> bt) {
             beaconTimes.push_back(bt); // Add to list
             cout << bt << endl;
         }
+
+        in.close();
 
         return true;
     }

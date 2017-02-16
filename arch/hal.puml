@@ -4,8 +4,6 @@
 
 title Hardware abstraction layer (HAL)
 
-
-
 package Utils{
 
     interface Serializable{
@@ -19,8 +17,39 @@ package Utils{
 }
 
 
+class RingBuffer<T>{
+    -- private fields --
+    - length_ : size_t
+    - head_index_ : size_t
+    - tail_index_ : size_t
+
+    -- methods --
+    + push(T const &val)
+    + pushForce(T const &val)
+    + pop() : T
+    + peak() : T&
+    + operator[](int index) : T&
+    + length() : size_t
+    + size() : size_t
+}
+
+
 ' Wrap all without traling }
-package "namespace Kaa::IndoorSDK::HAL"{
+package "namespace Kaa::IndoorSDK::HAL" as HAL {
+
+interface IDataReceiver <T> {
+    Receive data from native API.
+    This interface is to be bound with
+    target's native API.
+    When new data from sensors, BT, or
+    camera picture received it is pushed
+    to a corresponding RingBuffer
+    --
+    Send a value to
+    + send(T const& value) : bool
+}
+IDataReceiver <.down. RingBuffer : suitable
+
 
 package Camera{
     class Picture{
@@ -44,7 +73,8 @@ package Camera{
 package Bluetooth{
 
 
-interface AbstractBeacon {
+'interface' AbstractBeacon {
+class AbstractBeacon {
     + uid : unsigned
     + mac : BleMacAdres
     + hash : unsigned
@@ -65,7 +95,8 @@ Inheritors, which adds
 non-static fields increases
 size of struct in memory.
 When copying to a
-`std::vector<IBeacon>`
+""std::vector<IBeacon>"" or
+""RingBuffer<IBeacon>""
 inheritors fields will be lost
 endnote
 
@@ -100,6 +131,17 @@ AbstractBeacon <|-- EddystoneUID
 AbstractBeacon <|--- EddystoneURL
 AbstractBeacon <|-- KaaSignedBeacon
 
+}
+'namespace BT
+
+
+note bottom of IDataReceiver
+1. Android API? Examples.
+2. iOS API? Examples.
+3.
+end note
+}
+'namespace HAL
 
 
 @enduml

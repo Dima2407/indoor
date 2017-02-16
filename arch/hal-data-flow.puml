@@ -1,0 +1,22 @@
+@startuml
+
+!include style.skinparam
+
+title HAL data flow. \n Bluetooth sequence use case \n
+
+participant "Native API" as NAPI
+NAPI -> data : Beacon
+
+
+hnote over caller : idle
+caller <- server : conConf
+rnote over server
+ "r" as rectangle
+ "h" as hexagon
+endrnote
+
+
+
+
+
+@enduml

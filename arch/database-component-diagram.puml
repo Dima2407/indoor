@@ -3,7 +3,7 @@
 '!include style.skinparam
 'skinparam componentStyle uml2
 
-title Internal Database
+title Internal Database Component Diagram\n
 
 
 node InternalDatabase{

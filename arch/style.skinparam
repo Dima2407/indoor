@@ -1,0 +1,23 @@
+@startuml
+
+skinparam backgroundColor transparent
+'skinparam monochrome true
+'skinparam handwritten true
+
+'skinparam usecase {
+'	BackgroundColor DarkSeaGreen
+'	BorderColor DarkSlateGray
+'
+'	BackgroundColor<< Main >> YellowGreen
+'	BorderColor<< Main >> YellowGreen
+'
+'	ArrowColor Olive
+'	ActorBorderColor black
+'	ActorFontName Courier
+'
+'	ActorBackgroundColor<< Human >> Gold
+'}
+
+
+
+@enduml

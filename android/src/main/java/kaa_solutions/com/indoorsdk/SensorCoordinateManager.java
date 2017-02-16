@@ -51,15 +51,17 @@ public class SensorCoordinateManager implements SensorEventListener {
     }
 
     public void addListener(IOnSensorChangedListener listener) {
-        registerListener();
         if (listeners.isEmpty()) {
-            listeners.add(listener);
+            registerListener();
         }
+        listeners.add(listener);
+        Log.d("Listeners", "Now listeners: " + listeners.size());
     }
 
     public void removeListener(IOnSensorChangedListener listener) {
-        unregisterListener();
         listeners.remove(listener);
+        Log.d("Listeners", "Now listeners: " + listeners.size());
+        unregisterListener();
     }
 
     private void registerListener() {
@@ -72,7 +74,7 @@ public class SensorCoordinateManager implements SensorEventListener {
     }
 
     private void unregisterListener() {
-        if (!listeners.isEmpty()) {
+        if (listeners.isEmpty()) {
             sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
             sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD));
             sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE));

@@ -17,10 +17,10 @@ namespace tester {
     public:
 
         /// Read the list from a DAT file, return true if success
-        bool readDAT(std::string const & fileName);
+        bool readDAT(std::string const & fileName, bool verbose = true);
 
         /// Write the list to DAT file, return true if success
-        bool writeDAT(std::string const & fileName);
+        bool writeDAT(std::string const & fileName, bool verbose = true);
 
         /// Getter
         const std::vector<Vec3t> &getPoints() const {

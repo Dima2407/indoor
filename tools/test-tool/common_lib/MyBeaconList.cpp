@@ -15,7 +15,7 @@
 
 namespace tester {
 
-    bool MyBeaconList::readDAT(std::string const &fileName) {
+    bool MyBeaconList::readDAT(std::string const &fileName, bool verbose) {
         using namespace std;
 
         // Let's read beacons from the input file in_beacons.dat
@@ -32,11 +32,11 @@ namespace tester {
 
 
         beacons.clear(); // Just in case
-        cout << "Reading beacons from DAT file : " << fileName << endl << endl;
+        if (verbose) cout << "Reading beacons from DAT file : " << fileName << endl << endl;
 
         // Read until EOF or broken line
         while (in >> x >> y >> z >> hash >> txPower >> damp) {
-            cout << "Beacon : " << x << " " << y << " " << z << " " << hash << " " << txPower << " " << damp << endl;
+            if (verbose) cout << "Beacon : " << x << " " << y << " " << z << " " << hash << " " << txPower << " " << damp << endl;
             beacons.push_back(MyBeacon(x, y, z, hash, txPower, damp));
         }
 
@@ -45,7 +45,7 @@ namespace tester {
         return true;
     }
 
-    bool MyBeaconList::readJSON(std::string const &fileName) {
+    bool MyBeaconList::readJSON(std::string const &fileName, bool verbose) {
         using namespace std;
         using namespace rapidjson;
 
@@ -56,7 +56,7 @@ namespace tester {
             return false;
         }
 
-        cout << endl << "Reading beacons from JSON file : " << fileName << endl << endl;
+        if (verbose) cout << endl << "Reading beacons from JSON file : " << fileName << endl << endl;
 
         // Parse JSON from input file
         // Note: accoding to rapidjson docs it's faster to use C FILE
@@ -105,7 +105,7 @@ namespace tester {
             if (!myjson::readDouble(b, "TXpower", beacon.txPower)) return false;
             if (!myjson::readDouble(b, "damp", beacon.damp)) return false;
 
-            cout << "beacon = " << beacon << endl;
+            if (verbose) cout << "beacon = " << beacon << endl;
 
             beacons.push_back(beacon);
         }
@@ -136,13 +136,13 @@ namespace tester {
         exit(2); // Not found: this shouldn't happen
     }
 
-    bool MyBeaconList::readAuto(std::string const &fileName) {
+    bool MyBeaconList::readAuto(std::string const &fileName, bool verbose) {
         using namespace std;
 
         if (Util::hasExt(fileName, "JSON")) {
-            return readJSON(fileName);
+            return readJSON(fileName, verbose);
         } else {
-            return readDAT(fileName);
+            return readDAT(fileName, verbose);
         }
     }
 }

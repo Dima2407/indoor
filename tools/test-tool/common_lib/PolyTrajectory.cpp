@@ -8,10 +8,10 @@
 
 namespace tester {
 
-    bool PolyTrajectory::readAuto(std::string const &fileName) {
+    bool PolyTrajectory::readAuto(std::string const &fileName, bool verbose) {
         using namespace std;
 
-        if (! pLine.readDAT(fileName)) return false;
+        if (! pLine.readDAT(fileName, verbose)) return false;
 
         // Check that there are at least 2 points
 

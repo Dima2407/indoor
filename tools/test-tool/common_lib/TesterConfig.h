@@ -25,9 +25,12 @@ namespace tester {
 }
          *
          * @param fileName   The JSON file name
+         * @param verbose    true = print log to stdout
+         *
          * @return           true if success
+         *
          */
-        bool readJSON(std::string fileName);
+        bool readJSON(std::string fileName, bool verbose = true);
 
         /// Getters
         const std::string &getInBeaconsFile() const {

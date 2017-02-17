@@ -26,7 +26,7 @@ namespace tester {
     public:
 
         /// Read data: config, beacons, events
-        void readData();
+        void readData(bool verbose = true);
 
         /// Run tracking_lib and get the result XYZ(t)
         void runLocation();

@@ -14,7 +14,7 @@
 namespace tester {
 
 
-    bool TesterConfig::readJSON(std::string fileName) {
+    bool TesterConfig::readJSON(std::string fileName, bool verbose) {
 
         using namespace std;
         using namespace rapidjson;
@@ -26,7 +26,7 @@ namespace tester {
             return false;
         }
 
-        cout << "Reading Tester configuration from JSON file : " << fileName << endl << endl;
+        if (verbose) cout << "Reading Tester configuration from JSON file : " << fileName << endl << endl;
 
         // Parse JSON from input file
         // Note: accoding to rapidjson docs it's faster to use C FILE
@@ -44,13 +44,13 @@ namespace tester {
 
 
         if (!myjson::readDouble(d, "ticks", ticks)) return false;
-        cout << "ticks = " << ticks << endl;
+        if (verbose) cout << "ticks = " << ticks << endl;
 
         if (!myjson::readInt(d, "skipEvents", skipEvents)) return false;
-        cout << "skipEvents = " << skipEvents << endl;
+        if (verbose) cout << "skipEvents = " << skipEvents << endl;
 
         if (!myjson::readBool(d, "txFromBeacons", txFromBeacons)) return false;
-        cout << "txFromBeacons = " << (txFromBeacons ? "true" : "false") << endl;
+        if (verbose) cout << "txFromBeacons = " << (txFromBeacons ? "true" : "false") << endl;
 
         return true;
     }

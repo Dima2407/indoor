@@ -22,10 +22,10 @@ namespace tester {
     public:
 
         /// Read beacons from a file, using JSON if proper extension, using DAT otherwise
-        bool readAuto(std::string const &fileName);
+        bool readAuto(std::string const &fileName, bool verbose = true);
 
         /// Read beacons from a DAT file (true if successful)
-        bool readDAT(std::string const &fileName);
+        bool readDAT(std::string const &fileName, bool verbose);
 
         /** \brief Read beacons from a JSON file (true if successful)
          *
@@ -40,7 +40,7 @@ namespace tester {
          * @param fileName    File name
          * @return            true is successful
          */
-        bool readJSON(std::string const &fileName);
+        bool readJSON(std::string const &fileName, bool verbose);
 
         /// Check if beacon with hash exists in beacons
         bool beaconExists(long long hash);

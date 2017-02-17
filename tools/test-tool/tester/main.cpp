@@ -15,7 +15,7 @@ int main() {
     // Create tester engine
     Engine engine;
 
-    engine.readData(); // Read data
+    engine.readData(true); // Read data (verbose = true)
     engine.runLocation();   // Run location
     engine.runDelta();   // Run delta
     engine.writeData();  // Write results

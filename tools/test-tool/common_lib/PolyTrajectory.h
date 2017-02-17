@@ -12,7 +12,7 @@ namespace tester {
     class PolyTrajectory {
     public:
         /// Read the list from a data file, return true if success
-        bool readAuto(std::string const & fileName);
+        bool readAuto(std::string const & fileName, bool verbose = true);
 
         /// Calculate the linear trajectory Vec3(t)
         Vec3 trajectory(double t) const;

@@ -12,17 +12,17 @@
 
 namespace tester {
 
-    void Engine::readData() {
+    void Engine::readData(bool verbose) {
         using namespace std;
 
         // Read config
-        testerConfig.readJSON("in_testerconfig.json");
+        testerConfig.readJSON("in_testerconfig.json", verbose);
 
         // Read beacons from a DAT or JSON file
-        assert(beaconList.readAuto(testerConfig.getInBeaconsFile()));
+        assert(beaconList.readAuto(testerConfig.getInBeaconsFile(), verbose));
 
         // Read the route from a DAT file
-        assert(testerConfig.getTrajectory().readAuto(testerConfig.getInRouteFile()));
+        assert(testerConfig.getTrajectory().readAuto(testerConfig.getInRouteFile(), verbose));
 
         //  Check that there are at least 3 beacons
         if (beaconList.getBeacons().size() < 3) {
@@ -31,7 +31,7 @@ namespace tester {
         }
 
         // Read events
-        assert(eventList.readAuto(testerConfig.getInEventsFile()));
+        assert(eventList.readAuto(testerConfig.getInEventsFile(), verbose));
     }
 
 

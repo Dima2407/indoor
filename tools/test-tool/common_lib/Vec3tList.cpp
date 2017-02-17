@@ -8,11 +8,11 @@
 #include <fstream>
 
 namespace tester {
-    bool Vec3tList::writeDAT(std::string const &fileName) {
+    bool Vec3tList::writeDAT(std::string const &fileName, bool verbose) {
 
         using namespace std;
 
-        cout << endl << "Writing trajectory r(t) to DAT file : " << fileName << endl << endl;
+        if (verbose) cout << endl << "Writing trajectory r(t) to DAT file : " << fileName << endl << endl;
 
         // Write events to the file
         ofstream out(fileName);
@@ -36,10 +36,10 @@ namespace tester {
         return true;
     }
 
-    bool Vec3tList::readDAT(std::string const &fileName) {
+    bool Vec3tList::readDAT(std::string const &fileName, bool verbose) {
         using namespace std;
 
-        cout << endl << "Reading the (t,r) data from DAT file " << fileName << endl << endl;
+        if (verbose) cout << endl << "Reading the (t,r) data from DAT file " << fileName << endl << endl;
 
         // Open file
         ifstream in(fileName);
@@ -55,7 +55,7 @@ namespace tester {
 
         // Read data until EOF
         while (in >> point) {
-            cout << "ppoint = " << point << endl;
+            if (verbose) cout << "ppoint = " << point << endl;
             points.push_back(point); // Add to list
         }
 

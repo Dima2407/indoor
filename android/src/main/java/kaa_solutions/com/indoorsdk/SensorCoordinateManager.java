@@ -11,18 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SensorCoordinateManager implements SensorEventListener {
+
     public static final String TAG_ACCELEROMETER = "Accelerometer";
     public static final String TAG_MAGNETIC_FIELD = "Magnetic field";
     public static final String TAG_GYROSCOPE = "Gyroscope";
     public static final String TAG_LINEAR_ACCELERATION = "Linear acceleration";
 
     SensorManager sensorManager;
-    private float[] values = new float[2];
     List<IOnSensorChangedListener> listeners = new ArrayList<IOnSensorChangedListener>();
 
     public SensorCoordinateManager(Context context) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     }
+
 
     public void getSensorValues(SensorEvent event) {
         switch (event.sensor.getType()) {
@@ -42,53 +43,55 @@ public class SensorCoordinateManager implements SensorEventListener {
     }
 
     private void mappingSensorValues(SensorEvent event, String tag) {
-        values = event.values;
+        float[] values = event.values;
         float x = values[0];
         float y = values[1];
         float z = values[2];
         Log.d(tag, tag + ": " + "x: " + x + ", y: " + y + ", z: " + z);
-
     }
 
     public void addListener(IOnSensorChangedListener listener) {
-        if (listeners.isEmpty()) {
-            registerListener();
-        }
+        tryRegisterListener();
         listeners.add(listener);
-        Log.d("Listeners", "Now listeners: " + listeners.size());
     }
 
     public void removeListener(IOnSensorChangedListener listener) {
         listeners.remove(listener);
-        Log.d("Listeners", "Now listeners: " + listeners.size());
-        unregisterListener();
+        tryUnregisterListener();
     }
 
-    private void registerListener() {
-        if (listeners.isEmpty()) {
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_FASTEST);
+    private void tryRegisterListener() {
+        if (!listeners.isEmpty()) {
+            return;
         }
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_FASTEST);
     }
 
-    private void unregisterListener() {
-        if (listeners.isEmpty()) {
-            sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
-            sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD));
-            sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE));
-            sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION));
+    private void tryUnregisterListener() {
+        if (!listeners.isEmpty()) {
+            return;
         }
+        sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+        sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD));
+        sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE));
+        sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION));
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        getSensorValues(event);
+        for (int i = 0; i < listeners.size(); i++) {
+            listeners.get(i).sensorChanged(event);
+        }
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+
 }

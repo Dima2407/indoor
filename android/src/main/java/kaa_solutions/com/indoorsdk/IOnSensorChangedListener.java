@@ -4,6 +4,6 @@ import android.hardware.SensorEvent;
 
 public interface IOnSensorChangedListener {
 
-    public void OnSensorChanged(SensorEvent event);
+    public void sensorChanged(SensorEvent event);
 
 }

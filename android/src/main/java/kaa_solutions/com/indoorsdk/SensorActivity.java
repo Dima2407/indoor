@@ -17,7 +17,8 @@ public class SensorActivity extends Activity {
 
         final IOnSensorChangedListener listener = new IOnSensorChangedListener() {
             @Override
-            public void OnSensorChanged(SensorEvent event) {
+            public void sensorChanged(SensorEvent event) {
+                sensorCoordinateManager.getSensorValues(event);
             }
         };
 

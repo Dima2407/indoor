@@ -6,7 +6,8 @@
 
 
 namespace unit {
+    /// We need this global data as the parameter for the test
     namespace global {
-        int value;
+        double deltaAllowance;
     }
 }

@@ -39,7 +39,7 @@ namespace tester {
         using namespace std;
 
         // Send beacons to the bridge
-        MyBridge::init();
+        MyBridge::init(); // Clean up
         for (MyBeacon const &b: beaconList.getBeacons()) MyBridge::newBeacon(b);
 
         // Check if there are events

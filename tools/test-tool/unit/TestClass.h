@@ -10,15 +10,12 @@
 #include "global.h"
 
 namespace unit {
-    /// Class used for the CppUnit testing
+    /// Class used for the CppUnit testing: run Tester Engine in the current dir
     class TestClass : public CppUnit::TestCase {
     public:
-        void test1() {
-            CPPUNIT_ASSERT(2 == global::value);
-        }
+        /// Run the tester Engine and check maxDelta
+        void test1();
     };
-
-
 }
 
 #endif //TESTTOOL_TESTCLASS_H

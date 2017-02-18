@@ -10,6 +10,7 @@
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cassert>
+#include <cstring>
 
 #include "UnitEngine.h"
 
@@ -39,21 +40,40 @@ namespace unit {
         std::vector<std::string> dirNames;
 
         // CD to the directory with tests
-        assert(! chdir(testDir.c_str()));
+        if (chdir(testDir.c_str())) {
+            cerr << "ERROR : cannot chdir() to directory " << testDir << endl;
+            exit(1);
+        }
 
         // Scan the directory structure
         DIR *dir;
         struct dirent *ent;
         string prefix;
 
-        assert(dir = opendir ("."));
+        dir = opendir (".");
+
+        while ( ent = readdir(dir)){
+//            prefix = (ent->d_type == DT_DIR) ? "DIR : " : "FILE : ";
+//            cout << prefix << ent->d_name << endl;
+
+            // Check if the entry is a proper directory name (files and dirs starting with '.' excluded)
+            if (strlen(ent->d_name) && ent->d_name[0] != '.' && ent->d_type == DT_DIR){
+                // Add the entry to the list
+                dirNames.push_back(string(ent->d_name));
+            }
+        }
 
         closedir (dir);
 
         return runTests(dirNames);
     }
 
-    bool UnitEngine::runTests(std::vector<std::string> names) {
+    bool UnitEngine::runTests(const std::vector<std::string> & names) {
+
+        // Here I used CppUnit in a rather perverse way:
+        // Rather than writing a bunch of test in the program,
+        // I generated them at runtime from subdirectory names
+        // Don't do that if you just want some test with CppUnit
 
         using namespace CppUnit;
         using namespace std;
@@ -68,29 +88,30 @@ namespace unit {
         TestResultCollector collector;
         result.addListener(&collector);
 
-        // Runner has to be declared outside of the for loop scope
+        // TestCaller has to be declared outside of the for loop scope
+        // And shoul not be destoryed before all tests are finished
         // Some funny destructor ???
-
-        // TestCaller<TestClass> caller("Brianna", &TestClass::test1);
-
+        // Also I can't make a vector of TestCaller<TestClass> for some strange reason
 
         vector<TestCaller<TestClass> *> callers;
 
-        // Run tests
-        for (int i = 0; i < 10; i++) {
+        // Run tests. name = name of subdir and also of the test
+        for (const string & name : names) {
 
-            stringstream name;
-            name << "Brianna" << i;
+            // Set the delta allowance: the global variable and the test parameter
+            global::deltaAllowance =  deltaAllowance;
 
-            global::value = i == 4 ? 3 : 2;
-            //global::value =  2;
+            // Create a test. I don't delete them until ALL tests are done.
+            callers.push_back(new TestCaller<TestClass>(name, &TestClass::test1));
 
-            // Create a test
-            callers.push_back(new TestCaller<TestClass>(name.str(), &TestClass::test1));
+            // Go to the test dir
+            assert(!chdir(name.c_str()));
 
             // Run the test
-            //callers[i]->run(&result);
             callers.back()->run(&result);
+
+            // Leave the test dir: Go back up one level
+            assert(!chdir(".."));
 
         }
         // Output results

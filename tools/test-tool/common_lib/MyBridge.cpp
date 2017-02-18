@@ -5,10 +5,18 @@
 #include "MyBridge.h"
 
 #include <navigator.h>
+#include <beaconsensor.h>
 
 namespace tester{
     void MyBridge::init() {
         Navigator::instance()->beacon().clear();
+
+        // I need a hard reset here, clear is not enough because of the _lastMeasureTime perhaps
+        // So I just replace Navigator::instance()->beacon() with a new BeaconSensor object
+        // Luckily, it seems to work, no memory leaks, I hope
+        // All this trouble because Navigator is a f@#$king singleton
+        /// Now I see singletons are EVIL !!!
+        Navigator::instance()->beacon() = Sensors::BeaconSensor();
     }
 
     void MyBridge::newBeacon(double x, double y, double z, long long hash, double txPower, double damp) {

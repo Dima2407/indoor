@@ -8,7 +8,8 @@
 namespace unit {
     /// I know globals are evil, but I couldn't pass parameters to the test otherwise
     namespace global {
-        extern int value;
+        /// Max delta allowed for tests
+        extern double deltaAllowance;
     }
 }
 

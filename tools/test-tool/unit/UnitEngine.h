@@ -37,7 +37,7 @@ namespace unit {
         double deltaAllowance;
 
         /// Run the tests with a list of directory names
-        bool runTests(std::vector<std::string> names);
+        bool runTests(const std::vector<std::string> & names);
 
     };
 }

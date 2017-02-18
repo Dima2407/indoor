@@ -37,6 +37,11 @@ namespace tester {
         /// Write the output data
         void writeData();
 
+        /// Get max delta (for Unit)
+        double getMaxDelta() const {
+            return maxDelta;
+        }
+
     private:
         /// Convert timestamp -> time, so that timeStampOrigin -> timeOrigin
         double stamp2Time(long long timestamp){

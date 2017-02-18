@@ -5,6 +5,19 @@
 
 #include "UnitEngine.h"
 
+namespace unit{
+    /// Print usage and exit(1)
+    void printUsage(){
+        using namespace std;
+
+        cout << "Unit: Automatically run Tester Engine in all subdirectorues of a directory." << endl;
+        cout << "It uses CppUnit and is TeamCity-compatible" << endl << endl;
+        cout << "Usage :" << endl;
+        cout << "unit <test-dir> <delta-allowance>" << endl << endl;
+
+    }
+}
+
 int main(){
     using namespace std;
     using namespace unit;

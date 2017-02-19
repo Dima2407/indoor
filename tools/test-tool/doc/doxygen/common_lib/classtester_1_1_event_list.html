@@ -78,15 +78,15 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa9c2ef9f887cf931f2d3c47fc3d0b870"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#aa9c2ef9f887cf931f2d3c47fc3d0b870">readDAT</a> (std::string const &amp;fileName)</td></tr>
-<tr class="memdesc:aa9c2ef9f887cf931f2d3c47fc3d0b870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read events from a DAT file (true if successful)  <a href="#aa9c2ef9f887cf931f2d3c47fc3d0b870">More...</a><br /></td></tr>
-<tr class="separator:aa9c2ef9f887cf931f2d3c47fc3d0b870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a570650e38d29c774cc6088d5664b8eff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#a570650e38d29c774cc6088d5664b8eff">readJSON</a> (std::string const &amp;fileName)</td></tr>
-<tr class="memdesc:a570650e38d29c774cc6088d5664b8eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read events from a JSON file (true if successful)  <a href="#a570650e38d29c774cc6088d5664b8eff">More...</a><br /></td></tr>
-<tr class="separator:a570650e38d29c774cc6088d5664b8eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace5efbbbaaf921fc815f7801816eb0f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#ace5efbbbaaf921fc815f7801816eb0f0">readAuto</a> (std::string const &amp;fileName)</td></tr>
-<tr class="memdesc:ace5efbbbaaf921fc815f7801816eb0f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read events from a JSON or DAT file (true if successful)  <a href="#ace5efbbbaaf921fc815f7801816eb0f0">More...</a><br /></td></tr>
-<tr class="separator:ace5efbbbaaf921fc815f7801816eb0f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b37e42a89dde4a36b2835804067dc2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#a44b37e42a89dde4a36b2835804067dc2">readDAT</a> (std::string const &amp;fileName, bool verbose)</td></tr>
+<tr class="memdesc:a44b37e42a89dde4a36b2835804067dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read events from a DAT file (true if successful)  <a href="#a44b37e42a89dde4a36b2835804067dc2">More...</a><br /></td></tr>
+<tr class="separator:a44b37e42a89dde4a36b2835804067dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c462c8515fb1fb145f983640a1e3dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#a06c462c8515fb1fb145f983640a1e3dd">readJSON</a> (std::string const &amp;fileName, bool verbose)</td></tr>
+<tr class="memdesc:a06c462c8515fb1fb145f983640a1e3dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read events from a JSON file (true if successful)  <a href="#a06c462c8515fb1fb145f983640a1e3dd">More...</a><br /></td></tr>
+<tr class="separator:a06c462c8515fb1fb145f983640a1e3dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a991c1db38b0b9cd8ac64e206657fcb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#a3a991c1db38b0b9cd8ac64e206657fcb">readAuto</a> (std::string const &amp;fileName, bool verbose=true)</td></tr>
+<tr class="memdesc:a3a991c1db38b0b9cd8ac64e206657fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read events from a JSON or DAT file (true if successful)  <a href="#a3a991c1db38b0b9cd8ac64e206657fcb">More...</a><br /></td></tr>
+<tr class="separator:a3a991c1db38b0b9cd8ac64e206657fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8034e7036e0f4333f12c0e4411081ded"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event_list.html#a8034e7036e0f4333f12c0e4411081ded">writeDAT</a> (std::string const &amp;fileName)</td></tr>
 <tr class="memdesc:a8034e7036e0f4333f12c0e4411081ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write events to a DAT file (true if successful)  <a href="#a8034e7036e0f4333f12c0e4411081ded">More...</a><br /></td></tr>
 <tr class="separator:a8034e7036e0f4333f12c0e4411081ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,8 +200,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ace5efbbbaaf921fc815f7801816eb0f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace5efbbbaaf921fc815f7801816eb0f0">&#9670;&nbsp;</a></span>readAuto()</h2>
+<a id="a3a991c1db38b0b9cd8ac64e206657fcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a991c1db38b0b9cd8ac64e206657fcb">&#9670;&nbsp;</a></span>readAuto()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,8 +210,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">bool tester::EventList::readAuto </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>verbose</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -220,8 +230,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa9c2ef9f887cf931f2d3c47fc3d0b870"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9c2ef9f887cf931f2d3c47fc3d0b870">&#9670;&nbsp;</a></span>readDAT()</h2>
+<a id="a44b37e42a89dde4a36b2835804067dc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44b37e42a89dde4a36b2835804067dc2">&#9670;&nbsp;</a></span>readDAT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,8 +240,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">bool tester::EventList::readDAT </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>verbose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -240,8 +260,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a570650e38d29c774cc6088d5664b8eff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a570650e38d29c774cc6088d5664b8eff">&#9670;&nbsp;</a></span>readJSON()</h2>
+<a id="a06c462c8515fb1fb145f983640a1e3dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06c462c8515fb1fb145f983640a1e3dd">&#9670;&nbsp;</a></span>readJSON()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -250,8 +270,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">bool tester::EventList::readJSON </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>verbose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

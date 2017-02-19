@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['damp',['damp',['../structtester_1_1_my_beacon.html#acb4a63778eb9fd22ee6fefda194ad1b2',1,'tester::MyBeacon']]],
-  ['distance',['distance',['../structtester_1_1_my_beacon.html#a3405fade0add3075016cacaf97ff0554',1,'tester::MyBeacon']]],
-  ['distanceto',['distanceTo',['../structtester_1_1_my_beacon.html#a7ccc09d5e47b4a9d94c352fe4e39afca',1,'tester::MyBeacon']]],
-  ['doublepair',['DoublePair',['../struct_double_pair.html',1,'DoublePair'],['../struct_double_pair.html#a09bef8c5d644c9aa15649c39d28aa2a9',1,'DoublePair::DoublePair(double t, double v)'],['../struct_double_pair.html#a862c48beba0d12d47daea8aaba958777',1,'DoublePair::DoublePair()']]],
-  ['doublepair_2eh',['DoublePair.h',['../_double_pair_8h.html',1,'']]]
+  ['calcrssi',['calcRssi',['../structtester_1_1_my_beacon.html#abc27d5e9f9cf1afa625fc21020ac1994',1,'tester::MyBeacon']]],
+  ['calcrssidist',['calcRssiDist',['../structtester_1_1_my_beacon.html#a12ddd4b5dc7d2a484a97a29d65ca0c24',1,'tester::MyBeacon']]],
+  ['calcrssipos',['calcRssiPos',['../structtester_1_1_my_beacon.html#ae113a42726b425ef8ee3c915e55c1646',1,'tester::MyBeacon']]],
+  ['clear',['clear',['../classtester_1_1_event_list.html#a6f3bc70bb822dde0a6fb18db1b7a5e9f',1,'tester::EventList::clear()'],['../classtester_1_1_vec3_list.html#af6151beb19c175f961c20c5409b38d08',1,'tester::Vec3List::clear()'],['../classtester_1_1_vec3t_list.html#af3b28cd0c17996594916861fda8b7a0b',1,'tester::Vec3tList::clear()']]],
+  ['common_20classes_20for_20tester_20and_20faker',['Common classes for tester and faker',['../md__r_e_a_d_m_e.html',1,'']]]
 ];

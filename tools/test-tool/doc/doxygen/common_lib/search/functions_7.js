@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['len',['len',['../classtester_1_1_vec3.html#a87970e0fed6a5a45ca48576a53697acf',1,'tester::Vec3']]],
-  ['lowercase',['lowerCase',['../classtester_1_1_util.html#a27d9a0610de60e90c31aac29dea1c605',1,'tester::Util']]]
+  ['init',['init',['../classtester_1_1_my_bridge.html#aa769bab1d981b885037b66b250ce6b8c',1,'tester::MyBridge']]],
+  ['istxfrombeacons',['isTxFromBeacons',['../classtester_1_1_tester_config.html#ac85a481111eba48c3466621549ac5159',1,'tester::TesterConfig']]]
 ];

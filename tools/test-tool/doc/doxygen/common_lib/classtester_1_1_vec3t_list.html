@@ -78,12 +78,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a25e82852487082e833eccf9b561ec52a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t_list.html#a25e82852487082e833eccf9b561ec52a">readDAT</a> (std::string const &amp;fileName)</td></tr>
-<tr class="memdesc:a25e82852487082e833eccf9b561ec52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the list from a DAT file, return true if success.  <a href="#a25e82852487082e833eccf9b561ec52a">More...</a><br /></td></tr>
-<tr class="separator:a25e82852487082e833eccf9b561ec52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae09e32fcd8c2b4c9286da5af39442c82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t_list.html#ae09e32fcd8c2b4c9286da5af39442c82">writeDAT</a> (std::string const &amp;fileName)</td></tr>
-<tr class="memdesc:ae09e32fcd8c2b4c9286da5af39442c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the list to DAT file, return true if success.  <a href="#ae09e32fcd8c2b4c9286da5af39442c82">More...</a><br /></td></tr>
-<tr class="separator:ae09e32fcd8c2b4c9286da5af39442c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46a3db3d9bb36d32a64fc96f6a87a05b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t_list.html#a46a3db3d9bb36d32a64fc96f6a87a05b">readDAT</a> (std::string const &amp;fileName, bool verbose=true)</td></tr>
+<tr class="memdesc:a46a3db3d9bb36d32a64fc96f6a87a05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the list from a DAT file, return true if success.  <a href="#a46a3db3d9bb36d32a64fc96f6a87a05b">More...</a><br /></td></tr>
+<tr class="separator:a46a3db3d9bb36d32a64fc96f6a87a05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3913370dcb829c15607e05fa7bc340b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t_list.html#ab3913370dcb829c15607e05fa7bc340b">writeDAT</a> (std::string const &amp;fileName, bool verbose=true)</td></tr>
+<tr class="memdesc:ab3913370dcb829c15607e05fa7bc340b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the list to DAT file, return true if success.  <a href="#ab3913370dcb829c15607e05fa7bc340b">More...</a><br /></td></tr>
+<tr class="separator:ab3913370dcb829c15607e05fa7bc340b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7a4dd81eeb2d6fba05bb95bb585d6a3"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classtester_1_1_vec3t.html">Vec3t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_vec3t_list.html#af7a4dd81eeb2d6fba05bb95bb585d6a3">getPoints</a> () const</td></tr>
 <tr class="memdesc:af7a4dd81eeb2d6fba05bb95bb585d6a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter.  <a href="#af7a4dd81eeb2d6fba05bb95bb585d6a3">More...</a><br /></td></tr>
 <tr class="separator:af7a4dd81eeb2d6fba05bb95bb585d6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,8 +186,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a25e82852487082e833eccf9b561ec52a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25e82852487082e833eccf9b561ec52a">&#9670;&nbsp;</a></span>readDAT()</h2>
+<a id="a46a3db3d9bb36d32a64fc96f6a87a05b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46a3db3d9bb36d32a64fc96f6a87a05b">&#9670;&nbsp;</a></span>readDAT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,8 +196,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">bool tester::Vec3tList::readDAT </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>verbose</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -233,8 +243,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae09e32fcd8c2b4c9286da5af39442c82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae09e32fcd8c2b4c9286da5af39442c82">&#9670;&nbsp;</a></span>writeDAT()</h2>
+<a id="ab3913370dcb829c15607e05fa7bc340b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3913370dcb829c15607e05fa7bc340b">&#9670;&nbsp;</a></span>writeDAT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,8 +253,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">bool tester::Vec3tList::writeDAT </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>verbose</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

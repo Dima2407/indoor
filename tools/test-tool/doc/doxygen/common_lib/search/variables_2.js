@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['events',['events',['../classtester_1_1_event_list.html#ac57831dc4fca20c92c07b1d10bd4a2ba',1,'tester::EventList']]]
+  ['damp',['damp',['../structtester_1_1_my_beacon.html#acb4a63778eb9fd22ee6fefda194ad1b2',1,'tester::MyBeacon']]]
 ];

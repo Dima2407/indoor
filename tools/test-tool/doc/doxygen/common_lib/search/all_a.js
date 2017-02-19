@@ -1,11 +1,15 @@
 var searchData=
 [
-  ['parsemac',['parseMAC',['../classtester_1_1_util.html#a8e60a78deb778b3bf6e77cd13865bcd1',1,'tester::Util']]],
-  ['pline',['pLine',['../classtester_1_1_poly_trajectory.html#a0ed4c8138881b420c616ffda596685c2',1,'tester::PolyTrajectory']]],
-  ['point1',['point1',['../classtester_1_1_linear_trajectory.html#a367cfd7651e676cfe6ab53591bb170ae',1,'tester::LinearTrajectory']]],
-  ['point2',['point2',['../classtester_1_1_linear_trajectory.html#a88135825bf24db42ac242ff61e5d0f07',1,'tester::LinearTrajectory']]],
-  ['points',['points',['../classtester_1_1_vec3_list.html#a2857017cc38b78e93985c493c6482152',1,'tester::Vec3List::points()'],['../classtester_1_1_vec3t_list.html#a5d1c266548b8e5ffe03d3802b61fd0c7',1,'tester::Vec3tList::points()']]],
-  ['polytrajectory',['PolyTrajectory',['../classtester_1_1_poly_trajectory.html',1,'tester']]],
-  ['polytrajectory_2ecpp',['PolyTrajectory.cpp',['../_poly_trajectory_8cpp.html',1,'']]],
-  ['polytrajectory_2eh',['PolyTrajectory.h',['../_poly_trajectory_8h.html',1,'']]]
+  ['maxdelta',['maxDelta',['../classtester_1_1_engine.html#a6a8f2a2e04c5708df43203d8f4e41fc5',1,'tester::Engine']]],
+  ['mybeacon',['MyBeacon',['../structtester_1_1_my_beacon.html',1,'tester::MyBeacon'],['../structtester_1_1_my_beacon.html#a53d03103f72208a6325036d46f3880d2',1,'tester::MyBeacon::MyBeacon()'],['../structtester_1_1_my_beacon.html#ad7de400c5da46096a52f0110526b2417',1,'tester::MyBeacon::MyBeacon(double x, double y, double z, long long int hash, double txPower, double damp)']]],
+  ['mybeacon_2ecpp',['MyBeacon.cpp',['../_my_beacon_8cpp.html',1,'']]],
+  ['mybeacon_2eh',['MyBeacon.h',['../_my_beacon_8h.html',1,'']]],
+  ['mybeaconlist',['MyBeaconList',['../classtester_1_1_my_beacon_list.html',1,'tester']]],
+  ['mybeaconlist_2ecpp',['MyBeaconList.cpp',['../_my_beacon_list_8cpp.html',1,'']]],
+  ['mybeaconlist_2eh',['MyBeaconList.h',['../_my_beacon_list_8h.html',1,'']]],
+  ['mybridge',['MyBridge',['../classtester_1_1_my_bridge.html',1,'tester']]],
+  ['mybridge_2ecpp',['MyBridge.cpp',['../_my_bridge_8cpp.html',1,'']]],
+  ['mybridge_2eh',['MyBridge.h',['../_my_bridge_8h.html',1,'']]],
+  ['myjson_2ecpp',['myjson.cpp',['../myjson_8cpp.html',1,'']]],
+  ['myjson_2eh',['myjson.h',['../myjson_8h.html',1,'']]]
 ];

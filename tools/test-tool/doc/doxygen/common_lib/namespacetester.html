@@ -66,6 +66,9 @@ $(function() {
 <div class="title">tester Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>My interface to tracking_lib (static methods only, no global data, uses tracking_lib)  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -74,6 +77,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_engine.html">Engine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main class of tester.  <a href="classtester_1_1_engine.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_event.html">Event</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fake measurement event.  <a href="classtester_1_1_event.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -89,8 +95,13 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_beacon_list.html">MyBeaconList</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector of <a class="el" href="structtester_1_1_my_beacon.html" title="Beacon class for tester. ">tester::MyBeacon</a> with file IO routines (DAT, JSON)  <a href="classtester_1_1_my_beacon_list.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html">MyBridge</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_poly_trajectory.html">PolyTrajectory</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polyline trajectory based on a <a class="el" href="classtester_1_1_vec3t_list.html" title="Vec3t list with IO. ">Vec3tList</a> object.  <a href="classtester_1_1_poly_trajectory.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_tester_config.html">TesterConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration of tester.  <a href="classtester_1_1_tester_config.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_util.html">Util</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class with misc static routines.  <a href="classtester_1_1_util.html#details">More...</a><br /></td></tr>
@@ -125,7 +136,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a357ceb5779ce680ce02e341e9cfadd59"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetester.html#a357ceb5779ce680ce02e341e9cfadd59">operator&gt;&gt;</a> (std::istream &amp;is, <a class="el" href="classtester_1_1_vec3t.html">Vec3t</a> &amp;vt)</td></tr>
 <tr class="separator:a357ceb5779ce680ce02e341e9cfadd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>My interface to tracking_lib (static methods only, no global data, uses tracking_lib) </p>
+<p>Should allow to work with beacons etc. without resorting to using tracking_lib classes and datatypes directly </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae93f201a0608f91ef115bb7c4120ccce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae93f201a0608f91ef115bb7c4120ccce">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[1/4]</span></h2>
 

@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['readauto',['readAuto',['../classtester_1_1_event_list.html#ace5efbbbaaf921fc815f7801816eb0f0',1,'tester::EventList::readAuto()'],['../classtester_1_1_my_beacon_list.html#ad9dfed1bb74c99e017932733a36e73aa',1,'tester::MyBeaconList::readAuto()'],['../classtester_1_1_poly_trajectory.html#a25fcc7f75f46cc47b0f8caee41aca874',1,'tester::PolyTrajectory::readAuto()']]],
-  ['readbool',['readBool',['../namespacetester_1_1myjson.html#abe28e354650fe84a9a6e08155f438d98',1,'tester::myjson']]],
-  ['readdat',['readDAT',['../classtester_1_1_event_list.html#aa9c2ef9f887cf931f2d3c47fc3d0b870',1,'tester::EventList::readDAT()'],['../classtester_1_1_my_beacon_list.html#a68e45a5bcf7390ba1f07428f836baebe',1,'tester::MyBeaconList::readDAT()'],['../classtester_1_1_vec3t_list.html#a25e82852487082e833eccf9b561ec52a',1,'tester::Vec3tList::readDAT()']]],
-  ['readdouble',['readDouble',['../namespacetester_1_1myjson.html#a9293d925e527b9af53c8196e7aa0ee63',1,'tester::myjson']]],
-  ['readint',['readInt',['../namespacetester_1_1myjson.html#a00ecd315593970c9da34a5cff738b9a3',1,'tester::myjson']]],
-  ['readjson',['readJSON',['../classtester_1_1_event_list.html#a570650e38d29c774cc6088d5664b8eff',1,'tester::EventList::readJSON()'],['../classtester_1_1_my_beacon_list.html#ab526e88a0298b03b13aa833c73358097',1,'tester::MyBeaconList::readJSON()']]],
-  ['readll',['readLL',['../namespacetester_1_1myjson.html#afbb8ccfa0b243c5833d4341b29e3ffc5',1,'tester::myjson']]],
-  ['readstring',['readString',['../namespacetester_1_1myjson.html#a8639f71edddf49b738d9738462d795b7',1,'tester::myjson']]],
-  ['readvec3',['readVec3',['../namespacetester_1_1myjson.html#afb862ef9b4780416ed150b7052ce5774',1,'tester::myjson']]]
+  ['operator_2a',['operator*',['../classtester_1_1_vec3.html#a6fec374e1714c93a8d17184cf8915939',1,'tester::Vec3']]],
+  ['operator_2a_3d',['operator*=',['../classtester_1_1_vec3.html#aa32d85d7d16d499b56b34bddcfcf622f',1,'tester::Vec3']]],
+  ['operator_2b',['operator+',['../classtester_1_1_vec3.html#a5a1229227192d6ddf0c5b7bee6513848',1,'tester::Vec3']]],
+  ['operator_2b_3d',['operator+=',['../classtester_1_1_vec3.html#ad40be1ca98320346e085e6b58621b8bd',1,'tester::Vec3']]],
+  ['operator_2d',['operator-',['../classtester_1_1_vec3.html#a80fcb3483aac6cccca65d0baeea09e29',1,'tester::Vec3']]],
+  ['operator_2d_3d',['operator-=',['../classtester_1_1_vec3.html#a969b0573b16a269a5b82f6e5bcc8ac9f',1,'tester::Vec3']]],
+  ['operator_3c',['operator&lt;',['../classtester_1_1_event.html#ace4911d4aa3422b19ce9167590bee842',1,'tester::Event::operator&lt;()'],['../classtester_1_1_vec3t.html#aeda2991eb8f1d120c0fcea4e513ac788',1,'tester::Vec3t::operator&lt;()']]],
+  ['operator_3c_3c',['operator&lt;&lt;',['../namespacetester.html#aa892203e02aa0fffc5be8c73082c29bc',1,'tester::operator&lt;&lt;(std::ostream &amp;os, const Event &amp;event)'],['../namespacetester.html#aa692be4d1f32751c44801d005473c06b',1,'tester::operator&lt;&lt;(std::ostream &amp;os, const MyBeacon &amp;beacon)'],['../namespacetester.html#a5710bc45ae5c2e08b90e378f0c3f4083',1,'tester::operator&lt;&lt;(std::ostream &amp;os, const Vec3 &amp;vec3)'],['../namespacetester.html#ae93f201a0608f91ef115bb7c4120ccce',1,'tester::operator&lt;&lt;(std::ostream &amp;os, const Vec3t &amp;vt)']]],
+  ['operator_3e_3e',['operator&gt;&gt;',['../namespacetester.html#a889af8544b9b138535a619dba21a2c9d',1,'tester::operator&gt;&gt;(std::istream &amp;is, Event &amp;event)'],['../namespacetester.html#ab5760827bdfddccb1a9f102a30642b17',1,'tester::operator&gt;&gt;(std::istream &amp;is, Vec3 &amp;vec3)'],['../namespacetester.html#a357ceb5779ce680ce02e341e9cfadd59',1,'tester::operator&gt;&gt;(std::istream &amp;is, Vec3t &amp;vt)']]]
 ];

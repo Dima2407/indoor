@@ -5,3 +5,4 @@
 * __TESTS__: Sample input directory for Unit.
 * __Tester.md__: Tester user guide.
 * __Faker.md__: Faker user guide.
+* __Unit.md__: Unit mini-user guide.

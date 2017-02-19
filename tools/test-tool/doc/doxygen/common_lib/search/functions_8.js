@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mybeacon',['MyBeacon',['../structtester_1_1_my_beacon.html#a53d03103f72208a6325036d46f3880d2',1,'tester::MyBeacon::MyBeacon()'],['../structtester_1_1_my_beacon.html#ad7de400c5da46096a52f0110526b2417',1,'tester::MyBeacon::MyBeacon(double x, double y, double z, long long int hash, double txPower, double damp)']]]
+  ['len',['len',['../classtester_1_1_vec3.html#a87970e0fed6a5a45ca48576a53697acf',1,'tester::Vec3']]],
+  ['lowercase',['lowerCase',['../classtester_1_1_util.html#a27d9a0610de60e90c31aac29dea1c605',1,'tester::Util']]]
 ];

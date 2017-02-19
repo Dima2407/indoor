@@ -19,7 +19,7 @@ namespace tester {
 
         if (npoints < 2) {
             cerr << "ERROR::PolyTrajectory: Need at least 2 points in file " << fileName << endl;
-            exit(1);
+            return false;
         }
 
         // Sort after reading

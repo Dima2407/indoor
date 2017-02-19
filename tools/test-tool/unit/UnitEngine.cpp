@@ -13,6 +13,7 @@
 #include <cstring>
 
 #include "UnitEngine.h"
+#include "teamcity_cppunit.h"
 
 // Choose the dirent.h file + header for chdir
 // Unix uses POSIX dirent.h (+ unistd.h for chdir() )
@@ -50,25 +51,25 @@ namespace unit {
         struct dirent *ent;
         string prefix;
 
-        dir = opendir (".");
+        dir = opendir(".");
 
-        while ( ent = readdir(dir)){
+        while (ent = readdir(dir)) {
 //            prefix = (ent->d_type == DT_DIR) ? "DIR : " : "FILE : ";
 //            cout << prefix << ent->d_name << endl;
 
             // Check if the entry is a proper directory name (files and dirs starting with '.' excluded)
-            if (strlen(ent->d_name) && ent->d_name[0] != '.' && ent->d_type == DT_DIR){
+            if (strlen(ent->d_name) && ent->d_name[0] != '.' && ent->d_type == DT_DIR) {
                 // Add the entry to the list
                 dirNames.push_back(string(ent->d_name));
             }
         }
 
-        closedir (dir);
+        closedir(dir);
 
         return runTests(dirNames);
     }
 
-    bool UnitEngine::runTests(const std::vector<std::string> & names) {
+    bool UnitEngine::runTests(const std::vector<std::string> &names) {
 
         // Here I used CppUnit in a rather perverse way:
         // Rather than writing a bunch of test in the program,
@@ -80,9 +81,17 @@ namespace unit {
 
         TestResult result;
 
-        // Add progress listener
+        // Add one progress listener
         BriefTestProgressListener progress;
-        result.addListener(&progress);
+        JetBrains::TeamcityProgressListener teamProgress;
+
+        // Use special output format under TeamCity
+        if (JetBrains::underTeamcity()) {
+            result.addListener(&teamProgress);
+
+        } else {
+            result.addListener(&progress);
+        }
 
         // Add result collector
         TestResultCollector collector;
@@ -96,10 +105,10 @@ namespace unit {
         vector<TestCaller<TestClass> *> callers;
 
         // Run tests. name = name of subdir and also of the test
-        for (const string & name : names) {
+        for (const string &name : names) {
 
             // Set the delta allowance: the global variable and the test parameter
-            global::deltaAllowance =  deltaAllowance;
+            global::deltaAllowance = deltaAllowance;
 
             // Create a test. I don't delete them until ALL tests are done.
             callers.push_back(new TestCaller<TestClass>(name, &TestClass::test1));
@@ -114,9 +123,12 @@ namespace unit {
             assert(!chdir(".."));
 
         }
-        // Output results
-        CompilerOutputter compilerOutputter(&collector, cout);
-        compilerOutputter.write();
+
+        if (! JetBrains::underTeamcity()) {
+            // Output results
+            CompilerOutputter compilerOutputter(&collector, cout);
+            compilerOutputter.write();
+        }
 
         // Store the true/false result
         bool boolResult = collector.wasSuccessful();

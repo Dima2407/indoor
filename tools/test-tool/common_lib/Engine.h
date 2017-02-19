@@ -25,8 +25,8 @@ namespace tester {
     class Engine {
     public:
 
-        /// Read data: config, beacons, events
-        void readData(bool verbose = true);
+        /// Read data: config, beacons, events: true is success
+        bool readData(bool verbose = true);
 
         /// Run tracking_lib and get the result XYZ(t)
         void runLocation();

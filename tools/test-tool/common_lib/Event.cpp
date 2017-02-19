@@ -18,8 +18,8 @@ namespace tester {
 
     std::ostream &operator<<(std::ostream &os, const Event &event) {
         using namespace std;
-        os << setw(6) << event.hash << " " << setw(12)  << event.txPower << " " << setw(12) << event.rssi << " "
-           << setw(12)  << event.timestamp;
+        os << setw(6) << event.hash << " " << setw(12) << event.txPower << " " << setw(12) << event.rssi << " "
+           << setw(12) << event.timestamp;
         return os;
     }
 

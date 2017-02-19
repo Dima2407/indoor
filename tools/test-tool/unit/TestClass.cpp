@@ -17,13 +17,16 @@ namespace unit {
         Engine *engine = new Engine();
 
         // Run the engine silently
-        engine->readData(false); // Read data (verbose = false)
+        // Read data (verbose = false), must return true for a successful test
+        CPPUNIT_ASSERT(engine->readData(false));
+
         engine->runLocation();   // Run location
         engine->runDelta();   // Run delta
         // Note: no engine->writeData() !
 
         double maxDelta = engine->getMaxDelta();
 
+        // Write actual maxDelta of a test to a file in the test's dir
         ofstream out("unit_maxdelta.txt");
         out << "maxDelta = " << maxDelta << endl;
         //cout << "maxDelta = " << maxDelta << endl;

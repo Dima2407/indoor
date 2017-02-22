@@ -19,10 +19,10 @@
 
 namespace tester {
 
-    bool EventList::readDAT(std::string const & fileName) {
+    bool EventList::readDAT(std::string const & fileName, bool verbose) {
         using namespace std;
 
-        cout << endl << "Reading events from DAT file : " << fileName << endl << endl;
+        if (verbose) cout << endl << "Reading events from DAT file : " << fileName << endl << endl;
 
         ifstream in(fileName);
 
@@ -41,7 +41,7 @@ namespace tester {
         return true;
     }
 
-    bool EventList::readJSON(std::string const & fileName) {
+    bool EventList::readJSON(std::string const & fileName, bool verbose) {
 
         using namespace std;
         using namespace rapidjson;
@@ -53,7 +53,7 @@ namespace tester {
             return false;
         }
 
-        cout << endl << "Reading events from JSON file : " << fileName << endl << endl;
+        if (verbose) cout << endl << "Reading events from JSON file : " << fileName << endl << endl;
 
         // Parse JSON from input file
         // Note: accoding to rapidjson docs it's faster to use C FILE
@@ -97,7 +97,7 @@ namespace tester {
                 // Read other data
                 if (!myjson::readDouble(e, "TXpower", event.txPower)) return false;
                 if (!myjson::readDouble(e, "RSSI", event.rssi)) return false;
-                if (!myjson::readLL(e, "timestamp", event.timestamp)) return false;
+                if (!myjson::readLL(e, "TimeStamp", event.timestamp)) return false;
 
                 events.push_back(event);
             }
@@ -185,7 +185,7 @@ namespace tester {
 
                     Value timestampVal;
                     timestampVal.SetInt64(event.timestamp);
-                    eventObj.AddMember("timestamp", timestampVal, allocator);
+                    eventObj.AddMember("TimeStamp", timestampVal, allocator);
 
                     hashArray.PushBack(eventObj, allocator);
                 }
@@ -210,15 +210,15 @@ namespace tester {
         std::sort(events.begin(), events.end());
     }
 
-    bool EventList::readAuto(std::string const &fileName) {
+    bool EventList::readAuto(std::string const &fileName, bool verbose) {
         using namespace std;
 
         bool status;
 
         if (Util::hasExt(fileName, "JSON")) {
-            status = readJSON(fileName);
+            status = readJSON(fileName, verbose);
         } else {
-            status = readDAT(fileName);
+            status = readDAT(fileName, verbose);
         }
         if (!status) return false;
 

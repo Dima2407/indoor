@@ -1,8 +1,0 @@
-{
-  "inBeaconsFile" : "in_beacons.json",
-  "inEventsFile" : "out_event.dat",
-  "point1": [ 0.2, 0.2, 0.0],
-  "point2": [0.8, 0.3, 0.0],
-  "ticks" : 1000,
-  "skipEvents" : 4
-}

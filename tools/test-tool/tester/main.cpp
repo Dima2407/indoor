@@ -1,7 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
+#include <cassert>
 
 #include "MyBeacon.h"
 #include "MyBridge.h"
@@ -15,7 +13,7 @@ int main() {
     // Create tester engine
     Engine engine;
 
-    engine.readData(); // Read data
+    if (! engine.readData(true)) return 1; // Read data (verbose = true)
     engine.runLocation();   // Run location
     engine.runDelta();   // Run delta
     engine.writeData();  // Write results

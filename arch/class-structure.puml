@@ -1,0 +1,95 @@
+@startuml
+abstract class MeasurementEvent{
+-timestamp : int
+-type: MeasurementType
+-values : float []
+}
+
+class MeasurementTransfer {
+native deliver(event : MeasurementEvent) : void << (S,#FF7700) Singleton >>
+}
+
+enum MeasurementType {
+GEO_VALUE
+SENSOR_VALUE
+WIFI_VALUE
+BLE_VALUE
+
+}
+
+class IndoorLocationManager {
+-providers : List<MeasurementProvider>
+-locationListener : IndoorLocationListener
++switchRegion(region: SpaceRegion) : void
++prepare() : void
++release() : void
+}
+
+interface IndoorLocationListener{
++onLocation(coordinate: float []): void
+}
+
+class SpaceRegion {
+beacons : List<BeaconConfig>
+}
+
+class BeaconConfig {
+-txPower: double
+-damp: double
+-hash: long
+-macAddress: String
+-position: float[]
+}
+
+
+IndoorLocationManager o-- MeasurementProvider
+IndoorLocationManager *-- IndoorLocationListener
+
+SpaceRegion o-- BeaconConfig
+
+
+
+
+MeasurementEvent *-- MeasurementType
+
+package com.jim-it.traking.providers {
+
++interface MeasurementProvider{
++start() : void
++stop() : void
++configure(configs : Map<String, Object>) : boolean
+}
+
+
+~class GEOMeasurementProvider{
+-locationManager : LocationManager
+-transfer : MeasurementTransfer
+}
+
+~class BlueToothMeasurementProvider{
+-bluetoothAdapter : BluetoothAdapter
+-transfer : MeasurementTransfer
+}
+
+~class SensorMeasurementProvider{
+-sensorManager : SensorManager
+-transfer : MeasurementTransfer
+}
+
+~class WIFIMeasurementProvider{
+-wifiManager : WifiManager
+-transfer : MeasurementTransfer
+}
+
+MeasurementProvider <|-- GEOMeasurementProvider
+MeasurementProvider <|-- SensorMeasurementProvider
+MeasurementProvider <|-- BlueToothMeasurementProvider
+MeasurementProvider <|-- WIFIMeasurementProvider
+
+GEOMeasurementProvider *-- MeasurementTransfer
+SensorMeasurementProvider *-- MeasurementTransfer
+BlueToothMeasurementProvider *-- MeasurementTransfer
+WIFIMeasurementProvider *-- MeasurementTransfer
+}
+
+@enduml

@@ -1,6 +1,6 @@
-#include "imath.h"
+#include "IMath.h"
 
-#include "kalman_interface.h"
+#include "KalmanInterface.h"
 
 ObjectState Math::kalman(const ObjectState &currState, const ObjectState &beaconState, const ObjectState &accState) {
     ObjectState newState = currState;

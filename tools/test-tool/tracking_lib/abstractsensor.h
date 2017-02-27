@@ -1,7 +1,7 @@
 #ifndef ABSTRACTSENSOR_H
 #define ABSTRACTSENSOR_H
 
-#include "objectstate.h"
+#include "Objectstate.h"
 
 #include <list>
 

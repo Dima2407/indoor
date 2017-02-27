@@ -11,8 +11,19 @@ set(CMAKE_CXX_STANDARD 11)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBRIDGE_LIBRARY")
 
-set(SOURCE_FILES abstractsensor.cpp accelerometersensor.cpp amath.cpp beacon.cpp beaconsensor.cpp
-        bmath.cpp common_types.cpp imath.cpp kalman_interface.cpp navigator.cpp objectstate.cpp
-        smartptr.cpp utilities.cpp)
+set(SOURCE_FILES
+        AbstractSensor.cpp
+        AccelerometerSensor.cpp
+        AMath.cpp
+        Beacon.cpp
+        BeaconSensor.cpp
+        BMath.cpp
+        common_types.cpp
+        IMath.cpp
+        KalmanInterface.cpp
+        Navigator.cpp
+        Objectstate.cpp
+        smartptr.cpp
+        utilities.cpp)
 
 add_library(tracking_lib STATIC ${SOURCE_FILES})

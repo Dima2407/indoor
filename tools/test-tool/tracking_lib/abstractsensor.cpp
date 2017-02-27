@@ -1,4 +1,4 @@
-#include "abstractsensor.h"
+#include "AbstractSensor.h"
 
 #ifdef DEBUG_MODE
 #ifdef ASTUDIO

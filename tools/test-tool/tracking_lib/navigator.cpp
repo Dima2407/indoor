@@ -1,4 +1,4 @@
-#include "navigator.h"
+#include "Navigator.h"
 
 #ifdef DEBUG_MODE
 #   ifdef ASTUDIO
@@ -7,32 +7,6 @@
 #endif
 
 SmartPtr<Navigator> Navigator::__instance = 0;
-
-Navigator::Navigator() : _maxDataCapacity(DEFAULT_CAPACITY) {
-}
-
-Navigator::~Navigator() {
-}
-
-const Sensors::BeaconSensor &Navigator::beacon() const {
-    return _beacon;
-}
-
-Sensors::BeaconSensor &Navigator::beacon() {
-    return _beacon;
-}
-
-const Sensors::AccelerometerSensor &Navigator::accelerometer() const {
-    return _accelerometer;
-}
-
-Sensors::AccelerometerSensor &Navigator::accelerometer() {
-    return _accelerometer;
-}
-
-void Navigator::addBeaconMeasurement(const BeaconMeasurement &m) {
-    addBeaconMeasurement(m.hash, m.txPower, m.rssi, m.timestamp);
-}
 
 void Navigator::addBeaconMeasurement(hash_t hash, double tx_power, double rssi, timestamp_t timestamp) {
     _beacon.addMeasurement(hash, tx_power, rssi, timestamp);
@@ -50,10 +24,6 @@ void Navigator::addAccelerometerMeasurement(double ax, double ay, double az, tim
 //    if (_accelerometer.updated()) { // always true
 //        updateState(_accelerometer.lastState());
 //    }
-}
-
-Types::ObjectState Navigator::lastState() const {
-    return rstate(0);
 }
 
 Types::ObjectState Navigator::state(size_t i) const {
@@ -76,10 +46,6 @@ Types::ObjectState Navigator::rstate(size_t i) const {
     return state;
 }
 
-size_t Navigator::dataCapacity() const {
-    return _maxDataCapacity;
-}
-
 void Navigator::setDataCapacity(size_t c) {
     _maxDataCapacity = c;
     long int ds = _maxDataCapacity - _stateHistory.size();
@@ -88,10 +54,6 @@ void Navigator::setDataCapacity(size_t c) {
         std::copy_n(_stateHistory.rbegin(), _maxDataCapacity, tmp.rbegin());
         _stateHistory = tmp;
     }
-}
-
-size_t Navigator::dataCount() const {
-    return _stateHistory.size();
 }
 
 void Navigator::updateState(const Types::ObjectState &measurement) {

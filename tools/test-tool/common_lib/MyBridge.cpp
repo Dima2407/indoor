@@ -4,8 +4,8 @@
 
 #include "MyBridge.h"
 
-#include <navigator.h>
-#include <beaconsensor.h>
+#include <Navigator.h>
+#include <BeaconSensor.h>
 
 namespace tester{
     void MyBridge::init() {

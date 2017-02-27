@@ -1,6 +1,6 @@
-#include "beacon.h"
-#include "imath.h"
-#include "bmath.h"
+#include "Beacon.h"
+#include "IMath.h"
+#include "BMath.h"
 
 #ifdef ASTUDIO
 #   include <android/log.h>

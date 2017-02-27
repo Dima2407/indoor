@@ -1,6 +1,6 @@
 #pragma warning(push)
 #pragma warning(disable : 4244) // Disable warnings from external toolkit.
-#include "bmath.h"
+#include "BMath.h"
 #include "Eigen/Dense"
 #pragma warning(pop)
 

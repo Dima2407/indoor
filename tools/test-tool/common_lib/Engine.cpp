@@ -41,8 +41,8 @@ namespace tester {
         using namespace std;
 
         // Send beacons to the bridge
-        MyBridge::init(); // Clean up
-        for (MyBeacon const &b: beaconList.getBeacons()) MyBridge::newBeacon(b);
+        myBridge.init(); // Clean up
+        for (MyBeacon const &b: beaconList.getBeacons()) myBridge.newBeacon(b);
 
 
         // Note: tester assumes that the event with lowest timestamp
@@ -78,7 +78,7 @@ namespace tester {
                 e.txPower = beaconList.findBeacon(e.hash).txPower;
             }
 
-            MyBridge::newMeasurement(e.hash, e.txPower, e.rssi, e.timestamp);
+            myBridge.newMeasurement(e.hash, e.txPower, e.rssi, e.timestamp);
 
             // Store time, position after each measurement
             // skiping first skipEvents ones
@@ -88,7 +88,7 @@ namespace tester {
                 // So that timeStampOrigin -> timeOrigin
                 double t = stamp2Time(e.timestamp);
 
-                txyzActual.getPoints().push_back(Vec3t(t, MyBridge::getX(), MyBridge::getY(), MyBridge::getZ()));
+                txyzActual.getPoints().push_back(Vec3t(t, myBridge.getX(), myBridge.getY(), myBridge.getZ()));
             }
         } // for
 

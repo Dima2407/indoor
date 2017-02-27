@@ -1,4 +1,4 @@
-#include "amath.h"
+#include "AMath.h"
 
 #include <iostream>
 

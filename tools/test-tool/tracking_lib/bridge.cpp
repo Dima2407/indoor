@@ -10,8 +10,8 @@
 */
 
 #include "bridge.h"
-#include "navigator.h"
-#include "bmath.h"
+#include "Navigator.h"
+#include "BMath.h"
 
 #if defined(BRIDGE_LIBRARY)
 #   if defined(DEBUG_MODE)

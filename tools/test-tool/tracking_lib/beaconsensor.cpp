@@ -1,7 +1,7 @@
-#include "beaconsensor.h"
+#include "BeaconSensor.h"
 
-#include "bmath.h"
-#include "imath.h"
+#include "BMath.h"
+#include "IMath.h"
 
 #include "defines.h"
 

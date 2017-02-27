@@ -1,4 +1,4 @@
-#include "accelerometersensor.h"
+#include "AccelerometerSensor.h"
 
 namespace Sensors {
 

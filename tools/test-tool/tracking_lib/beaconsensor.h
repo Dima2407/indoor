@@ -1,8 +1,8 @@
 #ifndef BEACONSENSOR_H
 #define BEACONSENSOR_H
 
-#include "abstractsensor.h"
-#include "beacon.h"
+#include "AbstractSensor.h"
+#include "Beacon.h"
 #include "common_types.h"
 
 #include <cstdio>

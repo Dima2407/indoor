@@ -1,7 +1,7 @@
 #ifndef ACCELEROMETERSENSOR_H
 #define ACCELEROMETERSENSOR_H
 
-#include "abstractsensor.h"
+#include "AbstractSensor.h"
 #include "common_types.h"
 
 

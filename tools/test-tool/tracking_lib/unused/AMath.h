@@ -1,7 +1,7 @@
 #ifndef AMATH_H
 #define AMATH_H
 
-#include "common_types.h"
+#include "common_types2.h"
 
 /// Contains static method \ref sensor_navigation() (UNUSED)
 class AMath {

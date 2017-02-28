@@ -14,13 +14,12 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBRIDGE_LIBRARY")
 set(SOURCE_FILES
         AbstractSensor.cpp
         AccelerometerSensor.cpp
-        AMath.cpp
         Beacon.cpp
         BeaconSensor.cpp
         BMath.cpp
         common_types.cpp
         Navigator.cpp
         Objectstate.cpp
-        utilities.cpp)
+        )
 
 add_library(tracking_lib STATIC ${SOURCE_FILES})

@@ -83,7 +83,7 @@ class BMath {
          * \param[in]  beaconMeasurement  a new PointMeasurement (position+timestamp) to set
          * \result                        Cloned prevState with new position+timestamp
          */
-        static ObjectState beacon_navigation(const ObjectState &prevState, const PointMeasurement &beaconMeasurement);
+        //static ObjectState beacon_navigation(const ObjectState &prevState, const PointMeasurement &beaconMeasurement);
 
         /** \brief Extrapolate a number of timestamped Beacon Measurements to a timestamp ie_time
          *

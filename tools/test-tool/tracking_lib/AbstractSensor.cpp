@@ -8,21 +8,6 @@
 
 namespace Sensors {
 
-AbstractSensor::AbstractSensor() : _maxDataCapacity(DEFAULT_CAPACITY)
-                                 , _updated(false) {
-}
-
-AbstractSensor::~AbstractSensor() {
-}
-
-Types::ObjectState AbstractSensor::referenceState() const {
-    return _referenceState;
-}
-
-Types::ObjectState AbstractSensor::lastState() const {
-    return rstate(0);
-}
-
 Types::ObjectState AbstractSensor::state(size_t pos) const {
     if (pos < _history.size()) {
         Types::ObjectStateContainer::const_iterator it = _history.begin();
@@ -48,9 +33,6 @@ const Types::ObjectStateContainer& AbstractSensor::history(size_t length) const 
     return last_elements(_history, length);
 }
 
-size_t AbstractSensor::dataCapacity() const {
-    return _maxDataCapacity;
-}
 
 void AbstractSensor::setDataCapacity(size_t c) {
     _maxDataCapacity = c;
@@ -62,26 +44,6 @@ void AbstractSensor::setDataCapacity(size_t c) {
     }
 }
 
-size_t AbstractSensor::dataCount() const {
-    return _history.size();
-}
-
-void AbstractSensor::clear() {
-    _history.clear();
-}
-
-/// Set the reference state
-void AbstractSensor::setReferenceState(const Types::ObjectState &state) {
-    _referenceState = state;
-}
-
-bool AbstractSensor::updated() const {
-    return _updated;
-}
-
-void AbstractSensor::dropUpdated() {
-    _updated = false;
-}
 
 void AbstractSensor::addState(const Types::ObjectState &state) {
 #ifdef DEBUG_MODE

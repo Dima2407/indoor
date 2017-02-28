@@ -148,13 +148,16 @@ bool BMath::TrilatLocation3d(const PointContainer &beaconsPos,
     return true;
 }
 
-ObjectState BMath::beacon_navigation(const ObjectState &prevState, const PointMeasurement &beaconMeasurement) {
-    ObjectState newState = prevState;
-    newState.timestamp = beaconMeasurement.timestamp;
-    newState.position  = beaconMeasurement.position;
 
-    return newState;
-}
+// Unused
+
+//ObjectState BMath::beacon_navigation(const ObjectState &prevState, const PointMeasurement &beaconMeasurement) {
+//    ObjectState newState = prevState;
+//    newState.timestamp = beaconMeasurement.timestamp;
+//    newState.position  = beaconMeasurement.position;
+//
+//    return newState;
+//}
 
 BeaconMeasurement BMath::inxtrapolate(const BeaconMeasurementsContainer &mc, timestamp_t ie_time) {
     BeaconMeasurement m;

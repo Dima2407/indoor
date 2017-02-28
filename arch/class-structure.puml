@@ -1,14 +1,26 @@
 @startuml
-abstract class MeasurementEvent{
+
+package Android <<Rectangle>>{
+    package android.bluetooth{
+        class BluetoothAdapter
+    }
+    package android.location{
+        class LocationManager
+    }
+    package android.hardware{
+        class SensorManager
+    }
+    package android.net.wifi{
+        class WifiManager
+    }
+}
+
+package com.jim-it.traking.events{
+class MeasurementEvent{
 -timestamp : int
 -type: MeasurementType
 -values : float []
 }
-
-class MeasurementTransfer {
-native deliver(event : MeasurementEvent) : void << (S,#FF7700) Singleton >>
-}
-
 enum MeasurementType {
 GEO_VALUE
 SENSOR_VALUE
@@ -17,21 +29,10 @@ BLE_VALUE
 
 }
 
-class IndoorLocationManager {
--providers : List<MeasurementProvider>
--locationListener : IndoorLocationListener
-+switchRegion(region: SpaceRegion) : void
-+prepare() : void
-+release() : void
+MeasurementEvent *-- MeasurementType
 }
 
-interface IndoorLocationListener{
-+onLocation(coordinate: float []): void
-}
-
-class SpaceRegion {
-beacons : List<BeaconConfig>
-}
+package com.jim-it.traking.configs{
 
 class BeaconConfig {
 -txPower: double
@@ -41,55 +42,72 @@ class BeaconConfig {
 -position: float[]
 }
 
++abstract class ProviderConfiguration<TConfig>{
++<size 20>updateConfiguration(TConfig[]) : void</size>
+}
 
-IndoorLocationManager o-- MeasurementProvider
-IndoorLocationManager *-- IndoorLocationListener
+class BluetoothProviderConfiguration{
 
-SpaceRegion o-- BeaconConfig
+}
+ProviderConfiguration <|-- BluetoothProviderConfiguration
+BluetoothProviderConfiguration o-- BeaconConfig
+}
 
 
+package com.jim-it.traking{
+class IndoorLocationManager {
+-providers : List<MeasurementProvider>
+-locationListener : IndoorLocationListener
++addProvider(provider : MeasurementProvider) :
++prepare() : void
++start() : void
++stop() : void
++release() : void
+}
+interface IndoorLocationListener{
++onLocation(coordinate: float []): void
+}
 
-
-MeasurementEvent *-- MeasurementType
+}
 
 package com.jim-it.traking.providers {
 
-+interface MeasurementProvider{
-+start() : void
-+stop() : void
-+configure(configs : Map<String, Object>) : boolean
++abstract class MeasurementProvider{
++{abstract}start() : void
++{abstract}stop() : void
+}
+
+class MeasurementTransfer {
++{abstract}<size 20>deliver(event : MeasurementEvent) : void </size>
 }
 
 
-~class GEOMeasurementProvider{
--locationManager : LocationManager
--transfer : MeasurementTransfer
+~class BluetoothMeasurementProvider{
 }
 
-~class BlueToothMeasurementProvider{
--bluetoothAdapter : BluetoothAdapter
--transfer : MeasurementTransfer
+~class GPSMeasurementProvider{
 }
 
 ~class SensorMeasurementProvider{
--sensorManager : SensorManager
--transfer : MeasurementTransfer
 }
 
 ~class WIFIMeasurementProvider{
--wifiManager : WifiManager
--transfer : MeasurementTransfer
 }
 
-MeasurementProvider <|-- GEOMeasurementProvider
-MeasurementProvider <|-- SensorMeasurementProvider
-MeasurementProvider <|-- BlueToothMeasurementProvider
-MeasurementProvider <|-- WIFIMeasurementProvider
+MeasurementProvider *-- MeasurementTransfer
+MeasurementProvider *-- ProviderConfiguration
 
-GEOMeasurementProvider *-- MeasurementTransfer
-SensorMeasurementProvider *-- MeasurementTransfer
-BlueToothMeasurementProvider *-- MeasurementTransfer
-WIFIMeasurementProvider *-- MeasurementTransfer
+MeasurementProvider <|-- BluetoothMeasurementProvider
+BluetoothMeasurementProvider *-- BluetoothAdapter
+
+MeasurementProvider <|-- GPSMeasurementProvider
+GPSMeasurementProvider *-- LocationManager
+
+MeasurementProvider <|-- SensorMeasurementProvider
+SensorMeasurementProvider *-- SensorManager
+
+MeasurementProvider <|-- WIFIMeasurementProvider
+WIFIMeasurementProvider *-- WifiManager
 }
 
 @enduml

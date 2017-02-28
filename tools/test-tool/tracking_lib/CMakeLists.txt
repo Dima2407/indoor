@@ -23,7 +23,7 @@ set(SOURCE_FILES
         KalmanInterface.cpp
         Navigator.cpp
         Objectstate.cpp
-        smartptr.cpp
+        SmartPtr.cpp
         utilities.cpp)
 
 add_library(tracking_lib STATIC ${SOURCE_FILES})

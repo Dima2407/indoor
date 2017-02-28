@@ -4,7 +4,6 @@
 
 namespace Types {
 ObjectState::ObjectState() :
-    _timestamp(-1),
     _state_vector(StateVec::Zero()),
     _covar_matrix(CovarMatrix::Identity())
 {
@@ -61,21 +60,6 @@ Vector3 ObjectState::accelerationDerivative() const {
     return v;
 }
 
-timestamp_t ObjectState::timestamp() const {
-    return _timestamp;
-}
-
-const ObjectState::StateVec &ObjectState::stateVector() const {
-    return _state_vector;
-}
-
-const ObjectState::CovarMatrix &ObjectState::covarMatrix() const {
-    return _covar_matrix;
-}
-
-bool ObjectState::valid() const {
-    return (_timestamp>=0);
-}
 
 void ObjectState::setPosition(const Point& p) {
     _state_vector[X] = p.x;
@@ -95,18 +79,6 @@ void ObjectState::setAcceleration(const Vector3& a) {
 void ObjectState::setAccelerationDerivative(const Vector3& ad) {
     _state_vector[dAx] = ad.x;
     _state_vector[dAy] = ad.y;
-}
-
-void ObjectState::setTimestamp(timestamp_t t) {
-    _timestamp = t;
-}
-
-void ObjectState::setStateVector(const StateVec& v) {
-    _state_vector = v;
-}
-
-void ObjectState::setCovarMatrix(const CovarMatrix &m) {
-    _covar_matrix = m;
 }
 
 } // namespace Types

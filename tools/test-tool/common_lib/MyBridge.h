@@ -18,10 +18,10 @@ namespace tester {
     class MyBridge {
     public:
 
-        // Stupid stupid Eigen !
-        // This is needed to create this class with new, so it seems
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
+        // Destructor
+        ~MyBridge(){
+            delete navigator;
+        }
 
         //--------------------------------
         // Public Methods
@@ -40,20 +40,20 @@ namespace tester {
 
         /// Add a new measurement
        void newMeasurement(long long hash, double txPower, double rssi, long long timestamp) {
-            navigator.addBeaconMeasurement(hash, txPower, rssi, timestamp);
+            navigator->addBeaconMeasurement(hash, txPower, rssi, timestamp);
         }
 
         /// Get position from trilateration
         double getX(){
-            return navigator.beacon().lastState().position().x;
+            return navigator->beacon().lastState().position().x;
         }
 
         double getY(){
-            return navigator.beacon().lastState().position().y;
+            return navigator->beacon().lastState().position().y;
         }
 
         double getZ(){
-            return navigator.beacon().lastState().position().z;
+            return navigator->beacon().lastState().position().z;
         }
 
 
@@ -62,8 +62,11 @@ namespace tester {
         // Private fields
         //--------------------------------
 
-        /// The instance of Navigator from tracking_lib
-        Navigator navigator;
+        /** \brief The instance of Navigator from tracking_lib
+         *
+         * I use a pointer here to localize the Eigen trouble
+         */
+        Navigator *navigator = new Navigator;
     };
 }
 

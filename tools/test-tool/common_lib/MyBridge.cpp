@@ -20,7 +20,7 @@ namespace tester {
         b.setFilterWinSize(10); // Change if needed
 
         // Add it to the beacon sensor
-        navigator.beacon().addBeacon(b);
+        navigator->beacon().addBeacon(b);
     }
 
 }

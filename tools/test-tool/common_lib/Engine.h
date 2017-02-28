@@ -26,10 +26,6 @@ namespace tester {
     class Engine {
     public:
 
-        // Stupid stupid Eigen !
-        // This is needed to create this class with new, so it seems
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
         //--------------------------------
         // Public Methods
         //--------------------------------

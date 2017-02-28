@@ -19,8 +19,6 @@ set(SOURCE_FILES
         BeaconSensor.cpp
         BMath.cpp
         common_types.cpp
-        imath1.cpp
-        KalmanInterface.cpp
         Navigator.cpp
         Objectstate.cpp
         utilities.cpp)

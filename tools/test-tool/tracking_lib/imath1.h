@@ -50,21 +50,6 @@ namespace Math {
                 }
         };
 
-    // methods
-        /// Despite name, doesn't seem to use Kalman filters.
-        ObjectState kalman(const ObjectState &currState, const ObjectState &beaconState, const ObjectState &accState);
-        /** \brief Use kalman filter
-         *
-         *        Model:
-         * acceleration is constant and zero
-         * velocity is constant
-         * position is lineary changed
-         *
-         * Note: this is supposed to be used by Navigator, but currrently disabled
-         *
-         **/
-        Types::ObjectState kalman(const Types::ObjectState &currState, const Types::ObjectState &measure);
-
 
         //double  mean(const std::vector<double> &data, std::vector<double> &t_weights = std::vector<double>());
 
@@ -99,14 +84,6 @@ namespace Math {
         template <class Data, template <typename DataType,    typename Allocator = std::allocator<DataType> > class DataContainer>
         Data  cov(const DataContainer<Data> &data1, const DataContainer<Data> &data2);
 
-        /// Used by smooth()
-        std::vector<double>  mean_filter(int n, const std::vector<double> &data, const std::vector<double> &weights = std::vector<double>());
-
-        /** \brief General smoothing function (UNUSED)
-         *
-         * preparing data, weigths and calling appropriate subroutine
-         */
-        std::vector<double> smooth(const std::vector<double> &measurements, const std::vector<time_t> &times = std::vector<time_t>(), time_t max_time = 0);
 }
 
 // Template methods implementation
@@ -191,6 +168,6 @@ Data  Math::cov(const DataContainer<Data> &x, const DataContainer<Data> &y) {
     return (m_xy-m_x*m_y);
 }
 
-Types::ObjectState kalman(const Types::ObjectState &currentState, const Types::ObjectState &measurement);
+
 
 #endif // IMATH_H

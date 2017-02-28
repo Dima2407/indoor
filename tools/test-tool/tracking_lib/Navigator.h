@@ -12,6 +12,10 @@
  *
  * Note: apparently BeaconSensor uses txPower from measurements
  * while txPower of beacon is ignored, while damp is taken from the beacon data
+ *
+ * Note : Because of the stupid eigen, it is recommended that you use Navigator class
+ * with new . If you have any class with type Navigator member, this class must contain
+ * the EIGEN_MAKE_ALIGNED_OPERATOR_NEW macro.
  */
 class Navigator {
 

@@ -6,8 +6,6 @@
 #   endif
 #endif
 
-SmartPtr<Navigator> Navigator::__instance = 0;
-
 void Navigator::addBeaconMeasurement(hash_t hash, double tx_power, double rssi, timestamp_t timestamp) {
     _beacon.addMeasurement(hash, tx_power, rssi, timestamp);
     if (_beacon.updated()) {
@@ -15,9 +13,6 @@ void Navigator::addBeaconMeasurement(hash_t hash, double tx_power, double rssi, 
     }
 }
 
-void Navigator::addAccelerometerMeasurement(const AccMeasurement &m) {
-    addAccelerometerMeasurement(m.values.x, m.values.y, m.values.z, m.timestamp);
-}
 
 void Navigator::addAccelerometerMeasurement(double ax, double ay, double az, timestamp_t timestamp) {
 //    _accelerometer.addMeasurement(ax, ay, az, timestamp);
@@ -123,20 +118,4 @@ Types::ObjectState::StateVec Navigator::defaultMeasurementNoise() const {
     vec(4) = 100.0; vec(5) = 100.0;
     vec(6) = 100.0; vec(7) = 100.0;
     return vec;
-}
-
-SmartPtr<Navigator> Navigator::instance() {
-    if (__instance.isNull()) {
-        __instance = new Navigator();
-    }
-    return __instance;
-}
-
-SmartPtr<Navigator> Navigator::clear() {
-    /*WARNING! caused crash*/
-    __instance.clear();
-}
-
-double Navigator::smoothedDistanceToBeacon(hash_t hash, size_t smooth_length) {
-    return Navigator::instance()->beacon().beaconDistance(hash, smooth_length);
 }

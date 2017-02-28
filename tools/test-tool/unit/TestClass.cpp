@@ -9,11 +9,13 @@
 #include "Engine.h"
 
 namespace unit {
+
     void TestClass::test1() {
         using namespace std;
         using namespace tester;
 
-        // Create a tester Engine
+
+            // Create a tester Engine
         Engine *engine = new Engine();
 
         // Run the engine silently

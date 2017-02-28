@@ -26,6 +26,14 @@ namespace tester {
     class Engine {
     public:
 
+        // Stupid stupid Eigen !
+        // This is needed to create this class with new, so it seems
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+        //--------------------------------
+        // Public Methods
+        //--------------------------------
+
         /// Read data: config, beacons, events: true is success
         bool readData(bool verbose = true);
 
@@ -53,7 +61,7 @@ namespace tester {
         }
 
         //---------------------------------
-        // Private Data
+        // Private Fields
         //---------------------------------
 
         /// MyBridge instance

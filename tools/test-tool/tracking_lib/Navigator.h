@@ -1,30 +1,34 @@
 #ifndef NAVIGATOR_H
 #define NAVIGATOR_H
 
-#include "SmartPtr.h"
 #include "BeaconSensor.h"
 #include "AccelerometerSensor.h"
 
-/** \brief A singleton class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor
+/** \brief A class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor
  *
  * Sensors::AccelerometerSensor seems to be disabled at present.
+ *
+ * Note: used to be a singleton, I (Oleksiy Grechnyev) changed this
  *
  * Note: apparently BeaconSensor uses txPower from measurements
  * while txPower of beacon is ignored, while damp is taken from the beacon data
  */
 class Navigator {
-    typedef std::list<SmartPtr<Sensors::AbstractSensor> > SensorsContainer;
+
+    // This is not used anywhere, and if we ever need such container
+    // Use shared_ptr, not SmartPtr !!!
+    // typedef std::list<shared_ptr<Sensors::AbstractSensor> > SensorsContainer;
 
 public: // constants
+    /// Default capacity of measurements history
     static const size_t DEFAULT_CAPACITY = 2048;
 
-private:
-    /// Private constructor. Sets DEFAULT_CAPACITY.
-    Navigator() : _maxDataCapacity(DEFAULT_CAPACITY) {}
+    //-------------------------
+    // Public Methods
+    //-------------------------
 
-public: // Methods
-    // What is that ?
-    // Unit doesn't work without it, Tester does, WHY ???
+    // Stupid stupid Eigen !
+    // This is needed to create this class with new, so it seems
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     /// Get beacon sensor (const)
@@ -48,7 +52,7 @@ public: // Methods
     }
 
     /// Add one Sensors::BeaconSensor measurement and call updateState if _beacon.updated()
-    void addBeaconMeasurement(const BeaconMeasurement &m){
+    void addBeaconMeasurement(const BeaconMeasurement &m) {
         addBeaconMeasurement(m.hash, m.txPower, m.rssi, m.timestamp);
     }
 
@@ -56,7 +60,9 @@ public: // Methods
     void addBeaconMeasurement(hash_t hash, double tx_power, double rssi, timestamp_t timestamp);
 
     /// Add one Sensors::AccelerometerSensor measurement. Does nothing for now!
-    void addAccelerometerMeasurement(const AccMeasurement &m);
+    void addAccelerometerMeasurement(const AccMeasurement &m) {
+        addAccelerometerMeasurement(m.values.x, m.values.y, m.values.z, m.timestamp);
+    }
 
     /// Add one Sensors::AccelerometerSensor measurement. Does nothing for now!
     void addAccelerometerMeasurement(double ax, double ay, double az, timestamp_t timestamp);
@@ -73,7 +79,7 @@ public: // Methods
     Types::ObjectState rstate(size_t i) const;
 
     /// Get _maxDataCapacity
-    size_t dataCapacity() const{
+    size_t dataCapacity() const {
         return _maxDataCapacity;
     }
 
@@ -85,23 +91,6 @@ public: // Methods
         return _stateHistory.size();
     }
 
-protected:
-
-    /// Add/update measurement and set it as reference state???
-    void updateState(const Types::ObjectState &measurement);
-
-    /// Add state to history if valid (timestamp>0)
-    void addState(const Types::ObjectState &state);
-
-    /// Return the 8-vector with elements 100.0, why ?
-    Types::ObjectState::StateVec defaultMeasurementNoise() const;
-
-public:
-    /// Return Navigator singleton instance
-    static SmartPtr<Navigator> instance();
-
-    /// What was that crash about?
-    static SmartPtr<Navigator> clear(); /*WARNING! caused crash*/
 
     /** \brief Smoothed distance to beacons
      *
@@ -112,13 +101,29 @@ public:
      * \result                    Distance to the beacon
      *
      */
-    static double smoothedDistanceToBeacon(hash_t hash, size_t smooth_lwngth = 1);
+    double smoothedDistanceToBeacon(hash_t hash, size_t smooth_length = 1){
+        return _beacon.beaconDistance(hash, smooth_length);
+    }
 
-protected:
-    /// The instance of singleton Navigator
-    static SmartPtr<Navigator> __instance;
 
-protected:
+private:
+    //-------------------------
+    // Private Methods
+    //-------------------------
+
+    /// Add/update measurement and set it as reference state???
+    void updateState(const Types::ObjectState &measurement);
+
+    /// Add state to history if valid (timestamp>0)
+    void addState(const Types::ObjectState &state);
+
+    /// Return the 8-vector with elements 100.0, why ?
+    Types::ObjectState::StateVec defaultMeasurementNoise() const;
+
+    //-------------------------
+    // Private Fields
+    //-------------------------
+
     /// The Beacon sensor
     Sensors::BeaconSensor _beacon;
     /// The accelerometer sensor
@@ -126,7 +131,7 @@ protected:
     /// History: container of Types::ObjectState
     Types::ObjectStateContainer _stateHistory;
     /// Max size of _stateHistory apparently
-    size_t _maxDataCapacity;
+    size_t _maxDataCapacity = DEFAULT_CAPACITY;
 };
 
 #endif // NAVIGATOR_H

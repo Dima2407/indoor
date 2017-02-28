@@ -19,11 +19,10 @@ set(SOURCE_FILES
         BeaconSensor.cpp
         BMath.cpp
         common_types.cpp
-        IMath.cpp
+        imath1.cpp
         KalmanInterface.cpp
         Navigator.cpp
         Objectstate.cpp
-        SmartPtr.cpp
         utilities.cpp)
 
 add_library(tracking_lib STATIC ${SOURCE_FILES})

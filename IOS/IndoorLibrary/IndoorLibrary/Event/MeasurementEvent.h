@@ -9,6 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, MeasurementType)
+{
+    GEO_VALUE = 1,
+    SENSOR_VALUE,
+    WIFI_VALUE,
+    BLE_VALUE
+};
+
 @interface MeasurementEvent : NSObject
+
+-(instancetype)initWithTime:(NSInteger)time withMeasurementType:(MeasurementType)type andWithCordinate: (NSArray*)coordinates;
 
 @end

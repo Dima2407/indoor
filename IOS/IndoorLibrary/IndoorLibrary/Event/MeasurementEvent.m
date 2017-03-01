@@ -13,12 +13,28 @@
 @interface MeasurementEvent()
 
 @property (nonatomic, assign) NSInteger timestamp;
-@property (nonatomic, strong) MeasurementProvider* type;
+@property (nonatomic, assign) MeasurementType type;
 @property (nonatomic, strong) NSArray *values;
 
 @end
 
 @implementation MeasurementEvent
+
+-(instancetype)initWithTime:(NSInteger)time withMeasurementType:(MeasurementType)type andWithCordinate: (NSArray*)coordinates{
+    
+    self = [super init];
+    MeasurementEvent *event = nil;
+    
+    if (self != nil)
+    {
+        event = [self init];
+    }
+    event.timestamp = time;
+    event.type = type;
+    event.values = coordinates;
+   
+    return event;
+}
 
 
 @end

@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "MeasurementProvider.h"
-#import <CoreLocation/CLLocationManager.h>
+#import <CoreLocation/CoreLocation.h>
+
 
 @interface GPSMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 

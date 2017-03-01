@@ -17,7 +17,10 @@
 @end
 @implementation MeasurementProvider
 
-
++(void)deliver:(MeasurementEvent*)event
+{
+    
+}
 -(void)start
 {
     

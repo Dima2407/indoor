@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MeasurementEvent.h"
 
 @interface MeasurementProvider : NSObject
-
++(void)deliver:(MeasurementEvent*)event;
 -(void)start;
 -(void)stop;
 @end

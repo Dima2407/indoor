@@ -1,7 +1,9 @@
 #ifndef BEACON_H
 #define BEACON_H
 
-#include "common_types.h"
+#include "common_defs.h"
+#include "Point.h"
+#include "BeaconMeasurement.h"
 
 namespace Sensors {
     namespace Hardware {
@@ -48,37 +50,53 @@ namespace Sensors {
 
             /// Constructor which sets \ref _hash, \ref _damp and \ref _txPower
             Beacon(hash_t hash = -1, double damp = DEFAULT_DAMP, double txPower = 1.0) :
-                    _hash(hash), _damp(damp), _txPower(txPower)
-                    , _useTxPowerFromMeasurements(true) {
-           }
+                    _hash(hash),
+                    _damp(damp),
+                    _txPower(txPower) {}
 
             //-------------------------------
             // Public methods
             //-------------------------------
 
             /// Get \ref _position (XYZ)
-            const Point &position() const;
+            const Point &position() const{
+                return _position;
+            }
 
             /// Get \ref _hash
-            hash_t hash() const;
+            hash_t hash() const {
+                return _hash;
+            }
 
             /// Get \ref _damp
-            double damp() const;
+            double damp() const{
+                return _damp;
+            }
 
             /// Get \ref _txPower
-            double txPower() const;
+            double txPower() const{
+                return _txPower;
+            }
 
             /// Set \ref _damp
-            void setDamp(double damp);
+            void setDamp(double damp){
+                _damp = damp;
+            }
 
             /// Set \ref _txPower
-            void setTxPower(double tx_power);
+            void setTxPower(double tx_power){
+                _txPower = tx_power;
+            }
 
             /// Set \ref _position
-            void setPosition(const Point &position);
+            void setPosition(const Point &position){
+                _position = position;
+            }
 
             /// Set \ref _hash
-            void setHash(hash_t hash);
+            void setHash(hash_t hash) {
+                _hash = hash;
+            }
 
             /** \brief WARNING ! This is not a simple setter !
              *
@@ -96,10 +114,14 @@ namespace Sensors {
             void setUseTxPowerFromMeasurements(bool s = true, double txPower = 1.0);
 
             /// Get \ref _useTxPowerFromMeasurements
-            bool useTxPowerFromMeasurements() const;
+            bool useTxPowerFromMeasurements() const{
+                return _useTxPowerFromMeasurements;
+            }
 
             /// Remove all measurements (Clear list _measurements)
-            void clear();
+            void clear() {
+                _measurements.clear();
+            }
 
             /// Adds beacon measurement (timestamp should be greater or equal to previous measure time)
             void addMeasurement(const BeaconMeasurement &m);
@@ -139,29 +161,46 @@ namespace Sensors {
             bool calibrate(const CalibrationDataContainer &c);
 
             /// Get \ref _maxDataCapacity
-            size_t dataCapacity() const;
+            size_t dataCapacity() const{
+                return _maxDataCapacity;
+            }
 
             /// Set \ref _maxDataCapacity
             void setDataCapacity(size_t c);
 
             /// Get size of \ref _measurements
-            size_t dataCount() const;
+            size_t dataCount() const{
+                return _measurements.size();
+            }
 
             /// Get size of \ref _filtered_measurements
-            size_t dataCountF() const;
+            size_t dataCountF() const{
+                return _filtered_measurements.size();
+            }
 
             /// Get \ref _filterWinSize
-            size_t filterWinSize();
+            size_t filterWinSize(){
+                return _filterWinSize;
+            }
 
             /// Set \ref _filterWinSize
-            void setFilterWinSize(size_t ws);
+            void setFilterWinSize(size_t ws) {
+                _filterWinSize = ws;
+            }
 
             /// Check if the beacon is valid (_hash >=0)
-            bool valid() const;
+            bool valid() const{
+                return (_hash >= 0);
+            }
 
             double lastDistance(hash_t hash, size_t count);
 
-        protected:
+        private:
+
+            //-------------------------------
+            // Private methods
+            //-------------------------------
+
             /** Create a new filtered measurement out of a list of measurements
              *
              * Essentially it applies the averaging function Math::mean() to rssi and timestamp to
@@ -171,8 +210,11 @@ namespace Sensors {
              */
             BeaconMeasurement filter(const BeaconMeasurementsContainer &mc);
 
-        private:
-            /// %Beacon position (XYZ)
+            //-------------------------------
+            // Private fields
+            //-------------------------------
+
+            /// Beacon position (XYZ)
             Point _position;
             /// Dampening factor
             double _damp;
@@ -181,7 +223,7 @@ namespace Sensors {
             /// %Beacon's _hash (hash of the MAC adddress ??)
             hash_t _hash;
             /// This parameter is used for calibration
-            bool _useTxPowerFromMeasurements;
+            bool _useTxPowerFromMeasurements = true;
 
             /// Max data capacity for both _measurements and _filtered_measurements
             size_t _maxDataCapacity = DEFAULT_DATA_CAPACITY;

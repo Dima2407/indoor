@@ -7,50 +7,6 @@
 
 namespace Sensors {
 
-const double BeaconSensor::DEFAULT_DATA_ASSOCIATION_INTERVAL = 100; // msec
-
-BeaconSensor::BeaconSensor() : AbstractSensor()
-                             , _dataAssociationInterval(DEFAULT_DATA_ASSOCIATION_INTERVAL)
-                             , _lastMeasureTime(-1)
-{
-    Vector3 s;
-    s.x = 3;
-    s.y = 3;
-    s.z = 3;
-    setMeasureSigma(s);
-}
-
-BeaconSensor::~BeaconSensor() {
-
-}
-
-int BeaconSensor::sensorType() const {
-    return SensorType::Beacon;
-}
-
-void BeaconSensor::clear() {
-    _beacons.clear();
-}
-
-void    BeaconSensor::addBeacon(const Hardware::Beacon &b) {
-    _beacons[b.hash()] = b;
-}
-
-bool BeaconSensor::calibrateBeacon(hash_t hash, const Hardware::Beacon::CalibrationDataContainer &data) {
-    if (hasBeacon(hash)) {
-        return _beacons[hash].calibrate(data);
-    }
-    return false;
-}
-
-void    BeaconSensor::setDataAssociationInterval(double dt) {
-    _dataAssociationInterval = dt;
-}
-
-void BeaconSensor::addMeasurement(const BeaconMeasurement &m) {
-    addMeasurement(m.hash, m.txPower, m.rssi, m.timestamp);
-}
-
 void BeaconSensor::addMeasurement(hash_t hash, double tx_power, double rssi, timestamp_t tm) {
     AbstractSensor::dropUpdated();
     if (_beacons.count(hash)) {
@@ -60,36 +16,6 @@ void BeaconSensor::addMeasurement(hash_t hash, double tx_power, double rssi, tim
         _lastMeasureTime = tm;
     }
     updateState();
-}
-
-size_t  BeaconSensor::beaconsCount() {
-    return _beacons.size();
-}
-
-bool BeaconSensor::hasBeacon(hash_t hash) {
-    return (_beacons.count(hash) > 0);
-}
-
-Hardware::Beacon BeaconSensor::beacon(hash_t hash) {
-    Hardware::Beacon b;
-    if (_beacons.count(hash) > 0) {
-        b = _beacons[hash];
-    }
-    return b;
-}
-
-void BeaconSensor::setMeasureSigma(double sx, double sy, double sz) {
-    _measureSigma.x = sx;
-    _measureSigma.y = sy;
-    _measureSigma.z = sz;
-}
-
-void BeaconSensor::setMeasureSigma(const Vector3 &s) {
-    setMeasureSigma(s.x, s.y, s.z);
-}
-
-Vector3 BeaconSensor::measureSigma() const {
-    return _measureSigma;
 }
 
 double BeaconSensor::beaconDistance(hash_t hash, size_t smooth_count) {

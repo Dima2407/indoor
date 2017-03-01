@@ -11,30 +11,6 @@ namespace Sensors {
 namespace Hardware {
 
 
-const Point&    Beacon::position() const {
-    return _position;
-}
-
-hash_t  Beacon::hash() const {
-    return _hash;
-}
-
-double Beacon::damp() const {
-    return _damp;
-}
-
-double Beacon::txPower() const {
-    return _txPower;
-}
-
-void Beacon::setDamp(double damp) {
-    _damp = damp;
-}
-
-void Beacon::setTxPower(double tx_power) {
-    _txPower = tx_power;
-}
-
 void Beacon::setUseTxPowerFromMeasurements(bool s, double txPower) {
     if (txPower < 0) {
         _txPower = txPower;
@@ -46,21 +22,7 @@ void Beacon::setUseTxPowerFromMeasurements(bool s, double txPower) {
     }
 }
 
-bool Beacon::useTxPowerFromMeasurements() const {
-    return _useTxPowerFromMeasurements;
-}
 
-void Beacon::setPosition(const Point &position) {
-    _position = position;
-}
-
-void Beacon::setHash(hash_t hash) {
-    _hash = hash;
-}
-
-void Beacon::clear() {
-    _measurements.clear();
-}
 
 void  Beacon::addMeasurement(const BeaconMeasurement &m) {
 //#ifdef DEBUG_MODE
@@ -204,9 +166,6 @@ bool Beacon::calibrate(const Beacon::CalibrationDataContainer &c) {
     return true;
 }
 
-size_t Beacon::dataCapacity() const {
-    return _maxDataCapacity;
-}
 
 void Beacon::setDataCapacity(size_t c) {
     _maxDataCapacity = c;
@@ -216,26 +175,6 @@ void Beacon::setDataCapacity(size_t c) {
         std::copy_n(_measurements.rbegin(), _maxDataCapacity, tmp.rbegin());
         _measurements = tmp;
     }
-}
-
-size_t Beacon::dataCount() const {
-    return _measurements.size();
-}
-
-size_t Beacon::dataCountF() const {
-    return _filtered_measurements.size();
-}
-
-size_t Beacon::filterWinSize() {
-    return _filterWinSize;
-}
-
-void Beacon::setFilterWinSize(size_t ws) {
-    _filterWinSize = ws;
-}
-
-bool Beacon::valid() const {
-    return (_hash >= 0);
 }
 
 BeaconMeasurement Beacon::filter(const BeaconMeasurementsContainer &mc) {

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['polytrajectory',['PolyTrajectory',['../classtester_1_1_poly_trajectory.html',1,'tester']]]
+  ['testerconfig',['TesterConfig',['../classtester_1_1_tester_config.html',1,'tester']]]
 ];

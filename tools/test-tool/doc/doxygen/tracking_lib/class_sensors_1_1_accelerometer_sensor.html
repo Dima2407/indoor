@@ -64,9 +64,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_sensors_1_1_accelerometer_sensor-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -77,7 +76,7 @@ $(function() {
 <p>Accelerometer sensor. Contains list of measurements.  
  <a href="class_sensors_1_1_accelerometer_sensor.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="accelerometersensor_8h_source.html">accelerometersensor.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_accelerometer_sensor_8h_source.html">AccelerometerSensor.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Sensors::AccelerometerSensor:</div>
 <div class="dyncontent">
@@ -90,34 +89,35 @@ Inheritance diagram for Sensors::AccelerometerSensor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6ec056953da207288600441b6e24ad73"><td class="memItemLeft" align="right" valign="top">EIGEN_MAKE_ALIGNED_OPERATOR_NEW&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a6ec056953da207288600441b6e24ad73">AccelerometerSensor</a> ()</td></tr>
-<tr class="separator:a6ec056953da207288600441b6e24ad73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a501ad1ce1b318bf6303b2e60fd8cb66f"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a501ad1ce1b318bf6303b2e60fd8cb66f">~AccelerometerSensor</a> ()</td></tr>
-<tr class="separator:a501ad1ce1b318bf6303b2e60fd8cb66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cad3c99dc2c715413456c8cb15a6cbe"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a1cad3c99dc2c715413456c8cb15a6cbe">sensorType</a> () const</td></tr>
-<tr class="memdesc:a1cad3c99dc2c715413456c8cb15a6cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sensor type. Overridden by subclasses.  <a href="#a1cad3c99dc2c715413456c8cb15a6cbe">More...</a><br /></td></tr>
-<tr class="separator:a1cad3c99dc2c715413456c8cb15a6cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3566bebfd73060e19d11e9fe399fa0d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a3566bebfd73060e19d11e9fe399fa0d2">clear</a> ()</td></tr>
-<tr class="memdesc:a3566bebfd73060e19d11e9fe399fa0d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear history.  <a href="#a3566bebfd73060e19d11e9fe399fa0d2">More...</a><br /></td></tr>
-<tr class="separator:a3566bebfd73060e19d11e9fe399fa0d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff68a045812dec0592351e9daa6c14f2"><td class="memItemLeft" align="right" valign="top">EIGEN_MAKE_ALIGNED_OPERATOR_NEW&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#aff68a045812dec0592351e9daa6c14f2">AccelerometerSensor</a> ()</td></tr>
+<tr class="memdesc:aff68a045812dec0592351e9daa6c14f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#aff68a045812dec0592351e9daa6c14f2">More...</a><br /></td></tr>
+<tr class="separator:aff68a045812dec0592351e9daa6c14f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5650cc799f736e8c6f7318fde67511f3"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a5650cc799f736e8c6f7318fde67511f3">sensorType</a> () const</td></tr>
+<tr class="memdesc:a5650cc799f736e8c6f7318fde67511f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sensor type.  <a href="#a5650cc799f736e8c6f7318fde67511f3">More...</a><br /></td></tr>
+<tr class="separator:a5650cc799f736e8c6f7318fde67511f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c92b00bb31eca1117b22fd388d40143"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a9c92b00bb31eca1117b22fd388d40143">clear</a> ()</td></tr>
+<tr class="memdesc:a9c92b00bb31eca1117b22fd388d40143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all measurements.  <a href="#a9c92b00bb31eca1117b22fd388d40143">More...</a><br /></td></tr>
+<tr class="separator:a9c92b00bb31eca1117b22fd388d40143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc12b4dbfc83c45323a8f4209a1812f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a7bc12b4dbfc83c45323a8f4209a1812f">setDataAssociationInterval</a> (double dt)</td></tr>
+<tr class="memdesc:a7bc12b4dbfc83c45323a8f4209a1812f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set _dataAssociationInterval.  <a href="#a7bc12b4dbfc83c45323a8f4209a1812f">More...</a><br /></td></tr>
 <tr class="separator:a7bc12b4dbfc83c45323a8f4209a1812f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88e09f5311fba0ca36fef7e66f280ea9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a88e09f5311fba0ca36fef7e66f280ea9">addMeasurement</a> (const <a class="el" href="struct_acc_measurement.html">AccMeasurement</a> &amp;m)</td></tr>
 <tr class="separator:a88e09f5311fba0ca36fef7e66f280ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bcf8e190e2b68340ac52a3318db9e52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a3bcf8e190e2b68340ac52a3318db9e52">addMeasurement</a> (double ax, double ay, double az, <a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> tm)</td></tr>
+<tr class="memitem:a3bcf8e190e2b68340ac52a3318db9e52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a3bcf8e190e2b68340ac52a3318db9e52">addMeasurement</a> (double ax, double ay, double az, <a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> tm)</td></tr>
 <tr class="separator:a3bcf8e190e2b68340ac52a3318db9e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa977ddba6353b285bd5104a25d786414"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#aa977ddba6353b285bd5104a25d786414">setMeasureSigma</a> (double sx, double sy, double sz)</td></tr>
+<tr class="memdesc:aa977ddba6353b285bd5104a25d786414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set _measureSigma.  <a href="#aa977ddba6353b285bd5104a25d786414">More...</a><br /></td></tr>
 <tr class="separator:aa977ddba6353b285bd5104a25d786414"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc695f93a18e799b2967329dae2c8872"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#afc695f93a18e799b2967329dae2c8872">setMeasureSigma</a> (const <a class="el" href="common__types_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> &amp;s)</td></tr>
+<tr class="memitem:afc695f93a18e799b2967329dae2c8872"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#afc695f93a18e799b2967329dae2c8872">setMeasureSigma</a> (const <a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> &amp;s)</td></tr>
+<tr class="memdesc:afc695f93a18e799b2967329dae2c8872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set _measureSigma.  <a href="#afc695f93a18e799b2967329dae2c8872">More...</a><br /></td></tr>
 <tr class="separator:afc695f93a18e799b2967329dae2c8872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb68b372891d82752dbf728ff6c6dcfb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#abb68b372891d82752dbf728ff6c6dcfb">measureSigma</a> () const</td></tr>
+<tr class="memitem:abb68b372891d82752dbf728ff6c6dcfb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#abb68b372891d82752dbf728ff6c6dcfb">measureSigma</a> () const</td></tr>
+<tr class="memdesc:abb68b372891d82752dbf728ff6c6dcfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get _measureSigma.  <a href="#abb68b372891d82752dbf728ff6c6dcfb">More...</a><br /></td></tr>
 <tr class="separator:abb68b372891d82752dbf728ff6c6dcfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_sensors_1_1_abstract_sensor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_sensors_1_1_abstract_sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_sensors_1_1_abstract_sensor.html">Sensors::AbstractSensor</a></td></tr>
-<tr class="memitem:a3bfd72ef84d99b52f27f090831b6a544 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a3bfd72ef84d99b52f27f090831b6a544">AbstractSensor</a> ()</td></tr>
-<tr class="memdesc:a3bfd72ef84d99b52f27f090831b6a544 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pretty simple constructor, sets default capacity and _updated == false.  <a href="class_sensors_1_1_abstract_sensor.html#a3bfd72ef84d99b52f27f090831b6a544">More...</a><br /></td></tr>
-<tr class="separator:a3bfd72ef84d99b52f27f090831b6a544 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcef0230fecdeee2f30db15a49273540 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afcef0230fecdeee2f30db15a49273540">~AbstractSensor</a> ()</td></tr>
-<tr class="separator:afcef0230fecdeee2f30db15a49273540 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21f54824575290fc96e56a4e52848dfb inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a21f54824575290fc96e56a4e52848dfb">~AbstractSensor</a> ()</td></tr>
+<tr class="memdesc:a21f54824575290fc96e56a4e52848dfb inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor just in case.  <a href="class_sensors_1_1_abstract_sensor.html#a21f54824575290fc96e56a4e52848dfb">More...</a><br /></td></tr>
+<tr class="separator:a21f54824575290fc96e56a4e52848dfb inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ae1ddb613c32eb2e25b9c1ef92d3b58 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a9ae1ddb613c32eb2e25b9c1ef92d3b58">referenceState</a> () const</td></tr>
 <tr class="memdesc:a9ae1ddb613c32eb2e25b9c1ef92d3b58 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference state.  <a href="class_sensors_1_1_abstract_sensor.html#a9ae1ddb613c32eb2e25b9c1ef92d3b58">More...</a><br /></td></tr>
 <tr class="separator:a9ae1ddb613c32eb2e25b9c1ef92d3b58 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,9 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afcfea5c8c96dad2258dfd97f63ecfe2b inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afcfea5c8c96dad2258dfd97f63ecfe2b">rstate</a> (size_t pos) const</td></tr>
 <tr class="memdesc:afcfea5c8c96dad2258dfd97f63ecfe2b inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a history state with index pos (0=newest).  <a href="class_sensors_1_1_abstract_sensor.html#afcfea5c8c96dad2258dfd97f63ecfe2b">More...</a><br /></td></tr>
 <tr class="separator:afcfea5c8c96dad2258dfd97f63ecfe2b inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07007a8f085a861667af3500fc90b046 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a07007a8f085a861667af3500fc90b046">history</a> (size_t length=0) const</td></tr>
-<tr class="memdesc:a07007a8f085a861667af3500fc90b046 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the entire history.  <a href="class_sensors_1_1_abstract_sensor.html#a07007a8f085a861667af3500fc90b046">More...</a><br /></td></tr>
-<tr class="separator:a07007a8f085a861667af3500fc90b046 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6241d4f2474bf71829f01f1a1ec97cd8 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a6241d4f2474bf71829f01f1a1ec97cd8">history</a> (size_t length=0) const</td></tr>
+<tr class="memdesc:a6241d4f2474bf71829f01f1a1ec97cd8 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the entire history.  <a href="class_sensors_1_1_abstract_sensor.html#a6241d4f2474bf71829f01f1a1ec97cd8">More...</a><br /></td></tr>
+<tr class="separator:a6241d4f2474bf71829f01f1a1ec97cd8 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7034eb4591a68e3355599781de3b9026 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a7034eb4591a68e3355599781de3b9026">dataCapacity</a> () const</td></tr>
 <tr class="memdesc:a7034eb4591a68e3355599781de3b9026 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data capacity.  <a href="class_sensors_1_1_abstract_sensor.html#a7034eb4591a68e3355599781de3b9026">More...</a><br /></td></tr>
 <tr class="separator:a7034eb4591a68e3355599781de3b9026 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,41 +142,58 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afc445a99ac4d9477887be5353b20d47b inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afc445a99ac4d9477887be5353b20d47b">dataCount</a> () const</td></tr>
 <tr class="memdesc:afc445a99ac4d9477887be5353b20d47b inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get history size.  <a href="class_sensors_1_1_abstract_sensor.html#afc445a99ac4d9477887be5353b20d47b">More...</a><br /></td></tr>
 <tr class="separator:afc445a99ac4d9477887be5353b20d47b inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae35c83ee56733e64fc2d2cda85563f62 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ae35c83ee56733e64fc2d2cda85563f62">setReferenceState</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;<a class="el" href="class_sensors_1_1_abstract_sensor.html#ae3d27a2c5a14deff18bc296679f4a87a">state</a>)</td></tr>
-<tr class="memdesc:ae35c83ee56733e64fc2d2cda85563f62 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set reference state.  <a href="class_sensors_1_1_abstract_sensor.html#ae35c83ee56733e64fc2d2cda85563f62">More...</a><br /></td></tr>
-<tr class="separator:ae35c83ee56733e64fc2d2cda85563f62 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0267389851a493c7ace4d8cb325b4e1 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ae0267389851a493c7ace4d8cb325b4e1">updated</a> () const</td></tr>
-<tr class="memdesc:ae0267389851a493c7ace4d8cb325b4e1 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get updated.  <a href="class_sensors_1_1_abstract_sensor.html#ae0267389851a493c7ace4d8cb325b4e1">More...</a><br /></td></tr>
-<tr class="separator:ae0267389851a493c7ace4d8cb325b4e1 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e9decda4d86b789c9476a75ada6ea10 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a5e9decda4d86b789c9476a75ada6ea10">dropUpdated</a> ()</td></tr>
-<tr class="memdesc:a5e9decda4d86b789c9476a75ada6ea10 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set updated to false.  <a href="class_sensors_1_1_abstract_sensor.html#a5e9decda4d86b789c9476a75ada6ea10">More...</a><br /></td></tr>
-<tr class="separator:a5e9decda4d86b789c9476a75ada6ea10 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:abd7b101cdf12e677680394b90ace7947"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#abd7b101cdf12e677680394b90ace7947">DEFAULT_DATA_ASSOCIATION_INTERVAL</a> = 1000</td></tr>
-<tr class="separator:abd7b101cdf12e677680394b90ace7947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad987e4cba5ccddb91867cffc6a1e886d inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ad987e4cba5ccddb91867cffc6a1e886d">setReferenceState</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;<a class="el" href="class_sensors_1_1_abstract_sensor.html#ae3d27a2c5a14deff18bc296679f4a87a">state</a>)</td></tr>
+<tr class="memdesc:ad987e4cba5ccddb91867cffc6a1e886d inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set reference state.  <a href="class_sensors_1_1_abstract_sensor.html#ad987e4cba5ccddb91867cffc6a1e886d">More...</a><br /></td></tr>
+<tr class="separator:ad987e4cba5ccddb91867cffc6a1e886d inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80cfa8aee11f468d2790d92e7fee5ff2 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a80cfa8aee11f468d2790d92e7fee5ff2">updated</a> () const</td></tr>
+<tr class="memdesc:a80cfa8aee11f468d2790d92e7fee5ff2 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get updated.  <a href="class_sensors_1_1_abstract_sensor.html#a80cfa8aee11f468d2790d92e7fee5ff2">More...</a><br /></td></tr>
+<tr class="separator:a80cfa8aee11f468d2790d92e7fee5ff2 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1598ea0e06d97cf556628f5bc6992318 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a1598ea0e06d97cf556628f5bc6992318">dropUpdated</a> ()</td></tr>
+<tr class="memdesc:a1598ea0e06d97cf556628f5bc6992318 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set updated to false.  <a href="class_sensors_1_1_abstract_sensor.html#a1598ea0e06d97cf556628f5bc6992318">More...</a><br /></td></tr>
+<tr class="separator:a1598ea0e06d97cf556628f5bc6992318 inherit pub_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a38aae92bee1cf1cb74ba7486307e9763"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a38aae92bee1cf1cb74ba7486307e9763">DEFAULT_FILTER_WIN_SIZE</a> = 10</td></tr>
-<tr class="separator:a38aae92bee1cf1cb74ba7486307e9763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fdb094ecc8a7b705def92df81536c38"><td class="memItemLeft" align="right" valign="top">static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a5fdb094ecc8a7b705def92df81536c38">DEFAULT_DATA_ASSOCIATION_INTERVAL</a> = 1000</td></tr>
+<tr class="separator:a5fdb094ecc8a7b705def92df81536c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdef6f130d6e8f308ae72c11301f9a61"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#abdef6f130d6e8f308ae72c11301f9a61">DEFAULT_FILTER_WIN_SIZE</a> = 10</td></tr>
+<tr class="separator:abdef6f130d6e8f308ae72c11301f9a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_sensors_1_1_abstract_sensor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_sensors_1_1_abstract_sensor')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_sensors_1_1_abstract_sensor.html">Sensors::AbstractSensor</a></td></tr>
-<tr class="memitem:a17f8f9b53dde812510e163335622fc9b inherit pub_static_attribs_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">static EIGEN_MAKE_ALIGNED_OPERATOR_NEW const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a17f8f9b53dde812510e163335622fc9b">DEFAULT_CAPACITY</a> = 2048</td></tr>
-<tr class="separator:a17f8f9b53dde812510e163335622fc9b inherit pub_static_attribs_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540bad660024cb0b1b0e8da0597b9e14 inherit pub_static_attribs_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">static EIGEN_MAKE_ALIGNED_OPERATOR_NEW constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a540bad660024cb0b1b0e8da0597b9e14">DEFAULT_CAPACITY</a> = 2048</td></tr>
+<tr class="separator:a540bad660024cb0b1b0e8da0597b9e14 inherit pub_static_attribs_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
 <tr class="memitem:a4d7f70f91dcea9c7d06b8c128499f8b8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a4d7f70f91dcea9c7d06b8c128499f8b8">proceedMeasurements</a> ()</td></tr>
 <tr class="memdesc:a4d7f70f91dcea9c7d06b8c128499f8b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the measurements.  <a href="#a4d7f70f91dcea9c7d06b8c128499f8b8">More...</a><br /></td></tr>
 <tr class="separator:a4d7f70f91dcea9c7d06b8c128499f8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4651e72fb9124044737ec2c632212a60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_acc_measurement.html">AccMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a4651e72fb9124044737ec2c632212a60">filter</a> (const <a class="el" href="common__types_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> &amp;mc)</td></tr>
+<tr class="memitem:a4651e72fb9124044737ec2c632212a60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_acc_measurement.html">AccMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a4651e72fb9124044737ec2c632212a60">filter</a> (const <a class="el" href="_acc_measurement_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> &amp;mc)</td></tr>
 <tr class="separator:a4651e72fb9124044737ec2c632212a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb35e7a9b3d4c40708af6454b4bea0d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html#a33de7b89cf80d19db5ab2c344d334ae8">Types::ObjectState::StateVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#acb35e7a9b3d4c40708af6454b4bea0d0">defaultMeasurementNoise</a> () const</td></tr>
 <tr class="separator:acb35e7a9b3d4c40708af6454b4bea0d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c27da4918d48bfdf226e9013ca37334"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_types_1_1_object_state.html#acc1bd87a33e4ddcbba8d2d2de64945c7">Types::ObjectState::CovarMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a8c27da4918d48bfdf226e9013ca37334">measureCovarMatrix</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;measurement, const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;prevState) const</td></tr>
 <tr class="memdesc:a8c27da4918d48bfdf226e9013ca37334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the 8x8 CovarMatrix.  <a href="#a8c27da4918d48bfdf226e9013ca37334">More...</a><br /></td></tr>
 <tr class="separator:a8c27da4918d48bfdf226e9013ca37334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a358cbb3e6b08dde9ba502510b1113ec2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a358cbb3e6b08dde9ba502510b1113ec2">_filterWinSize</a> = <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#abdef6f130d6e8f308ae72c11301f9a61">DEFAULT_FILTER_WIN_SIZE</a></td></tr>
+<tr class="separator:a358cbb3e6b08dde9ba502510b1113ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeda4758afbbc8188fe938402d2a29e95"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#aeda4758afbbc8188fe938402d2a29e95">_dataAssociationInterval</a> = <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a5fdb094ecc8a7b705def92df81536c38">DEFAULT_DATA_ASSOCIATION_INTERVAL</a></td></tr>
+<tr class="separator:aeda4758afbbc8188fe938402d2a29e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac89367dbfe5344c8fb04a1a1fd7bc5a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#ac89367dbfe5344c8fb04a1a1fd7bc5a2">_lastMeasureTime</a> = -1</td></tr>
+<tr class="separator:ac89367dbfe5344c8fb04a1a1fd7bc5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb0e045ee42fe53edc583b5f7c15b792"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#adb0e045ee42fe53edc583b5f7c15b792">_measurementsCapacity</a></td></tr>
+<tr class="separator:adb0e045ee42fe53edc583b5f7c15b792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ceb33e12fa4418c617cc86ce773a8e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_acc_measurement_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a0ceb33e12fa4418c617cc86ce773a8e6">_measurements</a></td></tr>
+<tr class="separator:a0ceb33e12fa4418c617cc86ce773a8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07795f5188423e9ccfbbaa96b2fe75d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_acc_measurement_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a07795f5188423e9ccfbbaa96b2fe75d8">_measurements_filtered</a></td></tr>
+<tr class="separator:a07795f5188423e9ccfbbaa96b2fe75d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a64dcb552280b0b0406ad227f5c2ddd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a7a64dcb552280b0b0406ad227f5c2ddd">_measureSigma</a></td></tr>
+<tr class="separator:a7a64dcb552280b0b0406ad227f5c2ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_sensors_1_1_abstract_sensor"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_sensors_1_1_abstract_sensor')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_sensors_1_1_abstract_sensor.html">Sensors::AbstractSensor</a></td></tr>
 <tr class="memitem:afef052b21d6ccf079d223795fa1f9090 inherit pro_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afef052b21d6ccf079d223795fa1f9090">addState</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;<a class="el" href="class_sensors_1_1_abstract_sensor.html#ae3d27a2c5a14deff18bc296679f4a87a">state</a>)</td></tr>
 <tr class="memdesc:afef052b21d6ccf079d223795fa1f9090 inherit pro_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new state to history and set _updated=true.  <a href="class_sensors_1_1_abstract_sensor.html#afef052b21d6ccf079d223795fa1f9090">More...</a><br /></td></tr>
@@ -184,48 +201,14 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:af3d7f196219c0dd4ef9e37feac2daa5a inherit pro_methods_class_sensors_1_1_abstract_sensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#af3d7f196219c0dd4ef9e37feac2daa5a">updateState</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;<a class="el" href="class_sensors_1_1_abstract_sensor.html#ae3d27a2c5a14deff18bc296679f4a87a">state</a>=<a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>())</td></tr>
 <tr class="memdesc:af3d7f196219c0dd4ef9e37feac2daa5a inherit pro_methods_class_sensors_1_1_abstract_sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the new state if valid (timestamp &gt;0), otherwise add <a class="el" href="class_sensors_1_1_abstract_sensor.html#a0c66b59e0e0dd7b790fe4f06de885f50" title="Perform the measurements. ">proceedMeasurements()</a>  <a href="class_sensors_1_1_abstract_sensor.html#af3d7f196219c0dd4ef9e37feac2daa5a">More...</a><br /></td></tr>
 <tr class="separator:af3d7f196219c0dd4ef9e37feac2daa5a inherit pro_methods_class_sensors_1_1_abstract_sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:adb0e045ee42fe53edc583b5f7c15b792"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#adb0e045ee42fe53edc583b5f7c15b792">_measurementsCapacity</a></td></tr>
-<tr class="separator:adb0e045ee42fe53edc583b5f7c15b792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a358cbb3e6b08dde9ba502510b1113ec2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a358cbb3e6b08dde9ba502510b1113ec2">_filterWinSize</a></td></tr>
-<tr class="separator:a358cbb3e6b08dde9ba502510b1113ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeda4758afbbc8188fe938402d2a29e95"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#aeda4758afbbc8188fe938402d2a29e95">_dataAssociationInterval</a></td></tr>
-<tr class="separator:aeda4758afbbc8188fe938402d2a29e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac89367dbfe5344c8fb04a1a1fd7bc5a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#ac89367dbfe5344c8fb04a1a1fd7bc5a2">_lastMeasureTime</a></td></tr>
-<tr class="separator:ac89367dbfe5344c8fb04a1a1fd7bc5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ceb33e12fa4418c617cc86ce773a8e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a0ceb33e12fa4418c617cc86ce773a8e6">_measurements</a></td></tr>
-<tr class="separator:a0ceb33e12fa4418c617cc86ce773a8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07795f5188423e9ccfbbaa96b2fe75d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a07795f5188423e9ccfbbaa96b2fe75d8">_measurements_filtered</a></td></tr>
-<tr class="separator:a07795f5188423e9ccfbbaa96b2fe75d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a64dcb552280b0b0406ad227f5c2ddd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a7a64dcb552280b0b0406ad227f5c2ddd">_measureSigma</a></td></tr>
-<tr class="separator:a7a64dcb552280b0b0406ad227f5c2ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Accelerometer sensor. Contains list of measurements. </p>
 <p>Similar to <a class="el" href="class_sensors_1_1_beacon_sensor.html" title="Beacons sensor. Contains a list of Hardware::Beacon. ">Sensors::BeaconSensor</a>.</p>
-<p>Note: Accelerometer data is not used at present. </p>
+<p>Note: Accelerometer data is not used at present. Not fully documented. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ec056953da207288600441b6e24ad73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ec056953da207288600441b6e24ad73">&#9670;&nbsp;</a></span>AccelerometerSensor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Sensors::AccelerometerSensor::AccelerometerSensor </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a501ad1ce1b318bf6303b2e60fd8cb66f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a501ad1ce1b318bf6303b2e60fd8cb66f">&#9670;&nbsp;</a></span>~AccelerometerSensor()</h2>
+<a id="aff68a045812dec0592351e9daa6c14f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff68a045812dec0592351e9daa6c14f2">&#9670;&nbsp;</a></span>AccelerometerSensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +217,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Sensors::AccelerometerSensor::~AccelerometerSensor </td>
+          <td class="memname">EIGEN_MAKE_ALIGNED_OPERATOR_NEW Sensors::AccelerometerSensor::AccelerometerSensor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -242,10 +225,12 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constructor. </p>
 
 </div>
 </div>
@@ -295,7 +280,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td>
           <td class="paramname"><em>tm</em>&#160;</td>
         </tr>
         <tr>
@@ -308,8 +293,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3566bebfd73060e19d11e9fe399fa0d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3566bebfd73060e19d11e9fe399fa0d2">&#9670;&nbsp;</a></span>clear()</h2>
+<a id="a9c92b00bb31eca1117b22fd388d40143"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c92b00bb31eca1117b22fd388d40143">&#9670;&nbsp;</a></span>clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,7 +303,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Sensors::AccelerometerSensor::clear </td>
+          <td class="memname">virtual void Sensors::AccelerometerSensor::clear </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -326,14 +311,14 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Clear history. </p>
+<p>Remove all measurements. </p>
 
-<p>Reimplemented from <a class="el" href="class_sensors_1_1_abstract_sensor.html#a8842ddf3563bae0e47aef57d5bfed140">Sensors::AbstractSensor</a>.</p>
+<p>Reimplemented from <a class="el" href="class_sensors_1_1_abstract_sensor.html#a533a854c255689eb6fba78a65946613f">Sensors::AbstractSensor</a>.</p>
 
 </div>
 </div>
@@ -355,7 +340,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -374,14 +359,14 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="struct_acc_measurement.html">AccMeasurement</a> Sensors::AccelerometerSensor::filter </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="common__types_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="_acc_measurement_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> &amp;&#160;</td>
           <td class="paramname"><em>mc</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -417,7 +402,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -434,15 +419,25 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> Sensors::AccelerometerSensor::measureSigma </td>
+          <td class="memname"><a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> Sensors::AccelerometerSensor::measureSigma </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Get _measureSigma. </p>
 
 </div>
 </div>
@@ -464,7 +459,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -476,8 +471,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1cad3c99dc2c715413456c8cb15a6cbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cad3c99dc2c715413456c8cb15a6cbe">&#9670;&nbsp;</a></span>sensorType()</h2>
+<a id="a5650cc799f736e8c6f7318fde67511f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5650cc799f736e8c6f7318fde67511f3">&#9670;&nbsp;</a></span>sensorType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -486,7 +481,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Sensors::AccelerometerSensor::sensorType </td>
+          <td class="memname">virtual int Sensors::AccelerometerSensor::sensorType </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -494,12 +489,12 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get sensor type. Overridden by subclasses. </p>
+<p>Get sensor type. </p>
 
 <p>Implements <a class="el" href="class_sensors_1_1_abstract_sensor.html#ae8f49b7718a0930bac8705ec2b5f8322">Sensors::AbstractSensor</a>.</p>
 
@@ -510,6 +505,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Sensors::AccelerometerSensor::setDataAssociationInterval </td>
@@ -519,7 +517,14 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Set _dataAssociationInterval. </p>
 
 </div>
 </div>
@@ -528,6 +533,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Sensors::AccelerometerSensor::setMeasureSigma </td>
@@ -553,7 +561,14 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Set _measureSigma. </p>
 
 </div>
 </div>
@@ -562,16 +577,26 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Sensors::AccelerometerSensor::setMeasureSigma </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="common__types_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Set _measureSigma. </p>
 
 </div>
 </div>
@@ -586,7 +611,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Sensors::AccelerometerSensor::_dataAssociationInterval</td>
+          <td class="memname">double Sensors::AccelerometerSensor::_dataAssociationInterval = <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a5fdb094ecc8a7b705def92df81536c38">DEFAULT_DATA_ASSOCIATION_INTERVAL</a></td>
         </tr>
       </table>
   </td>
@@ -608,7 +633,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Sensors::AccelerometerSensor::_filterWinSize</td>
+          <td class="memname">int Sensors::AccelerometerSensor::_filterWinSize = <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#abdef6f130d6e8f308ae72c11301f9a61">DEFAULT_FILTER_WIN_SIZE</a></td>
         </tr>
       </table>
   </td>
@@ -630,7 +655,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> Sensors::AccelerometerSensor::_lastMeasureTime</td>
+          <td class="memname"><a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> Sensors::AccelerometerSensor::_lastMeasureTime = -1</td>
         </tr>
       </table>
   </td>
@@ -652,7 +677,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> Sensors::AccelerometerSensor::_measurements</td>
+          <td class="memname"><a class="el" href="_acc_measurement_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> Sensors::AccelerometerSensor::_measurements</td>
         </tr>
       </table>
   </td>
@@ -674,7 +699,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> Sensors::AccelerometerSensor::_measurements_filtered</td>
+          <td class="memname"><a class="el" href="_acc_measurement_8h.html#a276d64c929bb17f0cb3d395c604a5a8d">AccelerationMeasurementsContainer</a> Sensors::AccelerometerSensor::_measurements_filtered</td>
         </tr>
       </table>
   </td>
@@ -718,7 +743,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> Sensors::AccelerometerSensor::_measureSigma</td>
+          <td class="memname"><a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a> Sensors::AccelerometerSensor::_measureSigma</td>
         </tr>
       </table>
   </td>
@@ -730,22 +755,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abd7b101cdf12e677680394b90ace7947"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd7b101cdf12e677680394b90ace7947">&#9670;&nbsp;</a></span>DEFAULT_DATA_ASSOCIATION_INTERVAL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const double Sensors::AccelerometerSensor::DEFAULT_DATA_ASSOCIATION_INTERVAL = 1000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a38aae92bee1cf1cb74ba7486307e9763"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38aae92bee1cf1cb74ba7486307e9763">&#9670;&nbsp;</a></span>DEFAULT_FILTER_WIN_SIZE</h2>
+<a id="a5fdb094ecc8a7b705def92df81536c38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdb094ecc8a7b705def92df81536c38">&#9670;&nbsp;</a></span>DEFAULT_DATA_ASSOCIATION_INTERVAL</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -754,7 +765,29 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int Sensors::AccelerometerSensor::DEFAULT_FILTER_WIN_SIZE = 10</td>
+          <td class="memname">constexpr double Sensors::AccelerometerSensor::DEFAULT_DATA_ASSOCIATION_INTERVAL = 1000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abdef6f130d6e8f308ae72c11301f9a61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdef6f130d6e8f308ae72c11301f9a61">&#9670;&nbsp;</a></span>DEFAULT_FILTER_WIN_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Sensors::AccelerometerSensor::DEFAULT_FILTER_WIN_SIZE = 10</td>
         </tr>
       </table>
   </td>
@@ -767,8 +800,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="accelerometersensor_8h_source.html">accelerometersensor.h</a></li>
-<li><a class="el" href="accelerometersensor_8cpp.html">accelerometersensor.cpp</a></li>
+<li><a class="el" href="_accelerometer_sensor_8h_source.html">AccelerometerSensor.h</a></li>
+<li><a class="el" href="_accelerometer_sensor_8cpp.html">AccelerometerSensor.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

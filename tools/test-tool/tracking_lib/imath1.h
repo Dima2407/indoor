@@ -1,7 +1,7 @@
 #ifndef IMATH_H
 #define IMATH_H
 
-#include "common_types.h"
+#include "common_defs.h"
 #include "Objectstate.h"
 
 /// Various mathematical operations (mostly with containers)

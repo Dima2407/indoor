@@ -5,7 +5,7 @@
 #ifndef TESTTOOL_IMATH2_H
 #define TESTTOOL_IMATH2_H
 
-#include "common_types.h"
+#include "common_defs.h"
 #include "Objectstate.h"
 #include "imath1.h"
 

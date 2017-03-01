@@ -2,6 +2,7 @@
 #define ABSTRACTSENSOR_H
 
 #include "Objectstate.h"
+#include "Point.h"
 
 #include <list>
 
@@ -28,7 +29,7 @@ namespace Sensors {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         // Const
-        static const size_t DEFAULT_CAPACITY = 2048;
+        static constexpr size_t DEFAULT_CAPACITY = 2048;
 
         //--------------------------
         // Public abstract methods

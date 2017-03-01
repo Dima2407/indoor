@@ -63,7 +63,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classtester_1_1_my_bridge-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">tester::MyBridge Class Reference</div>  </div>
@@ -72,28 +73,62 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="_my_bridge_8h_source.html">MyBridge.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa769bab1d981b885037b66b250ce6b8c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#aa769bab1d981b885037b66b250ce6b8c">init</a> ()</td></tr>
-<tr class="memdesc:aa769bab1d981b885037b66b250ce6b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init everything if needed, remove all beacons.  <a href="#aa769bab1d981b885037b66b250ce6b8c">More...</a><br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ad5ccc851e0427c50309846b22954adf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#ad5ccc851e0427c50309846b22954adf7">~MyBridge</a> ()</td></tr>
+<tr class="separator:ad5ccc851e0427c50309846b22954adf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa769bab1d981b885037b66b250ce6b8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#aa769bab1d981b885037b66b250ce6b8c">init</a> ()</td></tr>
+<tr class="memdesc:aa769bab1d981b885037b66b250ce6b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init everything if needed, empty for now.  <a href="#aa769bab1d981b885037b66b250ce6b8c">More...</a><br /></td></tr>
 <tr class="separator:aa769bab1d981b885037b66b250ce6b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc1e88f52d1b50c915e5956fd95d8b40"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#abc1e88f52d1b50c915e5956fd95d8b40">newBeacon</a> (double x, double y, double z, long long hash, double txPower, double damp)</td></tr>
+<tr class="memitem:abc1e88f52d1b50c915e5956fd95d8b40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#abc1e88f52d1b50c915e5956fd95d8b40">newBeacon</a> (double x, double y, double z, long long hash, double txPower, double damp)</td></tr>
 <tr class="memdesc:abc1e88f52d1b50c915e5956fd95d8b40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new beacon.  <a href="#abc1e88f52d1b50c915e5956fd95d8b40">More...</a><br /></td></tr>
 <tr class="separator:abc1e88f52d1b50c915e5956fd95d8b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af50b5afd58018a0b753cf6124d28ab5b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#af50b5afd58018a0b753cf6124d28ab5b">newBeacon</a> (<a class="el" href="structtester_1_1_my_beacon.html">MyBeacon</a> const &amp;beacon)</td></tr>
+<tr class="memitem:af50b5afd58018a0b753cf6124d28ab5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#af50b5afd58018a0b753cf6124d28ab5b">newBeacon</a> (<a class="el" href="structtester_1_1_my_beacon.html">MyBeacon</a> const &amp;beacon)</td></tr>
 <tr class="memdesc:af50b5afd58018a0b753cf6124d28ab5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new beacon from <a class="el" href="structtester_1_1_my_beacon.html" title="Beacon class for tester. ">MyBeacon</a> object.  <a href="#af50b5afd58018a0b753cf6124d28ab5b">More...</a><br /></td></tr>
 <tr class="separator:af50b5afd58018a0b753cf6124d28ab5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c1b258f6e38bcb14cf749b26b81464"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#aa6c1b258f6e38bcb14cf749b26b81464">newMeasurement</a> (long long hash, double txPower, double rssi, long long timestamp)</td></tr>
+<tr class="memitem:aa6c1b258f6e38bcb14cf749b26b81464"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#aa6c1b258f6e38bcb14cf749b26b81464">newMeasurement</a> (long long hash, double txPower, double rssi, long long timestamp)</td></tr>
 <tr class="memdesc:aa6c1b258f6e38bcb14cf749b26b81464"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new measurement.  <a href="#aa6c1b258f6e38bcb14cf749b26b81464">More...</a><br /></td></tr>
 <tr class="separator:aa6c1b258f6e38bcb14cf749b26b81464"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32414e8976df671e54eaa64e17621247"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#a32414e8976df671e54eaa64e17621247">getX</a> ()</td></tr>
+<tr class="memitem:a32414e8976df671e54eaa64e17621247"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#a32414e8976df671e54eaa64e17621247">getX</a> ()</td></tr>
 <tr class="memdesc:a32414e8976df671e54eaa64e17621247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get position from trilateration.  <a href="#a32414e8976df671e54eaa64e17621247">More...</a><br /></td></tr>
 <tr class="separator:a32414e8976df671e54eaa64e17621247"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78822c31c27198392f0bddc5e4cfc8be"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#a78822c31c27198392f0bddc5e4cfc8be">getY</a> ()</td></tr>
+<tr class="memitem:a78822c31c27198392f0bddc5e4cfc8be"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#a78822c31c27198392f0bddc5e4cfc8be">getY</a> ()</td></tr>
 <tr class="separator:a78822c31c27198392f0bddc5e4cfc8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e8488a05f34313e04c3271edd5c5f98"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#a4e8488a05f34313e04c3271edd5c5f98">getZ</a> ()</td></tr>
+<tr class="memitem:a4e8488a05f34313e04c3271edd5c5f98"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#a4e8488a05f34313e04c3271edd5c5f98">getZ</a> ()</td></tr>
 <tr class="separator:a4e8488a05f34313e04c3271edd5c5f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ab081f9ad21c49fb59edeef41a0a8867a"><td class="memItemLeft" align="right" valign="top">Navigator *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtester_1_1_my_bridge.html#ab081f9ad21c49fb59edeef41a0a8867a">navigator</a> = new Navigator</td></tr>
+<tr class="memdesc:ab081f9ad21c49fb59edeef41a0a8867a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The instance of Navigator from tracking_lib.  <a href="#ab081f9ad21c49fb59edeef41a0a8867a">More...</a><br /></td></tr>
+<tr class="separator:ab081f9ad21c49fb59edeef41a0a8867a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad5ccc851e0427c50309846b22954adf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5ccc851e0427c50309846b22954adf7">&#9670;&nbsp;</a></span>~MyBridge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tester::MyBridge::~MyBridge </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a32414e8976df671e54eaa64e17621247"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32414e8976df671e54eaa64e17621247">&#9670;&nbsp;</a></span>getX()</h2>
@@ -113,7 +148,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -140,7 +175,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -165,7 +200,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -190,13 +225,12 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Init everything if needed, remove all beacons. </p>
-<p>Now I see singletons are EVIL !!! </p>
+<p>Init everything if needed, empty for now. </p>
 
 </div>
 </div>
@@ -205,9 +239,6 @@ Static Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void tester::MyBridge::newBeacon </td>
@@ -251,11 +282,6 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add a new beacon. </p>
@@ -281,7 +307,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -331,12 +357,38 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Add a new measurement. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab081f9ad21c49fb59edeef41a0a8867a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab081f9ad21c49fb59edeef41a0a8867a">&#9670;&nbsp;</a></span>navigator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Navigator* tester::MyBridge::navigator = new Navigator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The instance of Navigator from tracking_lib. </p>
+<p>I use a pointer here to localize the Eigen trouble </p>
 
 </div>
 </div>

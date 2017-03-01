@@ -5,7 +5,7 @@
 #ifndef TESTTOOL_COMMON_TYPES2_H
 #define TESTTOOL_COMMON_TYPES2_H
 
-#include "common_types.h"
+#include "common_defs.h"
 
 
 
@@ -113,5 +113,12 @@ struct JointObjectState {
 
 typedef std::list<JointObjectState> JointObjectStateContainer;
 typedef JointObjectStateContainer   JointObjectStateHistory;
+
+
+// General methods to work with common types
+std::vector<double> getRssiVectorFromMeasurements(const BeaconMeasurementsContainer &);
+std::vector<double> getTxVectorFromMeasurements  (const BeaconMeasurementsContainer &);
+std::vector<time_t>   getTimestampVectorFromMeasurements(const BeaconMeasurementsContainer &);
+
 
 #endif //TESTTOOL_COMMON_TYPES2_H

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['kalmanmat',['KalmanMat',['../class_kalman_interface.html#a154ef1d7b4f49cb8bd43fb2008e907cc',1,'KalmanInterface']]],
-  ['kalmanvec',['KalmanVec',['../class_kalman_interface.html#aeae06bd439e79ec4442adc36c57b4f4f',1,'KalmanInterface']]]
+  ['statevec',['StateVec',['../class_types_1_1_object_state.html#a33de7b89cf80d19db5ab2c344d334ae8',1,'Types::ObjectState']]]
 ];

@@ -19,9 +19,9 @@ set(SOURCE_FILES
         Beacon.cpp
         BeaconSensor.cpp
         BMath.cpp
-        common_types.cpp
         Navigator.cpp
         Objectstate.cpp
+        Point.cpp
         )
 
 add_library(tracking_lib STATIC ${SOURCE_FILES})

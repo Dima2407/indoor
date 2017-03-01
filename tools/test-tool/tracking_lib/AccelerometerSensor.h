@@ -2,7 +2,8 @@
 #define ACCELEROMETERSENSOR_H
 
 #include "AbstractSensor.h"
-#include "common_types.h"
+#include "common_defs.h"
+#include "AccMeasurement.h"
 
 
 namespace Sensors {
@@ -16,8 +17,8 @@ namespace Sensors {
     class AccelerometerSensor : public AbstractSensor {
     public:
         // Constants
-        const double DEFAULT_DATA_ASSOCIATION_INTERVAL = 1000; // msec
-        static const int DEFAULT_FILTER_WIN_SIZE = 10;
+        static constexpr  double DEFAULT_DATA_ASSOCIATION_INTERVAL = 1000; // msec
+        static constexpr int DEFAULT_FILTER_WIN_SIZE = 10;
 
         // Eigen stuff
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW

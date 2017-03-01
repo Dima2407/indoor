@@ -25,7 +25,7 @@ class Navigator {
 
 public: // constants
     /// Default capacity of measurements history
-    static const size_t DEFAULT_CAPACITY = 2048;
+    static constexpr size_t DEFAULT_CAPACITY = 2048;
 
     //-------------------------
     // Public Methods

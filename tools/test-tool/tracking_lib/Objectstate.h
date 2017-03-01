@@ -2,7 +2,8 @@
 #define OBJECTSTATE_H
 
 #include "Eigen/Dense"
-#include "common_types.h"
+#include "common_defs.h"
+#include "Point.h"
 
 namespace Types {
 
@@ -37,7 +38,7 @@ namespace Types {
         /// The 8x8 matrix
         typedef Eigen::Matrix<double, NumStates, NumStates> CovarMatrix;
 
-        static const unsigned int __num_states = NumStates;
+        static constexpr unsigned int __num_states = NumStates;
 
         //------------------------------------
         // Public Methods

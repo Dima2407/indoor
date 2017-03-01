@@ -5,11 +5,11 @@
 #pragma warning(pop)
 
 double BMath::get_distance (double rssi, double txPower, double damp) {
-#if defined(DEBUG_MODE)
-#   if defined(ASTUDIO)
-    damp = 4;
-#   endif
-#endif
+//#if defined(DEBUG_MODE)
+//#   if defined(ASTUDIO)
+//    damp = 4;
+//#   endif
+//#endif
     assert(damp != 0);
     return pow(10.0, (txPower - rssi) / (10.0 * damp));
 }

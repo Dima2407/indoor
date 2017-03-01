@@ -1,6 +1,7 @@
 #include "common_types.h"
 
-#if defined(BRIDGE_LIBRARY)
+// This is STUPID, we need these operators in any case
+//#if defined(BRIDGE_LIBRARY)
 
 namespace CommonConstants {
 const double time_multiplicator = 1.0e-3;
@@ -145,5 +146,5 @@ std::vector<time_t> getTimestampVectorFromMeasurements  (const BeaconMeasurement
     return tm;
 }
 
-#endif
+//#endif // BRIDGE_LIBRARY
 

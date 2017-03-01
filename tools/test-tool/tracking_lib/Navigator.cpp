@@ -1,10 +1,10 @@
 #include "Navigator.h"
 
-#ifdef DEBUG_MODE
-#   ifdef ASTUDIO
-#       include <android/log.h>
-#   endif
-#endif
+//#ifdef DEBUG_MODE
+//#   ifdef ASTUDIO
+//#       include <android/log.h>
+//#   endif
+//#endif
 
 void Navigator::addBeaconMeasurement(hash_t hash, double tx_power, double rssi, timestamp_t timestamp) {
     _beacon.addMeasurement(hash, tx_power, rssi, timestamp);
@@ -102,13 +102,13 @@ void Navigator::addState(const Types::ObjectState &state) {
     if (_stateHistory.size() > dataCapacity()) {
         _stateHistory.pop_front();
     }
-#ifdef ASTUDIO
-    double x = 0;
-    double y = 0;
-    x = rstate(0).position().x;
-    y = rstate(0).position().y;
-      __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "states count: %d; last (x: %f, y: %f)", _stateHistory.size(), x, y);
-#endif
+//#ifdef ASTUDIO
+//    double x = 0;
+//    double y = 0;
+//    x = rstate(0).position().x;
+//    y = rstate(0).position().y;
+//      __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "states count: %d; last (x: %f, y: %f)", _stateHistory.size(), x, y);
+//#endif
 }
 
 Types::ObjectState::StateVec Navigator::defaultMeasurementNoise() const {

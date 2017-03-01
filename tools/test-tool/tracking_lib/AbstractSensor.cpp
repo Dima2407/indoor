@@ -1,10 +1,10 @@
 #include "AbstractSensor.h"
 
-#ifdef DEBUG_MODE
-#ifdef ASTUDIO
-#   include <android/log.h>
-#endif
-#endif
+//#ifdef DEBUG_MODE
+//#ifdef ASTUDIO
+//#   include <android/log.h>
+//#endif
+//#endif
 
 namespace Sensors {
 
@@ -26,7 +26,7 @@ Types::ObjectState AbstractSensor::rstate(size_t pos) const {
     return Types::ObjectState();
 }
 
-const Types::ObjectStateContainer& AbstractSensor::history(size_t length) const {
+Types::ObjectStateContainer AbstractSensor::history(size_t length) const {
     if (length == 0) {
         return _history;
     }
@@ -46,11 +46,11 @@ void AbstractSensor::setDataCapacity(size_t c) {
 
 
 void AbstractSensor::addState(const Types::ObjectState &state) {
-#ifdef DEBUG_MODE
-#ifdef ASTUDIO
-    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Add new state (x: %f, y: %f), time: %d", state.position().x, state.position().y, state.timestamp());
-#endif
-#endif
+//#ifdef DEBUG_MODE
+//#ifdef ASTUDIO
+//    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Add new state (x: %f, y: %f), time: %d", state.position().x, state.position().y, state.timestamp());
+//#endif
+//#endif
     if (state.valid()) {
         if (!_history.empty()) {
             if (*_history.rbegin() == state) { // new state must be different from last at least in one parameter (including timestamp)

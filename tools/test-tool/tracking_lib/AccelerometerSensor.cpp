@@ -2,33 +2,6 @@
 
 namespace Sensors {
 
-AccelerometerSensor::AccelerometerSensor() : _dataAssociationInterval(DEFAULT_DATA_ASSOCIATION_INTERVAL)
-                                           , _lastMeasureTime(-1)
-                                           , _filterWinSize(DEFAULT_FILTER_WIN_SIZE)
-{
-    Vector3 s;
-    s.x = 0.05;
-    s.y = 0.05;
-    s.z = 0.05;
-    setMeasureSigma(s);
-}
-
-AccelerometerSensor::~AccelerometerSensor() {
-
-}
-
-int AccelerometerSensor::sensorType() const {
-    return SensorType::AccelerometerLinear;
-}
-
-void AccelerometerSensor::clear() {
-    _measurements.clear();
-    _measurements_filtered.clear();
-}
-
-void    AccelerometerSensor::setDataAssociationInterval(double dt) {
-    _dataAssociationInterval = dt;
-}
 
 void AccelerometerSensor::addMeasurement(const AccMeasurement &m) {
     dropUpdated();
@@ -58,19 +31,6 @@ void AccelerometerSensor::addMeasurement(double ax, double ay, double az, timest
     addMeasurement(m);
 }
 
-void AccelerometerSensor::setMeasureSigma(double sx, double sy, double sz) {
-    _measureSigma.x = sx;
-    _measureSigma.y = sy;
-    _measureSigma.z = sz;
-}
-
-void AccelerometerSensor::setMeasureSigma(const Vector3 &s) {
-    setMeasureSigma(s.x, s.y, s.z);
-}
-
-Vector3 AccelerometerSensor::measureSigma() const {
-    return _measureSigma;
-}
 
 Types::ObjectState AccelerometerSensor::proceedMeasurements() {
     Types::ObjectState state;

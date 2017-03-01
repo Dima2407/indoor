@@ -122,11 +122,11 @@ double BeaconSensor::beaconDistance(hash_t hash, size_t smooth_count) {
             dist = BMath::get_distance(rssi_m, tx_power_m, b.damp());
         }
     } else {
-#ifdef DEBUG_MODE
-#ifdef ASTUDIO
-      __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "No hash %d", hash);
-#endif
-#endif
+//#ifdef DEBUG_MODE
+//#ifdef ASTUDIO
+//      __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "No hash %d", hash);
+//#endif
+//#endif
     }
     return dist;
 }

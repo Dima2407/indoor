@@ -1,23 +1,15 @@
 #include "Beacon.h"
+
 #include "imath1.h"
 #include "BMath.h"
 
-#ifdef ASTUDIO
-#   include <android/log.h>
-#endif
+//#ifdef ASTUDIO
+//#   include <android/log.h>
+//#endif
 
 namespace Sensors {
 namespace Hardware {
 
-const double Beacon::DEFAULT_DAMP = 4.0;
-const int Beacon::DEFAULT_DATA_CAPACITY   = 2048;
-const int Beacon::DEFAULT_FILTER_WIN_SIZE = 10;
-
-Beacon::Beacon(hash_t hash, double damp, double tx_power) : _maxDataCapacity(DEFAULT_DATA_CAPACITY)
-                                         , _filterWinSize(DEFAULT_FILTER_WIN_SIZE)
-                                         , _hash(hash), _damp(damp), _txPower(tx_power)
-                                         , _useTxPowerFromMeasurements(true) {
-}
 
 const Point&    Beacon::position() const {
     return _position;
@@ -71,21 +63,21 @@ void Beacon::clear() {
 }
 
 void  Beacon::addMeasurement(const BeaconMeasurement &m) {
-#ifdef DEBUG_MODE
-#ifdef ASTUDIO
-    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Measurement (%f), time: %f", (double)m.hash, (double)m.timestamp);
-#endif
-#endif
+//#ifdef DEBUG_MODE
+//#ifdef ASTUDIO
+//    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Measurement (%f), time: %f", (double)m.hash, (double)m.timestamp);
+//#endif
+//#endif
     _measurements.push_back(m);
     if ((_maxDataCapacity > 0) && (_measurements.size() > _maxDataCapacity)) {
         _measurements.pop_front();
     }
     BeaconMeasurement mf = filter(_measurements); // needs to smooth (tx-rssi) to supress noise
-#ifdef DEBUG_MODE
-#ifdef ASTUDIO
-    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Smooth (%f), time: %f", (double)mf.hash, (double)mf.timestamp);
-#endif
-#endif
+//#ifdef DEBUG_MODE
+//#ifdef ASTUDIO
+//    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Smooth (%f), time: %f", (double)mf.hash, (double)mf.timestamp);
+//#endif
+//#endif
     if (mf.timestamp >= 0) {
         _filtered_measurements.push_back(mf);
         if ((_maxDataCapacity > 0) && (_filtered_measurements.size() > _maxDataCapacity)) {
@@ -129,11 +121,11 @@ BeaconMeasurement Beacon::rmeasurement(size_t i) const {
         std::advance(it, i);
         m = *it;
     }
-#ifdef DEBUG_MODE
-#ifdef ASTUDIO
-    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Returning Measurement %ld (%f), time: %f", i, (double)m.hash, (double)m.timestamp);
-#endif
-#endif
+//#ifdef DEBUG_MODE
+//#ifdef ASTUDIO
+//    __android_log_print(ANDROID_LOG_ERROR, "BridgeLOG", "Returning Measurement %ld (%f), time: %f", i, (double)m.hash, (double)m.timestamp);
+//#endif
+//#endif
     return m;
 }
 

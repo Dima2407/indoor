@@ -105,8 +105,11 @@ namespace CommonConstants {
 
 } // CommonConstants
 
-#if defined(BRIDGE_LIBRARY)
-#   include "common_types_lib_dependence.h"
-#endif
+// #if defined(BRIDGE_LIBRARY)
+// This is was stupid, this include is needed in any case
+
+#include "common_types_lib_dependence.h"
+
+// #endif
 
 #endif // COMMON_TYPES_H

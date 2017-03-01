@@ -5,12 +5,13 @@
 #include <cstdio>
 #include <algorithm>
 
-// Global variables and constants
-extern const size_t __MAX_BEACON_HISTORY_LENGTH;        // maximum amount of stored beacon data (for each beacon)
-extern const size_t __MAX_BEACON_RAW_POS_HISTORY_LENGTH;// maximum amount of stored beacon distance
-extern const size_t __MAX_ACCELERATION_HISTORY_LENGTH;  // maximum amount of stored acceleration data
-extern const size_t __MAX_GYROSCOPE_HISTORY_LENGTH;     // maximum amount of stored gyroscope data
-extern const size_t __MAX_STATE_HISTORY_LENGTH;         // maximum amount of stored object states
+// Global variables and constants, supposedly
+// Unused and undefined, removed by Oleksiy Grechnyev
+//extern const size_t __MAX_BEACON_HISTORY_LENGTH;        // maximum amount of stored beacon data (for each beacon)
+//extern const size_t __MAX_BEACON_RAW_POS_HISTORY_LENGTH;// maximum amount of stored beacon distance
+//extern const size_t __MAX_ACCELERATION_HISTORY_LENGTH;  // maximum amount of stored acceleration data
+//extern const size_t __MAX_GYROSCOPE_HISTORY_LENGTH;     // maximum amount of stored gyroscope data
+//extern const size_t __MAX_STATE_HISTORY_LENGTH;         // maximum amount of stored object states
 
 /// \brief Sensor types
 namespace SensorType {

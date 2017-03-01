@@ -12,7 +12,7 @@ namespace Sensors {
 
     class AbstractSensor;
 
-// Pointer to a function void callback(Snsors::AbstractSensor *, void *){}, UNUSED
+// Pointer to a function void callback(Sensors::AbstractSensor *, void *){}, UNUSED
 //typedef void (*CallBackFunc) (AbstractSensor*, SensorDataPtr);
 
 /** \brief The abstract parent of Sensors::BeaconSensor and Sensors::AccelerometerSensor.
@@ -31,7 +31,7 @@ namespace Sensors {
         static const size_t DEFAULT_CAPACITY = 2048;
 
         //--------------------------
-        // Public methods
+        // Public abstract methods
         //--------------------------
 
         /// Virtual destructor just in case
@@ -39,6 +39,12 @@ namespace Sensors {
 
         /// Get sensor type. Overridden by subclasses.
         virtual int sensorType() const = 0;
+
+        //--------------------------
+        // Public methods
+        //--------------------------
+
+
 
         /// Get reference state.
         Types::ObjectState referenceState() const{
@@ -61,7 +67,7 @@ namespace Sensors {
         Types::ObjectState rstate(size_t pos) const;
 
         /// Get the entire history
-        const Types::ObjectStateContainer &history(size_t length = 0) const;
+        Types::ObjectStateContainer history(size_t length = 0) const;
 
         /// Get data capacity
         size_t dataCapacity() const{
@@ -114,6 +120,10 @@ namespace Sensors {
         * the Types::ObjectState() constructor creates an invalid state.
         */
         void updateState(const Types::ObjectState &state = Types::ObjectState());
+
+        //--------------------------
+        // Protected abstract methods
+        //--------------------------
 
         /** \brief Perform the measurements. 
          *

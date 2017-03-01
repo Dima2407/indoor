@@ -1,0 +1,22 @@
+@startuml
+package Sensors{
+    abstract class AbstractSensor{
+        {static} + DEFAULT_CAPACITY : size_t = 2048
+        - _history : std::list<Types::ObjectState>
+        - _maxDataCapacity : size_t
+        - _referenceState : Types::ObjectState
+        - _updated : bool
+        --
+        {abstract} + const sensorType() : void
+        # addState(state : const Types::ObjectState &) : void
+        # updateState(state : const Types::ObjectState &) : void
+        {abstract} # proceedMeasurements() : Types::ObjectState
+
+        {abstract} # measureCovarMatrix(measurement : const Types::ObjectState &,
+            {abstract} prevState : const Types::ObjectState &) : Types::ObjectState::CovarMatrix
+
+        ..
+        + getters, setters
+    }
+}
+@enduml

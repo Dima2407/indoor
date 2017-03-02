@@ -209,14 +209,16 @@ Protected Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a643e026bccf02db879ed1111b7c09187"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_sensors_1_1_beacon_sensor.html#a00df5e3672ebc4c2cca07a2dff32667d">BeaconContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_beacon_sensor.html#a643e026bccf02db879ed1111b7c09187">_beacons</a></td></tr>
-<tr class="memdesc:a643e026bccf02db879ed1111b7c09187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map with beacons.  <a href="#a643e026bccf02db879ed1111b7c09187">More...</a><br /></td></tr>
+<tr class="memdesc:a643e026bccf02db879ed1111b7c09187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container with beacons.  <a href="#a643e026bccf02db879ed1111b7c09187">More...</a><br /></td></tr>
 <tr class="separator:a643e026bccf02db879ed1111b7c09187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98b743cbfc6a706b336d3b2873c6bab8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_beacon_sensor.html#a98b743cbfc6a706b336d3b2873c6bab8">_dataAssociationInterval</a> = <a class="el" href="class_sensors_1_1_beacon_sensor.html#ac9b21e81883eceadcca595c649d5b8bc">DEFAULT_DATA_ASSOCIATION_INTERVAL</a></td></tr>
+<tr class="memdesc:a98b743cbfc6a706b336d3b2873c6bab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time interval to average over ???  <a href="#a98b743cbfc6a706b336d3b2873c6bab8">More...</a><br /></td></tr>
 <tr class="separator:a98b743cbfc6a706b336d3b2873c6bab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca592f22a9ee479d3f8ea8435489caed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_beacon_sensor.html#aca592f22a9ee479d3f8ea8435489caed">_lastMeasureTime</a> = -1</td></tr>
 <tr class="memdesc:aca592f22a9ee479d3f8ea8435489caed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp of the last measurement.  <a href="#aca592f22a9ee479d3f8ea8435489caed">More...</a><br /></td></tr>
 <tr class="separator:aca592f22a9ee479d3f8ea8435489caed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71dc9862a29c621da9c5e33c114fd82d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_point_8h.html#a61fd54f66e33e6749fef659da227e2ef">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_beacon_sensor.html#a71dc9862a29c621da9c5e33c114fd82d">_measureSigma</a></td></tr>
+<tr class="memdesc:a71dc9862a29c621da9c5e33c114fd82d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Something for covar matrix, UNUSED.  <a href="#a71dc9862a29c621da9c5e33c114fd82d">More...</a><br /></td></tr>
 <tr class="separator:a71dc9862a29c621da9c5e33c114fd82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -830,7 +832,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Map with beacons. </p>
+<p>Container with beacons. </p>
 
 </div>
 </div>
@@ -853,6 +855,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Time interval to average over ??? </p>
 
 </div>
 </div>
@@ -899,6 +903,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Something for covar matrix, UNUSED. </p>
 
 </div>
 </div>

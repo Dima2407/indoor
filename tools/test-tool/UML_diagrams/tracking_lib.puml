@@ -49,6 +49,30 @@ package Sensors{
     }
 
     class AccelerometerSensor{
+    + {static} DEFAULT_DATA_ASSOCIATION_INTERVAL : double = 1000
+    + {static} DEFAULT_FILTER_WIN_SIZE : int = 10
+    ..
+    - _filterWinSize : int
+    - _dataAssociationInterval : double
+    - _lastMeasureTime : timestamp_t
+    - _measurementsCapacity : int
+    - _measurements : std::list<AccMeasurement>
+    - _measurements_filtered : std::list<AccMeasurement>
+    - _measureSigma : Point
+    --
+    + AccelerometerSensor()
+    + const sensorType() : int
+    + clear() : void
+    + addMeasurement(m : const AccMeasurement &) : void
+    + addMeasurement(ax : double, ay : double, az : double, tm : timestamp_t) : void
+    ..
+    # proceedMeasurements() : Types::ObjectState
+    # filter(mc : const AccelerationMeasurementsContainer &) : AccMeasurement
+    # const defaultMeasurementNoise() : Eigen::Matrix<double, 8, 1>
+    # const measureCovarMatrix(measurement : const Types::ObjectState &,
+      prevState : const Types::ObjectState &) : Eigen::Matrix<double, 8, 8>
+    ..
+    + getters, setters
     }
 
     AbstractSensor <|.. BeaconSensor
@@ -164,6 +188,18 @@ class BMath{
    ie_time : timestamp_t ) : BeaconMeasurement
 }
 
+class BeaconRssiTimeToPoint {
+--
++ const operator()(m : const BeaconMeasurement &) :
+  General::Math::DataFitting::SimplePointType<X, Y>
+}
+
+class BeaconTxPowerTimeToPoint {
+--
++ const operator()(m : const BeaconMeasurement &) :
+  General::Math::DataFitting::SimplePointType<X, Y>
+}
+
 BMath +== BeaconRssiTimeToPoint
 BMath +== BeaconTxPowerTimeToPoint
 
@@ -182,6 +218,16 @@ package CommonConstants{
 package Math{
 }
 
+namespace General{
+ namespace Math{
+  namespace DataFitting {
+   class SimplePointType <X,Y> {
+     x : X
+     y : Y
+   }
+  }
+ }
+}
 class Navigator{
  + {static} DEFAULT_CAPACITY : size_t = 2048
  - _beacon : Sensors::BeaconSensor

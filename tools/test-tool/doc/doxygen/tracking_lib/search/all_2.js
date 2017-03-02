@@ -6,7 +6,7 @@ var searchData=
   ['beaconcontainer',['BeaconContainer',['../class_sensors_1_1_beacon_sensor.html#a00df5e3672ebc4c2cca07a2dff32667d',1,'Sensors::BeaconSensor']]],
   ['beacondistance',['beaconDistance',['../class_sensors_1_1_beacon_sensor.html#af6c64971902d6135bff0d7d2619c8ccf',1,'Sensors::BeaconSensor']]],
   ['beaconhistorycontainer',['BeaconHistoryContainer',['../_beacon_measurement_8h.html#ae289361bcb53ec9adb93cbd5e1ed7267',1,'BeaconMeasurement.h']]],
-  ['beaconmeasurement',['BeaconMeasurement',['../struct_beacon_measurement.html',1,'BeaconMeasurement'],['../struct_beacon_measurement.html#a4153d9a88479432fab7c20a2fe398f74',1,'BeaconMeasurement::BeaconMeasurement()']]],
+  ['beaconmeasurement',['BeaconMeasurement',['../struct_beacon_measurement.html',1,'']]],
   ['beaconmeasurement_2eh',['BeaconMeasurement.h',['../_beacon_measurement_8h.html',1,'']]],
   ['beaconmeasurementscontainer',['BeaconMeasurementsContainer',['../_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b',1,'BeaconMeasurement.h']]],
   ['beaconrssitimetopoint',['BeaconRssiTimeToPoint',['../struct_b_math_1_1_beacon_rssi_time_to_point.html',1,'BMath']]],

@@ -162,7 +162,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a5480ee82d3352bde75419e7c9220c72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max size of history.  <a href="#a5480ee82d3352bde75419e7c9220c72b">More...</a><br /></td></tr>
 <tr class="separator:a5480ee82d3352bde75419e7c9220c72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a904b27352b3e301b85a1c887b79a16c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a904b27352b3e301b85a1c887b79a16c6">_referenceState</a></td></tr>
-<tr class="memdesc:a904b27352b3e301b85a1c887b79a16c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference state.  <a href="#a904b27352b3e301b85a1c887b79a16c6">More...</a><br /></td></tr>
+<tr class="memdesc:a904b27352b3e301b85a1c887b79a16c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference state, UNUSED in <a class="el" href="class_sensors_1_1_beacon_sensor.html" title="Beacons sensor. Contains a list of Hardware::Beacon. ">BeaconSensor</a>.  <a href="#a904b27352b3e301b85a1c887b79a16c6">More...</a><br /></td></tr>
 <tr class="separator:a904b27352b3e301b85a1c887b79a16c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d68584653178eb78b55f3600c8f7030"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a0d68584653178eb78b55f3600c8f7030">_updated</a> = false</td></tr>
 <tr class="memdesc:a0d68584653178eb78b55f3600c8f7030"><td class="mdescLeft">&#160;</td><td class="mdescRight">The updated flag.  <a href="#a0d68584653178eb78b55f3600c8f7030">More...</a><br /></td></tr>
@@ -171,7 +171,8 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The abstract parent of <a class="el" href="class_sensors_1_1_beacon_sensor.html" title="Beacons sensor. Contains a list of Hardware::Beacon. ">Sensors::BeaconSensor</a> and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html" title="Accelerometer sensor. Contains list of measurements. ">Sensors::AccelerometerSensor</a>. </p>
 <p>Keeps one <a class="el" href="class_types_1_1_object_state.html" title="Object (Smartphone) state as a vector + matrix. ">Types::ObjectState</a> object called referenceState, and a container of <a class="el" href="class_types_1_1_object_state.html" title="Object (Smartphone) state as a vector + matrix. ">Types::ObjectState</a> objects called history. dataCapacity is the maximum size of history.</p>
-<p>Apart from keeping the history, this class doesn't do much. Apparently this changes in its chidren. </p>
+<p>Apart from keeping the history, this class doesn't do much. Apparently this changes in its chidren.</p>
+<p>Note: _referenceState seems UNUSED at present </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a21f54824575290fc96e56a4e52848dfb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21f54824575290fc96e56a4e52848dfb">&#9670;&nbsp;</a></span>~AbstractSensor()</h2>
@@ -383,7 +384,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Return the last state in history. </p>
-<p>Note: used in bridge.h to get the device position </p>
+<p>Note: used in e.g. bridge.h to get the device position </p>
 
 </div>
 </div>
@@ -422,7 +423,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the 8x8 CovarMatrix. </p>
-<p>This gives 0 for <a class="el" href="class_sensors_1_1_abstract_sensor.html" title="The abstract parent of Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Sensors::AbstractSensor</a>, and I think even subclasses didn't implement it properly </p>
+<p>Abstract for <a class="el" href="class_sensors_1_1_abstract_sensor.html" title="The abstract parent of Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Sensors::AbstractSensor</a>, and even subclasses didn't implement it properly </p>
 
 <p>Implemented in <a class="el" href="class_sensors_1_1_beacon_sensor.html#a2b15b718a40dbd6724e584763a44b0ac">Sensors::BeaconSensor</a>, and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a8c27da4918d48bfdf226e9013ca37334">Sensors::AccelerometerSensor</a>.</p>
 
@@ -452,7 +453,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform the measurements. </p>
-<p>Create the <a class="el" href="class_types_1_1_object_state.html" title="Object (Smartphone) state as a vector + matrix. ">Types::ObjectState</a> position data from sensor data. For <a class="el" href="class_sensors_1_1_abstract_sensor.html" title="The abstract parent of Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Sensors::AbstractSensor</a> it does nothing, but for subclasses it involves funny things like trilateration. </p>
+<p>Create the <a class="el" href="class_types_1_1_object_state.html" title="Object (Smartphone) state as a vector + matrix. ">Types::ObjectState</a> position data from sensor data. Abstract for <a class="el" href="class_sensors_1_1_abstract_sensor.html" title="The abstract parent of Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Sensors::AbstractSensor</a>, for subclasses it involves funny things like trilateration. </p>
 
 <p>Implemented in <a class="el" href="class_sensors_1_1_beacon_sensor.html#acac4a2952c6e0a2e9116ec986602d815">Sensors::BeaconSensor</a>, and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a4d7f70f91dcea9c7d06b8c128499f8b8">Sensors::AccelerometerSensor</a>.</p>
 
@@ -728,7 +729,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The reference state. </p>
+<p>The reference state, UNUSED in <a class="el" href="class_sensors_1_1_beacon_sensor.html" title="Beacons sensor. Contains a list of Hardware::Beacon. ">BeaconSensor</a>. </p>
 
 </div>
 </div>

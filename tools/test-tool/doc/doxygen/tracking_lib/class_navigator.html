@@ -160,6 +160,7 @@ Private Attributes</h2></td></tr>
 <p><a class="el" href="class_sensors_1_1_accelerometer_sensor.html" title="Accelerometer sensor. Contains list of measurements. ">Sensors::AccelerometerSensor</a> seems to be disabled at present.</p>
 <p>Note: used to be a singleton, I (Oleksiy Grechnyev) changed this</p>
 <p>Note: apparently BeaconSensor uses txPower from measurements while txPower of beacon is ignored, while damp is taken from the beacon data</p>
+<p>Note the state history in <a class="el" href="class_navigator.html" title="A class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Navigator</a> is UNUSED (and probably unfinished) at present Use <a class="el" href="class_navigator.html#a868f9fe04a72b8984148d02f49fa33ea" title="Get beacon sensor. ">beacon()</a>.<a class="el" href="class_navigator.html#a88601e5dd46d4bca3615c010729e14f6" title="Get last state from _stateHistory. ">lastState()</a> instead</p>
 <p>Note : Because of the stupid eigen, it is recommended that you use <a class="el" href="class_navigator.html" title="A class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Navigator</a> class with new . If you have any class with type <a class="el" href="class_navigator.html" title="A class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Navigator</a> member, this class must contain the EIGEN_MAKE_ALIGNED_OPERATOR_NEW macro. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a25ad31076c44037b8dc8ac80bc4006d6"></a>
@@ -621,7 +622,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Smoothed distance to beacons. </p>
-<p>Simply returns _beacon.beaconDistance(hash, smooth_length) at present.</p>
+<p>Simply returns _beacon.beaconDistance(hash, smooth_length) at present. UNUSED</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">hash</td><td>Hash code of the beacon </td></tr>

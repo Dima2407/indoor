@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['point',['Point',['../struct_point.html#ad92f2337b839a94ce97dcdb439b4325a',1,'Point']]],
   ['position',['position',['../class_sensors_1_1_hardware_1_1_beacon.html#a060e6641e471324ebbe60f90f732f6e4',1,'Sensors::Hardware::Beacon::position()'],['../class_types_1_1_object_state.html#a2660673eed6c38aaaee4c006a990340d',1,'Types::ObjectState::position()']]],
   ['power_5felments',['power_elments',['../namespace_math.html#ae9ae6c8571a0643160ca6e5487d342ba',1,'Math']]],
   ['powered_5felments',['powered_elments',['../namespace_math.html#ac4402f9bc3ce06cc9dcdb4f28c3d223e',1,'Math']]],

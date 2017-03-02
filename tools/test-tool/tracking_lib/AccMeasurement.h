@@ -10,9 +10,8 @@
 
 /** \brief Accelerator measurement with a timestamp */
 struct AccMeasurement {
-    AccMeasurement() : timestamp(-1) {values.x = values.y = values.z = 0;}
-    Vector3 values;
-    timestamp_t    timestamp;
+    Vector3 values; // = 0
+    timestamp_t    timestamp = -1;
 };
 
 typedef std::list<AccMeasurement>    AccelerationMeasurementsContainer;

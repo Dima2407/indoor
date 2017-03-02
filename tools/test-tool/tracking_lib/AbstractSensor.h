@@ -23,8 +23,7 @@ namespace Sensors {
  *
  * Apart from keeping the history, this class doesn't do much. Apparently this changes in its chidren.
  *
- * Note: _referenceState is definitely UNUSED in BeaconSensor
- * AccelerometerSensor reads it, but doesn't write (WTF ???)
+ * Note: _referenceState seems UNUSED at present
  */
     class AbstractSensor {
     public:

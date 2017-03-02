@@ -9,16 +9,15 @@
 
 /** \brief %Beacon measurement data (hash, txPower, rssi, timestamp)*/
 struct BeaconMeasurement {
-    /// Default constructor with stupid values
-    BeaconMeasurement() : hash(-1), txPower(0), rssi(0), timestamp(-1) {}
+
     /// Beacon unique ID (MAC address hash ?)
-    int    hash;
+    int    hash = -1;
     /// Beacon unique ID (MAC address hash ?)
-    double txPower;
+    double txPower = 0;
     /// Recieved signal strength, logarithmic
-    double rssi;
+    double rssi = 0;
     /// Time stamp of the measurement
-    timestamp_t   timestamp;
+    timestamp_t   timestamp = -1;
 };
 
 

@@ -152,11 +152,16 @@ namespace Sensors {
         measureCovarMatrix(const Types::ObjectState &measurement, const Types::ObjectState &prevState) const;
 
     private:
-        /// Map with beacons
+        /// Container with beacons
         BeaconContainer _beacons;
+
+        /// Time interval to average over ???
         double _dataAssociationInterval = DEFAULT_DATA_ASSOCIATION_INTERVAL;
+
         /// Timestamp of the last measurement
         timestamp_t _lastMeasureTime = -1;
+
+        /// Something for covar matrix, UNUSED
         Vector3 _measureSigma;
     };
 } // namespace Sensors

@@ -6,7 +6,7 @@
 #define TESTTOOL_IMATH2_H
 
 #include "common_defs.h"
-#include "Objectstate.h"
+#include "ObjectState.h"
 #include "imath1.h"
 
 /// \file imath2.h : Unused things that were originally in imath.h

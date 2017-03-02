@@ -4,12 +4,18 @@ package Sensors{
         {static} + DEFAULT_CAPACITY : size_t = 2048
         - _history : std::list<Types::ObjectState>
         - _maxDataCapacity : size_t
-        - _referenceState : Types::ObjectState
+        - _referenceState : Types::ObjectState [UNUSED in BeaconSensor]
         - _updated : bool
         --
         {abstract} + const sensorType() : void
+        + const lastState() : Types::ObjectState
+        + const state(pos : size_t) : Types::ObjectState
+        + const rstate(pos : size_t) : Types::ObjectState
+        + clear() : void
+        ..
         # addState(state : const Types::ObjectState &) : void
         # updateState(state : const Types::ObjectState &) : void
+        ..
         {abstract} # proceedMeasurements() : Types::ObjectState
 
         {abstract} # measureCovarMatrix(measurement : const Types::ObjectState &,
@@ -18,5 +24,97 @@ package Sensors{
         ..
         + getters, setters
     }
+
+    class BeaconSensor{
+    }
+
+    class AccelerometerSensor{
+    }
+
+    AbstractSensor <|.. BeaconSensor
+    AbstractSensor <|.. AccelerometerSensor
+
+
+
+
+
+    package Hardware{
+        class Beacon{
+        }
+    }
+
+    BeaconSensor *-- Beacon
 }
+
+
+package Types{
+    class ObjectState{
+       - _state_vector :  Eigen::Matrix<double, 8, 1>
+       - _covar_matrix :  Eigen::Matrix<double, 8, 8>
+       - _timestamp : timestamp_t
+       ..
+
+       {static} + X = 0
+       {static} + Y = 1
+       {static} + Vx = 2
+       {static} + Vy = 3
+       {static} + Ax = 4
+       {static} + Ay = 5
+       {static} + sAx = 6
+       {static} + sAy = 7
+       {static} + NumStates = 8
+       --
+
+       + ObjectState()
+       ..
+       + operator==(rhs : const ObjectState &) : bool
+       + valid() : bool
+       ..
+       + getetrs, setters
+    }
+
+    abstract class ObjectState_AbstractUnaryPredicator{
+        # ObjectState_AbstractUnaryPredicator(s : const Types::ObjectState &)
+        - _internal_state : Types::ObjectState
+        --
+        + {abstract} operator()(s : const Types::ObjectState &) : bool
+    }
+
+    class ObjectState_TimeUnaryPredicator {
+        --
+        + ObjectState_TimeUnaryPredicator(s : const Types::ObjectState &)
+        + operator()(s : const Types::ObjectState &) : bool
+    }
+
+    ObjectState_AbstractUnaryPredicator <|.. ObjectState_TimeUnaryPredicator
+
+    AbstractSensor <-- ObjectState
+    AbstractSensor <.. ObjectState_TimeUnaryPredicator
+
+
+}
+
+class AccMeasurement {
+}
+
+class BeaconMeasurement {
+}
+
+class BMath{
+}
+
+class Point{
+}
+
+package CommonConstants{
+}
+
+package Math{
+}
+
+class Navigator{
+}
+
+Navigator *-- BeaconSensor
+Navigator *-- AccelerometerSensor
 @enduml

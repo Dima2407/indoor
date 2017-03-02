@@ -57,6 +57,8 @@ void AbstractSensor::addState(const Types::ObjectState &state) {
                 return;
             }
         }
+
+        // Looks like it replaces a list entry with equal timeline if found
         Types::ObjectStateContainer::reverse_iterator it = std::find_if(_history.rbegin(), _history.rend(), Types::ObjectState_TimeUnaryPredicator(state));
         if (it != _history.rend()) {
             *it = state;

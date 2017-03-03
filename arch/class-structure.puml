@@ -17,9 +17,30 @@ package Android <<Rectangle>>{
 
 package com.jim-it.traking.events{
 class MeasurementEvent{
--timestamp : int
+-timestamp : long
 -type: MeasurementType
 -values : float []
+-- constructors --
++MeasurementEvent(type: MeasurementType, data: float...)
+-- methods --
++getCreatedAt(): long
++getType(): MeasurementType
++getData(): <? extends MeasurementData>
+}
+
+class GPSMeasurementData {
++getLongitude(): float
++getLatitude() : float
+}
+class BluetoothMeasurementData {
++getHash(): float
++getRSSI() : float
+}
+
+class MeasurementData{
+#data : MeasurementEvent
+-- constructors --
+MeasurementData(event : MeasurementEvent)
 }
 enum MeasurementType {
 GEO_VALUE
@@ -27,8 +48,10 @@ SENSOR_VALUE
 WIFI_VALUE
 BLE_VALUE
 
-}
 
+}
+MeasurementData <|-- GPSMeasurementData
+MeasurementData <|-- BluetoothMeasurementData
 MeasurementEvent *-- MeasurementType
 }
 
@@ -42,15 +65,14 @@ class BeaconConfig {
 -position: float[]
 }
 
-+abstract class ProviderConfiguration<TConfig>{
-+<size 20>updateConfiguration(TConfig[]) : void</size>
++interface ProviderConfiguration<TConfig>{
++{abstract}updateConfiguration(TConfig[]) : void
 }
 
 class BluetoothProviderConfiguration{
-
++{native}updateConfiguration(BeaconConfig[]) : void
 }
 ProviderConfiguration <|-- BluetoothProviderConfiguration
-BluetoothProviderConfiguration o-- BeaconConfig
 }
 
 
@@ -58,7 +80,14 @@ package com.jim-it.traking{
 class IndoorLocationManager {
 -providers : List<MeasurementProvider>
 -locationListener : IndoorLocationListener
-+addProvider(provider : MeasurementProvider) :
+--constructors--
++IndoorLocationManager()
+--methods--
++enableProvider(type : MeasurementType,
+                configuration: ProviderConfiguration,
+                transfer: MeasurementTransfer) : void
++disableProvider(type: MeasurementType) : void
++setLocationUpdateListener(listener : IndoorLocationListener): void
 +prepare() : void
 +start() : void
 +stop() : void
@@ -72,13 +101,21 @@ interface IndoorLocationListener{
 
 package com.jim-it.traking.providers {
 
-+abstract class MeasurementProvider{
++abstract class MeasurementProvider {
+-transfer : MeasurementTransfer
+--constructors--
+#MeasurementProvider(transfer : MeasurementTransfer)
+--methods--
 +{abstract}start() : void
 +{abstract}stop() : void
 }
 
-class MeasurementTransfer {
-+{abstract}<size 20>deliver(event : MeasurementEvent) : void </size>
+interface MeasurementTransfer {
++{abstract}deliver(event : MeasurementEvent) : void
+}
+
+class AndroidMeasurementTransfer{
++{native}deliver(event : MeasurementEvent) : void
 }
 
 
@@ -93,9 +130,7 @@ class MeasurementTransfer {
 
 ~class WIFIMeasurementProvider{
 }
-
-MeasurementProvider *-- MeasurementTransfer
-MeasurementProvider *-- ProviderConfiguration
+MeasurementTransfer <|-- AndroidMeasurementTransfer
 
 MeasurementProvider <|-- BluetoothMeasurementProvider
 BluetoothMeasurementProvider *-- BluetoothAdapter

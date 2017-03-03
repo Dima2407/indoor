@@ -74,8 +74,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad92f2337b839a94ce97dcdb439b4325a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#ad92f2337b839a94ce97dcdb439b4325a">Point</a> ()</td></tr>
-<tr class="separator:ad92f2337b839a94ce97dcdb439b4325a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7421422b4e45c5569b9a0e981a7ab735"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_point.html">Point</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#a7421422b4e45c5569b9a0e981a7ab735">operator+=</a> (const <a class="el" href="struct_point.html">Point</a> &amp;rhs)</td></tr>
 <tr class="separator:a7421422b4e45c5569b9a0e981a7ab735"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaea5d476866984dc521991e606040b52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_point.html">Point</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#aaea5d476866984dc521991e606040b52">operator-=</a> (const <a class="el" href="struct_point.html">Point</a> &amp;rhs)</td></tr>
@@ -93,43 +91,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab99c56589bc8ad5fa5071387110a5bc7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#ab99c56589bc8ad5fa5071387110a5bc7">x</a></td></tr>
+<tr class="memitem:ab99c56589bc8ad5fa5071387110a5bc7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#ab99c56589bc8ad5fa5071387110a5bc7">x</a> = 0</td></tr>
 <tr class="separator:ab99c56589bc8ad5fa5071387110a5bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa38be143ae800e6ad69ce8ed4df62d8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#afa38be143ae800e6ad69ce8ed4df62d8">y</a></td></tr>
+<tr class="memitem:afa38be143ae800e6ad69ce8ed4df62d8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#afa38be143ae800e6ad69ce8ed4df62d8">y</a> = 0</td></tr>
 <tr class="separator:afa38be143ae800e6ad69ce8ed4df62d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05ba3b1dfcb19430582ae953cbbfbded"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#a05ba3b1dfcb19430582ae953cbbfbded">z</a></td></tr>
+<tr class="memitem:a05ba3b1dfcb19430582ae953cbbfbded"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_point.html#a05ba3b1dfcb19430582ae953cbbfbded">z</a> = 0</td></tr>
 <tr class="separator:a05ba3b1dfcb19430582ae953cbbfbded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An (X, Y, Z) point in 3D space. </p>
 <p>Defines trivial operators to work with Points </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad92f2337b839a94ce97dcdb439b4325a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad92f2337b839a94ce97dcdb439b4325a">&#9670;&nbsp;</a></span>Point()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Point::Point </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a348d6cceaec0ac2245b0d040cd2d65e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a348d6cceaec0ac2245b0d040cd2d65e4">&#9670;&nbsp;</a></span>operator*=() <span class="overload">[1/2]</span></h2>
 
@@ -263,7 +235,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Point::x</td>
+          <td class="memname">double Point::x = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -277,7 +249,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Point::y</td>
+          <td class="memname">double Point::y = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -291,7 +263,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Point::z</td>
+          <td class="memname">double Point::z = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -1,7 +1,7 @@
 #ifndef ABSTRACTSENSOR_H
 #define ABSTRACTSENSOR_H
 
-#include "Objectstate.h"
+#include "ObjectState.h"
 #include "Point.h"
 
 #include <list>
@@ -22,6 +22,8 @@ namespace Sensors {
  * Types::ObjectState objects called history. dataCapacity is the maximum size of history.
  *
  * Apart from keeping the history, this class doesn't do much. Apparently this changes in its chidren.
+ *
+ * Note: _referenceState seems UNUSED at present
  */
     class AbstractSensor {
     public:
@@ -55,7 +57,7 @@ namespace Sensors {
 
         /** \brief Return the last state in history.
          * 
-         * Note: used in bridge.h to get the device position
+         * Note: used in e.g. bridge.h to get the device position
          */
         Types::ObjectState lastState() const{
             return rstate(0);
@@ -129,14 +131,14 @@ namespace Sensors {
         /** \brief Perform the measurements. 
          *
          * Create the Types::ObjectState position data from sensor data.
-         * For Sensors::AbstractSensor it does nothing, but for subclasses
+         * Abstract for Sensors::AbstractSensor, for subclasses
          * it involves funny things like trilateration.
          */
         virtual Types::ObjectState proceedMeasurements() = 0;
 
         /** \brief Get the 8x8 CovarMatrix 
          *
-         * This gives 0 for Sensors::AbstractSensor, and I think even subclasses 
+         * Abstract for Sensors::AbstractSensor, and even subclasses
          * didn't implement it properly
          */
         virtual Types::ObjectState::CovarMatrix
@@ -152,7 +154,7 @@ namespace Sensors {
         Types::ObjectStateContainer _history;
         /// Max size of history
         size_t _maxDataCapacity = DEFAULT_CAPACITY;
-        /// The reference state
+        /// The reference state, UNUSED in BeaconSensor
         Types::ObjectState _referenceState;
         /// The updated flag
         bool _updated = false;

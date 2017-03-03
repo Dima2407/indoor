@@ -4,7 +4,6 @@ var searchData=
   ['accelerationderivative',['accelerationDerivative',['../class_types_1_1_object_state.html#a28b4f762f0e557ecf5a7e0e528040d72',1,'Types::ObjectState']]],
   ['accelerometer',['accelerometer',['../class_navigator.html#a25ad31076c44037b8dc8ac80bc4006d6',1,'Navigator::accelerometer() const'],['../class_navigator.html#ae0f8a0577a26456a8836de8ae3fa6dc1',1,'Navigator::accelerometer()']]],
   ['accelerometersensor',['AccelerometerSensor',['../class_sensors_1_1_accelerometer_sensor.html#aff68a045812dec0592351e9daa6c14f2',1,'Sensors::AccelerometerSensor']]],
-  ['accmeasurement',['AccMeasurement',['../struct_acc_measurement.html#a08d066f6dacd89255f07328616595d09',1,'AccMeasurement']]],
   ['addaccelerometermeasurement',['addAccelerometerMeasurement',['../class_navigator.html#a1b4b3d72cf017bfa2682ca46548ddf65',1,'Navigator::addAccelerometerMeasurement(const AccMeasurement &amp;m)'],['../class_navigator.html#a2d8b37d30fa0ac1b5a6ce924e5cb5cfc',1,'Navigator::addAccelerometerMeasurement(double ax, double ay, double az, timestamp_t timestamp)']]],
   ['addbeacon',['addBeacon',['../class_sensors_1_1_beacon_sensor.html#adbfe86c883032f555e45dd8d1d452384',1,'Sensors::BeaconSensor']]],
   ['addbeaconmeasurement',['addBeaconMeasurement',['../class_navigator.html#a4fe4985e9f297108770dac07b0bc6867',1,'Navigator::addBeaconMeasurement(const BeaconMeasurement &amp;m)'],['../class_navigator.html#a41aedc92ab7aaec1e6a08713a98f0307',1,'Navigator::addBeaconMeasurement(hash_t hash, double tx_power, double rssi, timestamp_t timestamp)']]],

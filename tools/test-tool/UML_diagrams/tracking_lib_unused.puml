@@ -1,0 +1,24 @@
+@startuml
+class AMath
+
+class  JointObjectState
+
+package Math{}
+
+package eigenkf{
+class SimpleState
+class ConstantProcess
+class AbsoluteMeasurement
+class KalmanFilter
+}
+
+class KalmanInterface
+
+class PointMeasurement
+
+SmartPtrProtho <-- SmartPtr
+
+package Utilities {
+class TypeTransformator
+}
+@enduml

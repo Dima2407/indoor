@@ -20,7 +20,7 @@ set(SOURCE_FILES
         BeaconSensor.cpp
         BMath.cpp
         Navigator.cpp
-        Objectstate.cpp
+        ObjectState.cpp
         Point.cpp
         )
 

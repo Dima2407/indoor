@@ -1,0 +1,260 @@
+@startuml
+package Sensors{
+    abstract class AbstractSensor{
+        {static} + DEFAULT_CAPACITY : size_t = 2048
+        - _history : std::list<Types::ObjectState>
+        - _maxDataCapacity : size_t
+        - _referenceState : Types::ObjectState [UNUSED in BeaconSensor]
+        - _updated : bool
+        --
+        {abstract} + const sensorType() : void
+        + const lastState() : Types::ObjectState
+        + const state(pos : size_t) : Types::ObjectState
+        + const rstate(pos : size_t) : Types::ObjectState
+        + clear() : void
+        ..
+        # addState(state : const Types::ObjectState &) : void
+        # updateState(state : const Types::ObjectState &) : void
+        ..
+        {abstract} # proceedMeasurements() : Types::ObjectState
+
+        {abstract} # measureCovarMatrix(measurement : const Types::ObjectState &,
+            {abstract} prevState : const Types::ObjectState &) : Types::ObjectState::CovarMatrix
+
+        ..
+        + getters, setters
+    }
+
+    class BeaconSensor{
+    + {static} DEFAULT_DATA_ASSOCIATION_INTERVAL : double = 100
+    - _beacons : std::map<hash_t, Hardware::Beacon>
+    - _lastMeasureTime : timestamp_t
+    - _measureSigma : Point [UNUSED ?]
+    --
+    + BeaconSensor()
+    + const sensorType() : int
+    + clear() : void
+    + addBeacon(b : const Hardware::Beacon &) : void
+    + calibrateBeacon(hash : hash_t, data : const std::list<CalibrationData> &) : bool
+    + addMeasurement(m : const BeaconMeasurement &) : void
+    + addMeasurement(hash : hash_t, tx_power : double, rssi : double, tm : timestamp_t) : void
+    + beaconDistance(hash : hash_t, smooth_count : size_t = 1) : double
+    ..
+    # proceedMeasurements() : Types::ObjectState
+    # const defaultMeasurementNoise() : Eigen::Matrix<double, 8, 1>
+    # const measureCovarMatrix(measurement : const Types::ObjectState &,
+      prevState : const Types::ObjectState &) : Eigen::Matrix<double, 8, 8>
+    ..
+    + getters, settter
+    }
+
+    class AccelerometerSensor{
+    + {static} DEFAULT_DATA_ASSOCIATION_INTERVAL : double = 1000
+    + {static} DEFAULT_FILTER_WIN_SIZE : int = 10
+    ..
+    - _filterWinSize : int
+    - _dataAssociationInterval : double
+    - _lastMeasureTime : timestamp_t
+    - _measurementsCapacity : int
+    - _measurements : std::list<AccMeasurement>
+    - _measurements_filtered : std::list<AccMeasurement>
+    - _measureSigma : Point
+    --
+    + AccelerometerSensor()
+    + const sensorType() : int
+    + clear() : void
+    + addMeasurement(m : const AccMeasurement &) : void
+    + addMeasurement(ax : double, ay : double, az : double, tm : timestamp_t) : void
+    ..
+    # proceedMeasurements() : Types::ObjectState
+    # filter(mc : const AccelerationMeasurementsContainer &) : AccMeasurement
+    # const defaultMeasurementNoise() : Eigen::Matrix<double, 8, 1>
+    # const measureCovarMatrix(measurement : const Types::ObjectState &,
+      prevState : const Types::ObjectState &) : Eigen::Matrix<double, 8, 8>
+    ..
+    + getters, setters
+    }
+
+    AbstractSensor <|.. BeaconSensor
+    AbstractSensor <|.. AccelerometerSensor
+
+    package Hardware{
+        class Beacon{
+        + {static} DEFAULT_DAMP : double = 4.0
+        + {static}  DEFAULT_DATA_CAPACITY : int  = 2048
+        + {static}  DEFAULT_FILTER_WIN_SIZE : int = 10
+        ..
+        - _position : Point
+        - _damp : double
+        - _txPower : double
+        - _hash : hash_t
+        - _useTxPowerFromMeasurements : bool
+        - _maxDataCapacity : size_t
+        - _filterWinSize : size_t
+        - _measurements : std::list<BeaconMeasurement>
+        - _filtered_measurements : std::list<BeaconMeasurement>
+        --
+        Beacon(hash : hash_t = -1, damp : double = DEFAULT_DAMP, txPower : double = 1.0)
+        ..
+        + clear() : void
+        + addMeasurement(m : const BeaconMeasurement &) : void
+        + addMeasurement(tx_power : double, rssi : double, timestamp : timestamp_t) : void
+        + const estimation(time : timestamp_t) : BeaconMeasurement
+        + calibrate(c : const std::list<CalibrationData> &) : bool
+        + const valid() : bool
+        ..
+        - filter(mc : const BeaconMeasurementsContainer &) : BeaconMeasurement
+        ..
+        + getetrs, setters
+        + lastDistance(hash : hash_t, count : size_t) : double
+        }
+
+        class CalibrationData{
+        + tx_power, rssi, distance : double
+        }
+
+        Beacon +-- CalibrationData
+    }
+
+    BeaconSensor o-- Beacon
+}
+
+
+package Types{
+    class ObjectState{
+       - _state_vector :  Eigen::Matrix<double, 8, 1>
+       - _covar_matrix :  Eigen::Matrix<double, 8, 8>
+       - _timestamp : timestamp_t
+       ..
+
+       {static} + X = 0, Y = 1
+       {static} + Vx = 2, Vy = 3
+       {static} + Ax = 4, Ay = 5
+       {static} + sAx = 6, sAy = 7
+       {static} + NumStates = 8
+       --
+
+       + ObjectState()
+       ..
+       + operator==(rhs : const ObjectState &) : bool
+       + valid() : bool
+       ..
+       + getetrs, setters
+    }
+
+    abstract class ObjectState_AbstractUnaryPredicator{
+        # ObjectState_AbstractUnaryPredicator(s : const Types::ObjectState &)
+        - _internal_state : Types::ObjectState
+        --
+        + {abstract} operator()(s : const Types::ObjectState &) : bool
+    }
+
+    class ObjectState_TimeUnaryPredicator {
+        --
+        + ObjectState_TimeUnaryPredicator(s : const Types::ObjectState &)
+        + operator()(s : const Types::ObjectState &) : bool
+    }
+
+    ObjectState_AbstractUnaryPredicator <|.. ObjectState_TimeUnaryPredicator
+
+    AbstractSensor o-- ObjectState
+    AbstractSensor <-- ObjectState_TimeUnaryPredicator
+
+}
+
+class AccMeasurement {
++ values : Point
++ timestamp : timestamp_t
+}
+
+class BeaconMeasurement {
++ hash : int
++ txPower : double
++ rssi : double
++ timestamp : timestamp_t
+}
+
+class BMath{
+--
++ {static} get_distance( rssi : double, txPower : double, damp : double) : double
+
++ {static} TrilatLocation2d(beaconsPos : const PointContainer &,
+       beaconsDist : const DistancesContainer &, location : Point &) : bool
+
++ {static} TrilatLocation3d(beacons : const PointContainer &,
+       beaconsDist : const DistancesContainer &, location : Point &) : bool [UNUSED]
+
++ {static} inxtrapolate(m : const std::list<BeaconMeasurement> &,
+   ie_time : timestamp_t ) : BeaconMeasurement
+}
+
+class BeaconRssiTimeToPoint {
+--
++ const operator()(m : const BeaconMeasurement &) :
+  General::Math::DataFitting::SimplePointType<X, Y>
+}
+
+class BeaconTxPowerTimeToPoint {
+--
++ const operator()(m : const BeaconMeasurement &) :
+  General::Math::DataFitting::SimplePointType<X, Y>
+}
+
+BMath +== BeaconRssiTimeToPoint
+BMath +== BeaconTxPowerTimeToPoint
+
+BeaconSensor <-- BMath
+Beacon <-- BMath
+
+class Point{
++ x, y, z : double
+--
++ operators
+}
+
+package CommonConstants{
+}
+
+package Math{
+}
+
+namespace General{
+ namespace Math{
+  namespace DataFitting {
+   class SimplePointType <X,Y> {
+     x : X
+     y : Y
+   }
+  }
+ }
+}
+class Navigator{
+ + {static} DEFAULT_CAPACITY : size_t = 2048
+ - _beacon : Sensors::BeaconSensor
+ - _accelerometer : Sensors::AccelerometerSensor
+ - _stateHistory : std::list<Types::ObjectState> [UNUSED ?]
+ - _maxDataCapacity : size_t
+ --
+ + addBeaconMeasurement(m : const BeaconMeasurement &) : void
+ + addBeaconMeasurement(hash : hash_t, tx_power : double,
+  rssi : double, timestamp : timestamp_t) : void
+ + addAcceleratorMeasurement(m : const AcceleratorMeasurement &) : void
+ + addAcceleratorMeasurement(ax : double, ay : double,
+  az : double, timestamp : timestamp_t) : void
+ + const lastState() :  Types::ObjectState
+ + smoothedDistanceToBeacon(hash : hash_t,
+  smooth_length : size_t = 1) : double [UNUSED]
+ ..
+ - updateState(measurement : const Types::ObjectState &) : void
+ - addState(state : const Types::ObjectState &) : void
+ - const defaultMeasurementNoise() : Eigen::Matrix<double, 8, 1> [UNUSED]
+ ..
+ + getters, setters
+}
+
+Navigator o-- BeaconSensor
+
+Navigator o-- AccelerometerSensor
+
+Navigator o-- ObjectState
+@enduml

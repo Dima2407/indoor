@@ -24,7 +24,7 @@ namespace Sensors {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         //--------------------------
-        // Public constructor & destructor
+        // Public constructor
         //--------------------------
 
         /// Constructor
@@ -80,9 +80,9 @@ namespace Sensors {
             return _measureSigma;
         }
 
-    private:
+    protected:
         //--------------------------
-        // Private methods
+        // Protected methods
         //--------------------------
         virtual Types::ObjectState proceedMeasurements();
 
@@ -92,6 +92,8 @@ namespace Sensors {
 
         virtual Types::ObjectState::CovarMatrix
         measureCovarMatrix(const Types::ObjectState &measurement, const Types::ObjectState &prevState) const;
+
+    private:
 
         //--------------------------
         // Private fields

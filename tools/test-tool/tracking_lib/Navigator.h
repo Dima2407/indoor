@@ -13,6 +13,9 @@
  * Note: apparently BeaconSensor uses txPower from measurements
  * while txPower of beacon is ignored, while damp is taken from the beacon data
  *
+ * Note the state history in Navigator is UNUSED (and probably unfinished) at present
+ * Use beacon().lastState() instead
+ *
  * Note : Because of the stupid eigen, it is recommended that you use Navigator class
  * with new . If you have any class with type Navigator member, this class must contain
  * the EIGEN_MAKE_ALIGNED_OPERATOR_NEW macro.
@@ -98,7 +101,7 @@ public: // constants
 
     /** \brief Smoothed distance to beacons
      *
-     * Simply returns _beacon.beaconDistance(hash, smooth_length) at present.
+     * Simply returns _beacon.beaconDistance(hash, smooth_length) at present. UNUSED
      *
      * \param[in]  hash           Hash code of the beacon
      * \param[in]  smooth_length  Max number of measurements to average over?

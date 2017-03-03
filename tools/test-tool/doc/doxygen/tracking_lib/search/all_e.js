@@ -1,7 +1,7 @@
 var searchData=
 [
   ['pairtopointtype',['PairToPointType',['../struct_general_1_1_math_1_1_data_fitting_1_1_pair_to_point_type.html',1,'General::Math::DataFitting']]],
-  ['point',['Point',['../struct_point.html',1,'Point'],['../struct_point.html#ad92f2337b839a94ce97dcdb439b4325a',1,'Point::Point()']]],
+  ['point',['Point',['../struct_point.html',1,'']]],
   ['point_2ecpp',['Point.cpp',['../_point_8cpp.html',1,'']]],
   ['point_2eh',['Point.h',['../_point_8h.html',1,'']]],
   ['pointcontainer',['PointContainer',['../_point_8h.html#ac7e6bdad417117693a8d277179bec1b4',1,'Point.h']]],

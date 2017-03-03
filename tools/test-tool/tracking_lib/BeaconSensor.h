@@ -137,7 +137,12 @@ namespace Sensors {
          */
         double beaconDistance(hash_t hash, size_t smooth_count = 1);
 
+
     protected:
+        //-------------------------------
+        // Protected methods
+        //-------------------------------
+
         /** \brief Create a Types::ObjectState from measurements
          * 
          * Uses trilateration (BMath::TrilatLocation2d) 
@@ -152,11 +157,19 @@ namespace Sensors {
         measureCovarMatrix(const Types::ObjectState &measurement, const Types::ObjectState &prevState) const;
 
     private:
-        /// Map with beacons
+        //-------------------------------
+        // Private fields
+        //------------------------------
+        /// Container with beacons
         BeaconContainer _beacons;
+
+        /// Time interval to average over ???
         double _dataAssociationInterval = DEFAULT_DATA_ASSOCIATION_INTERVAL;
+
         /// Timestamp of the last measurement
         timestamp_t _lastMeasureTime = -1;
+
+        /// Something for covar matrix, UNUSED
         Vector3 _measureSigma;
     };
 } // namespace Sensors

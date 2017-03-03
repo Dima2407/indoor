@@ -12,7 +12,7 @@ var searchData=
   ['accelerometersensor',['AccelerometerSensor',['../class_sensors_1_1_accelerometer_sensor.html',1,'Sensors::AccelerometerSensor'],['../class_sensors_1_1_accelerometer_sensor.html#aff68a045812dec0592351e9daa6c14f2',1,'Sensors::AccelerometerSensor::AccelerometerSensor()']]],
   ['accelerometersensor_2ecpp',['AccelerometerSensor.cpp',['../_accelerometer_sensor_8cpp.html',1,'']]],
   ['accelerometersensor_2eh',['AccelerometerSensor.h',['../_accelerometer_sensor_8h.html',1,'']]],
-  ['accmeasurement',['AccMeasurement',['../struct_acc_measurement.html',1,'AccMeasurement'],['../struct_acc_measurement.html#a08d066f6dacd89255f07328616595d09',1,'AccMeasurement::AccMeasurement()']]],
+  ['accmeasurement',['AccMeasurement',['../struct_acc_measurement.html',1,'']]],
   ['accmeasurement_2eh',['AccMeasurement.h',['../_acc_measurement_8h.html',1,'']]],
   ['addaccelerometermeasurement',['addAccelerometerMeasurement',['../class_navigator.html#a1b4b3d72cf017bfa2682ca46548ddf65',1,'Navigator::addAccelerometerMeasurement(const AccMeasurement &amp;m)'],['../class_navigator.html#a2d8b37d30fa0ac1b5a6ce924e5cb5cfc',1,'Navigator::addAccelerometerMeasurement(double ax, double ay, double az, timestamp_t timestamp)']]],
   ['addbeacon',['addBeacon',['../class_sensors_1_1_beacon_sensor.html#adbfe86c883032f555e45dd8d1d452384',1,'Sensors::BeaconSensor']]],

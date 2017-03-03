@@ -2,7 +2,7 @@
 #define IMATH_H
 
 #include "common_defs.h"
-#include "Objectstate.h"
+#include "ObjectState.h"
 
 /// Various mathematical operations (mostly with containers)
 namespace Math {

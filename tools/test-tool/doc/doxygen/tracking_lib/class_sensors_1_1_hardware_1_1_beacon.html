@@ -67,7 +67,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_sensors_1_1_hardware_1_1_beacon-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -78,7 +78,7 @@ $(function() {
 <p>Bluetooth beacon class.  
  <a href="class_sensors_1_1_hardware_1_1_beacon.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="beacon_8h_source.html">beacon.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_beacon_8h_source.html">Beacon.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -94,111 +94,111 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6852a833314203c6e3121a664cac6f2b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6852a833314203c6e3121a664cac6f2b">Beacon</a> (<a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#abfa511aa548690048783aea7c4414687">hash</a>=-1, double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a5766db6b2ff5ceb4a73bc0bacc55c13c">damp</a>=<a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aef3dbc9a8ef1d97516ae51fe674aabc8">DEFAULT_DAMP</a>, double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac04a4af952381f990835eb2751a0aca6">txPower</a>=1.0)</td></tr>
-<tr class="memdesc:a6852a833314203c6e3121a664cac6f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor which sets <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>, <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a> and <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>.  <a href="#a6852a833314203c6e3121a664cac6f2b">More...</a><br /></td></tr>
-<tr class="separator:a6852a833314203c6e3121a664cac6f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa57583fe61c0f67514b8931e3c61c8f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_point.html">Point</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa57583fe61c0f67514b8931e3c61c8f">position</a> () const</td></tr>
-<tr class="memdesc:aaa57583fe61c0f67514b8931e3c61c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a> (XYZ)  <a href="#aaa57583fe61c0f67514b8931e3c61c8f">More...</a><br /></td></tr>
-<tr class="separator:aaa57583fe61c0f67514b8931e3c61c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfa511aa548690048783aea7c4414687"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#abfa511aa548690048783aea7c4414687">hash</a> () const</td></tr>
-<tr class="memdesc:abfa511aa548690048783aea7c4414687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>.  <a href="#abfa511aa548690048783aea7c4414687">More...</a><br /></td></tr>
-<tr class="separator:abfa511aa548690048783aea7c4414687"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5766db6b2ff5ceb4a73bc0bacc55c13c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a5766db6b2ff5ceb4a73bc0bacc55c13c">damp</a> () const</td></tr>
-<tr class="memdesc:a5766db6b2ff5ceb4a73bc0bacc55c13c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a>.  <a href="#a5766db6b2ff5ceb4a73bc0bacc55c13c">More...</a><br /></td></tr>
-<tr class="separator:a5766db6b2ff5ceb4a73bc0bacc55c13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac04a4af952381f990835eb2751a0aca6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac04a4af952381f990835eb2751a0aca6">txPower</a> () const</td></tr>
-<tr class="memdesc:ac04a4af952381f990835eb2751a0aca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>.  <a href="#ac04a4af952381f990835eb2751a0aca6">More...</a><br /></td></tr>
-<tr class="separator:ac04a4af952381f990835eb2751a0aca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2706fb04112c510d226141b5975d02bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2706fb04112c510d226141b5975d02bf">setDamp</a> (double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a5766db6b2ff5ceb4a73bc0bacc55c13c">damp</a>)</td></tr>
-<tr class="memdesc:a2706fb04112c510d226141b5975d02bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a>.  <a href="#a2706fb04112c510d226141b5975d02bf">More...</a><br /></td></tr>
-<tr class="separator:a2706fb04112c510d226141b5975d02bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21467ee32e947d428e6d04369e6c25d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a21467ee32e947d428e6d04369e6c25d9">setTxPower</a> (double tx_power)</td></tr>
-<tr class="memdesc:a21467ee32e947d428e6d04369e6c25d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>.  <a href="#a21467ee32e947d428e6d04369e6c25d9">More...</a><br /></td></tr>
-<tr class="separator:a21467ee32e947d428e6d04369e6c25d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9063596f42e00f8c6f68d0714afd995b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a9063596f42e00f8c6f68d0714afd995b">setPosition</a> (const <a class="el" href="struct_point.html">Point</a> &amp;<a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa57583fe61c0f67514b8931e3c61c8f">position</a>)</td></tr>
-<tr class="memdesc:a9063596f42e00f8c6f68d0714afd995b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a>.  <a href="#a9063596f42e00f8c6f68d0714afd995b">More...</a><br /></td></tr>
-<tr class="separator:a9063596f42e00f8c6f68d0714afd995b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7db38aa6648ddbe6d027d541a98b5150"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7db38aa6648ddbe6d027d541a98b5150">setHash</a> (<a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#abfa511aa548690048783aea7c4414687">hash</a>)</td></tr>
-<tr class="memdesc:a7db38aa6648ddbe6d027d541a98b5150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>.  <a href="#a7db38aa6648ddbe6d027d541a98b5150">More...</a><br /></td></tr>
-<tr class="separator:a7db38aa6648ddbe6d027d541a98b5150"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36536d203d7d58f2e6d3840f4b11b21c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a36536d203d7d58f2e6d3840f4b11b21c">setUseTxPowerFromMeasurements</a> (bool s=true, double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac04a4af952381f990835eb2751a0aca6">txPower</a>=1.0)</td></tr>
-<tr class="memdesc:a36536d203d7d58f2e6d3840f4b11b21c"><td class="mdescLeft">&#160;</td><td class="mdescRight">WARNING ! This is not a simple setter !  <a href="#a36536d203d7d58f2e6d3840f4b11b21c">More...</a><br /></td></tr>
-<tr class="separator:a36536d203d7d58f2e6d3840f4b11b21c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab54d7f72b5a5d77596f53dac8eebb3fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ab54d7f72b5a5d77596f53dac8eebb3fc">useTxPowerFromMeasurements</a> () const</td></tr>
-<tr class="memdesc:ab54d7f72b5a5d77596f53dac8eebb3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aff0e8d9980f7626d8d613b8df573c8cd">_useTxPowerFromMeasurements</a>.  <a href="#ab54d7f72b5a5d77596f53dac8eebb3fc">More...</a><br /></td></tr>
-<tr class="separator:ab54d7f72b5a5d77596f53dac8eebb3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a292bc8b076f4ca535e4da8c74458babd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a292bc8b076f4ca535e4da8c74458babd">clear</a> ()</td></tr>
-<tr class="memdesc:a292bc8b076f4ca535e4da8c74458babd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all measurements (Clear list _measurements)  <a href="#a292bc8b076f4ca535e4da8c74458babd">More...</a><br /></td></tr>
-<tr class="separator:a292bc8b076f4ca535e4da8c74458babd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e67f2d006c4c266a6abea2cbf03450d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2e67f2d006c4c266a6abea2cbf03450d">addMeasurement</a> (const <a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> &amp;m)</td></tr>
-<tr class="memdesc:a2e67f2d006c4c266a6abea2cbf03450d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds beacon measurement (timestamp should be greater or equal to previous measure time)  <a href="#a2e67f2d006c4c266a6abea2cbf03450d">More...</a><br /></td></tr>
-<tr class="separator:a2e67f2d006c4c266a6abea2cbf03450d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a931eb5f4990b360ccaf8c77414aca4d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a931eb5f4990b360ccaf8c77414aca4d5">addMeasurement</a> (double tx_power, double rssi, <a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> timestamp)</td></tr>
-<tr class="memdesc:a931eb5f4990b360ccaf8c77414aca4d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds beacon measurement (timestamp should be greater or equal to previous measure time)  <a href="#a931eb5f4990b360ccaf8c77414aca4d5">More...</a><br /></td></tr>
-<tr class="separator:a931eb5f4990b360ccaf8c77414aca4d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab259e78f1621813879f1925f1b6b4bd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ab259e78f1621813879f1925f1b6b4bd3">history</a> (size_t count) const</td></tr>
-<tr class="memdesc:ab259e78f1621813879f1925f1b6b4bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return count last elements of history (List _measurements)  <a href="#ab259e78f1621813879f1925f1b6b4bd3">More...</a><br /></td></tr>
-<tr class="separator:ab259e78f1621813879f1925f1b6b4bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad37859df7c552b806c53e3314cc7b6c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ad37859df7c552b806c53e3314cc7b6c4">measurement</a> (size_t i=0) const</td></tr>
-<tr class="memdesc:ad37859df7c552b806c53e3314cc7b6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get i-th measurement from the begining.  <a href="#ad37859df7c552b806c53e3314cc7b6c4">More...</a><br /></td></tr>
-<tr class="separator:ad37859df7c552b806c53e3314cc7b6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae91c407b2465e39a6bf6dd0314c9daf7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ae91c407b2465e39a6bf6dd0314c9daf7">rmeasurement</a> (size_t i=0) const</td></tr>
-<tr class="memdesc:ae91c407b2465e39a6bf6dd0314c9daf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get i-th measurement from the end.  <a href="#ae91c407b2465e39a6bf6dd0314c9daf7">More...</a><br /></td></tr>
-<tr class="separator:ae91c407b2465e39a6bf6dd0314c9daf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d062bdb220d3e38574bd42734b87b8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a5d062bdb220d3e38574bd42734b87b8e">measurement_filtered</a> (size_t i=0) const</td></tr>
-<tr class="memdesc:a5d062bdb220d3e38574bd42734b87b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get i-th filtered measurement from the begining.  <a href="#a5d062bdb220d3e38574bd42734b87b8e">More...</a><br /></td></tr>
-<tr class="separator:a5d062bdb220d3e38574bd42734b87b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8838024814f82baf0c4d22c08fc68678"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8838024814f82baf0c4d22c08fc68678">rmeasurement_filtered</a> (size_t i=0) const</td></tr>
-<tr class="memdesc:a8838024814f82baf0c4d22c08fc68678"><td class="mdescLeft">&#160;</td><td class="mdescRight">i-th filtered measurement from the end  <a href="#a8838024814f82baf0c4d22c08fc68678">More...</a><br /></td></tr>
-<tr class="separator:a8838024814f82baf0c4d22c08fc68678"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a975d9c813eb3b3255c69b2e83d075c0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a975d9c813eb3b3255c69b2e83d075c0f">estimation</a> (<a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> time) const</td></tr>
-<tr class="memdesc:a975d9c813eb3b3255c69b2e83d075c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes estimated rssi and tx_power for time-point time.  <a href="#a975d9c813eb3b3255c69b2e83d075c0f">More...</a><br /></td></tr>
-<tr class="separator:a975d9c813eb3b3255c69b2e83d075c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac75c47fcf71a40de85875b7d9bda1e99"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac75c47fcf71a40de85875b7d9bda1e99">calibrate</a> (const <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a1f6df93f6971f728d4b82e757b15b286">CalibrationDataContainer</a> &amp;c)</td></tr>
-<tr class="memdesc:ac75c47fcf71a40de85875b7d9bda1e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrate the beacon.  <a href="#ac75c47fcf71a40de85875b7d9bda1e99">More...</a><br /></td></tr>
-<tr class="separator:ac75c47fcf71a40de85875b7d9bda1e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e4cf3c85448825faa3687cd9e10a4bf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7e4cf3c85448825faa3687cd9e10a4bf">dataCapacity</a> () const</td></tr>
-<tr class="memdesc:a7e4cf3c85448825faa3687cd9e10a4bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a>.  <a href="#a7e4cf3c85448825faa3687cd9e10a4bf">More...</a><br /></td></tr>
-<tr class="separator:a7e4cf3c85448825faa3687cd9e10a4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd1cba41270774296e9ff818e76ef3b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#afd1cba41270774296e9ff818e76ef3b0">setDataCapacity</a> (size_t c)</td></tr>
-<tr class="memdesc:afd1cba41270774296e9ff818e76ef3b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a>.  <a href="#afd1cba41270774296e9ff818e76ef3b0">More...</a><br /></td></tr>
-<tr class="separator:afd1cba41270774296e9ff818e76ef3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbce6eda3f52afe710b3d48b95e1e258"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adbce6eda3f52afe710b3d48b95e1e258">dataCount</a> () const</td></tr>
-<tr class="memdesc:adbce6eda3f52afe710b3d48b95e1e258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get size of <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaf0649fae63dc526e104d648d5e83504">_measurements</a>.  <a href="#adbce6eda3f52afe710b3d48b95e1e258">More...</a><br /></td></tr>
-<tr class="separator:adbce6eda3f52afe710b3d48b95e1e258"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a8e311a40a4ab4fa1687ffc24ff5f55"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a4a8e311a40a4ab4fa1687ffc24ff5f55">dataCountF</a> () const</td></tr>
-<tr class="memdesc:a4a8e311a40a4ab4fa1687ffc24ff5f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get size of <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a17f9880689a33957214bd704d78e7387">_filtered_measurements</a>.  <a href="#a4a8e311a40a4ab4fa1687ffc24ff5f55">More...</a><br /></td></tr>
-<tr class="separator:a4a8e311a40a4ab4fa1687ffc24ff5f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6111c928f22b95152c12996549e06453"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6111c928f22b95152c12996549e06453">filterWinSize</a> ()</td></tr>
-<tr class="memdesc:a6111c928f22b95152c12996549e06453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a>.  <a href="#a6111c928f22b95152c12996549e06453">More...</a><br /></td></tr>
-<tr class="separator:a6111c928f22b95152c12996549e06453"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e70e15249a050ea3a6529d3fbeb4b50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6e70e15249a050ea3a6529d3fbeb4b50">setFilterWinSize</a> (size_t ws)</td></tr>
-<tr class="memdesc:a6e70e15249a050ea3a6529d3fbeb4b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a>.  <a href="#a6e70e15249a050ea3a6529d3fbeb4b50">More...</a><br /></td></tr>
-<tr class="separator:a6e70e15249a050ea3a6529d3fbeb4b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4467598002182ea1310ca725d26f364"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac4467598002182ea1310ca725d26f364">valid</a> () const</td></tr>
-<tr class="memdesc:ac4467598002182ea1310ca725d26f364"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the beacon is valid (_hash &gt;=0)  <a href="#ac4467598002182ea1310ca725d26f364">More...</a><br /></td></tr>
-<tr class="separator:ac4467598002182ea1310ca725d26f364"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae84f5cccce197648319cf635a79c8f8d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ae84f5cccce197648319cf635a79c8f8d">lastDistance</a> (<a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#abfa511aa548690048783aea7c4414687">hash</a>, size_t count)</td></tr>
+<tr class="memitem:aeba0f2862706105be639eabf93a14058"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aeba0f2862706105be639eabf93a14058">Beacon</a> (<a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a95be451b862b0f676f937e3e8f1aecc8">hash</a>=-1, double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a63e8e67cb0ef71adcb39251002e42c17">damp</a>=<a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aa9b614135400e5fb0acf28a2f8496f90">DEFAULT_DAMP</a>, double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7d9bcfcff33219a95592e22bfdc08fb6">txPower</a>=1.0)</td></tr>
+<tr class="memdesc:aeba0f2862706105be639eabf93a14058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor which sets <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>, <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a> and <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>.  <a href="#aeba0f2862706105be639eabf93a14058">More...</a><br /></td></tr>
+<tr class="separator:aeba0f2862706105be639eabf93a14058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a060e6641e471324ebbe60f90f732f6e4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_point.html">Point</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a060e6641e471324ebbe60f90f732f6e4">position</a> () const</td></tr>
+<tr class="memdesc:a060e6641e471324ebbe60f90f732f6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a> (XYZ)  <a href="#a060e6641e471324ebbe60f90f732f6e4">More...</a><br /></td></tr>
+<tr class="separator:a060e6641e471324ebbe60f90f732f6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95be451b862b0f676f937e3e8f1aecc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a95be451b862b0f676f937e3e8f1aecc8">hash</a> () const</td></tr>
+<tr class="memdesc:a95be451b862b0f676f937e3e8f1aecc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>.  <a href="#a95be451b862b0f676f937e3e8f1aecc8">More...</a><br /></td></tr>
+<tr class="separator:a95be451b862b0f676f937e3e8f1aecc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63e8e67cb0ef71adcb39251002e42c17"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a63e8e67cb0ef71adcb39251002e42c17">damp</a> () const</td></tr>
+<tr class="memdesc:a63e8e67cb0ef71adcb39251002e42c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a>.  <a href="#a63e8e67cb0ef71adcb39251002e42c17">More...</a><br /></td></tr>
+<tr class="separator:a63e8e67cb0ef71adcb39251002e42c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d9bcfcff33219a95592e22bfdc08fb6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7d9bcfcff33219a95592e22bfdc08fb6">txPower</a> () const</td></tr>
+<tr class="memdesc:a7d9bcfcff33219a95592e22bfdc08fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>.  <a href="#a7d9bcfcff33219a95592e22bfdc08fb6">More...</a><br /></td></tr>
+<tr class="separator:a7d9bcfcff33219a95592e22bfdc08fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe9e0d8822b3c171ab30da67e5ee38e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#afe9e0d8822b3c171ab30da67e5ee38e5">setDamp</a> (double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a63e8e67cb0ef71adcb39251002e42c17">damp</a>)</td></tr>
+<tr class="memdesc:afe9e0d8822b3c171ab30da67e5ee38e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a>.  <a href="#afe9e0d8822b3c171ab30da67e5ee38e5">More...</a><br /></td></tr>
+<tr class="separator:afe9e0d8822b3c171ab30da67e5ee38e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fbe8277b6495d137c1d29ccfc5fab99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7fbe8277b6495d137c1d29ccfc5fab99">setTxPower</a> (double tx_power)</td></tr>
+<tr class="memdesc:a7fbe8277b6495d137c1d29ccfc5fab99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>.  <a href="#a7fbe8277b6495d137c1d29ccfc5fab99">More...</a><br /></td></tr>
+<tr class="separator:a7fbe8277b6495d137c1d29ccfc5fab99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa49ba6991d350701c0f6da3b55119d23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aa49ba6991d350701c0f6da3b55119d23">setPosition</a> (const <a class="el" href="struct_point.html">Point</a> &amp;<a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a060e6641e471324ebbe60f90f732f6e4">position</a>)</td></tr>
+<tr class="memdesc:aa49ba6991d350701c0f6da3b55119d23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a>.  <a href="#aa49ba6991d350701c0f6da3b55119d23">More...</a><br /></td></tr>
+<tr class="separator:aa49ba6991d350701c0f6da3b55119d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af258bb4fdd89c2859a03a34543f3155b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#af258bb4fdd89c2859a03a34543f3155b">setHash</a> (<a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a95be451b862b0f676f937e3e8f1aecc8">hash</a>)</td></tr>
+<tr class="memdesc:af258bb4fdd89c2859a03a34543f3155b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>.  <a href="#af258bb4fdd89c2859a03a34543f3155b">More...</a><br /></td></tr>
+<tr class="separator:af258bb4fdd89c2859a03a34543f3155b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d81df353b38adb082e1ed7b490de114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a5d81df353b38adb082e1ed7b490de114">setUseTxPowerFromMeasurements</a> (bool s=true, double <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7d9bcfcff33219a95592e22bfdc08fb6">txPower</a>=1.0)</td></tr>
+<tr class="memdesc:a5d81df353b38adb082e1ed7b490de114"><td class="mdescLeft">&#160;</td><td class="mdescRight">WARNING ! This is not a simple setter !  <a href="#a5d81df353b38adb082e1ed7b490de114">More...</a><br /></td></tr>
+<tr class="separator:a5d81df353b38adb082e1ed7b490de114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59b639dad3f0e12e635d822518326655"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a59b639dad3f0e12e635d822518326655">useTxPowerFromMeasurements</a> () const</td></tr>
+<tr class="memdesc:a59b639dad3f0e12e635d822518326655"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aff0e8d9980f7626d8d613b8df573c8cd">_useTxPowerFromMeasurements</a>.  <a href="#a59b639dad3f0e12e635d822518326655">More...</a><br /></td></tr>
+<tr class="separator:a59b639dad3f0e12e635d822518326655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11ddcaf20dc4f6935a1388e3f8697903"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a11ddcaf20dc4f6935a1388e3f8697903">clear</a> ()</td></tr>
+<tr class="memdesc:a11ddcaf20dc4f6935a1388e3f8697903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all measurements (Clear list _measurements)  <a href="#a11ddcaf20dc4f6935a1388e3f8697903">More...</a><br /></td></tr>
+<tr class="separator:a11ddcaf20dc4f6935a1388e3f8697903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7410697dcfa7ae2bc26ae56d22c7736"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac7410697dcfa7ae2bc26ae56d22c7736">addMeasurement</a> (const <a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> &amp;m)</td></tr>
+<tr class="memdesc:ac7410697dcfa7ae2bc26ae56d22c7736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds beacon measurement (timestamp should be greater or equal to previous measure time)  <a href="#ac7410697dcfa7ae2bc26ae56d22c7736">More...</a><br /></td></tr>
+<tr class="separator:ac7410697dcfa7ae2bc26ae56d22c7736"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a630d387dd9719ac4e0c170dd167f1f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a630d387dd9719ac4e0c170dd167f1f5f">addMeasurement</a> (double tx_power, double rssi, <a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> timestamp)</td></tr>
+<tr class="memdesc:a630d387dd9719ac4e0c170dd167f1f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds beacon measurement (timestamp should be greater or equal to previous measure time)  <a href="#a630d387dd9719ac4e0c170dd167f1f5f">More...</a><br /></td></tr>
+<tr class="separator:a630d387dd9719ac4e0c170dd167f1f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a004449ce4e14438f9e79b8a11b1dff85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a004449ce4e14438f9e79b8a11b1dff85">history</a> (size_t count) const</td></tr>
+<tr class="memdesc:a004449ce4e14438f9e79b8a11b1dff85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return count last elements of history (List _measurements)  <a href="#a004449ce4e14438f9e79b8a11b1dff85">More...</a><br /></td></tr>
+<tr class="separator:a004449ce4e14438f9e79b8a11b1dff85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac37b51019bea7c8dfe5121527022042e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac37b51019bea7c8dfe5121527022042e">measurement</a> (size_t i=0) const</td></tr>
+<tr class="memdesc:ac37b51019bea7c8dfe5121527022042e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get i-th measurement from the begining.  <a href="#ac37b51019bea7c8dfe5121527022042e">More...</a><br /></td></tr>
+<tr class="separator:ac37b51019bea7c8dfe5121527022042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c5ef7127c91ed2edf8107b69f5dc748"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a5c5ef7127c91ed2edf8107b69f5dc748">rmeasurement</a> (size_t i=0) const</td></tr>
+<tr class="memdesc:a5c5ef7127c91ed2edf8107b69f5dc748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get i-th measurement from the end.  <a href="#a5c5ef7127c91ed2edf8107b69f5dc748">More...</a><br /></td></tr>
+<tr class="separator:a5c5ef7127c91ed2edf8107b69f5dc748"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a000cec2af21a32ed217adf4af5f49cc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a000cec2af21a32ed217adf4af5f49cc8">measurement_filtered</a> (size_t i=0) const</td></tr>
+<tr class="memdesc:a000cec2af21a32ed217adf4af5f49cc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get i-th filtered measurement from the begining.  <a href="#a000cec2af21a32ed217adf4af5f49cc8">More...</a><br /></td></tr>
+<tr class="separator:a000cec2af21a32ed217adf4af5f49cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2d94522a9150a12bc0ca69d60f7b3ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ac2d94522a9150a12bc0ca69d60f7b3ca">rmeasurement_filtered</a> (size_t i=0) const</td></tr>
+<tr class="memdesc:ac2d94522a9150a12bc0ca69d60f7b3ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">i-th filtered measurement from the end  <a href="#ac2d94522a9150a12bc0ca69d60f7b3ca">More...</a><br /></td></tr>
+<tr class="separator:ac2d94522a9150a12bc0ca69d60f7b3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f463d1dc21eb8261d42f33b6a196a48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6f463d1dc21eb8261d42f33b6a196a48">estimation</a> (<a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a> time) const</td></tr>
+<tr class="memdesc:a6f463d1dc21eb8261d42f33b6a196a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes estimated rssi and tx_power for time-point time.  <a href="#a6f463d1dc21eb8261d42f33b6a196a48">More...</a><br /></td></tr>
+<tr class="separator:a6f463d1dc21eb8261d42f33b6a196a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1573f61eee15707fd375d173271a3346"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a1573f61eee15707fd375d173271a3346">calibrate</a> (const <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a1f6df93f6971f728d4b82e757b15b286">CalibrationDataContainer</a> &amp;c)</td></tr>
+<tr class="memdesc:a1573f61eee15707fd375d173271a3346"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrate the beacon.  <a href="#a1573f61eee15707fd375d173271a3346">More...</a><br /></td></tr>
+<tr class="separator:a1573f61eee15707fd375d173271a3346"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72a0d8c7c3621b602cb42155270a4d43"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a72a0d8c7c3621b602cb42155270a4d43">dataCapacity</a> () const</td></tr>
+<tr class="memdesc:a72a0d8c7c3621b602cb42155270a4d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a>.  <a href="#a72a0d8c7c3621b602cb42155270a4d43">More...</a><br /></td></tr>
+<tr class="separator:a72a0d8c7c3621b602cb42155270a4d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a386fa280b163870f58b449ccc64ea44b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a386fa280b163870f58b449ccc64ea44b">setDataCapacity</a> (size_t c)</td></tr>
+<tr class="memdesc:a386fa280b163870f58b449ccc64ea44b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a>.  <a href="#a386fa280b163870f58b449ccc64ea44b">More...</a><br /></td></tr>
+<tr class="separator:a386fa280b163870f58b449ccc64ea44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c97710dd22a4838afe192ab26f3c951"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a9c97710dd22a4838afe192ab26f3c951">dataCount</a> () const</td></tr>
+<tr class="memdesc:a9c97710dd22a4838afe192ab26f3c951"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get size of <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaf0649fae63dc526e104d648d5e83504">_measurements</a>.  <a href="#a9c97710dd22a4838afe192ab26f3c951">More...</a><br /></td></tr>
+<tr class="separator:a9c97710dd22a4838afe192ab26f3c951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4333dbc4ade7c8150230e15d97dcc415"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a4333dbc4ade7c8150230e15d97dcc415">dataCountF</a> () const</td></tr>
+<tr class="memdesc:a4333dbc4ade7c8150230e15d97dcc415"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get size of <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a17f9880689a33957214bd704d78e7387">_filtered_measurements</a>.  <a href="#a4333dbc4ade7c8150230e15d97dcc415">More...</a><br /></td></tr>
+<tr class="separator:a4333dbc4ade7c8150230e15d97dcc415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab9b3b51bb5c55709ff1c811298751d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a0ab9b3b51bb5c55709ff1c811298751d">filterWinSize</a> ()</td></tr>
+<tr class="memdesc:a0ab9b3b51bb5c55709ff1c811298751d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a>.  <a href="#a0ab9b3b51bb5c55709ff1c811298751d">More...</a><br /></td></tr>
+<tr class="separator:a0ab9b3b51bb5c55709ff1c811298751d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01343263845cdcf6dd5ccd4c74ba3f1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a01343263845cdcf6dd5ccd4c74ba3f1a">setFilterWinSize</a> (size_t ws)</td></tr>
+<tr class="memdesc:a01343263845cdcf6dd5ccd4c74ba3f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a>.  <a href="#a01343263845cdcf6dd5ccd4c74ba3f1a">More...</a><br /></td></tr>
+<tr class="separator:a01343263845cdcf6dd5ccd4c74ba3f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a37f3ddedfff9ae62db49a09f6a476a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a4a37f3ddedfff9ae62db49a09f6a476a">valid</a> () const</td></tr>
+<tr class="memdesc:a4a37f3ddedfff9ae62db49a09f6a476a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the beacon is valid (_hash &gt;=0)  <a href="#a4a37f3ddedfff9ae62db49a09f6a476a">More...</a><br /></td></tr>
+<tr class="separator:a4a37f3ddedfff9ae62db49a09f6a476a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae84f5cccce197648319cf635a79c8f8d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#ae84f5cccce197648319cf635a79c8f8d">lastDistance</a> (<a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a95be451b862b0f676f937e3e8f1aecc8">hash</a>, size_t count)</td></tr>
 <tr class="separator:ae84f5cccce197648319cf635a79c8f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aef3dbc9a8ef1d97516ae51fe674aabc8"><td class="memItemLeft" align="right" valign="top">static const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aef3dbc9a8ef1d97516ae51fe674aabc8">DEFAULT_DAMP</a> = 4.0</td></tr>
-<tr class="separator:aef3dbc9a8ef1d97516ae51fe674aabc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa98b0c030d95cdb0c8feca1868900672"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aa98b0c030d95cdb0c8feca1868900672">DEFAULT_DATA_CAPACITY</a> = 2048</td></tr>
-<tr class="separator:aa98b0c030d95cdb0c8feca1868900672"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03aadd4a448a115b08142668b5c0c73b"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a03aadd4a448a115b08142668b5c0c73b">DEFAULT_FILTER_WIN_SIZE</a> = 10</td></tr>
-<tr class="separator:a03aadd4a448a115b08142668b5c0c73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9b614135400e5fb0acf28a2f8496f90"><td class="memItemLeft" align="right" valign="top">static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aa9b614135400e5fb0acf28a2f8496f90">DEFAULT_DAMP</a> = 4.0</td></tr>
+<tr class="separator:aa9b614135400e5fb0acf28a2f8496f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ef705adfc38e80607fe4cd16b2881ba"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2ef705adfc38e80607fe4cd16b2881ba">DEFAULT_DATA_CAPACITY</a> = 2048</td></tr>
+<tr class="separator:a2ef705adfc38e80607fe4cd16b2881ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50eaa11246a8d5b72e1fc18173de7a4a"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a50eaa11246a8d5b72e1fc18173de7a4a">DEFAULT_FILTER_WIN_SIZE</a> = 10</td></tr>
+<tr class="separator:a50eaa11246a8d5b72e1fc18173de7a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6ae3a03b290f0461518a16bd7faa26b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6ae3a03b290f0461518a16bd7faa26b7">filter</a> (const <a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> &amp;mc)</td></tr>
-<tr class="separator:a6ae3a03b290f0461518a16bd7faa26b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a093201c0c59567a7e33cf4cc1d1f659d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a093201c0c59567a7e33cf4cc1d1f659d">filter</a> (const <a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> &amp;mc)</td></tr>
+<tr class="separator:a093201c0c59567a7e33cf4cc1d1f659d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a8023a0cf1c8c23d2a60cce4d12e5e2a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a></td></tr>
-<tr class="memdesc:a8023a0cf1c8c23d2a60cce4d12e5e2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beacon position (XYZ)  <a href="#a8023a0cf1c8c23d2a60cce4d12e5e2a5">More...</a><br /></td></tr>
+<tr class="memdesc:a8023a0cf1c8c23d2a60cce4d12e5e2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html" title="Bluetooth beacon class. ">Beacon</a> position (XYZ)  <a href="#a8023a0cf1c8c23d2a60cce4d12e5e2a5">More...</a><br /></td></tr>
 <tr class="separator:a8023a0cf1c8c23d2a60cce4d12e5e2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88009718f668b952831e79d768297c23"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a></td></tr>
 <tr class="memdesc:a88009718f668b952831e79d768297c23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dampening factor.  <a href="#a88009718f668b952831e79d768297c23">More...</a><br /></td></tr>
@@ -206,30 +206,30 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a7657e992fa80c8c79e99cd4007902831"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a></td></tr>
 <tr class="memdesc:a7657e992fa80c8c79e99cd4007902831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emittted power (logarithmic)  <a href="#a7657e992fa80c8c79e99cd4007902831">More...</a><br /></td></tr>
 <tr class="separator:a7657e992fa80c8c79e99cd4007902831"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb7bf458b2753fce2f4d1f01264b947b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a></td></tr>
+<tr class="memitem:adb7bf458b2753fce2f4d1f01264b947b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a></td></tr>
 <tr class="memdesc:adb7bf458b2753fce2f4d1f01264b947b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beacon's _hash (hash of the MAC adddress ??)  <a href="#adb7bf458b2753fce2f4d1f01264b947b">More...</a><br /></td></tr>
 <tr class="separator:adb7bf458b2753fce2f4d1f01264b947b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff0e8d9980f7626d8d613b8df573c8cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aff0e8d9980f7626d8d613b8df573c8cd">_useTxPowerFromMeasurements</a></td></tr>
+<tr class="memitem:aff0e8d9980f7626d8d613b8df573c8cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aff0e8d9980f7626d8d613b8df573c8cd">_useTxPowerFromMeasurements</a> = true</td></tr>
 <tr class="memdesc:aff0e8d9980f7626d8d613b8df573c8cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This parameter is used for calibration.  <a href="#aff0e8d9980f7626d8d613b8df573c8cd">More...</a><br /></td></tr>
 <tr class="separator:aff0e8d9980f7626d8d613b8df573c8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa8e5564e29963cfe918498aec689dd1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a></td></tr>
+<tr class="memitem:aaa8e5564e29963cfe918498aec689dd1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a> = <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2ef705adfc38e80607fe4cd16b2881ba">DEFAULT_DATA_CAPACITY</a></td></tr>
 <tr class="memdesc:aaa8e5564e29963cfe918498aec689dd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max data capacity for both _measurements and _filtered_measurements.  <a href="#aaa8e5564e29963cfe918498aec689dd1">More...</a><br /></td></tr>
 <tr class="separator:aaa8e5564e29963cfe918498aec689dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bdcefd953b26c653b3b83cc4959dbf8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a></td></tr>
-<tr class="memdesc:a2bdcefd953b26c653b3b83cc4959dbf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter window size, a parameter used by <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6ae3a03b290f0461518a16bd7faa26b7">filter()</a>  <a href="#a2bdcefd953b26c653b3b83cc4959dbf8">More...</a><br /></td></tr>
+<tr class="memitem:a2bdcefd953b26c653b3b83cc4959dbf8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a> = <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a50eaa11246a8d5b72e1fc18173de7a4a">DEFAULT_FILTER_WIN_SIZE</a></td></tr>
+<tr class="memdesc:a2bdcefd953b26c653b3b83cc4959dbf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter window size, a parameter used by <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a093201c0c59567a7e33cf4cc1d1f659d">filter()</a>  <a href="#a2bdcefd953b26c653b3b83cc4959dbf8">More...</a><br /></td></tr>
 <tr class="separator:a2bdcefd953b26c653b3b83cc4959dbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf0649fae63dc526e104d648d5e83504"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaf0649fae63dc526e104d648d5e83504">_measurements</a></td></tr>
+<tr class="memitem:aaf0649fae63dc526e104d648d5e83504"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaf0649fae63dc526e104d648d5e83504">_measurements</a></td></tr>
 <tr class="memdesc:aaf0649fae63dc526e104d648d5e83504"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of measurements.  <a href="#aaf0649fae63dc526e104d648d5e83504">More...</a><br /></td></tr>
 <tr class="separator:aaf0649fae63dc526e104d648d5e83504"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17f9880689a33957214bd704d78e7387"><td class="memItemLeft" align="right" valign="top"><a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a17f9880689a33957214bd704d78e7387">_filtered_measurements</a></td></tr>
+<tr class="memitem:a17f9880689a33957214bd704d78e7387"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a17f9880689a33957214bd704d78e7387">_filtered_measurements</a></td></tr>
 <tr class="memdesc:a17f9880689a33957214bd704d78e7387"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of filtered measurements.  <a href="#a17f9880689a33957214bd704d78e7387">More...</a><br /></td></tr>
 <tr class="separator:a17f9880689a33957214bd704d78e7387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Bluetooth beacon class. </p>
-<p>Do not confuse with the unused <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html" title="Bluetooth beacon class. ">Beacon</a> struct from <a class="el" href="common__types_8h.html" title="Contains a number of very important structures. ">common_types.h</a> !</p>
+<p>Do not confuse with the unused <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html" title="Bluetooth beacon class. ">Beacon</a> struct from common_types.h !</p>
 <p>It keeeps the history of measurements (_measurements) and also the history of filtered measurements (_filtered_measurements).</p>
-<p>For understanding txPower, rssi and distance, see the formula in <a class="el" href="class_b_math.html#a85e0f539f1a0363986a0456ea2223c87" title="Calculate distance to a beacon. ">BMath::get_distance</a> </p>
+<p>For understanding txPower, rssi and distance, see the formula in <a class="el" href="class_b_math.html#a03f8b49a68a2fc983bd1f47511997840" title="Calculate distance to a beacon. ">BMath::get_distance</a> </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a1f6df93f6971f728d4b82e757b15b286"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f6df93f6971f728d4b82e757b15b286">&#9670;&nbsp;</a></span>CalibrationDataContainer</h2>
@@ -248,23 +248,26 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6852a833314203c6e3121a664cac6f2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6852a833314203c6e3121a664cac6f2b">&#9670;&nbsp;</a></span>Beacon()</h2>
+<a id="aeba0f2862706105be639eabf93a14058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeba0f2862706105be639eabf93a14058">&#9670;&nbsp;</a></span>Beacon()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Beacon::Beacon </td>
+          <td class="memname">Sensors::Hardware::Beacon::Beacon </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td>
           <td class="paramname"><em>hash</em> = <code>-1</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>damp</em> = <code><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aef3dbc9a8ef1d97516ae51fe674aabc8">DEFAULT_DAMP</a></code>, </td>
+          <td class="paramname"><em>damp</em> = <code><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aa9b614135400e5fb0acf28a2f8496f90">DEFAULT_DAMP</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -278,6 +281,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Constructor which sets <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>, <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a> and <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>. </p>
@@ -285,14 +293,14 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2e67f2d006c4c266a6abea2cbf03450d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e67f2d006c4c266a6abea2cbf03450d">&#9670;&nbsp;</a></span>addMeasurement() <span class="overload">[1/2]</span></h2>
+<a id="ac7410697dcfa7ae2bc26ae56d22c7736"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7410697dcfa7ae2bc26ae56d22c7736">&#9670;&nbsp;</a></span>addMeasurement() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::addMeasurement </td>
+          <td class="memname">void Sensors::Hardware::Beacon::addMeasurement </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> &amp;&#160;</td>
           <td class="paramname"><em>m</em></td><td>)</td>
@@ -305,14 +313,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a931eb5f4990b360ccaf8c77414aca4d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a931eb5f4990b360ccaf8c77414aca4d5">&#9670;&nbsp;</a></span>addMeasurement() <span class="overload">[2/2]</span></h2>
+<a id="a630d387dd9719ac4e0c170dd167f1f5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a630d387dd9719ac4e0c170dd167f1f5f">&#9670;&nbsp;</a></span>addMeasurement() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::addMeasurement </td>
+          <td class="memname">void Sensors::Hardware::Beacon::addMeasurement </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>tx_power</em>, </td>
@@ -326,7 +334,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td>
           <td class="paramname"><em>timestamp</em>&#160;</td>
         </tr>
         <tr>
@@ -341,14 +349,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac75c47fcf71a40de85875b7d9bda1e99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac75c47fcf71a40de85875b7d9bda1e99">&#9670;&nbsp;</a></span>calibrate()</h2>
+<a id="a1573f61eee15707fd375d173271a3346"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1573f61eee15707fd375d173271a3346">&#9670;&nbsp;</a></span>calibrate()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Beacon::calibrate </td>
+          <td class="memname">bool Sensors::Hardware::Beacon::calibrate </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a1f6df93f6971f728d4b82e757b15b286">CalibrationDataContainer</a> &amp;&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
@@ -362,111 +370,151 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a292bc8b076f4ca535e4da8c74458babd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a292bc8b076f4ca535e4da8c74458babd">&#9670;&nbsp;</a></span>clear()</h2>
+<a id="a11ddcaf20dc4f6935a1388e3f8697903"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11ddcaf20dc4f6935a1388e3f8697903">&#9670;&nbsp;</a></span>clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::clear </td>
+          <td class="memname">void Sensors::Hardware::Beacon::clear </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Remove all measurements (Clear list _measurements) </p>
 
 </div>
 </div>
-<a id="a5766db6b2ff5ceb4a73bc0bacc55c13c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5766db6b2ff5ceb4a73bc0bacc55c13c">&#9670;&nbsp;</a></span>damp()</h2>
+<a id="a63e8e67cb0ef71adcb39251002e42c17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63e8e67cb0ef71adcb39251002e42c17">&#9670;&nbsp;</a></span>damp()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Beacon::damp </td>
+          <td class="memname">double Sensors::Hardware::Beacon::damp </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a>. </p>
 
 </div>
 </div>
-<a id="a7e4cf3c85448825faa3687cd9e10a4bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e4cf3c85448825faa3687cd9e10a4bf">&#9670;&nbsp;</a></span>dataCapacity()</h2>
+<a id="a72a0d8c7c3621b602cb42155270a4d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72a0d8c7c3621b602cb42155270a4d43">&#9670;&nbsp;</a></span>dataCapacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Beacon::dataCapacity </td>
+          <td class="memname">size_t Sensors::Hardware::Beacon::dataCapacity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaa8e5564e29963cfe918498aec689dd1">_maxDataCapacity</a>. </p>
 
 </div>
 </div>
-<a id="adbce6eda3f52afe710b3d48b95e1e258"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbce6eda3f52afe710b3d48b95e1e258">&#9670;&nbsp;</a></span>dataCount()</h2>
+<a id="a9c97710dd22a4838afe192ab26f3c951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c97710dd22a4838afe192ab26f3c951">&#9670;&nbsp;</a></span>dataCount()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Beacon::dataCount </td>
+          <td class="memname">size_t Sensors::Hardware::Beacon::dataCount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get size of <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aaf0649fae63dc526e104d648d5e83504">_measurements</a>. </p>
 
 </div>
 </div>
-<a id="a4a8e311a40a4ab4fa1687ffc24ff5f55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a8e311a40a4ab4fa1687ffc24ff5f55">&#9670;&nbsp;</a></span>dataCountF()</h2>
+<a id="a4333dbc4ade7c8150230e15d97dcc415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4333dbc4ade7c8150230e15d97dcc415">&#9670;&nbsp;</a></span>dataCountF()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Beacon::dataCountF </td>
+          <td class="memname">size_t Sensors::Hardware::Beacon::dataCountF </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get size of <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a17f9880689a33957214bd704d78e7387">_filtered_measurements</a>. </p>
 
 </div>
 </div>
-<a id="a975d9c813eb3b3255c69b2e83d075c0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a975d9c813eb3b3255c69b2e83d075c0f">&#9670;&nbsp;</a></span>estimation()</h2>
+<a id="a6f463d1dc21eb8261d42f33b6a196a48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f463d1dc21eb8261d42f33b6a196a48">&#9670;&nbsp;</a></span>estimation()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Beacon::estimation </td>
+          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Sensors::Hardware::Beacon::estimation </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="common__types_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="common__defs_8h.html#ace22fbdd1b47f7dadd9f5153e6413f8e">timestamp_t</a>&#160;</td>
           <td class="paramname"><em>time</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -478,12 +526,12 @@ Private Attributes</h2></td></tr>
 <li>find latest filtered measurements (at least two) that satisfy abs(rssi.timestamp - time) &lt; interpolation_window</li>
 <li>computes linear interpolation at point time</li>
 </ol>
-<p>It is just a wrapper to <a class="el" href="class_b_math.html#ada99423e667e853bf3a50203143e17cf" title="Extrapolate a number of timestamped Beacon Measurements to a timestamp ie_time. ">BMath::inxtrapolate()</a> </p>
+<p>It is just a wrapper to <a class="el" href="class_b_math.html#ada99423e667e853bf3a50203143e17cf" title="Clone prevState setting new PointMeasurement (position+timestamp) (UNUSED). ">BMath::inxtrapolate()</a> </p>
 
 </div>
 </div>
-<a id="a6ae3a03b290f0461518a16bd7faa26b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ae3a03b290f0461518a16bd7faa26b7">&#9670;&nbsp;</a></span>filter()</h2>
+<a id="a093201c0c59567a7e33cf4cc1d1f659d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a093201c0c59567a7e33cf4cc1d1f659d">&#9670;&nbsp;</a></span>filter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -492,16 +540,16 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Beacon::filter </td>
+          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Sensors::Hardware::Beacon::filter </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> &amp;&#160;</td>
           <td class="paramname"><em>mc</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -511,52 +559,68 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6111c928f22b95152c12996549e06453"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6111c928f22b95152c12996549e06453">&#9670;&nbsp;</a></span>filterWinSize()</h2>
+<a id="a0ab9b3b51bb5c55709ff1c811298751d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ab9b3b51bb5c55709ff1c811298751d">&#9670;&nbsp;</a></span>filterWinSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Beacon::filterWinSize </td>
+          <td class="memname">size_t Sensors::Hardware::Beacon::filterWinSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a>. </p>
 
 </div>
 </div>
-<a id="abfa511aa548690048783aea7c4414687"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfa511aa548690048783aea7c4414687">&#9670;&nbsp;</a></span>hash()</h2>
+<a id="a95be451b862b0f676f937e3e8f1aecc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95be451b862b0f676f937e3e8f1aecc8">&#9670;&nbsp;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> Beacon::hash </td>
+          <td class="memname"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> Sensors::Hardware::Beacon::hash </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>. </p>
 
 </div>
 </div>
-<a id="ab259e78f1621813879f1925f1b6b4bd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab259e78f1621813879f1925f1b6b4bd3">&#9670;&nbsp;</a></span>history()</h2>
+<a id="a004449ce4e14438f9e79b8a11b1dff85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a004449ce4e14438f9e79b8a11b1dff85">&#9670;&nbsp;</a></span>history()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> Beacon::history </td>
+          <td class="memname"><a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> Sensors::Hardware::Beacon::history </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>count</em></td><td>)</td>
@@ -578,7 +642,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">double Sensors::Hardware::Beacon::lastDistance </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td>
           <td class="paramname"><em>hash</em>, </td>
         </tr>
         <tr>
@@ -597,14 +661,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad37859df7c552b806c53e3314cc7b6c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad37859df7c552b806c53e3314cc7b6c4">&#9670;&nbsp;</a></span>measurement()</h2>
+<a id="ac37b51019bea7c8dfe5121527022042e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac37b51019bea7c8dfe5121527022042e">&#9670;&nbsp;</a></span>measurement()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Beacon::measurement </td>
+          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Sensors::Hardware::Beacon::measurement </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>i</em> = <code>0</code></td><td>)</td>
@@ -617,14 +681,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5d062bdb220d3e38574bd42734b87b8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d062bdb220d3e38574bd42734b87b8e">&#9670;&nbsp;</a></span>measurement_filtered()</h2>
+<a id="a000cec2af21a32ed217adf4af5f49cc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a000cec2af21a32ed217adf4af5f49cc8">&#9670;&nbsp;</a></span>measurement_filtered()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Beacon::measurement_filtered </td>
+          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Sensors::Hardware::Beacon::measurement_filtered </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>i</em> = <code>0</code></td><td>)</td>
@@ -637,33 +701,41 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aaa57583fe61c0f67514b8931e3c61c8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa57583fe61c0f67514b8931e3c61c8f">&#9670;&nbsp;</a></span>position()</h2>
+<a id="a060e6641e471324ebbe60f90f732f6e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a060e6641e471324ebbe60f90f732f6e4">&#9670;&nbsp;</a></span>position()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="struct_point.html">Point</a> &amp; Beacon::position </td>
+          <td class="memname">const <a class="el" href="struct_point.html">Point</a>&amp; Sensors::Hardware::Beacon::position </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a> (XYZ) </p>
 
 </div>
 </div>
-<a id="ae91c407b2465e39a6bf6dd0314c9daf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae91c407b2465e39a6bf6dd0314c9daf7">&#9670;&nbsp;</a></span>rmeasurement()</h2>
+<a id="a5c5ef7127c91ed2edf8107b69f5dc748"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c5ef7127c91ed2edf8107b69f5dc748">&#9670;&nbsp;</a></span>rmeasurement()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Beacon::rmeasurement </td>
+          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Sensors::Hardware::Beacon::rmeasurement </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>i</em> = <code>0</code></td><td>)</td>
@@ -676,14 +748,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8838024814f82baf0c4d22c08fc68678"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8838024814f82baf0c4d22c08fc68678">&#9670;&nbsp;</a></span>rmeasurement_filtered()</h2>
+<a id="ac2d94522a9150a12bc0ca69d60f7b3ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2d94522a9150a12bc0ca69d60f7b3ca">&#9670;&nbsp;</a></span>rmeasurement_filtered()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Beacon::rmeasurement_filtered </td>
+          <td class="memname"><a class="el" href="struct_beacon_measurement.html">BeaconMeasurement</a> Sensors::Hardware::Beacon::rmeasurement_filtered </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>i</em> = <code>0</code></td><td>)</td>
@@ -696,34 +768,42 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2706fb04112c510d226141b5975d02bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2706fb04112c510d226141b5975d02bf">&#9670;&nbsp;</a></span>setDamp()</h2>
+<a id="afe9e0d8822b3c171ab30da67e5ee38e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe9e0d8822b3c171ab30da67e5ee38e5">&#9670;&nbsp;</a></span>setDamp()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setDamp </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setDamp </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>damp</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a88009718f668b952831e79d768297c23">_damp</a>. </p>
 
 </div>
 </div>
-<a id="afd1cba41270774296e9ff818e76ef3b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd1cba41270774296e9ff818e76ef3b0">&#9670;&nbsp;</a></span>setDataCapacity()</h2>
+<a id="a386fa280b163870f58b449ccc64ea44b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a386fa280b163870f58b449ccc64ea44b">&#9670;&nbsp;</a></span>setDataCapacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setDataCapacity </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setDataCapacity </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
@@ -736,94 +816,126 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a6e70e15249a050ea3a6529d3fbeb4b50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e70e15249a050ea3a6529d3fbeb4b50">&#9670;&nbsp;</a></span>setFilterWinSize()</h2>
+<a id="a01343263845cdcf6dd5ccd4c74ba3f1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01343263845cdcf6dd5ccd4c74ba3f1a">&#9670;&nbsp;</a></span>setFilterWinSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setFilterWinSize </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setFilterWinSize </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>ws</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2bdcefd953b26c653b3b83cc4959dbf8">_filterWinSize</a>. </p>
 
 </div>
 </div>
-<a id="a7db38aa6648ddbe6d027d541a98b5150"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7db38aa6648ddbe6d027d541a98b5150">&#9670;&nbsp;</a></span>setHash()</h2>
+<a id="af258bb4fdd89c2859a03a34543f3155b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af258bb4fdd89c2859a03a34543f3155b">&#9670;&nbsp;</a></span>setHash()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setHash </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setHash </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a>&#160;</td>
           <td class="paramname"><em>hash</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#adb7bf458b2753fce2f4d1f01264b947b">_hash</a>. </p>
 
 </div>
 </div>
-<a id="a9063596f42e00f8c6f68d0714afd995b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9063596f42e00f8c6f68d0714afd995b">&#9670;&nbsp;</a></span>setPosition()</h2>
+<a id="aa49ba6991d350701c0f6da3b55119d23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa49ba6991d350701c0f6da3b55119d23">&#9670;&nbsp;</a></span>setPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setPosition </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setPosition </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="struct_point.html">Point</a> &amp;&#160;</td>
           <td class="paramname"><em>position</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a8023a0cf1c8c23d2a60cce4d12e5e2a5">_position</a>. </p>
 
 </div>
 </div>
-<a id="a21467ee32e947d428e6d04369e6c25d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21467ee32e947d428e6d04369e6c25d9">&#9670;&nbsp;</a></span>setTxPower()</h2>
+<a id="a7fbe8277b6495d137c1d29ccfc5fab99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fbe8277b6495d137c1d29ccfc5fab99">&#9670;&nbsp;</a></span>setTxPower()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setTxPower </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setTxPower </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>tx_power</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Set <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>. </p>
 
 </div>
 </div>
-<a id="a36536d203d7d58f2e6d3840f4b11b21c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36536d203d7d58f2e6d3840f4b11b21c">&#9670;&nbsp;</a></span>setUseTxPowerFromMeasurements()</h2>
+<a id="a5d81df353b38adb082e1ed7b490de114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d81df353b38adb082e1ed7b490de114">&#9670;&nbsp;</a></span>setUseTxPowerFromMeasurements()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Beacon::setUseTxPowerFromMeasurements </td>
+          <td class="memname">void Sensors::Hardware::Beacon::setUseTxPowerFromMeasurements </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>s</em> = <code>true</code>, </td>
@@ -857,57 +969,81 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac04a4af952381f990835eb2751a0aca6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac04a4af952381f990835eb2751a0aca6">&#9670;&nbsp;</a></span>txPower()</h2>
+<a id="a7d9bcfcff33219a95592e22bfdc08fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d9bcfcff33219a95592e22bfdc08fb6">&#9670;&nbsp;</a></span>txPower()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Beacon::txPower </td>
+          <td class="memname">double Sensors::Hardware::Beacon::txPower </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a7657e992fa80c8c79e99cd4007902831">_txPower</a>. </p>
 
 </div>
 </div>
-<a id="ab54d7f72b5a5d77596f53dac8eebb3fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab54d7f72b5a5d77596f53dac8eebb3fc">&#9670;&nbsp;</a></span>useTxPowerFromMeasurements()</h2>
+<a id="a59b639dad3f0e12e635d822518326655"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59b639dad3f0e12e635d822518326655">&#9670;&nbsp;</a></span>useTxPowerFromMeasurements()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Beacon::useTxPowerFromMeasurements </td>
+          <td class="memname">bool Sensors::Hardware::Beacon::useTxPowerFromMeasurements </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#aff0e8d9980f7626d8d613b8df573c8cd">_useTxPowerFromMeasurements</a>. </p>
 
 </div>
 </div>
-<a id="ac4467598002182ea1310ca725d26f364"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4467598002182ea1310ca725d26f364">&#9670;&nbsp;</a></span>valid()</h2>
+<a id="a4a37f3ddedfff9ae62db49a09f6a476a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a37f3ddedfff9ae62db49a09f6a476a">&#9670;&nbsp;</a></span>valid()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Beacon::valid </td>
+          <td class="memname">bool Sensors::Hardware::Beacon::valid </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Check if the beacon is valid (_hash &gt;=0) </p>
@@ -949,7 +1085,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> Sensors::Hardware::Beacon::_filtered_measurements</td>
+          <td class="memname"><a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> Sensors::Hardware::Beacon::_filtered_measurements</td>
         </tr>
       </table>
   </td>
@@ -973,7 +1109,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Sensors::Hardware::Beacon::_filterWinSize</td>
+          <td class="memname">size_t Sensors::Hardware::Beacon::_filterWinSize = <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a50eaa11246a8d5b72e1fc18173de7a4a">DEFAULT_FILTER_WIN_SIZE</a></td>
         </tr>
       </table>
   </td>
@@ -983,7 +1119,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Filter window size, a parameter used by <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a6ae3a03b290f0461518a16bd7faa26b7">filter()</a> </p>
+<p>Filter window size, a parameter used by <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a093201c0c59567a7e33cf4cc1d1f659d">filter()</a> </p>
 
 </div>
 </div>
@@ -997,7 +1133,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> Sensors::Hardware::Beacon::_hash</td>
+          <td class="memname"><a class="el" href="common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c">hash_t</a> Sensors::Hardware::Beacon::_hash</td>
         </tr>
       </table>
   </td>
@@ -1021,7 +1157,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Sensors::Hardware::Beacon::_maxDataCapacity</td>
+          <td class="memname">size_t Sensors::Hardware::Beacon::_maxDataCapacity = <a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html#a2ef705adfc38e80607fe4cd16b2881ba">DEFAULT_DATA_CAPACITY</a></td>
         </tr>
       </table>
   </td>
@@ -1045,7 +1181,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="common__types_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> Sensors::Hardware::Beacon::_measurements</td>
+          <td class="memname"><a class="el" href="_beacon_measurement_8h.html#afaa1a1aed0e0cace80bba7151c07419b">BeaconMeasurementsContainer</a> Sensors::Hardware::Beacon::_measurements</td>
         </tr>
       </table>
   </td>
@@ -1079,7 +1215,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Beacon position (XYZ) </p>
+<p><a class="el" href="class_sensors_1_1_hardware_1_1_beacon.html" title="Bluetooth beacon class. ">Beacon</a> position (XYZ) </p>
 
 </div>
 </div>
@@ -1117,7 +1253,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Sensors::Hardware::Beacon::_useTxPowerFromMeasurements</td>
+          <td class="memname">bool Sensors::Hardware::Beacon::_useTxPowerFromMeasurements = true</td>
         </tr>
       </table>
   </td>
@@ -1131,8 +1267,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aef3dbc9a8ef1d97516ae51fe674aabc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef3dbc9a8ef1d97516ae51fe674aabc8">&#9670;&nbsp;</a></span>DEFAULT_DAMP</h2>
+<a id="aa9b614135400e5fb0acf28a2f8496f90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9b614135400e5fb0acf28a2f8496f90">&#9670;&nbsp;</a></span>DEFAULT_DAMP</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1141,7 +1277,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const double Beacon::DEFAULT_DAMP = 4.0</td>
+          <td class="memname">constexpr double Sensors::Hardware::Beacon::DEFAULT_DAMP = 4.0</td>
         </tr>
       </table>
   </td>
@@ -1153,8 +1289,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa98b0c030d95cdb0c8feca1868900672"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa98b0c030d95cdb0c8feca1868900672">&#9670;&nbsp;</a></span>DEFAULT_DATA_CAPACITY</h2>
+<a id="a2ef705adfc38e80607fe4cd16b2881ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ef705adfc38e80607fe4cd16b2881ba">&#9670;&nbsp;</a></span>DEFAULT_DATA_CAPACITY</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1163,7 +1299,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int Beacon::DEFAULT_DATA_CAPACITY = 2048</td>
+          <td class="memname">constexpr int Sensors::Hardware::Beacon::DEFAULT_DATA_CAPACITY = 2048</td>
         </tr>
       </table>
   </td>
@@ -1175,8 +1311,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a03aadd4a448a115b08142668b5c0c73b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03aadd4a448a115b08142668b5c0c73b">&#9670;&nbsp;</a></span>DEFAULT_FILTER_WIN_SIZE</h2>
+<a id="a50eaa11246a8d5b72e1fc18173de7a4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50eaa11246a8d5b72e1fc18173de7a4a">&#9670;&nbsp;</a></span>DEFAULT_FILTER_WIN_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1185,7 +1321,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int Beacon::DEFAULT_FILTER_WIN_SIZE = 10</td>
+          <td class="memname">constexpr int Sensors::Hardware::Beacon::DEFAULT_FILTER_WIN_SIZE = 10</td>
         </tr>
       </table>
   </td>
@@ -1198,8 +1334,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="beacon_8h_source.html">beacon.h</a></li>
-<li><a class="el" href="beacon_8cpp.html">beacon.cpp</a></li>
+<li><a class="el" href="_beacon_8h_source.html">Beacon.h</a></li>
+<li><a class="el" href="_beacon_8cpp.html">Beacon.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

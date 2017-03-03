@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['gyroscopehistorycontainer',['GyroscopeHistoryContainer',['../common__types_8h.html#a4c4167818acbb6343da5379f2f896e2e',1,'common_types.h']]],
-  ['gyroscopemeasurementscontainer',['GyroscopeMeasurementsContainer',['../common__types_8h.html#ae8a92d0c06711f7a0249d1e9794cd208',1,'common_types.h']]]
+  ['hash_5ft',['hash_t',['../common__defs_8h.html#a858f1a39ac08aaffca62fd4aef8a1a4c',1,'common_defs.h']]]
 ];

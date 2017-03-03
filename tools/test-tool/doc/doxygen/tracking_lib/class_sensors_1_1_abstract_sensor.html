@@ -76,7 +76,7 @@ $(function() {
 <p>The abstract parent of <a class="el" href="class_sensors_1_1_beacon_sensor.html" title="Beacons sensor. Contains a list of Hardware::Beacon. ">Sensors::BeaconSensor</a> and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html" title="Accelerometer sensor. Contains list of measurements. ">Sensors::AccelerometerSensor</a>.  
  <a href="class_sensors_1_1_abstract_sensor.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="abstractsensor_8h_source.html">abstractsensor.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_abstract_sensor_8h_source.html">AbstractSensor.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Sensors::AbstractSensor:</div>
 <div class="dyncontent">
@@ -90,11 +90,9 @@ Inheritance diagram for Sensors::AbstractSensor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3bfd72ef84d99b52f27f090831b6a544"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a3bfd72ef84d99b52f27f090831b6a544">AbstractSensor</a> ()</td></tr>
-<tr class="memdesc:a3bfd72ef84d99b52f27f090831b6a544"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pretty simple constructor, sets default capacity and _updated == false.  <a href="#a3bfd72ef84d99b52f27f090831b6a544">More...</a><br /></td></tr>
-<tr class="separator:a3bfd72ef84d99b52f27f090831b6a544"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcef0230fecdeee2f30db15a49273540"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afcef0230fecdeee2f30db15a49273540">~AbstractSensor</a> ()</td></tr>
-<tr class="separator:afcef0230fecdeee2f30db15a49273540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21f54824575290fc96e56a4e52848dfb"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a21f54824575290fc96e56a4e52848dfb">~AbstractSensor</a> ()</td></tr>
+<tr class="memdesc:a21f54824575290fc96e56a4e52848dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor just in case.  <a href="#a21f54824575290fc96e56a4e52848dfb">More...</a><br /></td></tr>
+<tr class="separator:a21f54824575290fc96e56a4e52848dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8f49b7718a0930bac8705ec2b5f8322"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ae8f49b7718a0930bac8705ec2b5f8322">sensorType</a> () const =0</td></tr>
 <tr class="memdesc:ae8f49b7718a0930bac8705ec2b5f8322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sensor type. Overridden by subclasses.  <a href="#ae8f49b7718a0930bac8705ec2b5f8322">More...</a><br /></td></tr>
 <tr class="separator:ae8f49b7718a0930bac8705ec2b5f8322"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,9 +108,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afcfea5c8c96dad2258dfd97f63ecfe2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afcfea5c8c96dad2258dfd97f63ecfe2b">rstate</a> (size_t pos) const</td></tr>
 <tr class="memdesc:afcfea5c8c96dad2258dfd97f63ecfe2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a history state with index pos (0=newest).  <a href="#afcfea5c8c96dad2258dfd97f63ecfe2b">More...</a><br /></td></tr>
 <tr class="separator:afcfea5c8c96dad2258dfd97f63ecfe2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07007a8f085a861667af3500fc90b046"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a07007a8f085a861667af3500fc90b046">history</a> (size_t length=0) const</td></tr>
-<tr class="memdesc:a07007a8f085a861667af3500fc90b046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the entire history.  <a href="#a07007a8f085a861667af3500fc90b046">More...</a><br /></td></tr>
-<tr class="separator:a07007a8f085a861667af3500fc90b046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6241d4f2474bf71829f01f1a1ec97cd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a6241d4f2474bf71829f01f1a1ec97cd8">history</a> (size_t length=0) const</td></tr>
+<tr class="memdesc:a6241d4f2474bf71829f01f1a1ec97cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the entire history.  <a href="#a6241d4f2474bf71829f01f1a1ec97cd8">More...</a><br /></td></tr>
+<tr class="separator:a6241d4f2474bf71829f01f1a1ec97cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7034eb4591a68e3355599781de3b9026"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a7034eb4591a68e3355599781de3b9026">dataCapacity</a> () const</td></tr>
 <tr class="memdesc:a7034eb4591a68e3355599781de3b9026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data capacity.  <a href="#a7034eb4591a68e3355599781de3b9026">More...</a><br /></td></tr>
 <tr class="separator:a7034eb4591a68e3355599781de3b9026"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,23 +120,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afc445a99ac4d9477887be5353b20d47b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#afc445a99ac4d9477887be5353b20d47b">dataCount</a> () const</td></tr>
 <tr class="memdesc:afc445a99ac4d9477887be5353b20d47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get history size.  <a href="#afc445a99ac4d9477887be5353b20d47b">More...</a><br /></td></tr>
 <tr class="separator:afc445a99ac4d9477887be5353b20d47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8842ddf3563bae0e47aef57d5bfed140"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a8842ddf3563bae0e47aef57d5bfed140">clear</a> ()</td></tr>
-<tr class="memdesc:a8842ddf3563bae0e47aef57d5bfed140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear history.  <a href="#a8842ddf3563bae0e47aef57d5bfed140">More...</a><br /></td></tr>
-<tr class="separator:a8842ddf3563bae0e47aef57d5bfed140"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae35c83ee56733e64fc2d2cda85563f62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ae35c83ee56733e64fc2d2cda85563f62">setReferenceState</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;<a class="el" href="class_sensors_1_1_abstract_sensor.html#ae3d27a2c5a14deff18bc296679f4a87a">state</a>)</td></tr>
-<tr class="memdesc:ae35c83ee56733e64fc2d2cda85563f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set reference state.  <a href="#ae35c83ee56733e64fc2d2cda85563f62">More...</a><br /></td></tr>
-<tr class="separator:ae35c83ee56733e64fc2d2cda85563f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0267389851a493c7ace4d8cb325b4e1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ae0267389851a493c7ace4d8cb325b4e1">updated</a> () const</td></tr>
-<tr class="memdesc:ae0267389851a493c7ace4d8cb325b4e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get updated.  <a href="#ae0267389851a493c7ace4d8cb325b4e1">More...</a><br /></td></tr>
-<tr class="separator:ae0267389851a493c7ace4d8cb325b4e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e9decda4d86b789c9476a75ada6ea10"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a5e9decda4d86b789c9476a75ada6ea10">dropUpdated</a> ()</td></tr>
-<tr class="memdesc:a5e9decda4d86b789c9476a75ada6ea10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set updated to false.  <a href="#a5e9decda4d86b789c9476a75ada6ea10">More...</a><br /></td></tr>
-<tr class="separator:a5e9decda4d86b789c9476a75ada6ea10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a533a854c255689eb6fba78a65946613f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a533a854c255689eb6fba78a65946613f">clear</a> ()</td></tr>
+<tr class="memdesc:a533a854c255689eb6fba78a65946613f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear history.  <a href="#a533a854c255689eb6fba78a65946613f">More...</a><br /></td></tr>
+<tr class="separator:a533a854c255689eb6fba78a65946613f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad987e4cba5ccddb91867cffc6a1e886d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#ad987e4cba5ccddb91867cffc6a1e886d">setReferenceState</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;<a class="el" href="class_sensors_1_1_abstract_sensor.html#ae3d27a2c5a14deff18bc296679f4a87a">state</a>)</td></tr>
+<tr class="memdesc:ad987e4cba5ccddb91867cffc6a1e886d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set reference state.  <a href="#ad987e4cba5ccddb91867cffc6a1e886d">More...</a><br /></td></tr>
+<tr class="separator:ad987e4cba5ccddb91867cffc6a1e886d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80cfa8aee11f468d2790d92e7fee5ff2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a80cfa8aee11f468d2790d92e7fee5ff2">updated</a> () const</td></tr>
+<tr class="memdesc:a80cfa8aee11f468d2790d92e7fee5ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get updated.  <a href="#a80cfa8aee11f468d2790d92e7fee5ff2">More...</a><br /></td></tr>
+<tr class="separator:a80cfa8aee11f468d2790d92e7fee5ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1598ea0e06d97cf556628f5bc6992318"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a1598ea0e06d97cf556628f5bc6992318">dropUpdated</a> ()</td></tr>
+<tr class="memdesc:a1598ea0e06d97cf556628f5bc6992318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set updated to false.  <a href="#a1598ea0e06d97cf556628f5bc6992318">More...</a><br /></td></tr>
+<tr class="separator:a1598ea0e06d97cf556628f5bc6992318"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a17f8f9b53dde812510e163335622fc9b"><td class="memItemLeft" align="right" valign="top">static EIGEN_MAKE_ALIGNED_OPERATOR_NEW const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a17f8f9b53dde812510e163335622fc9b">DEFAULT_CAPACITY</a> = 2048</td></tr>
-<tr class="separator:a17f8f9b53dde812510e163335622fc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540bad660024cb0b1b0e8da0597b9e14"><td class="memItemLeft" align="right" valign="top">static EIGEN_MAKE_ALIGNED_OPERATOR_NEW constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a540bad660024cb0b1b0e8da0597b9e14">DEFAULT_CAPACITY</a> = 2048</td></tr>
+<tr class="separator:a540bad660024cb0b1b0e8da0597b9e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -160,13 +158,13 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a79d1ed923493f5d1b54594e83dcd1696"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a79d1ed923493f5d1b54594e83dcd1696">_history</a></td></tr>
 <tr class="memdesc:a79d1ed923493f5d1b54594e83dcd1696"><td class="mdescLeft">&#160;</td><td class="mdescRight">History container.  <a href="#a79d1ed923493f5d1b54594e83dcd1696">More...</a><br /></td></tr>
 <tr class="separator:a79d1ed923493f5d1b54594e83dcd1696"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5480ee82d3352bde75419e7c9220c72b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a5480ee82d3352bde75419e7c9220c72b">_maxDataCapacity</a></td></tr>
+<tr class="memitem:a5480ee82d3352bde75419e7c9220c72b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a5480ee82d3352bde75419e7c9220c72b">_maxDataCapacity</a> = <a class="el" href="class_sensors_1_1_abstract_sensor.html#a540bad660024cb0b1b0e8da0597b9e14">DEFAULT_CAPACITY</a></td></tr>
 <tr class="memdesc:a5480ee82d3352bde75419e7c9220c72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max size of history.  <a href="#a5480ee82d3352bde75419e7c9220c72b">More...</a><br /></td></tr>
 <tr class="separator:a5480ee82d3352bde75419e7c9220c72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a904b27352b3e301b85a1c887b79a16c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a904b27352b3e301b85a1c887b79a16c6">_referenceState</a></td></tr>
 <tr class="memdesc:a904b27352b3e301b85a1c887b79a16c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reference state.  <a href="#a904b27352b3e301b85a1c887b79a16c6">More...</a><br /></td></tr>
 <tr class="separator:a904b27352b3e301b85a1c887b79a16c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d68584653178eb78b55f3600c8f7030"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a0d68584653178eb78b55f3600c8f7030">_updated</a></td></tr>
+<tr class="memitem:a0d68584653178eb78b55f3600c8f7030"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sensors_1_1_abstract_sensor.html#a0d68584653178eb78b55f3600c8f7030">_updated</a> = false</td></tr>
 <tr class="memdesc:a0d68584653178eb78b55f3600c8f7030"><td class="mdescLeft">&#160;</td><td class="mdescRight">The updated flag.  <a href="#a0d68584653178eb78b55f3600c8f7030">More...</a><br /></td></tr>
 <tr class="separator:a0d68584653178eb78b55f3600c8f7030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -175,27 +173,8 @@ Private Attributes</h2></td></tr>
 <p>Keeps one <a class="el" href="class_types_1_1_object_state.html" title="Object (Smartphone) state as a vector + matrix. ">Types::ObjectState</a> object called referenceState, and a container of <a class="el" href="class_types_1_1_object_state.html" title="Object (Smartphone) state as a vector + matrix. ">Types::ObjectState</a> objects called history. dataCapacity is the maximum size of history.</p>
 <p>Apart from keeping the history, this class doesn't do much. Apparently this changes in its chidren. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3bfd72ef84d99b52f27f090831b6a544"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bfd72ef84d99b52f27f090831b6a544">&#9670;&nbsp;</a></span>AbstractSensor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Sensors::AbstractSensor::AbstractSensor </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A pretty simple constructor, sets default capacity and _updated == false. </p>
-
-</div>
-</div>
-<a id="afcef0230fecdeee2f30db15a49273540"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcef0230fecdeee2f30db15a49273540">&#9670;&nbsp;</a></span>~AbstractSensor()</h2>
+<a id="a21f54824575290fc96e56a4e52848dfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21f54824575290fc96e56a4e52848dfb">&#9670;&nbsp;</a></span>~AbstractSensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,7 +183,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Sensors::AbstractSensor::~AbstractSensor </td>
+          <td class="memname">virtual Sensors::AbstractSensor::~AbstractSensor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -212,10 +191,12 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Virtual destructor just in case. </p>
 
 </div>
 </div>
@@ -248,8 +229,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8842ddf3563bae0e47aef57d5bfed140"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8842ddf3563bae0e47aef57d5bfed140">&#9670;&nbsp;</a></span>clear()</h2>
+<a id="a533a854c255689eb6fba78a65946613f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a533a854c255689eb6fba78a65946613f">&#9670;&nbsp;</a></span>clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,7 +239,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Sensors::AbstractSensor::clear </td>
+          <td class="memname">virtual void Sensors::AbstractSensor::clear </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -266,14 +247,14 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Clear history. </p>
 
-<p>Reimplemented in <a class="el" href="class_sensors_1_1_beacon_sensor.html#a5c8130c07d26d76ed2276dad82ea2522">Sensors::BeaconSensor</a>, and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a3566bebfd73060e19d11e9fe399fa0d2">Sensors::AccelerometerSensor</a>.</p>
+<p>Reimplemented in <a class="el" href="class_sensors_1_1_beacon_sensor.html#af58904976e7e08f3d78a2dd377dc4fe9">Sensors::BeaconSensor</a>, and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a9c92b00bb31eca1117b22fd388d40143">Sensors::AccelerometerSensor</a>.</p>
 
 </div>
 </div>
@@ -282,6 +263,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">size_t Sensors::AbstractSensor::dataCapacity </td>
@@ -290,6 +274,11 @@ Private Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get data capacity. </p>
@@ -301,6 +290,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">size_t Sensors::AbstractSensor::dataCount </td>
@@ -309,14 +301,19 @@ Private Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get history size. </p>
 
 </div>
 </div>
-<a id="a5e9decda4d86b789c9476a75ada6ea10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e9decda4d86b789c9476a75ada6ea10">&#9670;&nbsp;</a></span>dropUpdated()</h2>
+<a id="a1598ea0e06d97cf556628f5bc6992318"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1598ea0e06d97cf556628f5bc6992318">&#9670;&nbsp;</a></span>dropUpdated()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -325,7 +322,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Sensors::AbstractSensor::dropUpdated </td>
+          <td class="memname">virtual void Sensors::AbstractSensor::dropUpdated </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -333,7 +330,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -342,14 +339,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a07007a8f085a861667af3500fc90b046"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07007a8f085a861667af3500fc90b046">&#9670;&nbsp;</a></span>history()</h2>
+<a id="a6241d4f2474bf71829f01f1a1ec97cd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6241d4f2474bf71829f01f1a1ec97cd8">&#9670;&nbsp;</a></span>history()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a> &amp; Sensors::AbstractSensor::history </td>
+          <td class="memname"><a class="el" href="namespace_types.html#a78f90a619d2e51ed438c0a15737c03bd">Types::ObjectStateContainer</a> Sensors::AbstractSensor::history </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>length</em> = <code>0</code></td><td>)</td>
@@ -367,6 +364,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> Sensors::AbstractSensor::lastState </td>
@@ -375,10 +375,15 @@ Private Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Return the last state in history. </p>
-<p>Note: used in <a class="el" href="bridge_8h.html" title="The bridge between JNI and trackin_lib. ">bridge.h</a> to get the device position </p>
+<p>Note: used in bridge.h to get the device position </p>
 
 </div>
 </div>
@@ -458,6 +463,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> Sensors::AbstractSensor::referenceState </td>
@@ -466,6 +474,11 @@ Private Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get reference state. </p>
@@ -517,7 +530,7 @@ Private Attributes</h2></td></tr>
 
 <p>Get sensor type. Overridden by subclasses. </p>
 
-<p>Implemented in <a class="el" href="class_sensors_1_1_beacon_sensor.html#a63644a46e9579bfd42347a63482e95ae">Sensors::BeaconSensor</a>, and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a1cad3c99dc2c715413456c8cb15a6cbe">Sensors::AccelerometerSensor</a>.</p>
+<p>Implemented in <a class="el" href="class_sensors_1_1_beacon_sensor.html#a61d39048c53a96ff8fb200a2c60a3c02">Sensors::BeaconSensor</a>, and <a class="el" href="class_sensors_1_1_accelerometer_sensor.html#a5650cc799f736e8c6f7318fde67511f3">Sensors::AccelerometerSensor</a>.</p>
 
 </div>
 </div>
@@ -541,8 +554,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae35c83ee56733e64fc2d2cda85563f62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae35c83ee56733e64fc2d2cda85563f62">&#9670;&nbsp;</a></span>setReferenceState()</h2>
+<a id="ad987e4cba5ccddb91867cffc6a1e886d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad987e4cba5ccddb91867cffc6a1e886d">&#9670;&nbsp;</a></span>setReferenceState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -551,7 +564,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Sensors::AbstractSensor::setReferenceState </td>
+          <td class="memname">virtual void Sensors::AbstractSensor::setReferenceState </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;&#160;</td>
           <td class="paramname"><em>state</em></td><td>)</td>
@@ -560,13 +573,12 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Set reference state. </p>
-<p>Set the reference state. </p>
 
 </div>
 </div>
@@ -590,8 +602,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae0267389851a493c7ace4d8cb325b4e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0267389851a493c7ace4d8cb325b4e1">&#9670;&nbsp;</a></span>updated()</h2>
+<a id="a80cfa8aee11f468d2790d92e7fee5ff2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80cfa8aee11f468d2790d92e7fee5ff2">&#9670;&nbsp;</a></span>updated()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -600,7 +612,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Sensors::AbstractSensor::updated </td>
+          <td class="memname">virtual bool Sensors::AbstractSensor::updated </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -608,7 +620,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -682,7 +694,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Sensors::AbstractSensor::_maxDataCapacity</td>
+          <td class="memname">size_t Sensors::AbstractSensor::_maxDataCapacity = <a class="el" href="class_sensors_1_1_abstract_sensor.html#a540bad660024cb0b1b0e8da0597b9e14">DEFAULT_CAPACITY</a></td>
         </tr>
       </table>
   </td>
@@ -730,7 +742,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Sensors::AbstractSensor::_updated</td>
+          <td class="memname">bool Sensors::AbstractSensor::_updated = false</td>
         </tr>
       </table>
   </td>
@@ -744,8 +756,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a17f8f9b53dde812510e163335622fc9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17f8f9b53dde812510e163335622fc9b">&#9670;&nbsp;</a></span>DEFAULT_CAPACITY</h2>
+<a id="a540bad660024cb0b1b0e8da0597b9e14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a540bad660024cb0b1b0e8da0597b9e14">&#9670;&nbsp;</a></span>DEFAULT_CAPACITY</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -754,7 +766,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">EIGEN_MAKE_ALIGNED_OPERATOR_NEW const size_t Sensors::AbstractSensor::DEFAULT_CAPACITY = 2048</td>
+          <td class="memname">EIGEN_MAKE_ALIGNED_OPERATOR_NEW constexpr size_t Sensors::AbstractSensor::DEFAULT_CAPACITY = 2048</td>
         </tr>
       </table>
   </td>
@@ -767,8 +779,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="abstractsensor_8h_source.html">abstractsensor.h</a></li>
-<li><a class="el" href="abstractsensor_8cpp.html">abstractsensor.cpp</a></li>
+<li><a class="el" href="_abstract_sensor_8h_source.html">AbstractSensor.h</a></li>
+<li><a class="el" href="_abstract_sensor_8cpp.html">AbstractSensor.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

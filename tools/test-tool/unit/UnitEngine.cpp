@@ -15,7 +15,7 @@
 #include "UnitEngine.h"
 #include "teamcity_cppunit.h"
 
-// Choose the dirent.h file + header for chdir
+// Choose the dirent.h file + header for chdir()
 // Unix uses POSIX dirent.h (+ unistd.h for chdir() )
 // Windows should use windirent.h, including MinGW, because
 // dirent.h in MinGW does not have d_type, not good!
@@ -98,7 +98,7 @@ namespace unit {
         result.addListener(&collector);
 
         // TestCaller has to be declared outside of the for loop scope
-        // And shoul not be destoryed before all tests are finished
+        // And should not be destoryed before all tests are finished
         // Some funny destructor ???
         // Also I can't make a vector of TestCaller<TestClass> for some strange reason
 

@@ -7,7 +7,7 @@ var searchData=
   ['mybeaconlist',['MyBeaconList',['../classtester_1_1_my_beacon_list.html',1,'tester']]],
   ['mybeaconlist_2ecpp',['MyBeaconList.cpp',['../_my_beacon_list_8cpp.html',1,'']]],
   ['mybeaconlist_2eh',['MyBeaconList.h',['../_my_beacon_list_8h.html',1,'']]],
-  ['mybridge',['MyBridge',['../classtester_1_1_my_bridge.html',1,'tester']]],
+  ['mybridge',['MyBridge',['../classtester_1_1_my_bridge.html',1,'tester::MyBridge'],['../classtester_1_1_engine.html#a126a987245220c0137d8173a8ded3c0f',1,'tester::Engine::myBridge()']]],
   ['mybridge_2ecpp',['MyBridge.cpp',['../_my_bridge_8cpp.html',1,'']]],
   ['mybridge_2eh',['MyBridge.h',['../_my_bridge_8h.html',1,'']]],
   ['myjson_2ecpp',['myjson.cpp',['../myjson_8cpp.html',1,'']]],

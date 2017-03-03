@@ -86,12 +86,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad98d32516c4bd69b4f36192e1fabecb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_object_state.html">ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_math.html#ad98d32516c4bd69b4f36192e1fabecb6">kalman</a> (const <a class="el" href="struct_object_state.html">ObjectState</a> &amp;currState, const <a class="el" href="struct_object_state.html">ObjectState</a> &amp;beaconState, const <a class="el" href="struct_object_state.html">ObjectState</a> &amp;accState)</td></tr>
-<tr class="memdesc:ad98d32516c4bd69b4f36192e1fabecb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Despite name, doesn't seem to use Kalman filters.  <a href="#ad98d32516c4bd69b4f36192e1fabecb6">More...</a><br /></td></tr>
-<tr class="separator:ad98d32516c4bd69b4f36192e1fabecb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a455d4d73b550ea558ff24591a0e02c31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_math.html#a455d4d73b550ea558ff24591a0e02c31">kalman</a> (const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;currState, const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;measure)</td></tr>
-<tr class="memdesc:a455d4d73b550ea558ff24591a0e02c31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use kalman filter.  <a href="#a455d4d73b550ea558ff24591a0e02c31">More...</a><br /></td></tr>
-<tr class="separator:a455d4d73b550ea558ff24591a0e02c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d38ae12a5acdacf7833c83711f118ee"><td class="memTemplParams" colspan="2">template&lt;class Data , template&lt; typename DataType, typename Allocator=std::allocator&lt; DataType &gt; &gt; class DataContainer&gt; </td></tr>
 <tr class="memitem:a4d38ae12a5acdacf7833c83711f118ee"><td class="memTemplItemLeft" align="right" valign="top">Data&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_math.html#a4d38ae12a5acdacf7833c83711f118ee">mean</a> (const DataContainer&lt; Data &gt; &amp;data, const Data &amp;init_value=0)</td></tr>
 <tr class="memdesc:a4d38ae12a5acdacf7833c83711f118ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average value of a container.  <a href="#a4d38ae12a5acdacf7833c83711f118ee">More...</a><br /></td></tr>
@@ -123,12 +117,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a0b7e8fdb4414ed2df9dd97763a9952e1"><td class="memTemplParams" colspan="2">template&lt;class Data , template&lt; typename DataType, typename Allocator=std::allocator&lt; DataType &gt; &gt; class DataContainer&gt; </td></tr>
 <tr class="memitem:a0b7e8fdb4414ed2df9dd97763a9952e1"><td class="memTemplItemLeft" align="right" valign="top">Data&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_math.html#a0b7e8fdb4414ed2df9dd97763a9952e1">cov</a> (const DataContainer&lt; Data &gt; &amp;data1, const DataContainer&lt; Data &gt; &amp;data2)</td></tr>
 <tr class="separator:a0b7e8fdb4414ed2df9dd97763a9952e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08c25be1480f5c4d987a40cfe8a3bfec"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_math.html#a08c25be1480f5c4d987a40cfe8a3bfec">mean_filter</a> (int n, const std::vector&lt; double &gt; &amp;data, const std::vector&lt; double &gt; &amp;weights=std::vector&lt; double &gt;())</td></tr>
-<tr class="memdesc:a08c25be1480f5c4d987a40cfe8a3bfec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by <a class="el" href="namespace_math.html#a568cfa003cabb93b2351cb1490ec89fd" title="General smoothing function (UNUSED) ">smooth()</a>  <a href="#a08c25be1480f5c4d987a40cfe8a3bfec">More...</a><br /></td></tr>
-<tr class="separator:a08c25be1480f5c4d987a40cfe8a3bfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a568cfa003cabb93b2351cb1490ec89fd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_math.html#a568cfa003cabb93b2351cb1490ec89fd">smooth</a> (const std::vector&lt; double &gt; &amp;measurements, const std::vector&lt; time_t &gt; &amp;times=std::vector&lt; time_t &gt;(), time_t max_time=0)</td></tr>
-<tr class="memdesc:a568cfa003cabb93b2351cb1490ec89fd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespace_general.html">General</a> smoothing function (UNUSED)  <a href="#a568cfa003cabb93b2351cb1490ec89fd">More...</a><br /></td></tr>
-<tr class="separator:a568cfa003cabb93b2351cb1490ec89fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Various mathematical operations (mostly with containers) </p>
@@ -207,74 +195,6 @@ template&lt;class Data , template&lt; typename DataType, typename Allocator=std:
 
 </div>
 </div>
-<a id="ad98d32516c4bd69b4f36192e1fabecb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad98d32516c4bd69b4f36192e1fabecb6">&#9670;&nbsp;</a></span>kalman() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_object_state.html">ObjectState</a> Math::kalman </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="struct_object_state.html">ObjectState</a> &amp;&#160;</td>
-          <td class="paramname"><em>currState</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_object_state.html">ObjectState</a> &amp;&#160;</td>
-          <td class="paramname"><em>beaconState</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="struct_object_state.html">ObjectState</a> &amp;&#160;</td>
-          <td class="paramname"><em>accState</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Despite name, doesn't seem to use Kalman filters. </p>
-
-</div>
-</div>
-<a id="a455d4d73b550ea558ff24591a0e02c31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a455d4d73b550ea558ff24591a0e02c31">&#9670;&nbsp;</a></span>kalman() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> Math::kalman </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;&#160;</td>
-          <td class="paramname"><em>currState</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_types_1_1_object_state.html">Types::ObjectState</a> &amp;&#160;</td>
-          <td class="paramname"><em>measure</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Use kalman filter. </p>
-<p>Model: acceleration is constant and zero velocity is constant position is lineary changed</p>
-<p>Note: this is supposed to be used by <a class="el" href="class_navigator.html" title="A singleton class which manages Sensors::BeaconSensor and Sensors::AccelerometerSensor. ">Navigator</a>, but currrently disabled </p>
-
-</div>
-</div>
 <a id="a4d38ae12a5acdacf7833c83711f118ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d38ae12a5acdacf7833c83711f118ee">&#9670;&nbsp;</a></span>mean() <span class="overload">[1/2]</span></h2>
 
@@ -345,42 +265,6 @@ template&lt;class Data , template&lt; typename DataType, typename Allocator=std:
 
 </div>
 </div>
-<a id="a08c25be1480f5c4d987a40cfe8a3bfec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08c25be1480f5c4d987a40cfe8a3bfec">&#9670;&nbsp;</a></span>mean_filter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; double &gt; Math::mean_filter </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>weights</em> = <code>std::vector&lt;double&gt;()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Used by <a class="el" href="namespace_math.html#a568cfa003cabb93b2351cb1490ec89fd" title="General smoothing function (UNUSED) ">smooth()</a> </p>
-
-</div>
-</div>
 <a id="ae9ae6c8571a0643160ca6e5487d342ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9ae6c8571a0643160ca6e5487d342ba">&#9670;&nbsp;</a></span>power_elments()</h2>
 
@@ -442,43 +326,6 @@ template&lt;class Data , template&lt; typename DataType, typename Allocator=std:
 </div><div class="memdoc">
 
 <p>Apply ^pow operation to all elements of a container. </p>
-
-</div>
-</div>
-<a id="a568cfa003cabb93b2351cb1490ec89fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a568cfa003cabb93b2351cb1490ec89fd">&#9670;&nbsp;</a></span>smooth()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;double&gt; Math::smooth </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>measurements</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; time_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>times</em> = <code>std::vector&lt;&#160;time_t&#160;&gt;()</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">time_t&#160;</td>
-          <td class="paramname"><em>max_time</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="namespace_general.html">General</a> smoothing function (UNUSED) </p>
-<p>preparing data, weigths and calling appropriate subroutine </p>
 
 </div>
 </div>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['skipevents',['skipEvents',['../classtester_1_1_tester_config.html#afa4ff244b8db625b60c8d07914c3af0a',1,'tester::TesterConfig']]]
+  ['r',['r',['../classtester_1_1_vec3t.html#af5be8f26f2dd6a61ca11fd146d376fae',1,'tester::Vec3t']]],
+  ['rssi',['rssi',['../classtester_1_1_event.html#af21bc900683f31ab774007c454bf47ce',1,'tester::Event']]]
 ];

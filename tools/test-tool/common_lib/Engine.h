@@ -10,6 +10,7 @@
 #include "DoublePair.h"
 #include "Vec3tList.h"
 #include "MyBeacon.h"
+#include "MyBridge.h"
 #include "Event.h"
 #include "MyBeaconList.h"
 #include "EventList.h"
@@ -24,6 +25,10 @@ namespace tester {
      */
     class Engine {
     public:
+
+        //--------------------------------
+        // Public Methods
+        //--------------------------------
 
         /// Read data: config, beacons, events: true is success
         bool readData(bool verbose = true);
@@ -43,13 +48,20 @@ namespace tester {
         }
 
     private:
+        //---------------------------------
+        // Private Methods
+        //---------------------------------
         /// Convert timestamp -> time, so that timeStampOrigin -> timeOrigin
         double stamp2Time(long long timestamp){
             return  timeOrigin + (timestamp - timeStampOrigin) / testerConfig.getTicks();
         }
 
+        //---------------------------------
+        // Private Fields
+        //---------------------------------
 
-        // Global data (with default constructors)
+        /// MyBridge instance
+        MyBridge myBridge;
 
         /// Timestamp of the first event
         long long timeStampOrigin;

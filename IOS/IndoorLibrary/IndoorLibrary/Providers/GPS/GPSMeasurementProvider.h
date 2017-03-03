@@ -12,5 +12,8 @@
 
 
 @interface GPSMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
-
+@property (nonatomic, strong) CLLocationManager *manager;
+@property (nonatomic, strong) MeasurementEvent *event;
+@property (nonatomic, assign) NSInteger latitude;
+@property (nonatomic, assign) NSInteger longitude;
 @end

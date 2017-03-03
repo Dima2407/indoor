@@ -14,8 +14,8 @@
 
 @interface GPSMeasurementProvider()
 
-@property (nonatomic, strong) CLLocationManager *manager;
-@property (nonatomic, strong) MeasurementEvent *event;
+
+
 
 @end
 
@@ -29,22 +29,50 @@
     
     if (self != nil)
     {
-        self.manager = [[CLLocationManager alloc] init];
+        //self.manager = [[CLLocationManager alloc] init];
+     
     }
     return self;
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    
-    NSArray* coordinates = [[NSArray alloc] initWithObjects:@(newLocation.coordinate.latitude), @(newLocation.coordinate.longitude),nil];
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
+    CLLocation *location = [locations objectAtIndex:0];
+    self.latitude = location.coordinate.latitude;
+    self.longitude = location.coordinate.longitude;
+    NSArray* coordinates = [[NSArray alloc] initWithObjects:@(location.coordinate.latitude), @(location.coordinate.longitude),nil];
     self.event = [[MeasurementEvent alloc] initWithTime:[[NSDate date] timeIntervalSince1970] withMeasurementType:GEO_VALUE andWithCordinate:coordinates];
     [MeasurementProvider deliver:self.event];
  
    
 }
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    
+    NSLog(@"%@",error.userInfo);
+    if([CLLocationManager locationServicesEnabled]){
+        
+        NSLog(@"Location Services Enabled");
+        
+        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
+        UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:
+                                              @"App Permission Denied"
+                                      message:@"To re-enable, please go to Settings and turn on Location Service for this app."
+                                     delegate:nil
+                            cancelButtonTitle:@"OK"
+                            otherButtonTitles:nil];
+            [alert show];
+        }
+    }
+}
 
 -(void)start
 {
+    self.manager.delegate = self;
+    self.manager.desiredAccuracy = kCLLocationAccuracyBest;
+
+        [self.manager requestWhenInUseAuthorization];
+ 
+       
+  
     [self.manager startUpdatingLocation];
 }
 -(void)stop

@@ -12,9 +12,7 @@
 
 @interface MeasurementEvent()
 
-@property (nonatomic, assign) NSInteger timestamp;
-@property (nonatomic, assign) MeasurementType type;
-@property (nonatomic, strong) NSArray *values;
+
 
 @end
 

@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MeasurementEvent.h"
 
 
 @interface MeasurementTransfer : NSObject
-
++(void)deliver:(MeasurementEvent*)event;
 @end

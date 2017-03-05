@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "MeasurementEvent.h"
+#import "MeasurementTransfer.h"
 
 @interface MeasurementProvider : NSObject
-+(void)deliver:(MeasurementEvent*)event;
+@property (nonatomic, strong) MeasurementTransfer *transfer;
+
 -(void)start;
 -(void)stop;
 @end

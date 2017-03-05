@@ -10,5 +10,9 @@
 
 
 @implementation MeasurementTransfer
-
++(void)deliver:(MeasurementEvent*)event
+{
+    NSLog(@"delivered");
+    NSLog(@"Coordinates: %@",event.values);
+}
 @end

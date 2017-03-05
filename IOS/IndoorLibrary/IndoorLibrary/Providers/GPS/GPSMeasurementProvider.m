@@ -13,7 +13,7 @@
 
 
 @interface GPSMeasurementProvider()
-
+@property (nonatomic, strong)MeasurementProvider *provider;
 
 
 
@@ -30,23 +30,31 @@
     if (self != nil)
     {
         self.manager = [[CLLocationManager alloc] init];
+        self.manager.delegate = self;
+        self.manager.desiredAccuracy = kCLLocationAccuracyBest;
+        [self.manager requestAlwaysAuthorization];
     }
     return self;
 }
 - (void)locationManager:(CLLocationManager *)manager
 didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
+    
     switch (status) {
         case kCLAuthorizationStatusNotDetermined:
+             NSLog(@"Determined");
             [manager requestAlwaysAuthorization];
             break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
+             NSLog(@"AuthorizedWhenInUse");
             [manager startUpdatingLocation];
             break;
         case kCLAuthorizationStatusAuthorizedAlways:
+             NSLog(@"AuthorizedAlways");
             [manager startUpdatingLocation];
             break;
         case kCLAuthorizationStatusRestricted:
+             NSLog(@"Restricted");
             [self _showAlert:@"App Permission Restricted. User can't enable Location Services"];
             
             break;
@@ -63,19 +71,19 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
     
 }
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
+    
     CLLocation *location = [locations objectAtIndex:0];
-    NSLog(@"%f", location.coordinate.latitude);
-    self.longitude = location.coordinate.longitude;
     NSArray* coordinates = [[NSArray alloc] initWithObjects:@(location.coordinate.latitude), @(location.coordinate.longitude),nil];
-    self.event = [[MeasurementEvent alloc] initWithTime:[[NSDate date] timeIntervalSince1970] withMeasurementType:GEO_VALUE andWithCordinate:coordinates];
-    [MeasurementProvider deliver:self.event];
+    [MeasurementTransfer deliver:[[MeasurementEvent alloc] initWithTime:[[NSDate date] timeIntervalSince1970] withMeasurementType:GEO_VALUE andWithCordinate:coordinates]];
+    
     
     
 }
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     
     NSLog(@"%@",error.userInfo);
-    if([CLLocationManager locationServicesEnabled]){
+   
+       if([CLLocationManager locationServicesEnabled]){
         
         NSLog(@"Location Services Enabled");
         
@@ -93,8 +101,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 
 -(void)start
 {
-    self.manager.delegate = self;
-    self.manager.desiredAccuracy = kCLLocationAccuracyBest;
+ 
     [self.manager requestAlwaysAuthorization];
     if ([self.manager locationServicesEnabled]){
         

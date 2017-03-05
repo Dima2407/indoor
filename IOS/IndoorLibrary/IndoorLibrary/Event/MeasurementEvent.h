@@ -18,6 +18,10 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 };
 
 @interface MeasurementEvent : NSObject
+@property (nonatomic, assign) NSInteger timestamp;
+@property (nonatomic, assign) MeasurementType type;
+@property (nonatomic, strong) NSArray *values;
+
 
 -(instancetype)initWithTime:(NSInteger)time withMeasurementType:(MeasurementType)type andWithCordinate: (NSArray*)coordinates;
 

@@ -1,0 +1,202 @@
+@startuml
+
+title   Общее представление библиотеки-модуля Navigator. Структура классов.
+set namespaceSeparator ::
+
+
+class "**GeneralNavigator**" as GeneralNavigator {
+    # operationMode : OperationMode
+    + setOperationMode()
+    + getOperationMode()
+    # outputFrequency : double //частота выдачи данных наружу//
+    #
+	--
+	//Обработать новые данные и вызвать dataProcessDoneEventCallbacks//
+	+ processMeasurement( InputNavigationData );
+	+ processMeasurement( InputNavigationDataBuffer );
+	..
+	//Список функций для вызова, когда обработка будет завершена//
+	+ dataProcessDoneEventCallbacks : std::list<std::function>
+}
+
+note top of GeneralNavigator
+    Центральный пользовательский класс
+    предоставляет возможности настройки
+    режимов работы библиотеки, ввода и
+    вывода данных.
+    Вводимые данные в зависимости от
+    типа этих данных и конфигурации модуля
+    распределяет в соответствующие классы.
+    Содержит все подлежащие классы
+    навигации и управляет ими.
+    В зависимости от конфигурации усредняет,
+    суммирует, фильтрует, интегрирует
+    полученные от подлежащих навигационных
+    классов-модулей координаты.
+end note
+
+
+class BeaconNavigator{
+    Навигация по маякам типа
+    Bluetooth beacon RSSI
+    и WiFi-ным точкам доступа
+    fingerprinting
+}
+
+abstract NavigatorBySensors{
+
+
+}
+
+
+
+interface IRssiNavigator{
+    Navigator из tracking_lib
+    реализует этот интерфейс
+    --
+    +processMeasurement(BleBeaconData const&)
+}
+
+
+class BleBeaconNavigator{
+    напиример, это может быть
+    tracking_lib::Navigator
+}
+
+class AlternativeBleBeaconNavigator1
+
+
+interface FingerprintNavigator{
+
+}
+
+
+GeneralNavigator o-down- BeaconNavigator
+
+BeaconNavigator <-up- IRssiNavigator
+BeaconNavigator <-up- FingerprintNavigator
+
+IRssiNavigator <|-down- BleBeaconNavigator
+IRssiNavigator <|-down- AlternativeBleBeaconNavigator1
+
+
+GeneralNavigator o-down- NavigatorBySensors
+
+
+
+'class BeaconList{
+'	data : std::list<Beacon>
+'}
+'class BeaconListProvider
+'
+BeaconNavigator o-left- abstract BeaconList
+'BeaconList o-left- Beacon
+
+
+
+
+abstract InputNavigationData{
+    //данные собираемые устройством://
+    1. BleBeaconData,
+    2. WiFiAccessPointData
+    3. Ускорения ax, ay, az
+    4. Гироскоп
+    5. Магнитометр
+    6. ...
+    '__
+    'для простоты и универсальности
+    'приходят в виде ByteArray
+    '# ByteArray ba;
+    '--
+    ''+ serialize()
+    '+ deserialize()
+    '__
+    'А можно например в JSON
+    '+ parse()
+    __
+    + ba : ByteArray
+    + serializer : ISerializer
+}
+abstract OutputNavigationData{
+    //положение//
+    + timestamp
+    + x
+    + y
+    ..
+    //и направление//
+    + alpha
+    + beta
+    + gamma
+    __
+    + serialize()
+    + deserialize()
+}
+
+InputNavigationData <..left..  GeneralNavigator : receives
+abstract InputNavigationDataBuffer <..  GeneralNavigator
+
+abstract InputNavigationDataBuffer o--  InputNavigationData : contains
+abstract OutputNavigationDataBuffer o--  OutputNavigationData
+
+OutputNavigationData <-right-  GeneralNavigator : returns
+
+
+
+
+
+
+
+
+
+
+
+newpage
+title   Входные данные interface BeaconNavigator
+set namespaceSeparator ::
+
+
+interface "**BeaconNavigator**" as BeaconNavigator {
+	# listOfBeacons : std::list<Beacon>
+	+ process(b : BeaconReceivedData) : Position3D
+	
+}
+
+class Beacon {
+    # UID : ByteArray  //Internal, may not be the same as Beacon's//
+    # TxPower : double  //Калибруемый параметр//
+    # Damp : double  //Калибруемый параметр//
+    # Pos : Position3D  //Местоположеие//
+    # Meta : std::string  //Какая-то дополнительная инфа//
+    __
+    + getters()
+    + setters()
+}
+
+note bottom of Beacon
+Виртуальное представление реального устройства - маячка,
+который имеет свой внутренний (наш) идентификатор,
+калибруемые параметры излучаемой мощности, ослабления в
+среде, местоположения в 3ёх-мерном пространстве, 
+а также содержит мета-информацию, тэги, что угодно.
+//Стоит соблюсти эту структуру для всех баз/источников// 
+//данных: sql, nosql, json, xml, csv, etc.//
+end note
+
+class BeaconReceivedData {
+	+ timestamp : double  //в секундах//
+	+ internalUid : ByteArray
+	+ rssi : double
+}
+
+BeaconReceivedData <. BeaconNavigator : passed to  
+BeaconNavigator "1" o--"3..*" Beacon : contains \n const
+
+class Position3D {
+	+ x,y,z : double 
+	+ floor : unsigned
+}
+
+Position3D <. Beacon
+Position3D <.. BeaconNavigator
+
+@enduml

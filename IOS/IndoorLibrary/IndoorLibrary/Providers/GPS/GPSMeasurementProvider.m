@@ -14,6 +14,7 @@
 
 @interface GPSMeasurementProvider()
 @property (nonatomic, strong)MeasurementProvider *provider;
+@property (nonatomic, assign) BOOL startStatus;
 
 
 
@@ -29,10 +30,11 @@
     
     if (self != nil)
     {
+        self.startStatus = NO;
         self.manager = [[CLLocationManager alloc] init];
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
-        [self.manager requestAlwaysAuthorization];
+        [self.manager requestWhenInUseAuthorization];
     }
     return self;
 }
@@ -43,19 +45,26 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
     switch (status) {
         case kCLAuthorizationStatusNotDetermined:
              NSLog(@"Determined");
-            [manager requestAlwaysAuthorization];
+            [manager requestWhenInUseAuthorization];
             break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
              NSLog(@"AuthorizedWhenInUse");
-            [manager startUpdatingLocation];
+            if (self.startStatus)
+            {
+                 [manager startUpdatingLocation];
+            }
+           
             break;
         case kCLAuthorizationStatusAuthorizedAlways:
              NSLog(@"AuthorizedAlways");
-            [manager startUpdatingLocation];
+            if (self.startStatus)
+            {
+                [manager startUpdatingLocation];
+            }
             break;
         case kCLAuthorizationStatusRestricted:
              NSLog(@"Restricted");
-            [self _showAlert:@"App Permission Restricted. User can't enable Location Services"];
+            [self _showAlert:@"App Permission Restricted. You can't enable Location Services"];
             
             break;
             
@@ -65,7 +74,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 }
 -(void)_showAlert:(NSString*) message
 {
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
     [alert show];
     
@@ -73,45 +82,64 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
     
     CLLocation *location = [locations objectAtIndex:0];
-    NSArray* coordinates = [[NSArray alloc] initWithObjects:@(location.coordinate.latitude), @(location.coordinate.longitude),nil];
-    [MeasurementTransfer deliver:[[MeasurementEvent alloc] initWithTime:[[NSDate date] timeIntervalSince1970] withMeasurementType:GEO_VALUE andWithCordinate:coordinates]];
+    [MeasurementTransfer deliver:[[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLatitude:location.coordinate.longitude]];
     
     
     
 }
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     
-    NSLog(@"%@",error.userInfo);
-   
-       if([CLLocationManager locationServicesEnabled]){
-        
-        NSLog(@"Location Services Enabled");
-        
-        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
-            UIAlertView    *alert = [[UIAlertView alloc]
-                                     initWithTitle:@"App Permission Denied"
-                                     message:@"To re-enable, please go to Settings and turn on Location Service for this app."
-                                     delegate:nil
-                                     cancelButtonTitle:@"OK"
-                                     otherButtonTitles:nil];
-            [alert show];
+    [manager stopUpdatingLocation];
+    NSLog(@"error%@",error);
+    switch([error code])
+    {
+        case kCLErrorNetwork:
+        {
+            [self _showAlert:@"Please check your network connection."];
+           
+           
         }
+            break;
+        case kCLErrorDenied:{
+            
+            [self _showAlert:@"App Permission Denied"];
+
+       }
+            break;
+        default:
+        {
+            [self _showAlert:@"Unknown network error"];
+          
+        }
+            break;
     }
 }
 
 -(void)start
 {
- 
-    [self.manager requestAlwaysAuthorization];
-    if ([self.manager locationServicesEnabled]){
-        
-        NSLog(@"Location Services Enabled");
-        NSLog(@"%d",[CLLocationManager authorizationStatus]);
-        
-        
-        [self.manager startUpdatingLocation];
-        
-        
+    self.startStatus = YES;
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+            NSLog(@"Determined");
+            [self _showAlert:@"App Permission Denied"];
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            NSLog(@"AuthorizedWhenInUse");
+            [self.manager startUpdatingLocation];
+            break;
+        case kCLAuthorizationStatusAuthorizedAlways:
+            NSLog(@"AuthorizedAlways");
+            [self.manager startUpdatingLocation];
+            break;
+        case kCLAuthorizationStatusRestricted:
+            NSLog(@"Restricted");
+            [self _showAlert:@"App Permission Restricted. User can't enable Location Services"];
+            
+            break;
+            
+        default:
+            break;
     }
     
     
@@ -119,6 +147,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 -(void)stop
 {
     [self.manager stopUpdatingLocation];
+    self.startStatus = NO;
 }
 
 @end

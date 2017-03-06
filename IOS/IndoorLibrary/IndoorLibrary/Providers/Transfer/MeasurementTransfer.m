@@ -13,6 +13,6 @@
 +(void)deliver:(MeasurementEvent*)event
 {
     NSLog(@"delivered");
-    NSLog(@"Coordinates: %@",event.values);
+    NSLog(@"Latitude :%f, Longitude: %f",event.latitude, event.longitude);
 }
 @end

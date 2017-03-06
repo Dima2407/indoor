@@ -14,6 +14,11 @@
 		0610B6901E66F661003EC3FA /* SensorMeasurementProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0610B6841E66F661003EC3FA /* SensorMeasurementProvider.m */; };
 		0610B6911E66F661003EC3FA /* MeasurementTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0610B6871E66F661003EC3FA /* MeasurementTransfer.m */; };
 		0610B6921E66F661003EC3FA /* WIFIMeasurementProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0610B68A1E66F661003EC3FA /* WIFIMeasurementProvider.m */; };
+		06ED89511E6C98300011C01C /* MeasurementEvent.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0610B6751E66F661003EC3FA /* MeasurementEvent.h */; };
+		06ED89521E6C98300011C01C /* MeasurementProvider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0610B6801E66F661003EC3FA /* MeasurementProvider.h */; };
+		06ED89531E6C98300011C01C /* GPSMeasurementProvider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0610B67E1E66F661003EC3FA /* GPSMeasurementProvider.h */; };
+		06ED89541E6C98300011C01C /* MeasurementTransfer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0610B6861E66F661003EC3FA /* MeasurementTransfer.h */; };
+		06ED897E1E6D79F50011C01C /* IndoorLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED897D1E6D79F50011C01C /* IndoorLocationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,6 +28,10 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				06ED89511E6C98300011C01C /* MeasurementEvent.h in CopyFiles */,
+				06ED89521E6C98300011C01C /* MeasurementProvider.h in CopyFiles */,
+				06ED89531E6C98300011C01C /* GPSMeasurementProvider.h in CopyFiles */,
+				06ED89541E6C98300011C01C /* MeasurementTransfer.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +53,8 @@
 		0610B6871E66F661003EC3FA /* MeasurementTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeasurementTransfer.m; sourceTree = "<group>"; };
 		0610B6891E66F661003EC3FA /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WIFIMeasurementProvider.h; sourceTree = "<group>"; };
 		0610B68A1E66F661003EC3FA /* WIFIMeasurementProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WIFIMeasurementProvider.m; sourceTree = "<group>"; };
+		06ED897C1E6D79F50011C01C /* IndoorLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationManager.h; sourceTree = "<group>"; };
+		06ED897D1E6D79F50011C01C /* IndoorLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndoorLocationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +89,8 @@
 			children = (
 				0610B6741E66F661003EC3FA /* Event */,
 				0610B6771E66F661003EC3FA /* Providers */,
+				06ED897C1E6D79F50011C01C /* IndoorLocationManager.h */,
+				06ED897D1E6D79F50011C01C /* IndoorLocationManager.m */,
 			);
 			path = IndoorLibrary;
 			sourceTree = "<group>";
@@ -209,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0610B68D1E66F661003EC3FA /* BluetoothMeasurementProvider.m in Sources */,
+				06ED897E1E6D79F50011C01C /* IndoorLocationManager.m in Sources */,
 				0610B68F1E66F661003EC3FA /* MeasurementProvider.m in Sources */,
 				0610B68E1E66F661003EC3FA /* GPSMeasurementProvider.m in Sources */,
 				0610B6911E66F661003EC3FA /* MeasurementTransfer.m in Sources */,
@@ -348,6 +362,7 @@
 				0610B6731E66F465003EC3FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -18,13 +18,7 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 };
 
 @interface MeasurementEvent : NSObject
-@property (nonatomic, assign) NSInteger timestamp;
-@property (nonatomic, assign) MeasurementType type;
-@property (nonatomic, strong) NSArray *values;
-@property (nonatomic, assign) CGFloat latitude;
-@property (nonatomic, assign) CGFloat longitude;
 
-
--(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude;
+-(instancetype)initWithTime:(NSInteger)time withMeasurementType:(MeasurementType)type andWithCordinate: (NSArray*)coordinates;
 
 @end

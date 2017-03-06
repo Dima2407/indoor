@@ -1,0 +1,474 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		06ED88B51E6B2A780011C01C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED88B41E6B2A780011C01C /* main.m */; };
+		06ED88B81E6B2A780011C01C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED88B71E6B2A780011C01C /* AppDelegate.m */; };
+		06ED88BB1E6B2A780011C01C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED88BA1E6B2A780011C01C /* ViewController.m */; };
+		06ED88BE1E6B2A790011C01C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06ED88BC1E6B2A790011C01C /* Main.storyboard */; };
+		06ED88C01E6B2A790011C01C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06ED88BF1E6B2A790011C01C /* Assets.xcassets */; };
+		06ED88C31E6B2A790011C01C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06ED88C11E6B2A790011C01C /* LaunchScreen.storyboard */; };
+		06ED88CE1E6B2A790011C01C /* IdoorSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED88CD1E6B2A790011C01C /* IdoorSampleTests.m */; };
+		06ED89691E6C9ED00011C01C /* GPSMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89651E6C9ED00011C01C /* GPSMeasurementProvider.h */; };
+		06ED896A1E6C9ED00011C01C /* MeasurementEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89661E6C9ED00011C01C /* MeasurementEvent.h */; };
+		06ED896B1E6C9ED00011C01C /* MeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89671E6C9ED00011C01C /* MeasurementProvider.h */; };
+		06ED896C1E6C9ED00011C01C /* MeasurementTransfer.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89681E6C9ED00011C01C /* MeasurementTransfer.h */; };
+		06ED89801E6D884D0011C01C /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06ED897F1E6D884D0011C01C /* libIndoorLibrary.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		06ED88CA1E6B2A790011C01C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06ED88A81E6B2A780011C01C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06ED88AF1E6B2A780011C01C;
+			remoteInfo = IdoorSample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		06ED88B01E6B2A780011C01C /* IdoorSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdoorSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		06ED88B41E6B2A780011C01C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		06ED88B61E6B2A780011C01C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		06ED88B71E6B2A780011C01C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		06ED88B91E6B2A780011C01C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		06ED88BA1E6B2A780011C01C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		06ED88BD1E6B2A790011C01C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		06ED88BF1E6B2A790011C01C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		06ED88C21E6B2A790011C01C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		06ED88C41E6B2A790011C01C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06ED88C91E6B2A790011C01C /* IdoorSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IdoorSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		06ED88CD1E6B2A790011C01C /* IdoorSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdoorSampleTests.m; sourceTree = "<group>"; };
+		06ED88CF1E6B2A790011C01C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06ED89651E6C9ED00011C01C /* GPSMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GPSMeasurementProvider.h; path = Library/include/IndoorLibrary/GPSMeasurementProvider.h; sourceTree = "<group>"; };
+		06ED89661E6C9ED00011C01C /* MeasurementEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementEvent.h; path = Library/include/IndoorLibrary/MeasurementEvent.h; sourceTree = "<group>"; };
+		06ED89671E6C9ED00011C01C /* MeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementProvider.h; path = Library/include/IndoorLibrary/MeasurementProvider.h; sourceTree = "<group>"; };
+		06ED89681E6C9ED00011C01C /* MeasurementTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementTransfer.h; path = Library/include/IndoorLibrary/MeasurementTransfer.h; sourceTree = "<group>"; };
+		06ED897F1E6D884D0011C01C /* libIndoorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIndoorLibrary.a; path = Library/libIndoorLibrary.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		06ED88AD1E6B2A780011C01C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06ED89801E6D884D0011C01C /* libIndoorLibrary.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06ED88C61E6B2A790011C01C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		06ED88A71E6B2A780011C01C = {
+			isa = PBXGroup;
+			children = (
+				06ED89651E6C9ED00011C01C /* GPSMeasurementProvider.h */,
+				06ED89661E6C9ED00011C01C /* MeasurementEvent.h */,
+				06ED89671E6C9ED00011C01C /* MeasurementProvider.h */,
+				06ED89681E6C9ED00011C01C /* MeasurementTransfer.h */,
+				06ED88B21E6B2A780011C01C /* IdoorSample */,
+				06ED88CC1E6B2A790011C01C /* IdoorSampleTests */,
+				06ED88B11E6B2A780011C01C /* Products */,
+				06ED88E81E6B2E820011C01C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		06ED88B11E6B2A780011C01C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				06ED88B01E6B2A780011C01C /* IdoorSample.app */,
+				06ED88C91E6B2A790011C01C /* IdoorSampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		06ED88B21E6B2A780011C01C /* IdoorSample */ = {
+			isa = PBXGroup;
+			children = (
+				06ED88B61E6B2A780011C01C /* AppDelegate.h */,
+				06ED88B71E6B2A780011C01C /* AppDelegate.m */,
+				06ED88B91E6B2A780011C01C /* ViewController.h */,
+				06ED88BA1E6B2A780011C01C /* ViewController.m */,
+				06ED88BC1E6B2A790011C01C /* Main.storyboard */,
+				06ED88BF1E6B2A790011C01C /* Assets.xcassets */,
+				06ED88C11E6B2A790011C01C /* LaunchScreen.storyboard */,
+				06ED88C41E6B2A790011C01C /* Info.plist */,
+				06ED88B31E6B2A780011C01C /* Supporting Files */,
+			);
+			path = IdoorSample;
+			sourceTree = "<group>";
+		};
+		06ED88B31E6B2A780011C01C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				06ED88B41E6B2A780011C01C /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		06ED88CC1E6B2A790011C01C /* IdoorSampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				06ED88CD1E6B2A790011C01C /* IdoorSampleTests.m */,
+				06ED88CF1E6B2A790011C01C /* Info.plist */,
+			);
+			path = IdoorSampleTests;
+			sourceTree = "<group>";
+		};
+		06ED88E81E6B2E820011C01C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				06ED897F1E6D884D0011C01C /* libIndoorLibrary.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		06ED88D81E6B2AAE0011C01C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06ED89691E6C9ED00011C01C /* GPSMeasurementProvider.h in Headers */,
+				06ED896A1E6C9ED00011C01C /* MeasurementEvent.h in Headers */,
+				06ED896B1E6C9ED00011C01C /* MeasurementProvider.h in Headers */,
+				06ED896C1E6C9ED00011C01C /* MeasurementTransfer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		06ED88AF1E6B2A780011C01C /* IdoorSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06ED88D21E6B2A790011C01C /* Build configuration list for PBXNativeTarget "IdoorSample" */;
+			buildPhases = (
+				06ED88AC1E6B2A780011C01C /* Sources */,
+				06ED88AD1E6B2A780011C01C /* Frameworks */,
+				06ED88AE1E6B2A780011C01C /* Resources */,
+				06ED88D81E6B2AAE0011C01C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IdoorSample;
+			productName = IdoorSample;
+			productReference = 06ED88B01E6B2A780011C01C /* IdoorSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		06ED88C81E6B2A790011C01C /* IdoorSampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06ED88D51E6B2A790011C01C /* Build configuration list for PBXNativeTarget "IdoorSampleTests" */;
+			buildPhases = (
+				06ED88C51E6B2A790011C01C /* Sources */,
+				06ED88C61E6B2A790011C01C /* Frameworks */,
+				06ED88C71E6B2A790011C01C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				06ED88CB1E6B2A790011C01C /* PBXTargetDependency */,
+			);
+			name = IdoorSampleTests;
+			productName = IdoorSampleTests;
+			productReference = 06ED88C91E6B2A790011C01C /* IdoorSampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		06ED88A81E6B2A780011C01C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = PischenkoL;
+				TargetAttributes = {
+					06ED88AF1E6B2A780011C01C = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = CME5G2A9T6;
+						ProvisioningStyle = Automatic;
+					};
+					06ED88C81E6B2A790011C01C = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = CME5G2A9T6;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 06ED88AF1E6B2A780011C01C;
+					};
+				};
+			};
+			buildConfigurationList = 06ED88AB1E6B2A780011C01C /* Build configuration list for PBXProject "IdoorSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 06ED88A71E6B2A780011C01C;
+			productRefGroup = 06ED88B11E6B2A780011C01C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				06ED88AF1E6B2A780011C01C /* IdoorSample */,
+				06ED88C81E6B2A790011C01C /* IdoorSampleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		06ED88AE1E6B2A780011C01C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06ED88C31E6B2A790011C01C /* LaunchScreen.storyboard in Resources */,
+				06ED88C01E6B2A790011C01C /* Assets.xcassets in Resources */,
+				06ED88BE1E6B2A790011C01C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06ED88C71E6B2A790011C01C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		06ED88AC1E6B2A780011C01C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06ED88BB1E6B2A780011C01C /* ViewController.m in Sources */,
+				06ED88B81E6B2A780011C01C /* AppDelegate.m in Sources */,
+				06ED88B51E6B2A780011C01C /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06ED88C51E6B2A790011C01C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06ED88CE1E6B2A790011C01C /* IdoorSampleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		06ED88CB1E6B2A790011C01C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06ED88AF1E6B2A780011C01C /* IdoorSample */;
+			targetProxy = 06ED88CA1E6B2A790011C01C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		06ED88BC1E6B2A790011C01C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				06ED88BD1E6B2A790011C01C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		06ED88C11E6B2A790011C01C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				06ED88C21E6B2A790011C01C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		06ED88D01E6B2A790011C01C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		06ED88D11E6B2A790011C01C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		06ED88D31E6B2A790011C01C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = CME5G2A9T6;
+				INFOPLIST_FILE = IdoorSample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
+				PRODUCT_BUNDLE_IDENTIFIER = KAA.IdoorSample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		06ED88D41E6B2A790011C01C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = CME5G2A9T6;
+				INFOPLIST_FILE = IdoorSample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
+				PRODUCT_BUNDLE_IDENTIFIER = KAA.IdoorSample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		06ED88D61E6B2A790011C01C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = CME5G2A9T6;
+				INFOPLIST_FILE = IdoorSampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KAA.IdoorSampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IdoorSample.app/IdoorSample";
+			};
+			name = Debug;
+		};
+		06ED88D71E6B2A790011C01C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = CME5G2A9T6;
+				INFOPLIST_FILE = IdoorSampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KAA.IdoorSampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IdoorSample.app/IdoorSample";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		06ED88AB1E6B2A780011C01C /* Build configuration list for PBXProject "IdoorSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06ED88D01E6B2A790011C01C /* Debug */,
+				06ED88D11E6B2A790011C01C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		06ED88D21E6B2A790011C01C /* Build configuration list for PBXNativeTarget "IdoorSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06ED88D31E6B2A790011C01C /* Debug */,
+				06ED88D41E6B2A790011C01C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		06ED88D51E6B2A790011C01C /* Build configuration list for PBXNativeTarget "IdoorSampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06ED88D61E6B2A790011C01C /* Debug */,
+				06ED88D71E6B2A790011C01C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 06ED88A81E6B2A780011C01C /* Project object */;
+}

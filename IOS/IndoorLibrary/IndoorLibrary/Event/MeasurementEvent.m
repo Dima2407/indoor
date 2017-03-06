@@ -18,7 +18,7 @@
 
 @implementation MeasurementEvent
 
--(instancetype)initWithTime:(NSInteger)time withMeasurementType:(MeasurementType)type andWithCordinate: (NSArray*)coordinates{
+-(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude {
     
     self = [super init];
     MeasurementEvent *event = nil;
@@ -27,10 +27,10 @@
     {
         event = [self init];
     }
-    event.timestamp = time;
-    event.type = type;
-    event.values = coordinates;
-   
+    event.timestamp = [[NSDate date] timeIntervalSince1970];
+    event.type = GEO_VALUE;
+    event.latitude = latitude;
+    event.longitude = longitude;
     return event;
 }
 

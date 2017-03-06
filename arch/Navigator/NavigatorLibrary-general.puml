@@ -230,7 +230,7 @@ title   Подробнее AbstractBeaconNavigator \n
 set namespaceSeparator ::
 
 
-interface "**AbstractBeaconNavigator**" as AbstractBeaconNavigator {
+abstract "**AbstractBeaconNavigator**" as AbstractBeaconNavigator {
 	# listOfBeacons : std::list<Beacon>
 	+ process(b : BeaconReceivedData) : Position3D
 	

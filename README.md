@@ -2,6 +2,6 @@
 
 ## Contains:
 
- * tester by Oleksiy Grechnyev
+ * Test-tool (Tester + Faker) by Oleksiy Grechnyev (tools/test-tool)
  
- **Note**: tracking_lib is presently located in tester
+ **Note**: tracking_lib is presently located in test-tool

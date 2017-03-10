@@ -5,14 +5,14 @@
 #ifndef TESTER_MYBEACON_H
 #define TESTER_MYBEACON_H
 
+
+#include <ostream>
+
+namespace tester {
 /** \brief Beacon class for tester
  *
  * It is completely separate from any classes in tracking_lib
  */
-#include <ostream>
-
-namespace tester {
-
     struct MyBeacon {
         /// Beacon coordinates
         double x, y, z;

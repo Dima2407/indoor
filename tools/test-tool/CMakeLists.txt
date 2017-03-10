@@ -22,3 +22,7 @@ add_subdirectory(tester)
 
 # Build faker
 add_subdirectory(faker)
+
+# Build unit
+add_subdirectory(unit)
+

@@ -141,7 +141,7 @@ note bottom of IDataReceiver
 3.
 end note
 }
-'namespace HAL
+'end of namespace HAL
 
 
 @enduml

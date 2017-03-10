@@ -19,7 +19,11 @@ Quick overview
     - **locally** using graphic tool *Laverna*
 
 
-Best way to generate locally **locally**
+Preview
+-------
+Use your favorite IDE with corresponding plugins. For example Intelij Idea or Eclipse.
+
+Best way to generate **locally**
 --------
 1. Run `java -jar plantuml.jar -charset UTF-8 -gui` and set source folder. Wait.. Tool will
     render all `*.puml` to `.png` to the same folder. See more instructions on official site. 
@@ -33,8 +37,8 @@ This is achievable with command-line tools [plantuml.jar](http://plantuml.com/co
 [pandoc](http://pandoc.org)
 ```
 cd prj/documentation-folder
-java -jar plantuml.jar -recurse -charset UTF-8 ./*.puml
-pandoc -f markdown -o README.html --smart --toc README.md --self-contained
+java -jar plantuml.jar -recurse -charset UTF-8  *.puml
+pandoc -f markdown -o README.html --smart --toc README.md --self-contained --css=buttondown.css
 ```
 
 `-charset UTF-8` is important on Windows platforms if you will render non-latin files.
@@ -44,18 +48,28 @@ Result `README.html` contains images embedded. It is possible to transfer only i
  
 Notes. Did you know? 
 -------
-> PlantUML sources stored PNG's metadata. Use `-metadata` flag to retrieve PlantUML sources from 
+> By default **PlantUML** sources are stored in PNG's metadata section. Use `-metadata` flag to retrieve PlantUML sources from 
 PNG images.    
 
-> PlantUML by default uses system charset. If UTF-8 or other non-win encoding is used on Windows, 
-charset must be specified explicitly with flag `-charset UTF-8`.
+> **PlantUML** by default uses system charset. For example if source file encoded in UTF-8 and you are 
+on Windows, charset must be specified explicitly with flag `-charset UTF-8`.
 
-> Pandoc uses the UTF-8 character encoding for both input and output. If your local character 
+> **PlantUML** can generate PDFs or SVGs instead of PNGs.
+
+> **PlantUML** does not restrict file types. It is possible to extract and render pictures from
+> any file, i.e. code sources. The only requirement is `@startuml` and `@enduml` tags.
+
+> **Pandoc** uses the UTF-8 character encoding for both input and output. If your local character 
 > encoding is not UTF-8, you should pipe input and output through `iconv`:  
 > `iconv -t utf-8 input.txt | pandoc | iconv -f utf-8`
 
-> Pandoc does not make images inline in output .html. Use flag `--self-contained`
+> By default **Pandoc** does not store images in output .html, only relative links.   
+> Use flag `--self-contained` to inline images.
  
-> Pandoc allows conversation between a lot of file types and formats.
+> **Pandoc** allows conversation between a lot of file types and formats. See official site to learn more.
 
-> It is cool to have a cool branded `.CSS` for Pandoc conversations.
+> [`buttondown.css`](https://gist.githubusercontent.com/ryangray/1882525/raw/2a6e53f645b960f0bed16d686ba3df36505f839f/buttondown.css) 
+> was found on [github](https://gist.github.com/ryangray/1882525) and also could be passed by remote
+> URL as `--css=https://gist.githubusercontent.com/ryangray/1882525/raw/2a6e53f645b960f0bed16d686ba3df36505f839f/buttondown.css`
+
+> It is cool to have a nice branded `.CSS` for Pandoc conversations.

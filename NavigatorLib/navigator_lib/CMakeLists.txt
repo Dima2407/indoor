@@ -10,7 +10,10 @@ set(SOURCE_FILES
         BeaconReceivedData.h
         INavigator.h
         OutputNavigationData.h
+        InputNavigationData.h
         AbstractBeaconNavigator.h
-        TrilatBeaconNavigator.cpp TrilatBeaconNavigator.h)
+        TrilatBeaconNavigator.cpp TrilatBeaconNavigator.h
+        IFilter.h
+        NoFilter.h)
 
 add_library(navigator_lib STATIC ${SOURCE_FILES})

@@ -13,6 +13,18 @@ namespace navi {
         /** @brief Alpha-Beta filter implementing IFilter interface
          *
          *
+         * @startuml
+         * class AlphaBetaFilter {
+         * // Alpha-Beta Filter //
+         * // operator() is an alias to process() //
+         * --
+         * + AlphaBetaFilter(alpha: double, beta: double)
+         * + process(in: double) : double
+         * + reset() : void
+         * }
+         *
+         * AlphaBetaFilter <|.. interface IFilter
+         * @enduml
          */
 
         class AlphaBetaFilter : public IFilter {

@@ -7,7 +7,21 @@
 namespace navi {
     namespace filter {
 
-        /// Filter interface
+        /** @brief Filter interface
+         *
+         * @startuml
+         * interface IFilter{
+         * // Filter functional interface. //
+         * // operator() is an alias to process() //
+         * --
+         * + {abstract} process(in: double) : double
+         * ..
+         * + reset() : void
+         * + operator() (in: double) : double
+         * + ~IFilter()
+         * }
+         * @enduml
+         */
         class IFilter {
         public:
             //------------------------------------

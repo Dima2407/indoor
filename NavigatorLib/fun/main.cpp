@@ -11,13 +11,13 @@
 #include <ctime>
 #include <cmath>
 
-#include "NoFilter.h"
+#include "filter/NoFilter.h"
 
 int main()
 {
 
     using namespace std;
-    using namespace navi_beacon;
+    using namespace navi::filter;
 
     // Let's have some fun with the filters
 
@@ -52,7 +52,7 @@ int main()
     // Run the data through the filter
     for (int i=0; i<SIZE; i++)
     {
-        outData[i] = filter.run(inData[i]);
+        outData[i] = filter.process(inData[i]);
     }
 
     // Write the result

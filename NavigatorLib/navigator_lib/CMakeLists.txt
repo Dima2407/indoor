@@ -1,19 +1,21 @@
 cmake_minimum_required(VERSION 3.0)
 project(navigator_lib)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
-        Beacon.h
-        Position3D.h
-        BeaconUID.h
-        BeaconReceivedData.h
         INavigator.h
         OutputNavigationData.h
         InputNavigationData.h
-        AbstractBeaconNavigator.h
-        TrilatBeaconNavigator.cpp TrilatBeaconNavigator.h
-        IFilter.h
-        NoFilter.h)
+        #
+        beacon/Beacon.h
+        beacon/Position3D.h
+        beacon/BeaconUID.h
+        beacon/BeaconReceivedData.h
+        beacon/AbstractBeaconNavigator.h
+        beacon/TrilatBeaconNavigator.cpp beacon/TrilatBeaconNavigator.h
+        #
+        filter/IFilter.h
+        filter/NoFilter.h)
 
 add_library(navigator_lib STATIC ${SOURCE_FILES})

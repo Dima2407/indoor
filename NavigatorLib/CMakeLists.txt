@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(NavigatorLib)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 # Include path to navigator_lib for include files
 include_directories(navigator_lib)

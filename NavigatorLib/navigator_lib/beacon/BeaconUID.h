@@ -10,11 +10,11 @@
 
 namespace navi {
     namespace beacon {
-/** \brief Beacon UID. Can be compared.
+/** @brief Beacon UID. Can be compared.
  *
  *
  */
-        class BeaconUID : public std::vector<uint8_t> {
+        class BeaconUID : public std::vector<std::uint8_t> {
 
         };
     }

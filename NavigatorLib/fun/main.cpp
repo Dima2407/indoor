@@ -5,6 +5,7 @@
 #define _USE_MATH_DEFINES
 
 #include <iostream>
+#include <fstream>
 #include <array>
 #include <random>
 #include <chrono>
@@ -12,6 +13,7 @@
 #include <cmath>
 
 #include "filter/NoFilter.h"
+#include "filter/AlphaBetaFilter.h"
 
 int main()
 {
@@ -39,13 +41,14 @@ int main()
     for (int i=0; i<SIZE; i++)
     {
         // inData[i] = i*0.5 + 0.7; // Some linear function
-        inData[i] = 2.0*sin(M_PI*i/20);
+        inData[i] = 2.0 * sin(M_PI*i/20);
         inData[i] +=  1.0 * uDouble(randomEngine); // Add random noise
     }
 
     // Define a filter
-    NoFilter noFilter;
-    IFilter & filter = noFilter;
+//    NoFilter noFilter;
+    AlphaBetaFilter aFilter(0.2, 0.2);
+    IFilter & filter = aFilter;
 
 //    IFilter && filter = NoFilter();
 
@@ -55,11 +58,16 @@ int main()
         outData[i] = filter.process(inData[i]);
     }
 
+    // Create a file
+    ofstream out("fun_out.dat");
+
     // Write the result
     for (int i=0; i<SIZE; i++)
     {
-        cout << i << "    " << inData[i]  << "    " << outData[i] << endl;
+        out << i << "    " << inData[i]  << "    " << outData[i] << endl;
     }
+
+    out.close();
 
     return 0;
 }

@@ -7,15 +7,16 @@
 #include <cmath>
 
 namespace navi {
- namespace beacon {
-    /// Point in 3d space + floor number (optional, when needed)
-    struct Position3D {
-        double x = nan("");
-        double y = nan("");
-        double z = nan("");
+    namespace beacon {
+        /// Point in 3d space + floor number (optional, when needed)
+        struct Position3D {
+            double x = nan("");
+            double y = nan("");
+            double z = nan("");
 
-        unsigned int floor = 0;
-    };
+            unsigned int floor = 0;
+        };
+    }
 }
 
 

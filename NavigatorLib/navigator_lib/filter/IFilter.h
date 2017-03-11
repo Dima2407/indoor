@@ -10,8 +10,19 @@ namespace navi {
         /// Filter interface
         class IFilter {
         public:
-            /// Run a double through the filter and get the result
+            //------------------------------------
+            // Public abstract method: must implement
+            //------------------------------------
+
+            /// Run a double value through the filter
             virtual double process(double in) = 0;
+
+            //------------------------------------
+            // Public methods: default and optional
+            //------------------------------------
+
+            /// Reset the filter and forget all history, optional
+            virtual void reset() {}
 
             /// Alias to process() by default
             virtual double operator()(double in)

@@ -13,7 +13,7 @@ namespace navi {
         /** @startuml
          * class  AbstractBeaconNavigator
          * @enduml */
-        class AbstractBeaconNavigator : public navi::INavigator {
+        class AbstractBeaconNavigator : public INavigator {
         public:
             virtual Position3D &process(BeaconReceivedData b) = 0;
         };

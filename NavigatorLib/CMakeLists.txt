@@ -9,3 +9,6 @@ add_subdirectory(navigator_lib)
 
 # Build fun
 add_subdirectory(fun)
+
+# Build unittest
+add_subdirectory(unittest)

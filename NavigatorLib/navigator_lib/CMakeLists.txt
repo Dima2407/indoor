@@ -17,6 +17,6 @@ set(SOURCE_FILES
         #
         filter/IFilter.h
         filter/NoFilter.h
-        filter/AlphaBetaFilter.cpp filter/AlphaBetaFilter.h)
+        filter/AlphaBetaFilter.cpp filter/AlphaBetaFilter.h beacon/BeaconProcessor.h)
 
 add_library(navigator_lib STATIC ${SOURCE_FILES})

@@ -12,11 +12,11 @@
 
 @interface BluetoothMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 
-@property (nonatomic, strong) CLLocationManager *manager;
-@property (nonatomic, strong) MeasurementEvent *event;
-@property (nonatomic, assign) NSInteger latitude;
-@property (nonatomic, assign) NSInteger longitude;
 
--(void) setBeaconMap:(NSArray*)data;
-
+@property (nonatomic, strong)  NSString *UUID;
+@property (nonatomic, assign) CGFloat txPower;
+@property (nonatomic, assign) NSInteger major;
+@property (nonatomic, assign) NSInteger minor;
+@property (nonatomic, assign) CGFloat damp;
+@property (nonatomic, strong) NSArray *beacons;
 @end

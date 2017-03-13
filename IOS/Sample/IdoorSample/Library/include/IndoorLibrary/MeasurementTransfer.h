@@ -11,5 +11,7 @@
 
 
 @interface MeasurementTransfer : NSObject
+
 +(void)deliver:(MeasurementEvent*)event;
+
 @end

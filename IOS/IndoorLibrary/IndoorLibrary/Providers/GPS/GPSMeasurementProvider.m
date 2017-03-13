@@ -38,6 +38,17 @@
     }
     return self;
 }
+-(void)_showAlert:(NSString*) message
+{
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    
+    [alert show];
+    
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+
 - (void)locationManager:(CLLocationManager *)manager
 didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
@@ -72,13 +83,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
             break;
     }
 }
--(void)_showAlert:(NSString*) message
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    
-    [alert show];
-    
-}
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
     
     CLLocation *location = [locations objectAtIndex:0];
@@ -114,6 +119,9 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
             break;
     }
 }
+
+#pragma mark - Actions
+
 
 -(void)start
 {

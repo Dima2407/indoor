@@ -1,5 +1,5 @@
 //
-//  BluetoothMeasurementProvider.h
+//  GPSMeasurementProvider.h
 //  IndoorLibrary
 //
 //  Created by AppleFace on 28.02.17.
@@ -10,13 +10,10 @@
 #import "MeasurementProvider.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface BluetoothMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 
+@interface GPSMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager *manager;
 @property (nonatomic, strong) MeasurementEvent *event;
 @property (nonatomic, assign) NSInteger latitude;
 @property (nonatomic, assign) NSInteger longitude;
-
--(void) setBeaconMap:(NSArray*)data;
-
 @end

@@ -14,11 +14,15 @@
 		06ED88C01E6B2A790011C01C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06ED88BF1E6B2A790011C01C /* Assets.xcassets */; };
 		06ED88C31E6B2A790011C01C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06ED88C11E6B2A790011C01C /* LaunchScreen.storyboard */; };
 		06ED88CE1E6B2A790011C01C /* IdoorSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED88CD1E6B2A790011C01C /* IdoorSampleTests.m */; };
-		06ED89691E6C9ED00011C01C /* GPSMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89651E6C9ED00011C01C /* GPSMeasurementProvider.h */; };
-		06ED896A1E6C9ED00011C01C /* MeasurementEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89661E6C9ED00011C01C /* MeasurementEvent.h */; };
-		06ED896B1E6C9ED00011C01C /* MeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89671E6C9ED00011C01C /* MeasurementProvider.h */; };
-		06ED896C1E6C9ED00011C01C /* MeasurementTransfer.h in Headers */ = {isa = PBXBuildFile; fileRef = 06ED89681E6C9ED00011C01C /* MeasurementTransfer.h */; };
-		06ED89801E6D884D0011C01C /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06ED897F1E6D884D0011C01C /* libIndoorLibrary.a */; };
+		06FBC97F1E74220600D8902A /* BluetoothMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC9771E74220600D8902A /* BluetoothMeasurementProvider.h */; };
+		06FBC9801E74220600D8902A /* GPSMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC9781E74220600D8902A /* GPSMeasurementProvider.h */; };
+		06FBC9811E74220600D8902A /* IndoorLocationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC9791E74220600D8902A /* IndoorLocationManager.h */; };
+		06FBC9821E74220600D8902A /* MeasurementEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC97A1E74220600D8902A /* MeasurementEvent.h */; };
+		06FBC9831E74220600D8902A /* MeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC97B1E74220600D8902A /* MeasurementProvider.h */; };
+		06FBC9841E74220600D8902A /* MeasurementTransfer.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC97C1E74220600D8902A /* MeasurementTransfer.h */; };
+		06FBC9851E74220600D8902A /* SensorMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC97D1E74220600D8902A /* SensorMeasurementProvider.h */; };
+		06FBC9861E74220600D8902A /* WIFIMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBC97E1E74220600D8902A /* WIFIMeasurementProvider.h */; };
+		06FBC98D1E76D7AE00D8902A /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FBC98C1E76D7AE00D8902A /* libIndoorLibrary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,11 +49,15 @@
 		06ED88C91E6B2A790011C01C /* IdoorSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IdoorSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06ED88CD1E6B2A790011C01C /* IdoorSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdoorSampleTests.m; sourceTree = "<group>"; };
 		06ED88CF1E6B2A790011C01C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		06ED89651E6C9ED00011C01C /* GPSMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GPSMeasurementProvider.h; path = Library/include/IndoorLibrary/GPSMeasurementProvider.h; sourceTree = "<group>"; };
-		06ED89661E6C9ED00011C01C /* MeasurementEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementEvent.h; path = Library/include/IndoorLibrary/MeasurementEvent.h; sourceTree = "<group>"; };
-		06ED89671E6C9ED00011C01C /* MeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementProvider.h; path = Library/include/IndoorLibrary/MeasurementProvider.h; sourceTree = "<group>"; };
-		06ED89681E6C9ED00011C01C /* MeasurementTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementTransfer.h; path = Library/include/IndoorLibrary/MeasurementTransfer.h; sourceTree = "<group>"; };
-		06ED897F1E6D884D0011C01C /* libIndoorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIndoorLibrary.a; path = Library/libIndoorLibrary.a; sourceTree = "<group>"; };
+		06FBC9771E74220600D8902A /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BluetoothMeasurementProvider.h; path = Library/include/IndoorLibrary/BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
+		06FBC9781E74220600D8902A /* GPSMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GPSMeasurementProvider.h; path = Library/include/IndoorLibrary/GPSMeasurementProvider.h; sourceTree = "<group>"; };
+		06FBC9791E74220600D8902A /* IndoorLocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IndoorLocationManager.h; path = Library/include/IndoorLibrary/IndoorLocationManager.h; sourceTree = "<group>"; };
+		06FBC97A1E74220600D8902A /* MeasurementEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementEvent.h; path = Library/include/IndoorLibrary/MeasurementEvent.h; sourceTree = "<group>"; };
+		06FBC97B1E74220600D8902A /* MeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementProvider.h; path = Library/include/IndoorLibrary/MeasurementProvider.h; sourceTree = "<group>"; };
+		06FBC97C1E74220600D8902A /* MeasurementTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MeasurementTransfer.h; path = Library/include/IndoorLibrary/MeasurementTransfer.h; sourceTree = "<group>"; };
+		06FBC97D1E74220600D8902A /* SensorMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SensorMeasurementProvider.h; path = Library/include/IndoorLibrary/SensorMeasurementProvider.h; sourceTree = "<group>"; };
+		06FBC97E1E74220600D8902A /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WIFIMeasurementProvider.h; path = Library/include/IndoorLibrary/WIFIMeasurementProvider.h; sourceTree = "<group>"; };
+		06FBC98C1E76D7AE00D8902A /* libIndoorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIndoorLibrary.a; path = Library/libIndoorLibrary.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06ED89801E6D884D0011C01C /* libIndoorLibrary.a in Frameworks */,
+				06FBC98D1E76D7AE00D8902A /* libIndoorLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,10 +82,14 @@
 		06ED88A71E6B2A780011C01C = {
 			isa = PBXGroup;
 			children = (
-				06ED89651E6C9ED00011C01C /* GPSMeasurementProvider.h */,
-				06ED89661E6C9ED00011C01C /* MeasurementEvent.h */,
-				06ED89671E6C9ED00011C01C /* MeasurementProvider.h */,
-				06ED89681E6C9ED00011C01C /* MeasurementTransfer.h */,
+				06FBC9771E74220600D8902A /* BluetoothMeasurementProvider.h */,
+				06FBC9781E74220600D8902A /* GPSMeasurementProvider.h */,
+				06FBC9791E74220600D8902A /* IndoorLocationManager.h */,
+				06FBC97A1E74220600D8902A /* MeasurementEvent.h */,
+				06FBC97B1E74220600D8902A /* MeasurementProvider.h */,
+				06FBC97C1E74220600D8902A /* MeasurementTransfer.h */,
+				06FBC97D1E74220600D8902A /* SensorMeasurementProvider.h */,
+				06FBC97E1E74220600D8902A /* WIFIMeasurementProvider.h */,
 				06ED88B21E6B2A780011C01C /* IdoorSample */,
 				06ED88CC1E6B2A790011C01C /* IdoorSampleTests */,
 				06ED88B11E6B2A780011C01C /* Products */,
@@ -130,7 +142,7 @@
 		06ED88E81E6B2E820011C01C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				06ED897F1E6D884D0011C01C /* libIndoorLibrary.a */,
+				06FBC98C1E76D7AE00D8902A /* libIndoorLibrary.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -142,10 +154,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06ED89691E6C9ED00011C01C /* GPSMeasurementProvider.h in Headers */,
-				06ED896A1E6C9ED00011C01C /* MeasurementEvent.h in Headers */,
-				06ED896B1E6C9ED00011C01C /* MeasurementProvider.h in Headers */,
-				06ED896C1E6C9ED00011C01C /* MeasurementTransfer.h in Headers */,
+				06FBC97F1E74220600D8902A /* BluetoothMeasurementProvider.h in Headers */,
+				06FBC9801E74220600D8902A /* GPSMeasurementProvider.h in Headers */,
+				06FBC9811E74220600D8902A /* IndoorLocationManager.h in Headers */,
+				06FBC9821E74220600D8902A /* MeasurementEvent.h in Headers */,
+				06FBC9831E74220600D8902A /* MeasurementProvider.h in Headers */,
+				06FBC9841E74220600D8902A /* MeasurementTransfer.h in Headers */,
+				06FBC9851E74220600D8902A /* SensorMeasurementProvider.h in Headers */,
+				06FBC9861E74220600D8902A /* WIFIMeasurementProvider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +409,10 @@
 				DEVELOPMENT_TEAM = CME5G2A9T6;
 				INFOPLIST_FILE = IdoorSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/Phone",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = KAA.IdoorSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -406,7 +425,10 @@
 				DEVELOPMENT_TEAM = CME5G2A9T6;
 				INFOPLIST_FILE = IdoorSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)",
+					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/Phone",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = KAA.IdoorSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

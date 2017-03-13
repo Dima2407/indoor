@@ -1,5 +1,5 @@
 //
-//  MeasurementTransfer.h
+//  MeasurementProvider.h
 //  IndoorLibrary
 //
 //  Created by AppleFace on 28.02.17.
@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "MeasurementEvent.h"
+#import "MeasurementTransfer.h"
 
+@interface MeasurementProvider : NSObject
+@property (nonatomic, strong) MeasurementTransfer *transfer;
 
-@interface MeasurementTransfer : NSObject
-
-+(void)deliver:(MeasurementEvent*)event;
-
+-(void)start;
+-(void)stop;
 @end

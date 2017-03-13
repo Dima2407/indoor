@@ -8,24 +8,29 @@
 
 #import "ViewController.h"
 #import "GPSMeasurementProvider.h"
+#import "BluetoothMeasurementProvider.h"
 
 @interface ViewController ()
 @property (nonatomic, strong)GPSMeasurementProvider *provider;
+@property (nonatomic, strong) BluetoothMeasurementProvider *BLE;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.provider = [[GPSMeasurementProvider alloc]init ];
+    //self.provider = [[GPSMeasurementProvider alloc]init ];
+    self.BLE = [[BluetoothMeasurementProvider alloc] init];
  
 }
 
 - (IBAction)start:(id)sender {
-    [self.provider start];
+   //[self.provider start];
+    [self.BLE start];
 }
 - (IBAction)stop:(id)sender {
-    [self.provider stop];
+   //[self.provider stop];
+      [self.BLE stop];
 }
 
 - (void)didReceiveMemoryWarning {

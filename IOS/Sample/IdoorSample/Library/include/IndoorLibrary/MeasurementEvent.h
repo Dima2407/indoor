@@ -23,8 +23,9 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 @property (nonatomic, strong) NSArray *values;
 @property (nonatomic, assign) CGFloat latitude;
 @property (nonatomic, assign) CGFloat longitude;
-
+@property (nonatomic, assign) NSInteger RSSI;
+@property (nonatomic, assign) NSUInteger UUID;
 
 -(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude;
-
+-(instancetype)initWithRssi:(CGFloat)rssi andUUID:(NSUInteger)uuid;
 @end

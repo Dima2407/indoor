@@ -21,18 +21,33 @@
 -(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude {
     
     self = [super init];
-    MeasurementEvent *event = nil;
+   
     
     if (self != nil)
     {
-        event = [self init];
+       
+   
+    _timestamp = [[NSDate date] timeIntervalSince1970]*1000;
+    _type = GEO_VALUE;
+    _latitude = latitude;
+    _longitude = longitude;
+        
     }
-    event.timestamp = [[NSDate date] timeIntervalSince1970];
-    event.type = GEO_VALUE;
-    event.latitude = latitude;
-    event.longitude = longitude;
-    return event;
+    return self;
+        
 }
 
-
+-(instancetype)initWithRssi:(CGFloat)rssi andUUID:(NSUInteger)uuid{
+    self = [super init];
+    
+    
+    if (self != nil)
+    {
+    _timestamp = [[NSDate date] timeIntervalSince1970]*1000;
+    _UUID = uuid;
+    _RSSI = rssi;
+    _type = BLE_VALUE;
+    }
+    return self;
+}
 @end

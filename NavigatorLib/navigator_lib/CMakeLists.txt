@@ -14,9 +14,12 @@ set(SOURCE_FILES
         beacon/BeaconReceivedData.h
         beacon/AbstractBeaconNavigator.h
         beacon/TrilatBeaconNavigator.cpp beacon/TrilatBeaconNavigator.h
+        beacon/BeaconProcessor.h
         #
         filter/IFilter.h
         filter/NoFilter.h
-        filter/AlphaBetaFilter.cpp filter/AlphaBetaFilter.h beacon/BeaconProcessor.h)
+        filter/AlphaBetaFilter.cpp filter/AlphaBetaFilter.h
+        filter/RingBuffer.h
+        )
 
 add_library(navigator_lib STATIC ${SOURCE_FILES})

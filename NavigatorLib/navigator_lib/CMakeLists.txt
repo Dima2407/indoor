@@ -8,13 +8,13 @@ set(SOURCE_FILES
         OutputNavigationData.h
         InputNavigationData.h
         #
-        Mira/Beacon.h
-        Mira/Position3D.h
-        Mira/BeaconUID.h
-        Mira/BeaconReceivedData.h
-        Mira/AbstractBeaconNavigator.h
-        Mira/TrilatBeaconNavigator.cpp Mira/TrilatBeaconNavigator.h
-        Mira/BeaconProcessor.h
+        Beacon/Beacon.h
+        Beacon/Position3D.h
+        Beacon/BeaconUID.h
+        Beacon/BeaconReceivedData.h
+        Beacon/AbstractBeaconNavigator.h
+        Beacon/TrilatBeaconNavigator.cpp Beacon/TrilatBeaconNavigator.h
+        Beacon/BeaconProcessor.h
         #
         Math/IFilter.h
         Math/NoFilter.h

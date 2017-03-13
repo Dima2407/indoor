@@ -5,69 +5,45 @@
 #define _USE_MATH_DEFINES
 
 #include <iostream>
-#include <fstream>
-#include <array>
-#include <random>
-#include <chrono>
-#include <ctime>
 #include <cmath>
 
-#include "Math/Filter/NoFilter.h"
-#include "Math/Filter/AlphaBetaFilter.h"
+#include "Math/Trilat/trilat.h"
+
+using namespace std;
+using namespace Navi;
+using namespace Navi::Math;
 
 int main()
 {
+    // Let's have some fun with trilateration
 
-    using namespace std;
-    using namespace Navi::Math::Filter;
+    // A distance between 2 points
+    auto dist2Point = [](const Position3D &p1, const Position3D &p2) -> double {
+        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+    };
 
-    // Let's have some fun with the filters
+    // Create vector of 4 points
+    vector<Position3D> points;
 
-    // Seed the random generator, MinGW-friendly version
-    mt19937 randomEngine(time(nullptr));
+    points.emplace_back(0.3, 0.5, 0.0);
+    points.emplace_back(9.7, 0.4, 0.0);
+    points.emplace_back(-0.2, 10.6, 0.0);
 
-    // double random distribution
-    uniform_real_distribution<double> uDouble(-1.0, 1.0);
+    // Reference point
+    Position3D refPoint(5.6, 2.7, 0.0);
 
-    // Input and output data
-    const int SIZE = 100;
+    // Vector of distances
+    vector<double> distances;
 
-    const double dt = 1.0;
+    for (const Position3D & p : points)
+        distances.push_back(dist2Point(p, refPoint));
 
-    array <double, SIZE> inData, outData;
+    // Result point
+    Position3D resultPoint;
 
-    // Create the in data
+    Trilat::trilatLocation2d(points, distances, resultPoint);
 
-    for (int i=0; i<SIZE; i++)
-    {
-        // inData[i] = i*0.5 + 0.7; // Some linear function
-        inData[i] = 2.0 * sin(M_PI*i/20);
-        inData[i] +=  1.0 * uDouble(randomEngine); // Add random noise
-    }
-
-    // Define a filter
-//    NoFilter noFilter;
-    AlphaBetaFilter aFilter(0.2, 0.2);
-    IFilter & filter = aFilter;
-
-//    IFilter && filter = NoFilter();
-
-    // Run the data through the filter
-    for (int i=0; i<SIZE; i++)
-    {
-        outData[i] = filter.process(inData[i]);
-    }
-
-    // Create a file
-    ofstream out("fun_out.dat");
-
-    // Write the result
-    for (int i=0; i<SIZE; i++)
-    {
-        out << i << "    " << inData[i]  << "    " << outData[i] << endl;
-    }
-
-    out.close();
+    cout << resultPoint.x << "  " << resultPoint.y << endl;
 
     return 0;
 }

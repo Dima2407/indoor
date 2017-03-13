@@ -14,8 +14,8 @@ set(SOURCE_FILES
         #
         DummyTest.cpp DummyTest.h
         #
-        RingBufferTest.cpp RingBufferTest.h
-        MovingAverageFilterTest.cpp MovingAverageFilterTest.h
+        Math/Filter/RingBufferTest.cpp Math/Filter/RingBufferTest.h
+        Math/Filter/MovingAverageFilterTest.cpp Math/Filter/MovingAverageFilterTest.h
         )
 
 add_executable(unittest ${SOURCE_FILES})

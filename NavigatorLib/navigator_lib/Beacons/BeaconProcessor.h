@@ -5,6 +5,8 @@
 #pragma once
 
 #include <memory>
+#include <cmath>
+
 
 #include "../Math/Filter/IFilter.h"
 #include "./Beacon.h"
@@ -25,16 +27,19 @@ namespace Navi {
          * - beacon : Beacon
          * - rssiFilter : std::shared_ptr<IFilter>
          * - distanceFilter : std::shared_ptr<IFilter>
+         * - lastTimeStamp : double
+         * - lastDistance : double
+         * - active : bool
          * --
          * + BeaconProcessor(beacon : const Beacon &,
          *                  rssiFilter : const std::shared_ptr<IFilter> &,
          *                  distanceFilter : const std::shared_ptr<IFilter> &)
          * ..
-         * + process(rssi : double ) : double
+         * + process(rssi : double, timeStamp : double) : double
          * + reset() : void
          * + reset(newBeacon : const Beacon &) : void
          * ..
-         * + const getBeacon() : const Beacon &
+         * + getters()
          * ..
          * - const distanceFunction(rssi : double ) : double
          * }
@@ -66,12 +71,15 @@ namespace Navi {
             /** @brief Calculate distance from rssi using filters
              *
              * Both RSSI and distance filters are used if defined
+             * The timeStamp is saved as lastTimeStamp
              *
-             * @param[in]   rssi    The input RSSI (in dBm or something like this)
-             * @return              The distance in meters
+             * @param[in]   rssi       The input RSSI (in dBm or something like this)
+             * @param[in]   timeStamp  The input timestamp
+             * @return                 The distance in meters
              */
-            double process(double rssi)
+            double process(double rssi, double timeStamp)
             {
+                // Filter rssi
                 double filteredRssi = rssi;
 
                 if (rssiFilter != nullptr) // Apply rssi filter if defined
@@ -83,12 +91,18 @@ namespace Navi {
                 if (distanceFilter != nullptr) // Apply distance filter if defined
                     distance = distanceFilter -> process(distance);
 
+                active = true; // We are now active
+                lastTimeStamp = timeStamp; // Save timestamp
+                lastDistance = distance; // Save distance
+
                 return distance;
             }
 
             /// Reset the filters
             void reset()
             {
+                active = false; // No more active
+
                 if (rssiFilter != nullptr) // Reset if not null
                     rssiFilter -> reset();
 
@@ -103,9 +117,23 @@ namespace Navi {
                 reset(); // Reset the filters
             }
 
+            // Getters
+
             const Beacon &getBeacon() const
             {
                 return beacon;
+            }
+
+            double getLastTimeStamp() const {
+                return lastTimeStamp;
+            }
+
+            double getLastDistance() const {
+                return lastDistance;
+            }
+
+            bool isActive() const {
+                return active;
             }
 
         private:
@@ -140,6 +168,15 @@ namespace Navi {
 
             /// The distance filter (2nd filter)
             std::shared_ptr<Math::Filter::IFilter> distanceFilter;
+
+            /// The last timestamp
+            double lastTimeStamp = nan("");
+
+            /// The last distance calculated
+            double lastDistance = nan("");
+
+            /// Is the beacon active (has last distance ,timestamp) ?
+            bool active = false;
         };
 
     }

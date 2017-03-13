@@ -37,13 +37,14 @@ This is achievable with command-line tools [plantuml.jar](http://plantuml.com/co
 [pandoc](http://pandoc.org)
 ```
 cd prj/documentation-folder
-java -jar plantuml.jar -recurse -charset UTF-8  *.puml
-pandoc -f markdown -o README.html --smart --toc README.md --self-contained --css=buttondown.css
+java -jar plantuml.jar -recurse -charset UTF-8 -output rendered/ *.puml
+pandoc -f markdown --smart --toc --self-contained --css=style/buttondown.css README.md -o rendered/README.html 
 ```
 
 `-charset UTF-8` is important on Windows platforms if you will render non-latin files.
 
-Result `README.html` contains images embedded. It is possible to transfer only it.  
+Result `README.html` contains images embedded. It is possible to transfer by oneself, 
+no external css or images need.  
  
  
 Notes. Did you know? 

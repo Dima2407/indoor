@@ -1,7 +1,12 @@
 @startuml
 
-title   Общее представление библиотеки-модуля Navigator. Структура классов. 
+!include style/style.skinparam
 set namespaceSeparator ::
+
+
+title   Общее представление библиотеки-модуля Navigator. Структура классов. 
+
+package Navigator #szure {
 
 together {
 interface INavigator {
@@ -50,7 +55,7 @@ abstract InputNavigationDataBuffer {
 	//типа кольцевого буффера RingBuffer// 
 }
 note top: Частный случай **Container<InputNavigationData>**
-abstract InputNavigationDataBuffer "0..*" o-down-  InputNavigationData : contains
+InputNavigationDataBuffer "0..*" o-down-  InputNavigationData : contains
 
 abstract OutputNavigationData{
     //положение//
@@ -70,16 +75,15 @@ abstract OutputNavigationDataBuffer {
 	//По аналогии с InputNavigationDataBuffer//
 	//Нужен ли решится в процессе формирования **ТЗ**//
 }
-abstract OutputNavigationDataBuffer "0..*" o-down-  OutputNavigationData : contains
+OutputNavigationDataBuffer "0..*" o-down-  OutputNavigationData : contains
 note top of OutputNavigationDataBuffer: Частный случай **Container<OutputNavigationData>**
 
 INavigator .left.> InputNavigationData : receives
-INavigator .up.> abstract InputNavigationDataBuffer : receives
+INavigator .up.> InputNavigationDataBuffer : receives
 INavigator -> OutputNavigationData : returns
 
 } 
 'together
-
 
 
 ''' GENERAL NAVIGATOR SECTION '''
@@ -179,7 +183,9 @@ note top of AbstractBeaconNavigator
 	данных другой - выбросить исключение
 	**WrongInputDataException**.
 end note
-abstract Beacon -down-o "3..*"  AbstractBeaconNavigator : taken from database
+abstract Beacon{
+}
+Beacon -down-o "3..*"  AbstractBeaconNavigator : taken from database
 note on link: see page 2\nAbstractBeaconNavigator
 
 
@@ -222,6 +228,8 @@ NoteAlgorithm ..up.. AbstractAccelorometerNavigator
 NoteAlgorithm ..up.. AbstractSlamNavigator         
 
 
+}
+'package Navigator
 
 
 

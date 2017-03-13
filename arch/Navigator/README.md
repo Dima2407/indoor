@@ -8,7 +8,7 @@ Navigator Library (`LibNavigator`)
 ---------------
 Диаграммма классов показывает структуру и снабжена комментариями.  
 Рисунок 1.  
-![](NavigatorLibrary-general.png)
+![](rendered/NavigatorLibrary-general.png)
 
 Пример использования в общем случае кодом:
 ```C++
@@ -91,7 +91,7 @@ void tread1(){
 класс.
 
 Рисунок 2.  
-![](NavigatorLibrary-general_001.png)
+![](rendered/NavigatorLibrary-general_001.png)
 
 
 ### Навигация по маякам - точкам доступа WiFi - `AbstractFingerprintNavigator` 
@@ -102,11 +102,11 @@ void tread1(){
 Техническое задание
 ====
 подано в виде ринуков и словесных описаний.  
-1. ![](tech-task-draft-p1-Main.jpg)
-2. ![](tech-task-draft-p2-Beacon-RSSI.jpg)
-3. ![](tech-task-draft-p3-Positioning-by-sensors.jpg)
-4. ![](tech-task-draft-p4-Calibrating-beacons.jpg)
-**[Ссылка на ТЗ в Evernote](https://www.evernote.com/shard/s676/nl/159924744/a91bd946-fb37-44c9-9690-9be4d76f463e).**  
+1. ![](it-jim/tech-task-draft-p1-Main.jpg)
+2. ![](it-jim/tech-task-draft-p2-Beacon-RSSI.jpg)
+3. ![](it-jim/tech-task-draft-p3-Positioning-by-sensors.jpg)
+4. ![](it-jim/tech-task-draft-p4-Calibrating-beacons.jpg)  
+5. ![](it-jim/RSSI-based-positioning-diagram.png)  
 
 
 Что есть в настоящий момент

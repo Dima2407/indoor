@@ -8,12 +8,14 @@ include_directories(../navigator_lib)
 
 set(SOURCE_FILES
         main.cpp
+        mydoubleeq.h
         teamcity_cppunit.cpp teamcity_cppunit.h
         teamcity_messages.cpp teamcity_messages.h
         #
         DummyTest.cpp DummyTest.h
         #
         RingBufferTest.cpp RingBufferTest.h
+        MovingAverageFilterTest.cpp MovingAverageFilterTest.h
         )
 
 add_executable(unittest ${SOURCE_FILES})

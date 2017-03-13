@@ -8,7 +8,7 @@ namespace NaviTest {
     CPPUNIT_TEST_SUITE_REGISTRATION(RingBufferTest);
 
     void RingBufferTest::test1() {
-        using namespace Navi::filter;
+        using namespace Navi::Math::Filter;
         using namespace Navi;
 
         RingBuffer<int> buffer(3);

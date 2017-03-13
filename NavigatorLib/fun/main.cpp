@@ -12,14 +12,14 @@
 #include <ctime>
 #include <cmath>
 
-#include "filter/NoFilter.h"
-#include "filter/AlphaBetaFilter.h"
+#include "Math/Filter/NoFilter.h"
+#include "Math/Filter/AlphaBetaFilter.h"
 
 int main()
 {
 
     using namespace std;
-    using namespace Navi::filter;
+    using namespace Navi::Math::Filter;
 
     // Let's have some fun with the filters
 

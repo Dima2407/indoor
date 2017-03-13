@@ -8,7 +8,7 @@
 #include "./BeaconUID.h"
 
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
         /// Data package for one beacon
         struct BeaconReceivedData {
             /// Timestamp in seconds

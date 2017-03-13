@@ -9,7 +9,7 @@
 #include "./BeaconReceivedData.h"
 
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
         /** @startuml
          * class  AbstractBeaconNavigator
          * @enduml */

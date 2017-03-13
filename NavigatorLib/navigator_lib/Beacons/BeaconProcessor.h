@@ -6,12 +6,12 @@
 
 #include <memory>
 
-#include "../filter/IFilter.h"
+#include "../Math/Filter/IFilter.h"
 #include "./Beacon.h"
 
 
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
 
         /** @brief Calculates distance as a function of RSSI for a beacon
          *
@@ -52,8 +52,8 @@ namespace Navi {
              * @param[in]  rssiFilter       RSSI filter (nullptr = for no filter)
              * @param[in]  distanceFilter   distance filter (nullptr = for no filter)
              */
-            BeaconProcessor(const Beacon &beacon, const std::shared_ptr<filter::IFilter> &rssiFilter,
-                            const std::shared_ptr<filter::IFilter> &distanceFilter) :
+            BeaconProcessor(const Beacon &beacon, const std::shared_ptr<Math::Filter::IFilter> &rssiFilter,
+                            const std::shared_ptr<Math::Filter::IFilter> &distanceFilter) :
                     beacon(beacon),
                     rssiFilter(rssiFilter),
                     distanceFilter(distanceFilter) {}
@@ -136,10 +136,10 @@ namespace Navi {
             Beacon beacon;
 
             /// The rssi filter (1st filter)
-            std::shared_ptr<filter::IFilter> rssiFilter;
+            std::shared_ptr<Math::Filter::IFilter> rssiFilter;
 
             /// The distance filter (2nd filter)
-            std::shared_ptr<filter::IFilter> distanceFilter;
+            std::shared_ptr<Math::Filter::IFilter> distanceFilter;
         };
 
     }

@@ -5,7 +5,7 @@
 #include "./TrilatBeaconNavigator.h"
 
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
 
     }
 }

@@ -10,7 +10,7 @@
 #include "./Position3D.h"
 
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
         /// Beacon position, rssi and damp
         class Beacon {
         public:

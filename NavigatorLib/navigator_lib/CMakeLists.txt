@@ -8,18 +8,18 @@ set(SOURCE_FILES
         OutputNavigationData.h
         InputNavigationData.h
         #
-        Beacon/Beacon.h
-        Beacon/Position3D.h
-        Beacon/BeaconUID.h
-        Beacon/BeaconReceivedData.h
-        Beacon/AbstractBeaconNavigator.h
-        Beacon/TrilatBeaconNavigator.cpp Beacon/TrilatBeaconNavigator.h
-        Beacon/BeaconProcessor.h
+        Beacons/Beacon.h
+        Beacons/Position3D.h
+        Beacons/BeaconUID.h
+        Beacons/BeaconReceivedData.h
+        Beacons/AbstractBeaconNavigator.h
+        Beacons/TrilatBeaconNavigator.cpp Beacons/TrilatBeaconNavigator.h
+        Beacons/BeaconProcessor.h
         #
-        Math/IFilter.h
-        Math/NoFilter.h
-        Math/AlphaBetaFilter.cpp Math/AlphaBetaFilter.h
-        Math/RingBuffer.h
-        )
+        Math/Filter/IFilter.h
+        Math/Filter/NoFilter.h
+        Math/Filter/AlphaBetaFilter.cpp Math/Filter/AlphaBetaFilter.h
+        Math/Filter/RingBuffer.h
+        Math/Filter/MovingAverageFilter.cpp Math/Filter/MovingAverageFilter.h)
 
 add_library(navigator_lib STATIC ${SOURCE_FILES})

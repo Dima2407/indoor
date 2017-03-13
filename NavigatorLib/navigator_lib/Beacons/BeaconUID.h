@@ -9,7 +9,7 @@
 #include <vector>
 
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
 /** @brief Beacon UID. Can be compared.
  *
  *

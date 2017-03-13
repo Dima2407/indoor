@@ -10,7 +10,7 @@
 
 #pragma once
 namespace Navi {
-    namespace beacon {
+    namespace Beacons {
 
         // TODO : implement this class
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {

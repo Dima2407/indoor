@@ -14,6 +14,29 @@ namespace Navi {
     namespace Math {
         namespace Filter {
 
+            /** @brief Moving Average Filter
+             *
+             * @startuml
+             * class MovingAverageFilter{
+             * // Moving Average Filter //
+             * // //
+             * // window size must be specified //
+             * // operator() is an alias to process() //
+             * --
+             * - winSize : unsigned
+             * - buffer : RingBuffer<double>
+             * - dataCount : unsigned
+             * - average : double
+             * --
+             * + MovingAverageFilter(winSize : unsigned int)
+             * + process(in: double) : double
+             * + reset() : void
+             * + operator() (in: double) : double
+             * }
+             *
+             * MovingAverageFilter <|.. interface IFilter
+             * @enduml
+             */
             class MovingAverageFilter : public IFilter {
                 //-------------------------------------------------
                 // Public methods:

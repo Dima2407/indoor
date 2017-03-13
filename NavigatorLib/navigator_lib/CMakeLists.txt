@@ -9,12 +9,14 @@ set(SOURCE_FILES
         InputNavigationData.h
         #
         Beacons/Beacon.h
-        Beacons/Position3D.h
         Beacons/BeaconUID.h
         Beacons/BeaconReceivedData.h
         Beacons/AbstractBeaconNavigator.h
         Beacons/TrilatBeaconNavigator.cpp Beacons/TrilatBeaconNavigator.h
         Beacons/BeaconProcessor.h
+        #
+        Math/Position3D.h
+        Math/Trilat/trilat.cpp Math/Trilat/trilat.h
         #
         Math/Filter/IFilter.h
         Math/Filter/NoFilter.h

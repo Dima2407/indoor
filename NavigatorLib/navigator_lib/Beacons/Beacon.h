@@ -7,7 +7,7 @@
 #include <string>
 
 #include "./BeaconUID.h"
-#include "./Position3D.h"
+#include "../Math/Position3D.h"
 
 namespace Navi {
     namespace Beacons {
@@ -19,7 +19,7 @@ namespace Navi {
             //---------------------------------------------
 
             /// Constructor
-            Beacon(const BeaconUID &uid, double txPower, double damp, const Position3D &pos, const std::string &meta) :
+            Beacon(const BeaconUID &uid, double txPower, double damp, const Math::Position3D &pos, const std::string &meta) :
                     uid(uid),
                     txPower(txPower),
                     damp(damp),
@@ -43,7 +43,7 @@ namespace Navi {
                 return damp;
             }
 
-            const Position3D &getPos() const
+            const Math::Position3D &getPos() const
             {
                 return pos;
             }
@@ -67,7 +67,7 @@ namespace Navi {
             double damp;
 
             /// Beacon position
-            Position3D pos;
+            Math::Position3D pos;
 
             /// Some extra data if needed, don't ask
             std::string meta;

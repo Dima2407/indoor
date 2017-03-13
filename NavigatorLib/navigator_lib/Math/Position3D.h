@@ -7,7 +7,7 @@
 #include <cmath>
 
 namespace Navi {
-    namespace Beacons {
+    namespace Math {
         /// Point in 3d space + floor number (optional, when needed)
         struct Position3D {
             double x = nan("");

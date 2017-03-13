@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../INavigator.h"
-#include "./Position3D.h"
+#include "../Math/Position3D.h"
 #include "./BeaconReceivedData.h"
 
 namespace Navi {
@@ -15,7 +15,7 @@ namespace Navi {
          * @enduml */
         class AbstractBeaconNavigator : public INavigator {
         public:
-            virtual Position3D &process(BeaconReceivedData b) = 0;
+            virtual Math::Position3D &process(BeaconReceivedData b) = 0;
         };
     }
 }

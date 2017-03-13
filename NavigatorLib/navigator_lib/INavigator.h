@@ -3,7 +3,7 @@
 //
 #pragma once
 
-namespace navi {
+namespace Navi {
     /// Interface: parent to all navigators
     class INavigator {
     public:

@@ -6,7 +6,7 @@
 
 #include "./IFilter.h"
 
-namespace navi {
+namespace Navi {
     namespace filter {
 
         /// Empty filter implementation: returns the input double value

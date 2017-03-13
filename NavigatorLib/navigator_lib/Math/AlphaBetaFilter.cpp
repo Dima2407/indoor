@@ -3,7 +3,7 @@
 //
 
 #include "./AlphaBetaFilter.h"
-namespace navi {
+namespace Navi {
     namespace filter {
 
         double AlphaBetaFilter::process(double in)

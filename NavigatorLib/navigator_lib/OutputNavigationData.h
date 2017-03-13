@@ -3,7 +3,7 @@
 //
 
 #pragma once
-namespace navi {
+namespace Navi {
     /// TODO implement
     class OutputNavigationData {
 

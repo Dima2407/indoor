@@ -10,7 +10,7 @@
 #include "./Beacon.h"
 
 
-namespace navi {
+namespace Navi {
     namespace beacon {
 
         /** @brief Calculates distance as a function of RSSI for a beacon

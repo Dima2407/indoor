@@ -9,7 +9,7 @@
 #include "./BeaconProcessor.h"
 
 #pragma once
-namespace navi {
+namespace Navi {
     namespace beacon {
 
         // TODO : implement this class

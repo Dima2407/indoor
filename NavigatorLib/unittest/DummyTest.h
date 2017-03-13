@@ -9,6 +9,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
+namespace NaviTest{
 /** @brief An example of a CppUnit test fixture
  *
  * Apparently a new object of this class is created for each test
@@ -46,6 +47,7 @@ private:
     int privateField;
 
 };
+}
 
 
 

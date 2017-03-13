@@ -7,7 +7,7 @@
 
 #include "./BeaconUID.h"
 
-namespace navi {
+namespace Navi {
     namespace beacon {
         /// Data package for one beacon
         struct BeaconReceivedData {

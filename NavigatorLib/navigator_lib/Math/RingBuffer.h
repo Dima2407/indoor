@@ -6,7 +6,7 @@
 
 #include <cassert>
 
-namespace navi {
+namespace Navi {
     namespace filter {
 
 /** \brief A very simple Ring Buffer implementation

@@ -8,9 +8,12 @@ include_directories(../navigator_lib)
 
 set(SOURCE_FILES
         main.cpp
-        DummyTest.cpp DummyTest.h
         teamcity_cppunit.cpp teamcity_cppunit.h
         teamcity_messages.cpp teamcity_messages.h
+        #
+        DummyTest.cpp DummyTest.h
+        #
+        RingBufferTest.cpp RingBufferTest.h
         )
 
 add_executable(unittest ${SOURCE_FILES})

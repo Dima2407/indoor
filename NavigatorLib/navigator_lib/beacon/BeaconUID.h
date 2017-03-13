@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace navi {
+namespace Navi {
     namespace beacon {
 /** @brief Beacon UID. Can be compared.
  *

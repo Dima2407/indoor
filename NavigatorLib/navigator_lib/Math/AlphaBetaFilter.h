@@ -8,7 +8,7 @@
 
 #include "./IFilter.h"
 
-namespace navi {
+namespace Navi {
     namespace filter {
         /** @brief Alpha-Beta filter implementing IFilter interface
          *

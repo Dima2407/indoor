@@ -19,7 +19,7 @@ int main()
 {
 
     using namespace std;
-    using namespace navi::filter;
+    using namespace Navi::filter;
 
     // Let's have some fun with the filters
 

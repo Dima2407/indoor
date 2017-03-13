@@ -6,7 +6,7 @@
 
 #include <cmath>
 
-namespace navi {
+namespace Navi {
     namespace beacon {
         /// Point in 3d space + floor number (optional, when needed)
         struct Position3D {

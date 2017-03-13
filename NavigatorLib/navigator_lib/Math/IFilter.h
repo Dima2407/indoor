@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace navi {
+namespace Navi {
     namespace filter {
 
         /** @brief Filter interface

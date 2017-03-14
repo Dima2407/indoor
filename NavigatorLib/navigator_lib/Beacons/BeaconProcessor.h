@@ -23,6 +23,7 @@ namespace Navi {
          * // Calculates distance as a function of RSSI for a beacon //
          * // using both RSSI filter and distance filter //
          * // Includes beacon data, and shared_ptr's to the filters //
+         * // Keeps last timestamp and distance //
          * --
          * - beacon : Beacon
          * - rssiFilter : std::shared_ptr<IFilter>

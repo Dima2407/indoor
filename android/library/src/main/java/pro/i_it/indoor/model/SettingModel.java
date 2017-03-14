@@ -5,17 +5,17 @@ package pro.i_it.indoor.model;
  */
 
 public class SettingModel {
-    private String lable;
+    private String label;
     @SettingsType
     private int configType;
     private boolean enable;
 
-    public String getLable() {
-        return lable;
+    public String getLabel() {
+        return label;
     }
 
-    public void setLable(String lable) {
-        this.lable = lable;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @SettingsType
@@ -33,5 +33,10 @@ public class SettingModel {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    @Override
+    public String toString() {
+        return getLabel();
     }
 }

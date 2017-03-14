@@ -2,3 +2,5 @@ build
 .idea
 *.iml
 local.properties
+.gradle/
+.externalNativeBuild

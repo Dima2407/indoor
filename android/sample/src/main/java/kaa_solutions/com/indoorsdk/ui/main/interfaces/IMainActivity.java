@@ -17,8 +17,5 @@ public interface IMainActivity {
 
     void updateData(Collection<SettingModel> data);
 
-    void setOnChangeConfig(IOnChangeSettingListener listener);
-
-
     Activity getActivity();
 }

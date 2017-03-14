@@ -10,6 +10,7 @@
 #import "MeasurementProvider.h"
 
 
+
 @interface MeasurementEvent()
 
 
@@ -27,7 +28,7 @@
     {
        
    
-    _timestamp = [[NSDate date] timeIntervalSince1970]*1000;
+    _timestamp = [[NSDate date] timeIntervalSince1970];
     _type = GEO_VALUE;
     _latitude = latitude;
     _longitude = longitude;
@@ -37,15 +38,14 @@
         
 }
 
--(instancetype)initWithRssi:(CGFloat)rssi andUUID:(NSUInteger)uuid{
+-(instancetype)initWithBeacon:(CLBeacon *)beacon{
     self = [super init];
     
     
     if (self != nil)
     {
-    _timestamp = [[NSDate date] timeIntervalSince1970]*1000;
-    _UUID = uuid;
-    _RSSI = rssi;
+    _timestamp = [[NSDate date] timeIntervalSince1970];
+    _beacon = beacon;
     _type = BLE_VALUE;
     }
     return self;

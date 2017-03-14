@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CLBeaconRegion.h>
 
 typedef NS_ENUM(NSInteger, MeasurementType)
 {
@@ -23,9 +24,9 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 @property (nonatomic, strong) NSArray *values;
 @property (nonatomic, assign) CGFloat latitude;
 @property (nonatomic, assign) CGFloat longitude;
-@property (nonatomic, assign) NSInteger RSSI;
-@property (nonatomic, assign) NSUInteger UUID;
+@property (nonatomic, strong) CLBeacon *beacon;
+@property (nonatomic, assign) CGFloat txPower;
 
 -(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude;
--(instancetype)initWithRssi:(CGFloat)rssi andUUID:(NSUInteger)uuid;
+-(instancetype)initWithBeacon:(CLBeacon *)beacon;
 @end

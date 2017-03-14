@@ -11,10 +11,10 @@
 
 namespace Navi {
     namespace Beacons {
-/** @brief Beacon UID. Can be compared.
- *
- *
- */
+        /** @brief Beacon UID. Can be compared.
+         *
+         *
+         */
         class BeaconUID : public std::vector<std::uint8_t> {
         public:
             /// Constructor from a string

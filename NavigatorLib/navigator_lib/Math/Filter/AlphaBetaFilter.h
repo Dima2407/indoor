@@ -24,7 +24,7 @@ namespace Navi {
              * + reset() : void
              * }
              *
-             * AlphaBetaFilter <|.. interface IFilter
+             * AlphaBetaFilter .up.|> interface IFilter : implements
              * @enduml
              */
 

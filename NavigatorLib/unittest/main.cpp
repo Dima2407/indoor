@@ -12,7 +12,7 @@
 #include <cppunit/CompilerOutputter.h>
 
 
-#include "./teamcity_cppunit.h"
+#include "teamcity/teamcity_cppunit.h"
 
 
 // Note: we DON'T include any test fixture classes here, cool !!

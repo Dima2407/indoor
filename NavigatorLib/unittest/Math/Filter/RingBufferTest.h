@@ -12,7 +12,7 @@
 
 namespace NaviTest {
     namespace Math {
-        namespace Trilat {
+        namespace Filter {
             /// RingBufffer tests
             class RingBufferTest : public CPPUNIT_NS::TestFixture {
             CPPUNIT_TEST_SUITE(RingBufferTest);

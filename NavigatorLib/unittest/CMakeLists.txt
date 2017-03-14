@@ -16,7 +16,7 @@ set(SOURCE_FILES
         #
         Math/Filter/RingBufferTest.cpp Math/Filter/RingBufferTest.h
         Math/Filter/MovingAverageFilterTest.cpp Math/Filter/MovingAverageFilterTest.h
-        )
+        Math/Trilat/TrilatTest.cpp Math/Trilat/TrilatTest.h)
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest navigator_lib cppunit)

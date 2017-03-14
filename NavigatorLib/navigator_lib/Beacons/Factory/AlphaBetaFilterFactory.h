@@ -27,7 +27,7 @@ namespace Navi {
              * AlphaBetaFilterFactory <|.. interface IFilterFactory
              * @enduml
              */
-            class AlphaBetaFilterFactory : IFilterFactory {
+            class AlphaBetaFilterFactory : public IFilterFactory {
                 // -----  Public metthods ------
             public:
                 /// Constructor

@@ -25,7 +25,7 @@ namespace Navi {
              * MovingAverageFilterFactory <|.. interface IFilterFactory
              * @enduml
              */
-            class MovingAverageFilterFactory : IFilterFactory {
+            class MovingAverageFilterFactory : public IFilterFactory {
                 // -----  Public metthods ------
             public:
                 /// Constructor

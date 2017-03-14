@@ -2,7 +2,7 @@
 // Created by  Oleksiy Grechnyev on 3/9/2017.
 //
 
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 #include "./AbstractBeaconNavigator.h"
@@ -14,7 +14,37 @@
 namespace Navi {
     namespace Beacons {
 
-        // TODO : implement this class
+        /** @brief Trilateration-based beacon navigator
+         *
+         * @startuml
+         * class TrilatBeaconNavigator {
+         * // This is the trilateration-based beacon navigator //
+         * // You must add at least 3 beacons //
+         * // And process events for at least 3 beacons //
+         * // To get a nonzero result //
+         * // Currently in 2D (z is ignored) //
+         * --
+         * + {static} BEACON_TIMEOUT : double = 10.0
+         * ..
+         * - rssiFilterFactory : std::shared_ptr<IFilterFactory>
+         * - distanceFilterFactory : std::shared_ptr<IFilterFactory>
+         * - beaconProcessorList : std::unordered_map<BeaconUID, std::shared_ptr<BeaconProcessor>>
+         * - lastPosition : Position3D
+         * --
+         * + TrilatBeaconNavigator(rssiFilterFactory : const std::shared_ptr<IFilterFactory> &,
+         *                        distanceFilterFactory : const std::shared_ptr<IFilterFactory> &)
+         * ..
+         * + process(const BeaconReceivedData &brd) : const Position3D &
+         * + addBeacon(beacon: const Beacon &) : void
+         * + deleteBeacon(uid: const BeaconUID &) : void
+         * + clear() : void
+         * + const getLastPosition() : const Math::Position3D &
+         * }
+         *
+         * class TrilatBeaconNavigator <|.. abstract AbstractBeaconNavigator
+         * @enduml
+         *
+         */
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {
         public:
             /// Time to keep beacon filter history data since the last signal (in seconds)
@@ -28,20 +58,19 @@ namespace Navi {
                       distanceFilterFactory(distanceFilterFactory) {}
 
             /// Process a single input data
-            Math::Position3D &process(const BeaconReceivedData & brd) override;
+            const Math::Position3D &process(const BeaconReceivedData &brd) override;
 
             //------ Beacon operations -----
 
             /// Add a new beacon
             void addBeacon(const Beacon &beacon) {
-                /// uid is the map keys
+                /// uid is the map key
                 /// Factories create filter objects
-                beaconProcessorList.insert(std::make_pair(beacon.getUid(),
-                                                          std::make_shared<BeaconProcessor>(
-                                                                  beacon,
-                                                                  rssiFilterFactory->createFilter(),
-                                                                  distanceFilterFactory->createFilter()
-                                                          )));
+                beaconProcessorList[beacon.getUid()] = std::make_shared<BeaconProcessor>(
+                        beacon,
+                        rssiFilterFactory->createFilter(),
+                        distanceFilterFactory->createFilter()
+                );
             }
 
             /// Delete a beacon by uid
@@ -54,6 +83,10 @@ namespace Navi {
                 beaconProcessorList.clear();
             }
 
+            const Math::Position3D &getLastPosition() const {
+                return lastPosition;
+            }
+
             //----------------------------
             //---   Private data ------
         private:
@@ -64,7 +97,7 @@ namespace Navi {
             std::shared_ptr<Factory::IFilterFactory> distanceFilterFactory;
 
             /// List of beacon processors for all beacons currently in use
-            std::map<BeaconUID, std::shared_ptr<BeaconProcessor>> beaconProcessorList;
+            std::unordered_map<BeaconUID, std::shared_ptr<BeaconProcessor>> beaconProcessorList;
 
             /// Last located position
             Math::Position3D lastPosition = Math::Position3D(0, 0, 0, 0);

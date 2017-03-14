@@ -12,7 +12,7 @@
 
 namespace NaviTest {
     namespace Math {
-        namespace Trilat {
+        namespace Filter {
 
             /// Test the Filter Class MovingAverageFilter
             class MovingAverageFilterTest : public CPPUNIT_NS::TestFixture {

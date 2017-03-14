@@ -11,6 +11,13 @@ namespace Navi {
     namespace Beacons {
         /// Data package for one beacon
         struct BeaconReceivedData {
+
+            BeaconReceivedData(double timestamp, const BeaconUID &uid, double rssi, double txPower = 0.0) :
+                    timestamp(timestamp),
+                    uid(uid),
+                    rssi(rssi),
+                    txPower(txPower) {}
+
             /// Timestamp in seconds
             double timestamp;
 

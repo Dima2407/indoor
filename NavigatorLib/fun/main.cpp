@@ -6,44 +6,64 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 
-#include "Math/Trilat/trilat.h"
+#include "Beacons/TrilatBeaconNavigator.h"
+#include "Beacons/Factory/MovingAverageFilterFactory.h"
+#include "Beacons/Factory/NoFilterFactory.h"
 
 using namespace std;
-using namespace Navi;
-using namespace Navi::Math;
+using namespace Navi::Beacons;
+using Navi::Math::Position3D;
+using namespace Navi::Beacons::Factory;
 
-int main()
-{
-    // Let's have some fun with trilateration
+/// Calculate a fake RSSI signal for 2 points
+double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp) {
+    double dist = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 
-    // A distance between 2 points
-    auto dist2Point = [](const Position3D &p1, const Position3D &p2) -> double {
-        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+    double temp = log10(dist);
+
+    return txPower - 10 * damp * temp;
+}
+
+int main() {
+
+    // Filter factories
+    auto rssiFact = make_shared<MovingAverageFilterFactory>(5);
+    auto distFact = make_shared<NoFilterFactory>();
+
+    // Create the Beacon Navigator
+    TrilatBeaconNavigator navigator(rssiFact, distFact);
+
+    // Create 3 beacons
+    Beacon beacons[] = {
+            Beacon(BeaconUID("Guinea Pig", 1, 0), -3.0, 2.0, Position3D(0.3, 0.5, 0.0), ""),
+            Beacon(BeaconUID("Guinea Pig", 1, 1), -4.0, 2.5, Position3D(9.7, 0.4, 0.0), ""),
+            Beacon(BeaconUID("Guinea Pig", 1, 2), -2.0, 3.0, Position3D(-0.2, 10.6, 0.0), "")
     };
 
-    // Create vector of 4 points
-    vector<Position3D> points;
+    // Add them to the navigator
+    for (const Beacon &b : beacons)
+        navigator.addBeacon(b);
 
-    points.emplace_back(0.3, 0.5, 0.0);
-    points.emplace_back(9.7, 0.4, 0.0);
-    points.emplace_back(-0.2, 10.6, 0.0);
+    // Create and process 3 events
+    Position3D inPos(0.75, 0.38, 0.0); // Some given position
+    Position3D outPos;
 
-    // Reference point
-    Position3D refPoint(5.6, 2.7, 0.0);
+    for (int i = 0; i < 3; i++) {
+        double time = 0.1*i;
 
-    // Vector of distances
-    vector<double> distances;
+        const Beacon & b = beacons[i];
 
-    for (const Position3D & p : points)
-        distances.push_back(dist2Point(p, refPoint));
+        // Create a data packet
+        BeaconReceivedData brd(time, b.getUid(), fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp() ));
 
-    // Result point
-    Position3D resultPoint;
+        // Process it
+        outPos = navigator.process(brd);
 
-    Trilat::trilatLocation2d(points, distances, resultPoint);
-
-    cout << resultPoint.x << "  " << resultPoint.y << endl;
+        // Write to stdout
+        cout << outPos.x << "  " << outPos.y << "  " << outPos.z << endl;
+    }
 
     return 0;
 }

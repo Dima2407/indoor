@@ -28,6 +28,6 @@ set(SOURCE_FILES
         Math/Filter/AlphaBetaFilter.cpp Math/Filter/AlphaBetaFilter.h
         Math/Filter/RingBuffer.h
         Math/Filter/MovingAverageFilter.cpp Math/Filter/MovingAverageFilter.h
-        )
+        Beacons/Factory/NoFilterFactory.h)
 
 add_library(navigator_lib STATIC ${SOURCE_FILES})

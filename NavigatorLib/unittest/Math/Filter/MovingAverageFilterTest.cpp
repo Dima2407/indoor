@@ -9,7 +9,7 @@
 
 namespace NaviTest {
     namespace Math {
-        namespace Trilat {
+        namespace Filter {
             // Register this suite !
             CPPUNIT_TEST_SUITE_REGISTRATION(MovingAverageFilterTest);
 

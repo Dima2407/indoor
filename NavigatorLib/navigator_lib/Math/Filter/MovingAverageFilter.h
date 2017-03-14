@@ -45,14 +45,13 @@ namespace Navi {
 
                 /** @brief Constructor
                  *
-                 * Note: The bufffer size is winSize + 1
-                 * winSize + 1 would suffice, but let's play it safe
+                 * Note: The bufffer size is winSize
                  *
                  * @param winSize  The filter window size
                  */
                 MovingAverageFilter(unsigned int winSize) :
                         winSize(winSize),
-                        buffer(winSize + 1)
+                        buffer(winSize)
                 {
                     assert(winSize > 0);
                 }

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "../INavigator.h"
 #include "../Math/Position3D.h"
 #include "./BeaconReceivedData.h"
 
@@ -13,10 +12,10 @@ namespace Navi {
         /** @startuml
          * class  AbstractBeaconNavigator
          * @enduml */
-        class AbstractBeaconNavigator : public INavigator {
+        class AbstractBeaconNavigator {
         public:
             /// Process a single input data
-            virtual Math::Position3D &process(const BeaconReceivedData & brd) = 0;
+            virtual const Math::Position3D &process(const BeaconReceivedData & brd) = 0;
         };
     }
 }

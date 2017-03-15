@@ -10,8 +10,6 @@
 #import <CoreLocation/CLLocationManager.h>
 #import "MeasurementEvent.h"
 #import "MeasurementProvider.h"
-#import "SensorBridge.h"
-#import "RoutingBridge.h"
 #import "BeaconConfig.h"
 
 @interface BluetoothMeasurementProvider()
@@ -67,7 +65,7 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
     
     NSUUID *sensoro = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
     
-    SensorBridge_onStartNewBeaconSession();
+    
     
     for(CLBeacon *beacon in beacons){
         if([beacon.proximityUUID isEqual:sensoro]){
@@ -97,16 +95,13 @@ rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region
 #pragma mark - Set Beacon Data -
 +(void) setBeaconMap:(NSArray*)beacons{
     
-    SensorBridge_onEndNewBeaconSession();
-    SensorBridge_initTrilatMap();
-    
     
     [beacons enumerateObjectsUsingBlock:^(BeaconConfig*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         float x = obj.x;
         float y = obj.y;
         int major = (int)obj.minor ;
-        SensorBridge_onNewBeaconCoords(major, 2.f, x, y);
+        //SensorBridge_onNewBeaconCoords(major, 2.f, x, y);
         NSLog(@"%d\n %f\n %f",major,x,y);
     }];
 

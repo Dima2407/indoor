@@ -7,7 +7,7 @@
 //
 
 #import "IosMeasurementTransfer.h"
-#import "SensorBridge.h"
+
     
 
 @implementation IosMeasurementTransfer
@@ -16,13 +16,13 @@
 {
     if(event.type == BLE_VALUE){
        
-        SensorBridge_onNewBeacon([event.beacon.minor intValue],-75,event.beacon.rssi,event.timestamp);
-          NSLog(@" Minor: %zd",[event.beacon.minor intValue]);
-        NSLog(@"RSSI:%zd",event.beacon.rssi);
-        float x = SensorBridge_getX();
-        NSLog(@"------X:%f",x);
-        float y = SensorBridge_getY();
-        NSLog(@"------Y:%f",y);
+//        SensorBridge_onNewBeacon([event.beacon.minor intValue],-75,event.beacon.rssi,event.timestamp);
+//          NSLog(@" Minor: %zd",[event.beacon.minor intValue]);
+//        NSLog(@"RSSI:%zd",event.beacon.rssi);
+//        float x = SensorBridge_getX();
+//        NSLog(@"------X:%f",x);
+//        float y = SensorBridge_getY();
+//        NSLog(@"------Y:%f",y);
     }
     NSInteger eventType = event.type;
     switch (eventType) {

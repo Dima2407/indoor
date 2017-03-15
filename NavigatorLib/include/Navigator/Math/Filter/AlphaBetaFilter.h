@@ -11,6 +11,7 @@
 namespace Navi {
     namespace Math {
         namespace Filter {
+            
             /** @brief Alpha-Beta filter implementing IFilter interface
              *
              *
@@ -27,7 +28,6 @@ namespace Navi {
              * AlphaBetaFilter .up.|> interface IFilter : implements
              * @enduml
              */
-
             class AlphaBetaFilter : public IFilter {
             public:
                 //------------------------------------

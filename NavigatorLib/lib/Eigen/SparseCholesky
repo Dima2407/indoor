@@ -13,7 +13,7 @@
 #include "SparseCore"
 #include "OrderingMethods"
 
-#include "lib/Eigen/src/Core/util/DisableStupidWarnings.h"
+#include "src/Core/util/DisableStupidWarnings.h"
 
 /** 
   * \defgroup SparseCholesky_Module SparseCholesky module
@@ -34,12 +34,12 @@
 #error The SparseCholesky module has nothing to offer in MPL2 only mode
 #endif
 
-#include "lib/Eigen/src/SparseCholesky/SimplicialCholesky.h"
+#include "src/SparseCholesky/SimplicialCholesky.h"
 
 #ifndef EIGEN_MPL2_ONLY
-#include "lib/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h"
+#include "src/SparseCholesky/SimplicialCholesky_impl.h"
 #endif
 
-#include "lib/Eigen/src/Core/util/ReenableStupidWarnings.h"
+#include "src/Core/util/ReenableStupidWarnings.h"
 
 #endif // EIGEN_SPARSECHOLESKY_MODULE_H

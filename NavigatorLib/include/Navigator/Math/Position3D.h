@@ -39,8 +39,10 @@ namespace Navi {
             double z = nan("");
             
         public:  // == METHODS ==
-            // /// Calculate distance to ather point/position
-            // double distance(Position3D const& p2);
+            /// Calculate distance to ather point/position
+            double distance(Position3D const& p2) const{
+                return sqrt(pow(this->x - p2.x, 2) + pow(this->y - p2.y, 2));
+            }
         };
         
         

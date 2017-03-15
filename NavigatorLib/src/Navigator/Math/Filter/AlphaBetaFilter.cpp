@@ -2,7 +2,7 @@
 // Created by  Oleksiy Grechnyev on 3/11/2017.
 //
 
-#include "../../../navigator_lib/Math/Filter/AlphaBetaFilter.h"
+#include "../../../../include/Navigator/Math/Filter/AlphaBetaFilter.h"
 
 namespace Navi {
     namespace Math {

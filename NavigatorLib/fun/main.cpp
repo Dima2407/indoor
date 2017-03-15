@@ -8,26 +8,29 @@
 #include <cmath>
 #include <vector>
 
-#include "Beacons/TrilatBeaconNavigator.h"
-#include "Beacons/Factory/MovingAverageFilterFactory.h"
-#include "Beacons/Factory/NoFilterFactory.h"
+#include "Navigator/Beacons/TrilatBeaconNavigator.h"
+#include "Navigator/Beacons/Factory/MovingAverageFilterFactory.h"
+#include "Navigator/Beacons/Factory/NoFilterFactory.h"
 
 using namespace std;
 using namespace Navi::Beacons;
-using Navi::Math::Position3D;
 using namespace Navi::Beacons::Factory;
+using Navi::Math::Position3D;
 
 /// Calculate a fake RSSI signal for 2 points
-double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp) {
+double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp)
+{
+	// Гипотенуза
     double dist = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
-
     double temp = log10(dist);
 
     return txPower - 10 * damp * temp;
 }
 
-int main() {
 
+///\toDO Short description
+int main()
+{
     // Filter factories
     auto rssiFact = make_shared<MovingAverageFilterFactory>(5);
     auto distFact = make_shared<NoFilterFactory>();

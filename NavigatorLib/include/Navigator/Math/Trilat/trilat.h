@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "../Position3D.h"
+#include "Navigator/Math/Position3D.h"
 
 
 namespace Navi {
@@ -31,6 +31,9 @@ namespace Navi {
             bool trilatLocation2d(const std::vector<Position3D> &beaconsPos,
                                   const std::vector<double> &beaconsDist,
                                   Position3D &location);
+    
+            Position3D trilatLocation2d(const std::vector<Position3D> &beaconsPos,
+                                  const std::vector<double> &beaconsDist);
     
             // TODO include trilat 3d here also !
             bool trilatLocation3d(const std::vector<Position3D> &beaconsPos,

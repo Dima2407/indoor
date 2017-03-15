@@ -4,7 +4,9 @@ project(unittest)
 set(CMAKE_CXX_STANDARD 14)
 
 # Include path to navigator_lib for *.h files
-include_directories(../navigator_lib)
+include_directories(../navigator_lib/
+                    ../include/
+                    )
 
 set(TEAMCITY_SRC
     teamcity/teamcity_cppunit.cpp teamcity/teamcity_cppunit.h
@@ -24,4 +26,4 @@ set(SOURCE_FILES
 )
 
 add_executable(unittest ${SOURCE_FILES})
-target_link_libraries(unittest navigator_lib cppunit)
+target_link_libraries(unittest Navigator cppunit)

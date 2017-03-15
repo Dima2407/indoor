@@ -6,7 +6,7 @@
 namespace Navi {
     /// TODO implement
     class InputNavigationData {
-
+        
     };
 }
 

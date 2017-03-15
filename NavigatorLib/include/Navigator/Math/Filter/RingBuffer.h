@@ -87,7 +87,6 @@ namespace Navi {
                     if (isFull())
                         return false;
 
-
                     data[writeIndex] = t; // Write data
                     next(writeIndex); // Increment write index by 1
                     empty = false; // Clear the empty flag after write
@@ -157,11 +156,11 @@ namespace Navi {
                 //------------------------------------
                 // Private fields
                 //------------------------------------
-
+            private:
                 /// Buffer (maximal) size = size of the array data[]
                 unsigned size;
 
-                /// The data as a dynamic array of size size
+                /// The data as a dynamic array of size
                 T *data;
 
                 // Note: readIndex == writeIndex means either empty or full buffer

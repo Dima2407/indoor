@@ -64,9 +64,7 @@ namespace Navi {
                     dataCount = 0;
                     buffer.clear();
                 }
-                double operator()(double in) {
-                    return process(in);
-                }
+                
                 //-------------------------------------------------
                 // Private data:
                 //-------------------------------------------------

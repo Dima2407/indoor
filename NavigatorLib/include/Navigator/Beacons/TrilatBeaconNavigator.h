@@ -5,10 +5,10 @@
 #include <unordered_map>
 #include <memory>
 
-#include "./AbstractBeaconNavigator.h"
-#include "./BeaconProcessor.h"
-#include "Factory/IFilterFactory.h"
-#include "../Math/Trilat/trilat.h"
+#include "Navigator/Beacons/AbstractBeaconNavigator.h"
+#include "Navigator/Beacons/BeaconProcessor.h"
+#include "Navigator/Beacons/Factory/IFilterFactory.h"
+#include "Navigator/Math/Trilat/trilat.h"
 
 #pragma once
 namespace Navi {

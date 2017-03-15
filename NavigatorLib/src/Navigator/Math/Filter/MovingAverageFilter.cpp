@@ -8,6 +8,7 @@ namespace Navi {
     namespace Math {
         namespace Filter {
 
+            //todo Maybe make Iterative mean to improve speed
             double MovingAverageFilter::process(double in) {
                 double result; // The result (the new average)
 

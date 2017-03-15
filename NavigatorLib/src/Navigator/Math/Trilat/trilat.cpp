@@ -69,6 +69,16 @@ namespace Navi {
 
                 return true;
             }
+    
+            Position3D trilatLocation2d(const std::vector<Position3D> &beaconsPos
+                    , const std::vector<double> &beaconsDist)
+            {
+                Position3D p;
+                bool success = trilatLocation2d(beaconsPos,beaconsDist,p);
+                if(!success)
+                    throw std::runtime_error("Impossible to trilat, wrong input.");
+                return p;
+            }
         }
     }
 }

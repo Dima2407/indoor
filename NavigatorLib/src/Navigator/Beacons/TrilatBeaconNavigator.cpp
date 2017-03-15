@@ -2,9 +2,9 @@
 // Created by  Oleksiy Grechnyev on 3/9/2017.
 //
 
-#include "TrilatBeaconNavigator.h"
+#include "../../../include/Navigator/Beacons/TrilatBeaconNavigator.h"
 
-#include "../../../navigator_lib/Math/Trilat/trilat.h"
+#include "../../../include/Navigator/Math/Trilat/trilat.h"
 
 namespace Navi {
     namespace Beacons {

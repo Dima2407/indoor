@@ -11,7 +11,7 @@
 #include "SparseCore"
 #include "OrderingMethods"
 
-#include "lib/Eigen/src/Core/util/DisableStupidWarnings.h"
+#include "src/Core/util/DisableStupidWarnings.h"
 
 /** 
   * \defgroup IterativeLinearSolvers_Module IterativeLinearSolvers module
@@ -34,15 +34,15 @@
     \endcode
   */
 
-#include "lib/Eigen/src/IterativeLinearSolvers/SolveWithGuess.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h"
-#include "lib/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h"
+#include "src/IterativeLinearSolvers/SolveWithGuess.h"
+#include "src/IterativeLinearSolvers/IterativeSolverBase.h"
+#include "src/IterativeLinearSolvers/BasicPreconditioners.h"
+#include "src/IterativeLinearSolvers/ConjugateGradient.h"
+#include "src/IterativeLinearSolvers/LeastSquareConjugateGradient.h"
+#include "src/IterativeLinearSolvers/BiCGSTAB.h"
+#include "src/IterativeLinearSolvers/IncompleteLUT.h"
+#include "src/IterativeLinearSolvers/IncompleteCholesky.h"
 
-#include "lib/Eigen/src/Core/util/ReenableStupidWarnings.h"
+#include "src/Core/util/ReenableStupidWarnings.h"
 
 #endif // EIGEN_ITERATIVELINEARSOLVERS_MODULE_H

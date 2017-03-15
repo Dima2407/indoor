@@ -17,20 +17,20 @@ namespace NaviTest{
 class DummyTest : public CPPUNIT_NS::TestFixture {
 
     // Create the suite for this fixture
-CPPUNIT_TEST_SUITE(DummyTest);
-        CPPUNIT_TEST(test1);
-        CPPUNIT_TEST(test2);
+    CPPUNIT_TEST_SUITE(DummyTest);
+    CPPUNIT_TEST(test1);
+    CPPUNIT_TEST(test2);
     CPPUNIT_TEST_SUITE_END();
 
 public:
 
     void setUp() override {
-//        std::cout << "Before !!! \n";
+        // std::cout << "Before !!! \n";
         // Do some before each activity here
     }
 
     void tearDown() override {
-//        std::cout << "After !!! \n";
+        // std::cout << "After !!! \n";
         // Do some after each activity here
     }
 
@@ -45,7 +45,7 @@ public:
 private:
     /// A field if needed
     int privateField;
-
+    
 };
 }
 

@@ -8,16 +8,17 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Filter/MovingAverageFilter.h"
+#include "Navigator/Math/Filter/MovingAverageFilter.h"
 
 namespace NaviTest {
     namespace Math {
         namespace Filter {
 
             /// Test the Filter Class MovingAverageFilter
-            class MovingAverageFilterTest : public CPPUNIT_NS::TestFixture {
-            CPPUNIT_TEST_SUITE(MovingAverageFilterTest);
-                    CPPUNIT_TEST(testAvg);
+            class MovingAverageFilterTest : public CPPUNIT_NS::TestFixture
+            {
+                CPPUNIT_TEST_SUITE(MovingAverageFilterTest);
+                CPPUNIT_TEST(testAvg);
                 CPPUNIT_TEST_SUITE_END();
             public:
                 void testAvg();

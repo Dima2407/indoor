@@ -13,10 +13,10 @@ namespace NaviTest {
     namespace Math {
         namespace Trilat {
 
-            class TrilatTest : public CPPUNIT_NS::TestFixture{
-
-            CPPUNIT_TEST_SUITE(TrilatTest);
-                    CPPUNIT_TEST(testTrilat);
+            class TrilatTest : public CPPUNIT_NS::TestFixture
+            {
+                CPPUNIT_TEST_SUITE(TrilatTest);
+                CPPUNIT_TEST(testTrilat);
                 CPPUNIT_TEST_SUITE_END();
             public:
                 void testTrilat();

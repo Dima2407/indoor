@@ -6,8 +6,8 @@
 
 #include <string>
 
-#include "./BeaconUID.h"
-#include "../Math/Position3D.h"
+#include "Navigator/Beacons/BeaconUID.h"
+#include "Navigator/Math/Position3D.h"
 
 namespace Navi {
     namespace Beacons {

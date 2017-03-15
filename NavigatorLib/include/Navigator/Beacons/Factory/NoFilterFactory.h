@@ -5,8 +5,8 @@
 #pragma once
 
 
-#include "./IFilterFactory.h"
-#include "../../Math/Filter/NoFilter.h"
+#include "Navigator/Beacons/Factory/IFilterFactory.h"
+#include "Navigator/Math/Filter/NoFilter.h"
 
 namespace Navi {
     namespace Beacons {

@@ -11,7 +11,6 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
 
-
 #include "teamcity/teamcity_cppunit.h"
 
 

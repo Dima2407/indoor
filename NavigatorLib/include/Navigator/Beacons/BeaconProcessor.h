@@ -8,9 +8,9 @@
 #include <cmath>
 
 
-#include "../Math/Filter/IFilter.h"
-#include "../Math/Filter/NoFilter.h"
-#include "./Beacon.h"
+#include "Navigator/Math/Filter/IFilter.h"
+#include "Navigator/Math/Filter/NoFilter.h"
+#include "Navigator/Beacons/Beacon.h"
 
 
 namespace Navi {

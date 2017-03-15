@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "./IFilterFactory.h"
-#include "../../Math/Filter/MovingAverageFilter.h"
+#include "Navigator/Beacons/Factory/IFilterFactory.h"
+#include "Navigator/Math/Filter/MovingAverageFilter.h"
 
 namespace Navi {
     namespace Beacons {

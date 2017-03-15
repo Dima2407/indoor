@@ -8,7 +8,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Filter/RingBuffer.h"
+#include "Navigator/Math/Filter/RingBuffer.h"
 
 namespace NaviTest {
     namespace Math {

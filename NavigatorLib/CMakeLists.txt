@@ -25,5 +25,8 @@ add_subdirectory(example)
 # Build unittest
 add_subdirectory(unittest)
 
+# Build test-tool
+add_subdirectory(test-tool)
+
 # Пока нет нужды. Хватает хэдеров
 #add_subdirectory(lib/Eigen)

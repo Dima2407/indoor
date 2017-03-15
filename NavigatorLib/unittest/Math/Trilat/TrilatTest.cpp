@@ -74,9 +74,9 @@ namespace NaviTest {
                     distances.push_back(p.distance(refPoint));
 
                 // Result point
-                Position3D resultPoint;
-                Navi::Math::Trilat::trilatLocation3d(points, distances, resultPoint);
-//                Position3D resultPoint = Navi::Math::Trilat::trilatLocation2d(points, distances);
+//                Position3D resultPoint;
+//                Navi::Math::Trilat::trilatLocation3d(points, distances, resultPoint);
+                Position3D resultPoint = Navi::Math::Trilat::trilatLocation3d(points, distances);
 
 //                cout << resultPoint.x << "  " << resultPoint.y << "  " << resultPoint.z << endl;
 

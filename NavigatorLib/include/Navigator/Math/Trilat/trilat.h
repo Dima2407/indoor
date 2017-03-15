@@ -55,6 +55,11 @@ namespace Navi {
             bool trilatLocation3d(const std::vector<Position3D> &beaconsPos,
                                   const std::vector<double> &beaconsDist,
                                   Position3D &location);
+
+
+            /// This version throws exception if failure
+            Position3D trilatLocation3d(const std::vector<Position3D> &beaconsPos,
+                                        const std::vector<double> &beaconsDist);
         }
     }
 }

@@ -18,5 +18,5 @@
 @property (nonatomic, assign) NSInteger longitude;
 
 -(void) setBeaconMap:(NSArray*)data;
-
++(void) setBeaconMap:(NSArray*)beacons;
 @end

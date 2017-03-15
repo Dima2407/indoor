@@ -7,7 +7,7 @@
 //
 
 #import "BluethoothProviderConfiguration.h"
-
+#import "BluetoothMeasurementProvider.h"
 
 @interface BluethoothProviderConfiguration()<ProviderConfiguration>
 
@@ -17,7 +17,8 @@
 
 @implementation BluethoothProviderConfiguration
 
--(void)updateCinfiguration:(NSArray<TConfig> *)inputArray{
++(void)updateCinfiguration:(NSArray<TConfig> *)inputArray{
     
+    [BluetoothMeasurementProvider setBeaconMap:inputArray];
 }
 @end

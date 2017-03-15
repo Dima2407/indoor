@@ -25,6 +25,9 @@
 		06FBCD111E78348900D8902A /* SensorMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBCD071E78348900D8902A /* SensorMeasurementProvider.h */; };
 		06FBCD121E78348900D8902A /* WIFIMeasurementProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBCD081E78348900D8902A /* WIFIMeasurementProvider.h */; };
 		06FBCF031E783D1A00D8902A /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FBCF021E783D1A00D8902A /* libIndoorLibrary.a */; };
+		06FBCF0A1E784C0500D8902A /* BeaconConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBCF071E784C0500D8902A /* BeaconConfig.h */; };
+		06FBCF0B1E784C0500D8902A /* BluethoothProviderConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBCF081E784C0500D8902A /* BluethoothProviderConfiguration.h */; };
+		06FBCF0C1E784C0500D8902A /* ProviderConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 06FBCF091E784C0500D8902A /* ProviderConfiguration.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,9 @@
 		06FBCD071E78348900D8902A /* SensorMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SensorMeasurementProvider.h; path = Library/include/IndoorLibrary/SensorMeasurementProvider.h; sourceTree = "<group>"; };
 		06FBCD081E78348900D8902A /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WIFIMeasurementProvider.h; path = Library/include/IndoorLibrary/WIFIMeasurementProvider.h; sourceTree = "<group>"; };
 		06FBCF021E783D1A00D8902A /* libIndoorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIndoorLibrary.a; path = Library/libIndoorLibrary.a; sourceTree = "<group>"; };
+		06FBCF071E784C0500D8902A /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BeaconConfig.h; path = Library/include/IndoorLibrary/BeaconConfig.h; sourceTree = "<group>"; };
+		06FBCF081E784C0500D8902A /* BluethoothProviderConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BluethoothProviderConfiguration.h; path = Library/include/IndoorLibrary/BluethoothProviderConfiguration.h; sourceTree = "<group>"; };
+		06FBCF091E784C0500D8902A /* ProviderConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProviderConfiguration.h; path = Library/include/IndoorLibrary/ProviderConfiguration.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +92,9 @@
 		06ED88A71E6B2A780011C01C = {
 			isa = PBXGroup;
 			children = (
+				06FBCF071E784C0500D8902A /* BeaconConfig.h */,
+				06FBCF081E784C0500D8902A /* BluethoothProviderConfiguration.h */,
+				06FBCF091E784C0500D8902A /* ProviderConfiguration.h */,
 				06FBCCFF1E78348900D8902A /* BluetoothMeasurementProvider.h */,
 				06FBCD001E78348900D8902A /* GPSMeasurementProvider.h */,
 				06FBCD011E78348900D8902A /* IndoorLocationManager.h */,
@@ -160,6 +169,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06FBCF0A1E784C0500D8902A /* BeaconConfig.h in Headers */,
+				06FBCF0B1E784C0500D8902A /* BluethoothProviderConfiguration.h in Headers */,
+				06FBCF0C1E784C0500D8902A /* ProviderConfiguration.h in Headers */,
 				06FBCD091E78348900D8902A /* BluetoothMeasurementProvider.h in Headers */,
 				06FBCD0A1E78348900D8902A /* GPSMeasurementProvider.h in Headers */,
 				06FBCD0B1E78348900D8902A /* IndoorLocationManager.h in Headers */,

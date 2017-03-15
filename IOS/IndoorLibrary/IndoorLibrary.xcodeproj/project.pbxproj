@@ -101,6 +101,13 @@
 		06FBCEFF1E783AFD00D8902A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 06FBCCD91E782CC800D8902A /* CMakeLists.txt */; };
 		06FBCF001E783AFD00D8902A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 06FBCCDD1E782CC800D8902A /* CMakeLists.txt */; };
 		06FBCF011E783AFD00D8902A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 06FBCCE31E782CC800D8902A /* CMakeLists.txt */; };
+		06FBCF041E784AF200D8902A /* ProviderConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBC9901E76EC4C00D8902A /* ProviderConfiguration.h */; };
+		06FBCF051E784AF200D8902A /* BluethoothProviderConfiguration.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBC9921E76EEF800D8902A /* BluethoothProviderConfiguration.h */; };
+		06FBCF061E784AF200D8902A /* BeaconConfig.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBC9961E76F1C300D8902A /* BeaconConfig.h */; };
+		06FBCF0D1E784E8800D8902A /* ErrorListener.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBCB4D1E7813F800D8902A /* ErrorListener.h */; };
+		06FBCF0E1E784E8800D8902A /* PermissionError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBCB531E78149A00D8902A /* PermissionError.h */; };
+		06FBCF0F1E784E8800D8902A /* AvailabilityError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBCB561E7814B900D8902A /* AvailabilityError.h */; };
+		06FBCF101E784E8800D8902A /* TConfig.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBC9951E76F07700D8902A /* TConfig.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -110,6 +117,13 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				06FBCF0D1E784E8800D8902A /* ErrorListener.h in CopyFiles */,
+				06FBCF0E1E784E8800D8902A /* PermissionError.h in CopyFiles */,
+				06FBCF0F1E784E8800D8902A /* AvailabilityError.h in CopyFiles */,
+				06FBCF101E784E8800D8902A /* TConfig.h in CopyFiles */,
+				06FBCF041E784AF200D8902A /* ProviderConfiguration.h in CopyFiles */,
+				06FBCF051E784AF200D8902A /* BluethoothProviderConfiguration.h in CopyFiles */,
+				06FBCF061E784AF200D8902A /* BeaconConfig.h in CopyFiles */,
 				06FBCCFC1E78343F00D8902A /* MeasurementTranfer.h in CopyFiles */,
 				06FBC9871E76C03A00D8902A /* BluetoothMeasurementProvider.h in CopyFiles */,
 				06ED89511E6C98300011C01C /* MeasurementEvent.h in CopyFiles */,

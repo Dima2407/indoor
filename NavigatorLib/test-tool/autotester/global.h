@@ -5,7 +5,7 @@
 #ifndef TESTTOOL_GLOBAL_H
 #define TESTTOOL_GLOBAL_H
 
-namespace unit {
+namespace autotester {
     /// I know globals are evil, but I couldn't pass parameters to the test otherwise
     namespace global {
         /// Max delta allowed for tests

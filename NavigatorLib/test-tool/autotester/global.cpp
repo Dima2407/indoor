@@ -5,7 +5,7 @@
 #include "global.h"
 
 
-namespace unit {
+namespace autotester {
     /// We need this global data as the parameter for the test
     namespace global {
         double deltaAllowance;

@@ -12,7 +12,7 @@
 #include <cassert>
 #include <cstring>
 
-#include "UnitEngine.h"
+#include "AutoTesterEngine.h"
 #include "teamcity_cppunit.h"
 
 // Choose the dirent.h file + header for chdir()
@@ -32,9 +32,9 @@
 
 #endif
 
-namespace unit {
+namespace autotester {
 
-    bool UnitEngine::run() {
+    bool AutoTesterEngine::run() {
         using namespace std;
 
         // Names of all test directories
@@ -69,7 +69,7 @@ namespace unit {
         return runTests(dirNames);
     }
 
-    bool UnitEngine::runTests(const std::vector<std::string> &names) {
+    bool AutoTesterEngine::runTests(const std::vector<std::string> &names) {
 
         // Here I used CppUnit in a rather perverse way:
         // Rather than writing a bunch of test in the program,

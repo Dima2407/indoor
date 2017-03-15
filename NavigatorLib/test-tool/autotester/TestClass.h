@@ -9,7 +9,7 @@
 
 #include "global.h"
 
-namespace unit {
+namespace autotester {
     /// Class used for the CppUnit testing: run Tester Engine in the current dir
     class TestClass : public CppUnit::TestCase {
     public:

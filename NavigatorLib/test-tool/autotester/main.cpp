@@ -5,9 +5,9 @@
 #include <string>
 #include <cstdio>
 
-#include "UnitEngine.h"
+#include "AutoTesterEngine.h"
 
-namespace unit{
+namespace autotester{
     /// Print usage and exit(1)
     void printUsage(){
         using namespace std;
@@ -27,7 +27,7 @@ namespace unit{
 
 int main(int argc, char *argv[]){
     using namespace std;
-    using namespace unit;
+    using namespace autotester;
 
     // Parse the command line parameters
     if (argc<3) printUsage(); // Must have 2 args
@@ -40,8 +40,8 @@ int main(int argc, char *argv[]){
     if (sscanf(argv[2], "%lf", &deltaAllowance) != 1)  printUsage();
 //    cout << "deltaAllowance = " << deltaAllowance << endl;
 
-    // Create an UnitEngine engine
-    UnitEngine engine(testDir, deltaAllowance);
+    // Create an AutoTesterEngine engine
+    AutoTesterEngine engine(testDir, deltaAllowance);
 
     // Run tests
     bool result = engine.run();

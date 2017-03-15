@@ -8,7 +8,7 @@
 
 #include "Engine.h"
 
-namespace unit {
+namespace autotester {
 
     void TestClass::test1() {
         using namespace std;
@@ -28,7 +28,7 @@ namespace unit {
         double maxDelta = engine.getMaxDelta();
 
         // Write actual maxDelta of a test to a file in the test's dir
-        ofstream out("unit_maxdelta.txt");
+        ofstream out("autotester_maxdelta.txt");
         out << "maxDelta = " << maxDelta << endl;
         //cout << "maxDelta = " << maxDelta << endl;
         out.close();

@@ -12,17 +12,17 @@
 
 #include "TestClass.h"
 
-namespace unit {
+namespace autotester {
 
     /// Unit testing framework for unit
-    class UnitEngine {
+    class AutoTesterEngine {
     public:
         /** Constructor
          *
          * @param testDir          The directory with unit tests
          * @param deltaAllowance   The maximally allowed delta
          */
-        UnitEngine(const std::string &testDir, double deltaAllowance) : testDir(testDir),
+        AutoTesterEngine(const std::string &testDir, double deltaAllowance) : testDir(testDir),
                                                                         deltaAllowance(deltaAllowance) {}
 
         /**\brief Run all unit tests from the directory testDir

@@ -22,6 +22,7 @@ namespace Navigator {
 
 
 #include <iostream>
+//#include <cstdio>
 #include <stdexcept>
 
 #include <cppunit/TestRunner.h>
@@ -41,70 +42,304 @@ namespace Navigator {
 #include <rapidjson/filewritestream.h>
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/error/en.h>
+#include <algorithm>
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
+
+#include "Navigator.h"
 
 
 //using namespace CppUnit;
 using namespace std;
 
-class BeaconDataFilesTest : public CppUnit::TestCase
-{
-	CPPUNIT_TEST_SUITE(BeaconDataFilesTest);
 
-	CPPUNIT_TEST(test_20172402_063151);
-	CPPUNIT_TEST(test_20172402_063308);
-	CPPUNIT_TEST(testNothing);
+namespace ItJim {
 
-	CPPUNIT_TEST_SUITE_END();
-
-public:
-	void test_20172402_063151();
+	class BeaconDataFilesTest : public CppUnit::TestCase
+	{
+		CPPUNIT_TEST_SUITE(BeaconDataFilesTest);
 	
-	void test_20172402_063308() {
-		//CPPUNIT_ASSERT_EQUAL(2, 1);
-	}
+		CPPUNIT_TEST(test_20172402_063151);
+		//CPPUNIT_TEST(test_20172402_063308);
+		//CPPUNIT_TEST(testNothing);
 	
-	void testNothing() {}
-};
+		CPPUNIT_TEST_SUITE_END();
+	
+	public:
+		void test_20172402_063151();
+		
+		void test_20172402_063308() {
+			//CPPUNIT_ASSERT_EQUAL(2, 1);
+		}
+		
+		void testNothing() {}
+	};
+	CPPUNIT_TEST_SUITE_REGISTRATION(BeaconDataFilesTest);
 
-void BeaconDataFilesTest::test_20172402_063151()
-{
-	//cout << endl << "asdsaddasads" << endl;
+
+	
 	using namespace rapidjson;
-	// Prepare reader and input stream.
-	//Reader reader;
-	GenericReader<AutoUTF<unsigned>, UTF8<> > reader;       // CHANGED
-	char readBuffer[65536];
-	FileReadStream is(stdin, readBuffer, sizeof(readBuffer));
-	AutoUTFInputStream<unsigned, FileReadStream> eis(is);   // NEW
 	
-	// Prepare writer and output stream.
-	char writeBuffer[65536];
-	FileWriteStream os(stdout, writeBuffer, sizeof(writeBuffer));
+	/// Отражение того что дали It-Jim в своих json-файлах
+	struct BeaconReceivedDataJson
+	{
+		int beaconTypeCode;
+		std::string dataFields;
+		std::string extraDataFields;
+		double distance;  ///< большая погрешность
+		std::string identifiers;
+		std::string MACaddress;
+		int manufacturer;
+		double RSSI;
+		int serviceUUID;
+		double TXpower;
+		double TimeStamp;
+	
+	public:
+		static void CheckDOM(rapidjson::Document const& doc);
+		static void ParseDOM(rapidjson::Value const& val, BeaconReceivedDataJson &to);
+		static BeaconReceivedDataJson ParseDOM(rapidjson::Value const& val);
+	
+	public:
+		bool operator<(BeaconReceivedDataJson const & other){
+			return this->TimeStamp < other.TimeStamp;
+		}
+	};
 
-#if 1
-	// Use the same Encoding of the input. Also use BOM according to input.
-	typedef AutoUTFOutputStream<unsigned, FileWriteStream> OutputStream;    // NEW
-	OutputStream eos(os, eis.GetType(), eis.HasBOM());                      // NEW
-	PrettyWriter<OutputStream, UTF8<>, AutoUTF<unsigned> > writer(eos);     // CHANGED
-#else
-	// You may also use static bound encoding type, such as output to UTF-16LE with BOM
-    typedef EncodedOutputStream<UTF16LE<>,FileWriteStream> OutputStream;    // NEW
-    OutputStream eos(os, true);                                             // NEW
-    PrettyWriter<OutputStream, UTF8<>, UTF16LE<> > writer(eos);             // CHANGED
-#endif
+	struct BeaconOnMapJson
+	{
+		double x;
+		double y;
+		double z;
+		std::string macAddress;
+		int major;
+		int minor;
+		double damp;
+		double txpower;
+		
+	public:
+		static void CheckDOM(rapidjson::Document const& doc);
+		static void ParseDOM(rapidjson::Value const& val, BeaconOnMapJson &to);
+		static BeaconOnMapJson ParseDOM(rapidjson::Value const& val);
+	};
 	
-	// JSON reader parse from the input stream and let writer generate the output.
-	//if (!reader.Parse<kParseValidateEncodingFlag>(is, writer)) {
-	if (!reader.Parse<kParseValidateEncodingFlag>(eis, writer)) {   // CHANGED
-		fprintf(stderr, "\nError(%u): %s\n", static_cast<unsigned>(reader.GetErrorOffset()), GetParseError_En(reader.GetParseErrorCode()));
+	/// Отражение того, что дали It-Jim в своих json-файлах
+	struct MapJson
+	{
+		std::vector<BeaconOnMapJson> beacons;
+		std::string description; //i.e. "Floor 1"
+		double width;
+		double height;
+		double pixelSize;
+		std::string path;
+		std::string maskPath;
+		std::string mapUid;
+		std::string name;
+	
+	public:
+		static void CheckDOM(rapidjson::Document const& doc);
+		static void ParseDOM(rapidjson::Value const& val, MapJson &to);
+		static MapJson ParseDOM(rapidjson::Value const& val);
+	};
+	
+	
+	
+	void BeaconReceivedDataJson::CheckDOM(rapidjson::Document const& doc)
+	{
+		CPPUNIT_ASSERT( doc.IsArray() );
+		CPPUNIT_ASSERT( doc[0].IsArray() );
+		rapidjson::Value const& obj = doc[0][0];
+		CPPUNIT_ASSERT( obj.IsObject() );
+		CPPUNIT_ASSERT( obj.HasMember("beaconTypeCode") );
+		CPPUNIT_ASSERT( obj["beaconTypeCode"].IsNumber() );
+		CPPUNIT_ASSERT( obj.HasMember("dataFields") );
+		CPPUNIT_ASSERT( obj.HasMember("extraDataFields") );
+		CPPUNIT_ASSERT( obj.HasMember("distance") );
+		CPPUNIT_ASSERT( obj.HasMember("identifiers") );
+		CPPUNIT_ASSERT( obj.HasMember("MACaddress") );
+		CPPUNIT_ASSERT( obj.HasMember("manufacturer") );
+		CPPUNIT_ASSERT( obj.HasMember("RSSI") );
+		CPPUNIT_ASSERT( obj.HasMember("serviceUUID") );
+		CPPUNIT_ASSERT( obj.HasMember("TXpower") );
+		CPPUNIT_ASSERT( obj.HasMember("TimeStamp") );
 	}
-}
+	
+	void BeaconReceivedDataJson::ParseDOM(rapidjson::Value const& val, BeaconReceivedDataJson &to)
+	{
+		to.beaconTypeCode = val["beaconTypeCode"].Get<int>();
+		to.dataFields = val["dataFields"].GetString();
+		to.extraDataFields = val["extraDataFields"].GetString();
+		to.distance = val["distance"].Get<double>();
+		to.identifiers = val["identifiers"].GetString();
+		to.MACaddress = val["MACaddress"].GetString();
+		to.manufacturer = val["manufacturer"].Get<int>();
+		to.RSSI = val["RSSI"].Get<double>();
+		to.serviceUUID = val["serviceUUID"].Get<int>();
+		to.TXpower = val["TXpower"].Get<double>();
+		to.TimeStamp = val["TimeStamp"].Get<double>();
+	}
+	
+	BeaconReceivedDataJson BeaconReceivedDataJson::ParseDOM(rapidjson::Value const& val)
+	{
+		BeaconReceivedDataJson to;
+		ParseDOM(val,to);
+		return to;
+	}
+	
+	
+	
+	
+	//todo  void BeaconOnMapJson::CheckDOM(rapidjson::Document const& doc);
+	
+	void BeaconOnMapJson::ParseDOM(rapidjson::Value const& val, BeaconOnMapJson &to)
+	{
+		to.x = val["x"].Get<double>();
+		to.y = val["y"].Get<double>();
+		to.z = val["z"].Get<double>();
+		to.macAddress = val["macAddress"].GetString();
+		to.major = val["major"].Get<int>();
+		to.minor = val["minor"].Get<int>();
+		to.damp = val["damp"].Get<double>();
+		to.txpower = val["txpower"].Get<double>();
+	}
+	
+	BeaconOnMapJson BeaconOnMapJson::ParseDOM(rapidjson::Value const& val)
+	{
+		BeaconOnMapJson to;
+		ParseDOM(val,to);
+		return to;
+	}
+	
+	
+	
+	//todo void MapJson::CheckDOM(rapidjson::Document const& doc);
+	
+	void MapJson::ParseDOM(rapidjson::Value const& val, MapJson &to)
+	{
+		CPPUNIT_ASSERT(val.IsObject());
+		
+		//TODO//beacons
+		auto &beacons_json = val["beacons"];
+		for (rapidjson::SizeType i=0; i < beacons_json.Size(); i++) // Uses SizeType instead of size_t
+			to.beacons.push_back(BeaconOnMapJson::ParseDOM(beacons_json[i]));
+		to.description = val["description"].GetString();
+		to.width = val["width"].Get<double>();
+		to.height = val["height"].Get<double>();
+		to.pixelSize = val["pixelSize"].Get<double>();
+		to.path = val["path"].GetString();
+		to.maskPath = val["maskPath"].GetString();
+		to.mapUid = val["mapUid"].GetString();
+		to.name = val["name"].GetString();
+	}
+	
+	MapJson MapJson::ParseDOM(rapidjson::Value const& val)
+	{
+		MapJson to;
+		ParseDOM(val,to);
+		return to;
+	}
 
 
+	shared_ptr<MapJson> ReadOfficeMap()
+	{
+		constexpr auto office_map_file = "beacons-data-files/premises-info/office-map.json";
+		FILE* fp = fopen(office_map_file, "rb"); // non-Windows use "r"
+		char *readBuffer = new char[65536];  // max file size.
+		//std::shared_ptr<char> sp( new char[size_of_input_file], std::default_delete<char[]>() );
+		FileReadStream is(fp, readBuffer, 65536);
+		Document doc;
+		doc.ParseStream(is);
+		//cout << endl << doc.IsNull() << "__" << endl;
+		
+		auto map = std::make_shared<MapJson>();
+		MapJson::ParseDOM(doc[0], *map);
+		
+		fclose(fp);
+		delete[] readBuffer;
+		
+		return map;
+	}
+	
+	
+	///\return List of received packets, ordered by time
+	std::vector<BeaconReceivedDataJson> ReadSnifferedDataFromBeacons(char const *filepath)
+	{
+		FILE* fp = fopen(filepath, "rb");  // non-Windows use "r"
+		char *readBuffer = new char[262144];  // max file size.
+		//std::shared_ptr<char> sp( new char[size_of_input_file], std::default_delete<char[]>() );
+		FileReadStream is(fp, readBuffer, 262144);
+		Document doc;
+		doc.ParseStream(is);
+		
+		// Check json-scheme and check file before parsing
+		ItJim::BeaconReceivedDataJson::CheckDOM(doc);
+		
+		//auto beaconPackets = std::make_shared<BeaconReceivedDataJson>();
+		std::vector<BeaconReceivedDataJson> beaconPackets;
+		for( auto it = doc.Begin(); it != doc.End(); ++it ) {
+			for (auto jt = it->Begin(); jt != it->End(); ++jt) {
+				beaconPackets.push_back(
+				       BeaconReceivedDataJson::ParseDOM(*jt)
+				);
+			}
+		}
+		std::sort(beaconPackets.begin(), beaconPackets.end());
+		
+		fclose(fp);
+		delete[] readBuffer;
+		return beaconPackets;
+	}
+	
+	
+	void BeaconDataFilesTest::test_20172402_063151()
+	{
+		using namespace Navigator;
+		using namespace Navigator::Beacons;
+		using namespace Navigator::Beacons::Factory;
+		using Navigator::Math::Position3D;
+		cout.precision(17);
+		
+		// Create the Beacon Navigator
+		TrilatBeaconNavigator navigator(
+				/*rssiFact*/make_shared<AlphaBetaFilterFactory>(0.85, 0.005),
+				/*distFact*/make_shared<AlphaBetaFilterFactory>(0.85, 0.005)
+		);
+		
+		// Read office map from .json to C++ struct
+		auto map = ItJim::ReadOfficeMap();
+		cout << "List beacons from map:" << endl;
+		cout << "| macAddress | x | y | z | TxPower | damp |" << endl;
+		for( auto b : map->beacons ){
+			cout << b.macAddress << " \t" << b.x << " \t" << b.y << " \t" << b.z << " \t" << b.txpower << " \t" << b.damp << endl;
+			// Add to Navigator
+			navigator.addBeacon(
+					Beacon(BeaconUID(b.macAddress), b.txpower, b.damp, Position3D(b.x, b.y, b.z) )
+					);
+		}
+		
+		auto receivedBeaconPackets = ItJim::ReadSnifferedDataFromBeacons("beacons-data-files/2017-24-02_06-31-51_bluetooth.json");
+		cout << "List received data from beacons:" << endl;
+		cout << "| MACaddress | RSSI | Timestamp | TxPower | distance |" << endl;
+		for( auto b : receivedBeaconPackets ){
+			cout << b.MACaddress << " \t" << b.RSSI << " \t" << b.TimeStamp << " \t" << b.TXpower << " \t" << b.distance << endl;
+		}
+		
+		// Process every packet and write trace;
+		cout << endl << "RESULT TRACE:" << endl;
+		cout << "# \t | \t x \t | \t y \t | \t z \t |" << endl;
+		int i=0;
+		for( auto b : receivedBeaconPackets ){
+			auto pos = navigator.process(
+					BeaconReceivedData(b.TimeStamp, BeaconUID(b.MACaddress), b.RSSI)
+			);
+			cout << i++ << " \t |" << pos.x << "|\t" << pos.y << "|\t" << pos.z << endl;
+		}
+	}
+	
+	
+} // namespace ItJim
 
-CPPUNIT_TEST_SUITE_REGISTRATION(BeaconDataFilesTest);
+
 
 
 /**
@@ -114,18 +349,14 @@ CPPUNIT_TEST_SUITE_REGISTRATION(BeaconDataFilesTest);
  */
 int main()
 {
-	//using CppUnit::TestResult;
-	//using CppUnit::BriefTestProgressListener;
 	using namespace CppUnit;
 	
 	// Force the teamcity-style output
-	constexpr bool FORCE_TEAMCITY = false;
-		// Do we use teamcity-style output ?
+	bool FORCE_TEAMCITY = false;
+	// Do we use teamcity-style output ?
 	bool useTeamcity = JetBrains::underTeamcity() || FORCE_TEAMCITY;
 	
-	// cout << "Goblins WON !!!" << endl;
-	
-	// The test results
+	// Create the event manager and test controller
 	TestResult result;
 	
 	// Add either Brief or TeamCity progress listener

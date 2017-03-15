@@ -161,7 +161,7 @@ namespace Navi {
                 unsigned size;
 
                 /// The data as a dynamic array of size
-                T *data;
+                T *data = nullptr;
 
                 // Note: readIndex == writeIndex means either empty or full buffer
 

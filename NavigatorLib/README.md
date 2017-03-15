@@ -13,5 +13,5 @@ This is a remake/refactoring of `tracking_lib`.
 * `fun` : A sample executable
 
 ### Doxygen
-`Doxyfile` is the *Doxygen* configuration file. It requires `DOT\_PATH` and
-`PLANTUML\_JAR\_PATH` if you want to render UML diagrams.
+`Doxyfile` is the *Doxygen* configuration file. It requires `DOT_PATH` and
+`PLANTUML_JAR_PATH` if you want to render UML diagrams.

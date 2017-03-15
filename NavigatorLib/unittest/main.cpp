@@ -33,8 +33,6 @@ int main() {
     // Do we use teamcity-style output ?
     bool useTeamcity = JetBrains::underTeamcity() || FORCE_TEAMCITY;
 
-    // cout << "Goblins WON !!!" << endl;
-
     // The test results
     TestResult result;
 

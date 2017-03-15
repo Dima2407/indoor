@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(fun)
+project(example)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -12,5 +12,5 @@ set(SOURCE_FILES
         main.cpp
         )
 
-add_executable(fun ${SOURCE_FILES})
-target_link_libraries(fun Navigator)
+add_executable(example ${SOURCE_FILES})
+target_link_libraries(example Navigator)

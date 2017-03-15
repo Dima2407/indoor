@@ -19,8 +19,8 @@ include_directories(lib/rapidjson_min/include)
 add_subdirectory(test)
 
 
-# Build fun
-add_subdirectory(fun)
+# Build example
+add_subdirectory(example)
 
 # Build unittest
 add_subdirectory(unittest)

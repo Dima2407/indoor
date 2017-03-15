@@ -8,9 +8,7 @@
 #include <cmath>
 #include <vector>
 
-#include "Navigator/Beacons/TrilatBeaconNavigator.h"
-#include "Navigator/Beacons/Factory/MovingAverageFilterFactory.h"
-#include "Navigator/Beacons/Factory/NoFilterFactory.h"
+#include "Navigator.h"
 
 using namespace std;
 using namespace Navi::Beacons;

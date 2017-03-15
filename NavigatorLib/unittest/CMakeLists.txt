@@ -4,7 +4,7 @@ project(unittest)
 set(CMAKE_CXX_STANDARD 14)
 
 # Include path to navigator_lib for *.h files
-include_directories(../navigator_lib/
+include_directories(
                     ../include/
                     )
 
@@ -20,9 +20,9 @@ set(SOURCE_FILES
     #
     DummyTest.cpp DummyTest.h
     #
-    Math/Filter/RingBufferTest.cpp Math/Filter/RingBufferTest.h
-    Math/Filter/MovingAverageFilterTest.cpp Math/Filter/MovingAverageFilterTest.h
-    Math/Trilat/TrilatTest.cpp Math/Trilat/TrilatTest.h
+    Math/Filter/RingBufferTest.cpp            Math/Filter/RingBufferTest.h
+    Math/Filter/MovingAverageFilterTest.cpp   Math/Filter/MovingAverageFilterTest.h
+    Math/Trilat/TrilatTest.cpp                Math/Trilat/TrilatTest.h
 )
 
 add_executable(unittest ${SOURCE_FILES})

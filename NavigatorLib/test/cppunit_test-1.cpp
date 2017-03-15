@@ -35,14 +35,14 @@ namespace Navigator {
 //#include "teamcity-cpp/cppunit/teamcity_cppunit.h"
 #include "teamcity/teamcity_cppunit.h"
 
-#include "rapidjson/include/rapidjson/rapidjson.h"
-#include <rapidjson/include/rapidjson/document.h>
-#include <rapidjson/include/rapidjson/filereadstream.h>
-#include <rapidjson/include/rapidjson/filewritestream.h>
-#include <rapidjson/include/rapidjson/prettywriter.h>
-#include <rapidjson/include/rapidjson/error/en.h>
-#include "rapidjson/include/rapidjson/writer.h"
-#include "rapidjson/include/rapidjson/stringbuffer.h"
+#include "rapidjson/rapidjson.h"
+#include <rapidjson/document.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/error/en.h>
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 
 //using namespace CppUnit;

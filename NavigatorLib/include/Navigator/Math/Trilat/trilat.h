@@ -31,11 +31,27 @@ namespace Navi {
             bool trilatLocation2d(const std::vector<Position3D> &beaconsPos,
                                   const std::vector<double> &beaconsDist,
                                   Position3D &location);
-    
+
+            /// This version throws exception if failure
             Position3D trilatLocation2d(const std::vector<Position3D> &beaconsPos,
-                                  const std::vector<double> &beaconsDist);
-    
-            // TODO include trilat 3d here also !
+                                        const std::vector<double> &beaconsDist);
+
+            /** \brief Trilateration in 3D.
+            *
+            * Trilateration in 3D with a minimum of reference 4 points (beacons) (UNUSED).
+            * As the 4 or more distances cannot be satisfied exctly in general,
+            * the result is the least squares fit.
+            *
+            * UNUSED
+            *
+            * Based on https://github.com/Wayne82/Trilateration
+            *
+            * \param[in]  beaconsPos   List of beacon positions (list<Point>).
+            * \param[in]  beaconsDist  List of distances to beacons (list<double>).
+            * \param[out] location     The result of trilateration.
+            * \result                  true if success, false otherwise.
+            * \sa TrilatLocation2d()
+            */
             bool trilatLocation3d(const std::vector<Position3D> &beaconsPos,
                                   const std::vector<double> &beaconsDist,
                                   Position3D &location);

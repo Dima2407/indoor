@@ -22,7 +22,8 @@ namespace Navi {
             double x = nan("");
             double y = nan("");
         };
-        
+
+        //-------------------------------------------
         
         /// Point in 3d space
         struct Position3D
@@ -39,13 +40,15 @@ namespace Navi {
             double z = nan("");
             
         public:  // == METHODS ==
-            /// Calculate distance to ather point/position
+            /// Calculate distance to other point/position
             double distance(Position3D const& p2) const{
-                return sqrt(pow(this->x - p2.x, 2) + pow(this->y - p2.y, 2));
+                return sqrt(pow(this->x - p2.x, 2) + pow(this->y - p2.y, 2) + pow(this->z - p2.z, 2));
             }
         };
-        
-        
+
+        //-------------------------------------------
+
+
         /// Point in 3d space + floor number (optional, may be will be needed)
         struct Position3DFloor : Position3D
         {

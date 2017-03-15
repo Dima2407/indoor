@@ -16,10 +16,15 @@ namespace NaviTest {
             class TrilatTest : public CPPUNIT_NS::TestFixture
             {
                 CPPUNIT_TEST_SUITE(TrilatTest);
-                CPPUNIT_TEST(testTrilat);
+                CPPUNIT_TEST(testTrilat2D_1);
+                CPPUNIT_TEST(testTrilat3D_1);
                 CPPUNIT_TEST_SUITE_END();
             public:
-                void testTrilat();
+                /// A single-point 2D test
+                void testTrilat2D_1();
+
+                /// A single-point 3D test
+                void testTrilat3D_1();
             };
         }
     }

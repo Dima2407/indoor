@@ -6,7 +6,7 @@
 
 #include <cassert>
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Filter {
 

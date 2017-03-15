@@ -11,8 +11,8 @@ namespace NaviTest {
             CPPUNIT_TEST_SUITE_REGISTRATION(RingBufferTest);
 
             void RingBufferTest::test1() {
-                using namespace Navi::Math::Filter;
-                using namespace Navi;
+                using Navigator::Math::Filter;
+                using namespace Navigator;
 
                 RingBuffer<int> buffer(3);
                 int val;

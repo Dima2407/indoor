@@ -7,7 +7,7 @@
 #include "Navigator/Math/Position3D.h"
 #include "Navigator/Beacons/BeaconReceivedData.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         /** @startuml
          * class  AbstractBeaconNavigator

@@ -9,7 +9,7 @@
 #include "Navigator/Beacons/BeaconUID.h"
 #include "Navigator/Math/Position3D.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         /// Beacon position, rssi and damp
         class Beacon {
@@ -19,7 +19,7 @@ namespace Navi {
             //---------------------------------------------
 
             /// Constructor
-            Beacon(const BeaconUID &uid, double txPower, double damp, const Math::Position3D &pos, const std::string &meta) :
+            Beacon(const BeaconUID &uid, double txPower, double damp, const Math::Position3D &pos, const std::string &meta = "") :
                     uid(uid),
                     txPower(txPower),
                     damp(damp),

@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         /** @brief Beacon UID. Can be compared.
          *
@@ -18,10 +18,12 @@ namespace Navi {
         class BeaconUID : public std::vector<std::uint8_t> {
         public:
             /// Constructor from a string
-            BeaconUID(std::string s) : vector(s.begin(), s.end()) {}
+            BeaconUID(std::string s)
+                    : vector(s.begin(), s.end()) {}
 
             /// Constructor from a string + major + minor
-            BeaconUID(std::string s, int major, int minor) : vector(s.begin(), s.end()) {
+            BeaconUID(std::string s, int major, int minor)
+                    : vector(s.begin(), s.end()) {
                 push_back(major & 0x00FF);
                 push_back((major & 0xFF00) >> 8);
                 push_back(minor & 0x00FF);
@@ -34,8 +36,8 @@ namespace Navi {
 namespace std {
     /// Hash function for BeaconUID
     template<>
-    struct hash<Navi::Beacons::BeaconUID> {
-        std::size_t operator()(const Navi::Beacons::BeaconUID &uid) const {
+    struct hash<Navigator::Beacons::BeaconUID> {
+        std::size_t operator()(const Navigator::Beacons::BeaconUID &uid) const {
             // A simple hash algorithm
             const int p = 16777619;
             size_t hash = (size_t) 2166136261;

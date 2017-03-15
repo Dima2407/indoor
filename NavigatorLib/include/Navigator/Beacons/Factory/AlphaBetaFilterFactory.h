@@ -8,14 +8,13 @@
 #include "./IFilterFactory.h"
 #include "../../Math/Filter/AlphaBetaFilter.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         namespace Factory {
             /** @brief A factory for creating AlphaBetaFilter
              *
              * @startuml
              * class AlphaBetaFilterFactory{
-             * --
              * - alpha: douuble
              * - beta: douuble
              * --

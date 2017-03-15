@@ -10,9 +10,10 @@
 #include "Navigator/Math/Position3D.h"
 
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Trilat {
+            
             /** \brief Trilateration in 2D.
              *
              * Trilateration in 2D with a minimum of reference 3 points (beacons).
@@ -39,6 +40,12 @@ namespace Navi {
             bool trilatLocation3d(const std::vector<Position3D> &beaconsPos,
                                   const std::vector<double> &beaconsDist,
                                   Position3D &location);
+    
+            /*/// Calculate a fake RSSI signal for 2 points
+            double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp)
+            {
+                return txPower - 10 * damp * log10( p1.distance(p2) );
+            }*/
         }
     }
 }

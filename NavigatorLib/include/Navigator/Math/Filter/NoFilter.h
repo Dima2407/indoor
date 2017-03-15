@@ -6,7 +6,7 @@
 
 #include "./IFilter.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Filter {
 

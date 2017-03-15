@@ -6,17 +6,16 @@
 
 #include "Navigator/Math/Trilat/trilat.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
 
-        const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd) {
-
-
+        const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd)
+        {
             //----------------------------
             // Check the timelines of all active processors, restart if needed
             // This is done for all beacons, not only for the beacon of the current brd
-            for (const auto &pair: beaconProcessorList) {
-
+            for (const auto &pair: beaconProcessorList)
+            {
                 BeaconProcessor &processor = *pair.second;
                 if (processor.isActive()) {
                     double t = processor.getLastTimeStamp(); // Last measurement of this beacon, aka old timestamp
@@ -35,7 +34,7 @@ namespace Navi {
             // After that, run the trilateration
 
             auto search = beaconProcessorList.find(brd.uid);
-
+            
             if (search != beaconProcessorList.end()) {
                 // Process the data package brd with the respective beacon
                 // This makes the processor active if it was not before
@@ -59,13 +58,13 @@ namespace Navi {
                         beaconDistances.push_back(processor.getLastDistance()); // Add distance
                     }
                 }
-
+                
                 // Run trilateration if there are at least 3 active beacon processors
                 // Result is written to lastPosition
                 if (beaconPositions.size() >= 3)
-                    Math::Trilat::trilatLocation2d(beaconPositions, beaconDistances, lastPosition);
+                    lastPosition = Math::Trilat::trilatLocation2d(beaconPositions, beaconDistances);
             }
-
+            
             return lastPosition;
         }
     }

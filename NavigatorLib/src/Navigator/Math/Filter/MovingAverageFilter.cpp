@@ -4,7 +4,7 @@
 
 #include "Navigator/Math/Filter/MovingAverageFilter.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Filter {
 

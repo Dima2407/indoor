@@ -9,7 +9,7 @@
 
 #include "Navigator/Math/Trilat/trilat.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Trilat {
 

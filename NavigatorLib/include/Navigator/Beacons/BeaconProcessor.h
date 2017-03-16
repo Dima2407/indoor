@@ -13,10 +13,10 @@
 #include "Navigator/Beacons/Beacon.h"
 
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
            
-        //using namespace Navi::Math::Filter;
+        //using namespace Navigator::Math::Filter;
     
         /** @brief Calculates distance as a function of RSSI for a beacon
          *
@@ -53,8 +53,8 @@ namespace Navi {
         class BeaconProcessor
         {
         public:  // == TYPES ==
-            using IFilter = Navi::Math::Filter::IFilter;
-            using NoFilter = Navi::Math::Filter::NoFilter;
+            using IFilter = Navigator::Math::Filter::IFilter;
+            using NoFilter = Navigator::Math::Filter::NoFilter;
             
         public:
             /** @brief Constructor

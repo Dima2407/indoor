@@ -38,9 +38,9 @@ namespace tester {
 
         /// Add a new measurement
        void newMeasurement(long long hash, double txPower, double rssi, long long timestamp) {
-            navigator.process(Navi::Beacons::BeaconReceivedData(
+            navigator.process(Navigator::Beacons::BeaconReceivedData(
                     timestamp*1.0/1000,
-                    Navi::Beacons::BeaconUID(hash),
+                    Navigator::Beacons::BeaconUID(hash),
                     rssi
             ));
         }
@@ -68,11 +68,11 @@ namespace tester {
          *
          * I use a pointer here to localize the Eigen trouble
          */
-        Navi::Beacons::TrilatBeaconNavigator navigator = Navi::Beacons::TrilatBeaconNavigator(
-//                std::make_shared<Navi::Beacons::Factory::MovingAverageFilterFactory>(10),
-                std::make_shared<Navi::Beacons::Factory::NoFilterFactory>(),
-                std::make_shared<Navi::Beacons::Factory::NoFilterFactory>()
-//                                std::make_shared<Navi::Beacons::Factory::MovingAverageFilterFactory>(10)
+        Navigator::Beacons::TrilatBeaconNavigator navigator = Navigator::Beacons::TrilatBeaconNavigator(
+//                std::make_shared<Navigator::Beacons::Factory::MovingAverageFilterFactory>(10),
+                std::make_shared<Navigator::Beacons::Factory::NoFilterFactory>(),
+                std::make_shared<Navigator::Beacons::Factory::NoFilterFactory>()
+//                                std::make_shared<Navigator::Beacons::Factory::MovingAverageFilterFactory>(10)
 
         );
     };

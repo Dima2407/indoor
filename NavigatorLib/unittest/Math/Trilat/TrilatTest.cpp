@@ -23,8 +23,8 @@ namespace NaviTest {
             void TrilatTest::testTrilat2D_1()
             {
                 using namespace std;
-                using namespace Navi;
-                using namespace Navi::Math;
+                using namespace Navigator;
+                using namespace Navigator::Math;
 
                 // Create vector of 3 points
                 vector<Position3D> points;// = { {0.3, 0.5, 0.0} };
@@ -42,8 +42,8 @@ namespace NaviTest {
 				
                 // Result point
                 //Position3D resultPoint;
-                //Navi::Math::Trilat::trilatLocation2d(points, distances, resultPoint);
-	            Position3D resultPoint = Navi::Math::Trilat::trilatLocation2d(points, distances);
+                //Navigator::Math::Trilat::trilatLocation2d(points, distances, resultPoint);
+	            Position3D resultPoint = Navigator::Math::Trilat::trilatLocation2d(points, distances);
 	            
                 // Check if results are reasionable
                 constexpr double accuracy = 1.0e-5;
@@ -55,8 +55,8 @@ namespace NaviTest {
 
             void TrilatTest::testTrilat3D_1() {
                 using namespace std;
-                using namespace Navi;
-                using namespace Navi::Math;
+                using namespace Navigator;
+                using namespace Navigator::Math;
 
                 // Create vector of 4 points
                 vector<Position3D> points;// = { {0.3, 0.5, 0.0} };
@@ -75,8 +75,8 @@ namespace NaviTest {
 
                 // Result point
 //                Position3D resultPoint;
-//                Navi::Math::Trilat::trilatLocation3d(points, distances, resultPoint);
-                Position3D resultPoint = Navi::Math::Trilat::trilatLocation3d(points, distances);
+//                Navigator::Math::Trilat::trilatLocation3d(points, distances, resultPoint);
+                Position3D resultPoint = Navigator::Math::Trilat::trilatLocation3d(points, distances);
 
 //                cout << resultPoint.x << "  " << resultPoint.y << "  " << resultPoint.z << endl;
 

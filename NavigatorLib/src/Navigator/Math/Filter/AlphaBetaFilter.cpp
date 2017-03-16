@@ -4,7 +4,7 @@
 
 #include "Navigator/Math/Filter/AlphaBetaFilter.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Filter {
 

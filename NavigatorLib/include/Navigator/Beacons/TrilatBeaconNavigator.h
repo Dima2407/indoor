@@ -11,7 +11,7 @@
 #include "Navigator/Math/Trilat/trilat.h"
 
 #pragma once
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
 
         /** @brief Trilateration-based beacon navigator

@@ -11,9 +11,9 @@
 #include "Navigator.h"
 
 using namespace std;
-using namespace Navi::Beacons;
-using namespace Navi::Beacons::Factory;
-using Navi::Math::Position3D;
+using namespace Navigator::Beacons;
+using namespace Navigator::Beacons::Factory;
+using Navigator::Math::Position3D;
 
 /// Calculate a fake RSSI signal for 2 points
 double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp)

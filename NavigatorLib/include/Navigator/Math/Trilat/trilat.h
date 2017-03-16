@@ -10,7 +10,7 @@
 #include "Navigator/Math/Position3D.h"
 
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Trilat {
             /** \brief Trilateration in 2D.

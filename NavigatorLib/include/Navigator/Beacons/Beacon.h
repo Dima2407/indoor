@@ -9,7 +9,7 @@
 #include "Navigator/Beacons/BeaconUID.h"
 #include "Navigator/Math/Position3D.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         /// Beacon position, rssi and damp
         class Beacon {

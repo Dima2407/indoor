@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         /** @brief Beacon UID. Can be compared.
          *
@@ -46,8 +46,8 @@ namespace Navi {
 namespace std {
     /// Hash function for BeaconUID
     template<>
-    struct hash<Navi::Beacons::BeaconUID> {
-        std::size_t operator()(const Navi::Beacons::BeaconUID &uid) const {
+    struct hash<Navigator::Beacons::BeaconUID> {
+        std::size_t operator()(const Navigator::Beacons::BeaconUID &uid) const {
             // A simple hash algorithm
             const int p = 16777619;
             size_t hash = (size_t) 2166136261;

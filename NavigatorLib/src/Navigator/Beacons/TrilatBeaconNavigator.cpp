@@ -6,7 +6,7 @@
 
 #include "Navigator/Math/Trilat/trilat.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
 
         const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd) {

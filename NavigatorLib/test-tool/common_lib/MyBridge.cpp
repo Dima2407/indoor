@@ -9,8 +9,8 @@ namespace tester {
 
     void MyBridge::newBeacon(double x, double y, double z, long long hash, double txPower, double damp) {
 
-        using namespace Navi::Beacons;
-        using namespace Navi::Math;
+        using namespace Navigator::Beacons;
+        using namespace Navigator::Math;
 
         // Create a new beacon object of NavigatorLib and add it
         navigator.addBeacon(Beacon(BeaconUID(hash), txPower, damp, Position3D(x, y, z), ""));

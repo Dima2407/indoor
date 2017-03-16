@@ -1,0 +1,32 @@
+@startuml
+
+'!include style.skinparam
+'skinparam componentStyle uml2
+
+title Internal Database Component Diagram\n
+
+
+node InternalDatabase{
+    database SQLite{
+        [HAL \n Config]
+        [Beacons \n vault]
+        [Algorithm \n config]
+    }
+    (SQLite modern \n C++ wrapper) as SqliWrapper
+    url of SqliWrapper is [[https://github.com/aminroosta/sqlite_modern_cpp]]
+
+    ()Events
+    SqliWrapper -down- SQLite
+    Events -down- SqliWrapper
+}
+
+
+[HAL] ..> Events
+[Algorithm] ..> Events  : listens to
+[GUI] ..> Events
+
+[HAL] --> SqliWrapper  : put() \n set() \n get()
+[Algorithm] --> SqliWrapper
+[GUI] --> SqliWrapper
+
+@enduml

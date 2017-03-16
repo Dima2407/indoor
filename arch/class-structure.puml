@@ -1,0 +1,150 @@
+@startuml
+
+package Android <<Rectangle>>{
+    package android.bluetooth{
+        class BluetoothAdapter
+    }
+    package android.location{
+        class LocationManager
+    }
+    package android.hardware{
+        class SensorManager
+    }
+    package android.net.wifi{
+        class WifiManager
+    }
+}
+
+package com.jim-it.traking.events{
+class MeasurementEvent{
+-timestamp : long
+-type: MeasurementType
+-values : float []
+-- constructors --
++MeasurementEvent(type: MeasurementType, data: float...)
+-- methods --
++getCreatedAt(): long
++getType(): MeasurementType
++getData(): <? extends MeasurementData>
+}
+
+class GPSMeasurementData {
++getLongitude(): float
++getLatitude(): float
+}
+class BluetoothMeasurementData {
++getMajor(): int
++getMinor(): int
++getRSSI(): int
+}
+
+class MeasurementData{
+#data : MeasurementEvent
+-- constructors --
+MeasurementData(event : MeasurementEvent)
+}
+enum MeasurementType {
+GEO_VALUE
+SENSOR_VALUE
+WIFI_VALUE
+BLE_VALUE
+
+
+}
+MeasurementData <|-- GPSMeasurementData
+MeasurementData <|-- BluetoothMeasurementData
+MeasurementEvent *-- MeasurementType
+}
+
+package com.jim-it.traking.configs{
+
+class BeaconConfig {
+-txPower: double
+-damp: double
+-uuid: String
+-major: int
+-minor: int
+-position: float[]
+}
+
++interface ProviderConfiguration<TConfig>{
++{abstract}updateConfiguration(TConfig[]) : void
+}
+
+class BluetoothProviderConfiguration{
++{native}updateConfiguration(BeaconConfig[]) : void
+}
+ProviderConfiguration <|-- BluetoothProviderConfiguration
+}
+
+
+package com.jim-it.traking{
+class IndoorLocationManager {
+-providers : List<MeasurementProvider>
+-locationListener : IndoorLocationListener
+--constructors--
++IndoorLocationManager()
+--methods--
++enableProvider(type : MeasurementType,
+                configuration: ProviderConfiguration,
+                transfer: MeasurementTransfer) : void
++disableProvider(type: MeasurementType) : void
++setLocationUpdateListener(listener : IndoorLocationListener): void
++prepare() : void
++start() : void
++stop() : void
++release() : void
+}
+interface IndoorLocationListener{
++onLocation(coordinate: float []): void
+}
+
+}
+
+package com.jim-it.traking.providers {
+
++abstract class MeasurementProvider {
+-transfer : MeasurementTransfer
+--constructors--
+#MeasurementProvider(transfer : MeasurementTransfer)
+--methods--
++{abstract}start() : void
++{abstract}stop() : void
+}
+
+interface MeasurementTransfer {
++{abstract}deliver(event : MeasurementEvent) : void
+}
+
+class AndroidMeasurementTransfer{
++{native}deliver(event : MeasurementEvent) : void
+}
+
+
+~class BluetoothMeasurementProvider{
+}
+
+~class GPSMeasurementProvider{
+}
+
+~class SensorMeasurementProvider{
+}
+
+~class WIFIMeasurementProvider{
+}
+MeasurementTransfer <|-- AndroidMeasurementTransfer
+
+MeasurementProvider <|-- BluetoothMeasurementProvider
+BluetoothMeasurementProvider *-- BluetoothAdapter
+
+MeasurementProvider <|-- GPSMeasurementProvider
+GPSMeasurementProvider *-- LocationManager
+
+MeasurementProvider <|-- SensorMeasurementProvider
+SensorMeasurementProvider *-- SensorManager
+
+MeasurementProvider <|-- WIFIMeasurementProvider
+WIFIMeasurementProvider *-- WifiManager
+}
+
+@enduml

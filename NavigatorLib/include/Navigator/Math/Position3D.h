@@ -8,7 +8,7 @@
 #include <limits>
 //#include <gmpxx.h>
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
     
         /// Point in 2-dimension space

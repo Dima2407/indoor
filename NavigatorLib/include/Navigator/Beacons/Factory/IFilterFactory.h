@@ -8,7 +8,7 @@
 
 #include "Navigator/Math/Filter/IFilter.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         namespace Factory {
 

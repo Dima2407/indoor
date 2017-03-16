@@ -11,18 +11,20 @@
 #include "Navigator.h"
 
 using namespace std;
-using namespace Navi::Beacons;
-using namespace Navi::Beacons::Factory;
-using Navi::Math::Position3D;
+using namespace Navigator::Beacons;
+using namespace Navigator::Beacons::Factory;
+using namespace Navigator::Math::Trilat;
+using Navigator::Math::Position3D;
+//using Navigator::Math::Trilat::fakeRSSI;
+
 
 /// Calculate a fake RSSI signal for 2 points
 double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp)
 {
-	// Гипотенуза
-    double dist = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+    /*double dist = p1.distance(p2);
     double temp = log10(dist);
-
-    return txPower - 10 * damp * temp;
+    return txPower - 10 * damp * temp;*/
+    return txPower - 10 * damp * log10( p1.distance(p2) );
 }
 
 
@@ -44,13 +46,14 @@ int main()
     };
 
     // Add them to the navigator
-    for (const Beacon &b : beacons)
-        navigator.addBeacon(b);
+    /*for (const Beacon &b : beacons)
+        navigator.addBeacon(b);*/
+    navigator.addBeacons(beacons);
 
     // Create and process 3 events
     Position3D inPos(0.75, 0.38, 0.0); // Some given position
-    Position3D outPos;
-
+    
+    cout << "  x  \t  y  \t  z  " << endl;
     for (int i = 0; i < 3; i++) {
         double time = 0.1*i;
 
@@ -60,10 +63,10 @@ int main()
         BeaconReceivedData brd(time, b.getUid(), fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp() ));
 
         // Process it
-        outPos = navigator.process(brd);
+        Position3D outPos = navigator.process(brd);
 
         // Write to stdout
-        cout << outPos.x << "  " << outPos.y << "  " << outPos.z << endl;
+        cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
     }
 
     return 0;

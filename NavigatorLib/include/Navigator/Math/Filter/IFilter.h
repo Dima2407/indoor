@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Filter {
 

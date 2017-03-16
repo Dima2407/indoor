@@ -8,22 +8,16 @@
 #include "Navigator/Beacons/AbstractBeaconNavigator.h"
 #include "Navigator/Beacons/BeaconProcessor.h"
 #include "Navigator/Beacons/Factory/IFilterFactory.h"
-#include "Navigator/Math/Trilat/trilat.h"
+#include "Navigator/Math/Trilat/Trilat.h"
 
 #pragma once
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
 
         /** @brief Trilateration-based beacon navigator
          *
          * @startuml
          * class TrilatBeaconNavigator {
-         * // This is the trilateration-based beacon navigator //
-         * // You must add at least 3 beacons //
-         * // And process events for at least 3 beacons //
-         * // To get a nonzero result //
-         * // Currently in 2D (z is ignored) //
-         * --
          * + {static} BEACON_TIMEOUT : double = 10.0
          * ..
          * - rssiFilterFactory : std::shared_ptr<IFilterFactory>
@@ -40,8 +34,17 @@ namespace Navi {
          * + clear() : void
          * + const getLastPosition() : const Math::Position3D &
          * }
+         * note bottom
+         * // This is the trilateration-based beacon navigator //
+         * // You must add at least 3 beacons //
+         * // And process events for at least 3 beacons //
+         * // To get a nonzero result //
+         * // Currently in 2D (z is ignored) //
+         * endnote
          *
-         * class TrilatBeaconNavigator <|.. abstract AbstractBeaconNavigator
+         * class TrilatBeaconNavigator .up.|> abstract AbstractBeaconNavigator
+         * interface Factory::IFilterFactory --o TrilatBeaconNavigator : rssiFilterFactory
+         * interface Factory::IFilterFactory --o TrilatBeaconNavigator : distanceFilterFactory
          * @enduml
          *
          */
@@ -72,6 +75,13 @@ namespace Navi {
                         distanceFilterFactory->createFilter()
                 );
             }
+    
+            /// Add Beacons
+            template <typename IterableT>
+            void addBeacons(IterableT const& beacons) {
+                for( auto b : beacons )
+                    this->addBeacon(b);
+            }
 
             /// Delete a beacon by uid
             void deleteBeacon(const BeaconUID &uid) {
@@ -98,7 +108,7 @@ namespace Navi {
 
             /// List of beacon processors for all beacons currently in use
             std::unordered_map<BeaconUID, std::shared_ptr<BeaconProcessor>> beaconProcessorList;
-
+            
             /// Last located position
             Math::Position3D lastPosition = Math::Position3D();
         };

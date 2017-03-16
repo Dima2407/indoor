@@ -8,7 +8,7 @@
 #include "Navigator/Beacons/Factory/IFilterFactory.h"
 #include "Navigator/Math/Filter/NoFilter.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Beacons {
         namespace Factory {
             /** @brief A factory for creating AlphaBetaFilter

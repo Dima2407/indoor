@@ -15,7 +15,7 @@ namespace NaviTest {
 
 
             void MovingAverageFilterTest::testAvg() {
-                using namespace Navi::Math::Filter;
+                using namespace Navigator::Math::Filter;
 
                 MovingAverageFilter filter(4); // The filter to test, window size = 4
 

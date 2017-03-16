@@ -10,7 +10,7 @@
 #include "./IFilter.h"
 #include "./RingBuffer.h"
 
-namespace Navi {
+namespace Navigator {
     namespace Math {
         namespace Filter {
 

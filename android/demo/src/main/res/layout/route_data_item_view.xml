@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:clickable="false"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="54dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/route_item_maneuver_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/route_item_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:scrollHorizontally="false"
+            android:scrollbars="none"
+            android:textColor="#212121"
+            android:layout_marginEnd="8dp"/>
+    </LinearLayout>
+</LinearLayout>

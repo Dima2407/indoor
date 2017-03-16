@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MeasurementProvider.h"
 #import <CoreLocation/CoreLocation.h>
+#import "MeasurementTranfer.h"
 
 @interface BluetoothMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 
@@ -16,7 +17,8 @@
 @property (nonatomic, strong) MeasurementEvent *event;
 @property (nonatomic, assign) NSInteger latitude;
 @property (nonatomic, assign) NSInteger longitude;
+@property (nonatomic, strong) IosMeasurementTransfer *transfer;
 
-
+-(instancetype)init: (IosMeasurementTransfer*) transfer;
 +(void) setBeaconMap:(NSArray*)beacons;
 @end

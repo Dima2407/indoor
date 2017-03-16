@@ -23,7 +23,7 @@
 @implementation BluetoothMeasurementProvider
 static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
 
--(instancetype)init{
+-(instancetype)init: (IosMeasurementTransfer*) transfer{
     self = [super init];
     
     if(self){
@@ -32,6 +32,7 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
         self.manager = [[CLLocationManager alloc]init];
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.transfer = transfer;
     }
     return self;
 }
@@ -71,21 +72,10 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
         if([beacon.proximityUUID isEqual:sensoro]){
             
             MeasurementEvent * event =[[MeasurementEvent alloc] initWithBeacon:beacon];
-                [IosMeasurementTransfer deliver:event];
+                [self.transfer deliver:event];
         }
        
     }
-    
-//    float x = SensorBridge_getX();
-//    float y = SensorBridge_getY();
-//    NSLog(@"current (x, y) - (%f, %f)", x, y);
-//    //[self.delegate currentLocation:CGPointMake(x, y)];
-//    
-
-       
-    
-    
- 
 }
 - (void)locationManager:(CLLocationManager *)manager
 rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region

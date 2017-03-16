@@ -10,9 +10,16 @@
 #import "MeasurementEvent.h"
 #import "MeasurementTranfer.h"
 
+@protocol IosMeasurementTransferDelegate <NSObject>
+@optional
+-(void)processEvent: (MeasurementEvent *) event;
+- (void)didFailWithError:(NSError *)error;
+@end
+
+
 
 @interface IosMeasurementTransfer : NSObject<MeasurementTranfer>
 
-+(void)deliver:(MeasurementEvent*)event;
+@property (nonatomic, weak) id <IosMeasurementTransferDelegate> delegate;
 
 @end

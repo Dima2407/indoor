@@ -33,6 +33,7 @@
 		06FBCF0E1E784E8800D8902A /* PermissionError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBCB531E78149A00D8902A /* PermissionError.h */; };
 		06FBCF0F1E784E8800D8902A /* AvailabilityError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBCB561E7814B900D8902A /* AvailabilityError.h */; };
 		06FBCF101E784E8800D8902A /* TConfig.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06FBC9951E76F07700D8902A /* TConfig.h */; };
+		06FBCF501E7AAC7C00D8902A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 06FBCF131E797B4A00D8902A /* CMakeLists.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -463,6 +464,9 @@
 		06FBCCF91E782CC800D8902A /* smartptr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = smartptr.cpp; sourceTree = "<group>"; };
 		06FBCCFA1E782CC800D8902A /* utilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
 		06FBCCFB1E782CC800D8902A /* utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
+		06FBCF111E797AEA00D8902A /* library */ = {isa = PBXFileReference; lastKnownFileType = folder; name = library; path = IndoorLibrary/library; sourceTree = "<group>"; };
+		06FBCF131E797B4A00D8902A /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = CMakeLists.txt; path = IndoorLibrary/library/src/CMakeLists.txt; sourceTree = "<group>"; };
+		06FBCF151E7992B000D8902A /* IndoorLocationUpdateDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationUpdateDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -479,7 +483,9 @@
 		0610B65F1E66F465003EC3FA = {
 			isa = PBXGroup;
 			children = (
+				06FBCF131E797B4A00D8902A /* CMakeLists.txt */,
 				0610B66A1E66F465003EC3FA /* IndoorLibrary */,
+				06FBCF111E797AEA00D8902A /* library */,
 				0610B6691E66F465003EC3FA /* Products */,
 				06FBCB591E782CC700D8902A /* Frameworks */,
 			);
@@ -503,6 +509,7 @@
 				06ED897C1E6D79F50011C01C /* IndoorLocationManager.h */,
 				06ED897D1E6D79F50011C01C /* IndoorLocationManager.m */,
 				0610B6851E66F661003EC3FA /* Transfer */,
+				06FBCF151E7992B000D8902A /* IndoorLocationUpdateDelegate.h */,
 			);
 			path = IndoorLibrary;
 			sourceTree = "<group>";
@@ -1360,7 +1367,7 @@
 				0610B6641E66F465003EC3FA /* Sources */,
 				0610B6651E66F465003EC3FA /* Frameworks */,
 				0610B6661E66F465003EC3FA /* CopyFiles */,
-				06FBCD131E78384000D8902A /* Resources */,
+				06FBCF4F1E7AAC6C00D8902A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1405,10 +1412,11 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		06FBCD131E78384000D8902A /* Resources */ = {
+		06FBCF4F1E7AAC6C00D8902A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06FBCF501E7AAC7C00D8902A /* CMakeLists.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1533,7 +1541,7 @@
 				DEVELOPMENT_TEAM = CME5G2A9T6;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/IndoorLibrary/libs/tracking_lib/external";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/IndoorLibrary/library/**";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -1558,7 +1566,7 @@
 				DEVELOPMENT_TEAM = CME5G2A9T6;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/IndoorLibrary/libs/tracking_lib/external";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/IndoorLibrary/library/**";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",

@@ -10,6 +10,6 @@
 
 @protocol MeasurementTranfer <NSObject>
 
-+(void)deliver:(MeasurementEvent*)event;
+-(void)deliver:(MeasurementEvent*)event;
 
 @end

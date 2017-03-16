@@ -15,6 +15,7 @@
 @interface GPSMeasurementProvider()
 @property (nonatomic, strong)MeasurementProvider *provider;
 @property (nonatomic, assign) BOOL startStatus;
+@property (nonatomic, strong) IosMeasurementTransfer *transfer;
 
 
 
@@ -35,6 +36,7 @@
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.manager requestWhenInUseAuthorization];
+        self.transfer = [[IosMeasurementTransfer alloc] init];
     }
     return self;
 }
@@ -87,7 +89,9 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
     
     CLLocation *location = [locations objectAtIndex:0];
-    [IosMeasurementTransfer deliver:[[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLatitude:location.coordinate.longitude]];
+    MeasurementEvent *event = [[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLatitude:location.coordinate.longitude];
+    [self.transfer deliver:event];
+ 
     
     
     

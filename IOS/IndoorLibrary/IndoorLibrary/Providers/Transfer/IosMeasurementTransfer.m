@@ -11,10 +11,22 @@
     
 
 @implementation IosMeasurementTransfer
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        
+    }
+    return self;
+}
 
-+(void)deliver:(MeasurementEvent*)event
+-(void)deliver:(MeasurementEvent*)event
 {
     if(event.type == BLE_VALUE){
+        if([self.delegate respondsToSelector:@selector(processEvent:)]) {
+            [self.delegate processEvent:event];
+        }
        
 //        SensorBridge_onNewBeacon([event.beacon.minor intValue],-75,event.beacon.rssi,event.timestamp);
 //          NSLog(@" Minor: %zd",[event.beacon.minor intValue]);

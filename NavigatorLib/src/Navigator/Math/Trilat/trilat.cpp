@@ -7,7 +7,7 @@
 
 #include "Eigen/Dense"
 
-#include "Navigator/Math/Trilat/trilat.h"
+#include "Navigator/Math/Trilat/Trilat.h"
 
 namespace Navigator {
     namespace Math {

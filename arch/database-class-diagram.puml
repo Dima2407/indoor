@@ -1,0 +1,44 @@
+@startuml
+
+!include style.skinparam
+
+
+title Internal Database - Class Diagram \n (**SKETCH**)
+
+class InternalDatabase {
+    This class wraps a database engine like **LevelDB** or **RocksDB**
+    with an event-driven API.
+    
+  -- Fields --
+~events_() : std::set<Event>
+
+  -- Constructors --
+-InternalDatabase()
+
+  --  Methods --
++ open()
+- close()
++ put()
++ get()
++ del()
+# isOpen()
+# inClosed()
+
+  ____
+    **Usage 1:**
+    db.onUpdate("DatabaseKeyName1","DatabaseKeyName2",...) 
+        += [](std:string keyName){};
+    **Usage 2:**
+    db.put("key",value, [](key,value,int status)
+        {cout<<key<<value<<status} );
+}
+
+
+class Event {
+}
+
+Event <|-left- std::function
+InternalDatabase *-up- Event: Composition
+
+
+@enduml

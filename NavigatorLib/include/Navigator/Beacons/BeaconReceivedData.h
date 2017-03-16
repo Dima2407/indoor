@@ -5,14 +5,27 @@
 
 #pragma once
 
+
+#include <cmath>
 #include "./BeaconUID.h"
 
 namespace Navigator {
     namespace Beacons {
+        
         /// Data package for one beacon
+        /** @startuml
+         *  class BeaconReceivedData <<(S,#FF7700)>>{
+         *      + double timestamp
+         *      + BeaconUID uid
+         *      + double rssi
+         *      + double txPower
+         *  }
+         *  note bottom : struct
+         *  @enduml
+         */
         struct BeaconReceivedData {
 
-            BeaconReceivedData(double timestamp, const BeaconUID &uid, double rssi, double txPower = 0.0) :
+            BeaconReceivedData(double timestamp, const BeaconUID &uid, double rssi, double txPower = nan("")) :
                     timestamp(timestamp),
                     uid(uid),
                     rssi(rssi),
@@ -23,12 +36,13 @@ namespace Navigator {
 
             /// Beacon uid
             BeaconUID uid;
-
-            /// Received signal strenggth
+            
+            /// Received signal strength
             double rssi;
 
-            /// TxPower from the measurement (optional, bettter not use?)
-            double txPower;
+            //todo remove. Usually this parameter is calibrated, beacon sends wrong info
+            /// TxPower from the measurement (optional, better not use?)
+            double txPower = nan("");
         };
     }
 }

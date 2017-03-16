@@ -21,3 +21,12 @@ set(SOURCE_FILES
 
 add_executable(navigator-test ${SOURCE_FILES})
 target_link_libraries(navigator-test Navigator cppunit)
+
+MESSAGE( STATUS "asd  " ${CMAKE_SOURCE_DIR} )
+
+## Copy folder beacons-data-files to build path, near executable.
+add_custom_command(TARGET navigator-test
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_CURRENT_SOURCE_DIR}/beacons-data-files
+                   $<TARGET_FILE_DIR:navigator-test>/beacons-data-files)

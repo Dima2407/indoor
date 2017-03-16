@@ -8,4 +8,4 @@
 #include "./Filter/MovingAverageFilter.h"
 #include "./Filter/RingBuffer.h"
 
-#include "./Trilat/trilat.h"
+#include "./Trilat/Trilat.h"

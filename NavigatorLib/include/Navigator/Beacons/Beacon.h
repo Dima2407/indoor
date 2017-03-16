@@ -19,7 +19,7 @@ namespace Navigator {
             //---------------------------------------------
 
             /// Constructor
-            Beacon(const BeaconUID &uid, double txPower, double damp, const Math::Position3D &pos, const std::string &meta) :
+            Beacon(const BeaconUID &uid, double txPower, double damp, const Math::Position3D &pos, const std::string &meta = "") :
                     uid(uid),
                     txPower(txPower),
                     damp(damp),

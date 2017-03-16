@@ -17,13 +17,15 @@ namespace Navigator {
              *
              * @startuml
              * class AlphaBetaFilter {
+             *   ..
+             *   + AlphaBetaFilter(alpha: double, beta: double)
+             *   + process(in: double) : double
+             *   + reset() : void
+             * }
+             * note bottom
              * // Alpha-Beta Filter //
              * // operator() is an alias to process() //
-             * --
-             * + AlphaBetaFilter(alpha: double, beta: double)
-             * + process(in: double) : double
-             * + reset() : void
-             * }
+             * endnote
              *
              * AlphaBetaFilter .up.|> interface IFilter : implements
              * @enduml
@@ -60,6 +62,7 @@ namespace Navigator {
                 /// dt of the alpha-beta filter, we can always use 1.0
                 static constexpr double DT = 1.0;
 
+            private:
                 //------------------------------------
                 // Private fields
                 //------------------------------------

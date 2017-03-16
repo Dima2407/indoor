@@ -18,10 +18,12 @@ namespace Navigator {
         class BeaconUID : public std::vector<std::uint8_t> {
         public:
             /// Constructor from a string
-            BeaconUID(std::string s) : vector(s.begin(), s.end()) {}
+            BeaconUID(std::string s)
+                    : vector(s.begin(), s.end()) {}
 
             /// Constructor from a string + major + minor
-            BeaconUID(std::string s, int major, int minor) : vector(s.begin(), s.end()) {
+            BeaconUID(std::string s, int major, int minor)
+                    : vector(s.begin(), s.end()) {
                 push_back(major & 0x00FF);
                 push_back((major & 0xFF00) >> 8);
                 push_back(minor & 0x00FF);

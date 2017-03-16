@@ -22,12 +22,6 @@ namespace Navigator {
          *
          * @startuml
          * class BeaconProcessor {
-         * // Beacon Processor //
-         * // Calculates distance as a function of RSSI for a beacon //
-         * // using both RSSI filter and distance filter //
-         * // Includes beacon data, and shared_ptr's to the filters //
-         * // Keeps last timestamp and distance //
-         * --
          * - beacon : Beacon
          * - rssiFilter : std::shared_ptr<IFilter>
          * - distanceFilter : std::shared_ptr<IFilter>
@@ -45,8 +39,15 @@ namespace Navigator {
          * ..
          * + getters()
          * ..
-         * - const distanceFunction(rssi : double ) : double
+         * - const calculateDistance(rssi : double ) : double
          * }
+         * note bottom
+         * // Beacon Processor //
+         * // Calculates distance as a function of RSSI for a beacon //
+         * // using both RSSI filter and distance filter //
+         * // Includes beacon data, and shared_ptr's to the filters //
+         * // Keeps last timestamp and distance //
+         * endnote
          * @enduml
          *
          */
@@ -96,7 +97,7 @@ namespace Navigator {
                     filteredRssi = rssiFilter -> process(filteredRssi);
 
                 // Calculate raw distance from the filtered RSSI
-                double distance = distanceFunction(filteredRssi);
+                double distance = calculateDistance(filteredRssi);
 
                 if (distanceFilter != nullptr) // Apply distance filter if defined
                     distance = distanceFilter -> process(distance);
@@ -162,7 +163,7 @@ namespace Navigator {
              * @param[in]   rssi   Input RSSI (in dBm or something like this)
              * @return             Distance (im meters)
              */
-            double distanceFunction(double rssi) const
+            double calculateDistance(double rssi) const
             {
                 return pow(10.0, (beacon.getTxPower() - rssi) / (10.0 * beacon.getDamp()));
             }

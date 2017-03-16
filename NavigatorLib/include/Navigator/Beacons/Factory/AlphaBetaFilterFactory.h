@@ -15,7 +15,6 @@ namespace Navigator {
              *
              * @startuml
              * class AlphaBetaFilterFactory{
-             * --
              * - alpha: douuble
              * - beta: douuble
              * --

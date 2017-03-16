@@ -1,0 +1,147 @@
+@startuml
+
+!include style.skinparam
+
+title Hardware abstraction layer (HAL)
+
+package Utils{
+
+    interface Serializable{
+        + deserialize()
+        + serialize() : std::vector<char>
+    }
+
+    class "Blob : std::vector<char>" as Blob {
+        + trimToSize()
+    }
+}
+
+
+class RingBuffer<T>{
+    -- private fields --
+    - length_ : size_t
+    - head_index_ : size_t
+    - tail_index_ : size_t
+
+    -- methods --
+    + push(T const &val)
+    + pushForce(T const &val)
+    + pop() : T
+    + peak() : T&
+    + operator[](int index) : T&
+    + length() : size_t
+    + size() : size_t
+}
+
+
+' Wrap all without traling }
+package "namespace Kaa::IndoorSDK::HAL" as HAL {
+
+interface IDataReceiver <T> {
+    Receive data from native API.
+    This interface is to be bound with
+    target's native API.
+    When new data from sensors, BT, or
+    camera picture received it is pushed
+    to a corresponding RingBuffer
+    --
+    Send a value to
+    + send(T const& value) : bool
+}
+IDataReceiver <.down. RingBuffer : suitable
+
+
+package Camera{
+    class Picture{
+        timestamp : long double
+        GSensorData
+        bitmap : Blob
+    }
+
+    class GSensorData{
+        accelX : double
+        accelY
+        accelZ
+        alpha
+        beta
+        gamma
+    }
+
+    Picture .down.> GSensorData : use
+    Picture .down.> Blob : use
+}
+package Bluetooth{
+
+
+'interface' AbstractBeacon {
+class AbstractBeacon {
+    + uid : unsigned
+    + mac : BleMacAdres
+    + hash : unsigned
+    + power_tx : double
+    + timestamp_tx : long double
+    + timestamp_rx : long double
+    ____
+    + {static}{abstract} deserialize(std::vector<char>) : ThisType
+    + {abstract} serialize() : std::vector<char>
+    --
+    # isBeacon() : bool
+}
+AbstractBeacon .up.> Blob : use
+AbstractBeacon -up-|> Serializable
+
+note left of AbstractBeacon
+Inheritors, which adds
+non-static fields increases
+size of struct in memory.
+When copying to a
+""std::vector<IBeacon>"" or
+""RingBuffer<IBeacon>""
+inheritors fields will be lost
+endnote
+
+class AltBeacon {
+    ---
+}
+
+class iBeacon {
+    Apple's beacons
+    ----
+}
+
+class EddystoneUID {
+    ----
+}
+
+class EddystoneURL {
+    + url : std::string;
+    ----
+    + deserialize()
+    + serialize() : std::vector<char>
+}
+
+class KaaSignedBeacon {
+    putative beacon type
+    ----
+}
+
+AbstractBeacon <|-- AltBeacon
+AbstractBeacon <|--- iBeacon
+AbstractBeacon <|-- EddystoneUID
+AbstractBeacon <|--- EddystoneURL
+AbstractBeacon <|-- KaaSignedBeacon
+
+}
+'namespace BT
+
+
+note bottom of IDataReceiver
+1. Android API? Examples.
+2. iOS API? Examples.
+3.
+end note
+}
+'end of namespace HAL
+
+
+@enduml

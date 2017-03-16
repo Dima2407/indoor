@@ -10,42 +10,42 @@ namespace Navigator {
     namespace Math {
         namespace Filter {
 
-/** \brief A very simple Ring Buffer implementation
- *
- * @tparam T       Element type
- *
- * @startuml
- * class RingBuffer<T> {
- * // A very simple Ring Buffer implementation //
- * //  //
- * // This version is NOT synchronized, NOT thread-safe //
- * // It uses a dynamic array (new+delete), nothing fancy //
- * //  //
- * //  Note: It operates elements by value and uses assignments //
- * //  If you want to keep refs instead, try  T = shared_ptr<someclass> //
- * --
- * - size : unsigned
- * - data : T*
- * - readIndex : unsigned
- * - writeIndex : unsigned
- * - empty : bool
- * --
- * + RingBuffer(size: unsigned)
- * + ~RingBuffer()
- * ..
- * + const isFull() : bool
- * + const isEmpty() : bool
- * + push(t : T) : bool
- * + forcePush(t : T) : void
- * + pop(t : T &) : bool
- * + clear() : void
- * ..
- * - next(i : unsigned &) : void
- * }
- * @enduml
- *
- *
- */
+            /** \brief A very simple Ring Buffer implementation
+             *
+             * @tparam T       Element type
+             *
+             * @startuml
+             * class RingBuffer<T> {
+             * // A very simple Ring Buffer implementation //
+             * //  //
+             * // This version is NOT synchronized, NOT thread-safe //
+             * // It uses a dynamic array (new+delete), nothing fancy //
+             * //  //
+             * //  Note: It operates elements by value and uses assignments //
+             * //  If you want to keep refs instead, try  T = shared_ptr<someclass> //
+             * --
+             * - size : unsigned
+             * - data : T*
+             * - readIndex : unsigned
+             * - writeIndex : unsigned
+             * - empty : bool
+             * --
+             * + RingBuffer(size: unsigned)
+             * + ~RingBuffer()
+             * ..
+             * + const isFull() : bool
+             * + const isEmpty() : bool
+             * + push(t : T) : bool
+             * + forcePush(t : T) : void
+             * + pop(t : T &) : bool
+             * + clear() : void
+             * ..
+             * - next(i : unsigned &) : void
+             * }
+             * @enduml
+             *
+             *
+             */
             template<class T>
             class RingBuffer {
                 //------------------------------------

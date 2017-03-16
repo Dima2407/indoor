@@ -1,0 +1,285 @@
+@startuml
+
+!include style/style.skinparam
+set namespaceSeparator ::
+
+
+title   Общее представление библиотеки-модуля Navigator. Структура классов. 
+
+package Navigator #szure {
+
+together {
+interface INavigator {
+	+ {abstract} process(InputNavigationData const&)
+	'+ {abstract} process(InputNavigationDataBuffer const&)
+	+ {abstract} process(Container<InputNavigationData> const&)
+	+ {abstract} process() : OutputNavigationData
+	'+ process();
+}
+note top of INavigator
+Описывает сигнатуру функций 
+ввода и обработки данных.
+end note
+note top of INavigator
+	**Conrainer** любой тип 
+	контейнера позволяющий 
+	использовать **std::iterator**
+	//решить во время реализации//
+end note
+
+abstract InputNavigationData{
+    //данные собираемые устройством://
+    1. BleBeaconData,
+    2. WiFiAccessPointData
+    3. Ускорения ax, ay, az
+    4. Гироскоп
+    5. Магнитометр
+    6. ...
+    '__
+    'для простоты и универсальности
+    'приходят в виде ByteArray
+    '# ByteArray ba;
+    '--
+    ''+ serialize()
+    '+ deserialize()
+    '__
+    'А можно например в JSON
+    '+ parse()
+    __
+    + ba : ByteArray
+    + serializer : ISerializer
+}
+abstract InputNavigationDataBuffer {
+	//возможно это std::list<InputNavigationData*>//
+	//возможно это контэйнер с собственным хранилищем// 
+	//типа кольцевого буффера RingBuffer// 
+}
+note top: Частный случай **Container<InputNavigationData>**
+InputNavigationDataBuffer "0..*" o-down-  InputNavigationData : contains
+
+abstract OutputNavigationData{
+    //положение//
+    + timestamp
+    + x
+    + y
+    ..
+    //и направление//
+    + alpha
+    + beta
+    + gamma
+    __
+    + serialize()
+    + deserialize()
+}
+abstract OutputNavigationDataBuffer {
+	//По аналогии с InputNavigationDataBuffer//
+	//Нужен ли решится в процессе формирования **ТЗ**//
+}
+OutputNavigationDataBuffer "0..*" o-down-  OutputNavigationData : contains
+note top of OutputNavigationDataBuffer: Частный случай **Container<OutputNavigationData>**
+
+INavigator .left.> InputNavigationData : receives
+INavigator .up.> InputNavigationDataBuffer : receives
+INavigator -> OutputNavigationData : returns
+
+} 
+'together
+
+
+''' GENERAL NAVIGATOR SECTION '''
+
+class OperationMode {
+	//**ожидаем ТЗ**//
+}
+
+class "**GeneralNavigator**" as GeneralNavigator
+GeneralNavigator ----up-|> INavigator  : implements >
+class GeneralNavigator {
+	# operationMode : OperationMode  //режим работы//
+	..
+	+ setOperationMode()
+	+ getOperationMode()
+	--
+	'# subnavigators : Container<INavigator*>
+	# beaconNavigator : AbstractBeaconNavigator
+	# fingerprintNavigator : AbstractFingerprintNavigator
+	# accelorometerNavigator : AbstractAccelorometerNavigator
+	# slamNavigator : AbstractSlamNavigator
+	--
+	//Буфферы - хранители результатов от поднавигаторов// 
+	# beaconNavigatorOutput : OutputNavigationDataBuffer
+	# fingerprintNavigatorOutput : OutputNavigationDataBuffer
+	# accelorometerNavigatorOutput : OutputNavigationDataBuffer
+	# slamNavigatorOutput : OutputNavigationDataBuffer
+	--
+	//Запустить в поднавигаторы, результаты собрать в xxxxNavigatorOutput//
+	+ process(InputNavigationData const&)
+	+ process(InputNavigationDataBuffer const&);
+	--
+	//Обработать результаты поднавигаторов и выдать общий//
+	+ processCommon() : OutputNavigationData
+}
+note top of GeneralNavigator
+    **Центральный пользовательский класс**
+    предоставляет возможности настройки
+    режимов работы библиотеки, ввода и
+    вывода данных.
+    Вводимые данные в зависимости от
+    типа этих данных и конфигурации модуля
+    распределяет в соответствующие классы.
+    Содержит все подлежащие классы
+    навигации и управляет ими.
+    В зависимости от конфигурации усредняет,
+    суммирует, фильтрует, интегрирует
+    полученные от подлежащих навигационных
+    классов-модулей координаты.
+end note
+'note bottom of GeneralNavigator	
+'end note
+note right of GeneralNavigator
+	Пока идёт просчёт
+	входные данные 
+	складывать в буффер.
+	Мютексы и потоки
+	планируются 
+	в верхнем уровне.
+end note
+
+GeneralNavigator "1" *-up- OperationMode
+
+
+'''' SUBNAVIGATORS ''''
+
+GeneralNavigator  "0..1" o-down-- AbstractBeaconNavigator : linked\nsubnavigator
+GeneralNavigator  "0..1" o-down-- AbstractFingerprintNavigator : linked\nsubnavigator
+GeneralNavigator  "0..1" o-down-- AbstractAccelorometerNavigator : linked\nsubnavigator
+'GeneralNavigator "0..1" o-down-- AbstractNavigatorBySensors : linked\nsubnavigator
+GeneralNavigator  "0..1" o-down-- AbstractSlamNavigator : linked\nsubnavigator
+
+AbstractBeaconNavigator         ----up-|> INavigator: implements >
+AbstractFingerprintNavigator    ----up-|> INavigator: implements >
+AbstractAccelorometerNavigator  ----up-|> INavigator: implements >
+AbstractSlamNavigator           ----up-|> INavigator: implements >
+
+'AbstractBeaconNavigator         --() INavigator
+'AbstractFingerprintNavigator    --() INavigator
+'AbstractAccelorometerNavigator  --() INavigator
+'AbstractSlamNavigator           --() INavigator
+
+abstract AbstractBeaconNavigator{
+	//Навигация по bluetooth маякам//
+	__
+	+ process(InputNavigationData const&) throw WrongInputDataException
+	+ process(InputNavigationDataBuffer const&) throw WrongInputDataException
+	+ {abstract} process(BeaconInputData const&)
+	+ {abstract} process(Conrainer<BeaconInputData> const&)
+	'+ {abstract} process() : OutputNavigationData
+}
+note top of AbstractBeaconNavigator
+	**process(InputNavigationData const&)** и
+	**process(InputNavigationDataBuffer const&)**
+	реализованы как прослойка-конвертер входных
+	данных в BeaconInputData. Если тип входных 
+	данных другой - выбросить исключение
+	**WrongInputDataException**.
+end note
+abstract Beacon{
+}
+Beacon -down-o "3..*"  AbstractBeaconNavigator : taken from database
+note on link: see page 2\nAbstractBeaconNavigator
+
+
+abstract AbstractFingerprintNavigator{
+	'+ process(InputNavigationData const&) throw WrongInputDataException
+	'+ process(InputNavigationDataBuffer const&) throw WrongInputDataException
+	+ {abstract} process(WifiInputData const&)
+	+ {abstract} process(Conrainer<WifiInputData> const&)
+	'+ {abstract} process() : OutputNavigationData
+}
+note bottom of AbstractFingerprintNavigator
+	Навигация по 
+	WiFi точкам, маякам.
+end note
+
+
+abstract AbstractAccelorometerNavigator {
+	+ {abstract} process(AccelerometerInputData const&)
+	+ {abstract} process(Conrainer<AccelerometerInputData> const&)
+}
+note bottom of AbstractAccelorometerNavigator
+	Навигатор по акселерометру 
+end note
+
+abstract AbstractSlamNavigator {
+}
+note bottom of AbstractSlamNavigator
+	Навигатор по камере. 
+	Метод SLAM.
+end note
+
+
+note as NoteAlgorithm
+Математическое алгоритмическое ядро расширяет 
+эти абстрактные классы.
+end note
+NoteAlgorithm ..up.. AbstractBeaconNavigator       
+NoteAlgorithm ..up.. AbstractFingerprintNavigator  
+NoteAlgorithm ..up.. AbstractAccelorometerNavigator
+NoteAlgorithm ..up.. AbstractSlamNavigator         
+
+
+}
+'package Navigator
+
+
+
+newpage
+title   Подробнее AbstractBeaconNavigator \n
+set namespaceSeparator ::
+
+
+abstract "**AbstractBeaconNavigator**" as AbstractBeaconNavigator {
+	# listOfBeacons : std::list<Beacon>
+	+ process(b : BeaconReceivedData) : Position3D
+	
+}
+
+class Beacon {
+    # UID : ByteArray  //Internal, may not be the same as Beacon's//
+    # TxPower : double  //Калибруемый параметр//
+    # Damp : double  //Калибруемый параметр//
+    # Pos : Position3D  //Местоположеие//
+    # Meta : std::string  //Какая-то дополнительная инфа//
+    __
+    + getters()
+    + setters()
+}
+
+note bottom of Beacon
+Виртуальное представление реального устройства - маячка,
+который имеет свой внутренний (наш) идентификатор,
+калибруемые параметры излучаемой мощности, ослабления в
+среде, местоположения в 3ёх-мерном пространстве, 
+а также содержит мета-информацию, тэги, что угодно.
+//Стоит соблюсти эту структуру для всех баз/источников// 
+//данных: sql, nosql, json, xml, csv, etc.//
+end note
+
+class BeaconReceivedData {
+	+ timestamp : double  //в секундах//
+	+ internalUid : ByteArray
+	+ rssi : double
+}
+
+BeaconReceivedData <. AbstractBeaconNavigator : receives (passed to)  
+AbstractBeaconNavigator "1" o--"3..*" Beacon : contains \n const
+
+class Position3D {
+	+ x,y,z : double 
+	+ floor : unsigned
+}
+
+Position3D <. Beacon
+'Position3D <-- AbstractBeaconNavigator : returns
+
+@enduml

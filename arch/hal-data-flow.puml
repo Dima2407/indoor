@@ -1,0 +1,23 @@
+@startuml
+
+!include style.skinparam
+
+title HAL data flow. \n Bluetooth sequence use case \n
+
+HW -> NAPI
+participant "Native API" as NAPI
+NAPI -> IDataReceiver : send(BeaconData)
+IDataReceiver --> Algorithm : eventCallback()
+
+
+'hnote over caller : idle
+'rnote over server
+' "r" as rectangle
+' "h" as hexagon
+'endrnote
+
+
+
+
+
+@enduml

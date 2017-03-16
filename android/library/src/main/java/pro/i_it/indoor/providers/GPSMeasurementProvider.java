@@ -1,5 +1,6 @@
 package pro.i_it.indoor.providers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,6 +18,7 @@ public class GPSMeasurementProvider extends MeasurementProvider {
     private LocationManager locationManager;
     private Context context;
     private volatile boolean isRunning = false;
+    private final static int REQUEST_CODE = 10;
 
     public GPSMeasurementProvider(Context context, MeasurementTransfer transfer) {
         super(transfer);
@@ -59,6 +61,9 @@ public class GPSMeasurementProvider extends MeasurementProvider {
             if (!(ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }else {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION},
+                        REQUEST_CODE);
             }
         }
         isRunning = true;

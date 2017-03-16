@@ -1,0 +1,61 @@
+@startuml
+
+skinparam backgroundColor Asure
+skinparam backgroundColor Beige
+'skinparam backgroundColor Azure/Red
+
+'skinparam monochrome true
+'skinparam handwritten true
+
+'skinparam Dpi 20
+
+skinparam default {
+    FontName         Arial 
+    'FontSize         12 
+    FontColor        #212121
+    BackgroundColor  black
+    BorderColor      Blue
+}
+skinparam FontName         Arial 
+skinparam FontColor        #F1F1F1 
+'skinparam BackgroundColor  black
+skinparam BorderColor      brown
+
+skinparam Class {
+    ArrowColor            purple           
+    'AttributeFontColor               
+    'AttributeFontName    
+    'AttributeFontSize    
+    'AttributeFontStyle            
+    'AttributeIconSize    
+    BackgroundColor        BurlyWood    
+    BorderColor            DarkGoldenRod
+    'BorderThickness                 
+    FontColor             #121212
+    'FontName                 
+    FontSize  13                 
+    'FontStyle    
+    'HeaderBackgroundColor           
+    'StereotypeFontColor           
+    'StereotypeFontName           
+    'StereotypeFontSize           
+    'StereotypeFontStyle           
+}
+
+'skinparam usecase {
+'	BackgroundColor DarkSeaGreen
+'	BorderColor DarkSlateGray
+'
+'	BackgroundColor<< Main >> YellowGreen
+'	BorderColor<< Main >> YellowGreen
+'
+'	ArrowColor Olive
+'	ActorBorderColor black
+'	ActorFontName Courier
+'
+'	ActorBackgroundColor<< Human >> Gold
+'}
+
+
+
+@enduml

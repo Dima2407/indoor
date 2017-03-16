@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MeasurementEvent.h"
 #import "IosMeasurementTransfer.h"
-#import "IndoorLocationUpdateDelegate.h"
+//#import "IndoorLocationUpdateDelegate.h"
 
 @interface IndoorLocationManager : NSObject
 

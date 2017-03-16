@@ -10,6 +10,23 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+set(SOURCE_FILES
+    ../../NavigatorLib/src/Navigator/Beacons/TrilatBeaconNavigator.cpp
+    ../../NavigatorLib/src/Navigator/Math/Filter/AlphaBetaFilter.cpp
+    ../../NavigatorLib/src/Navigator/Math/Filter/MovingAverageFilter.cpp
+    ../../NavigatorLib/src/Navigator/Math/Trilat/trilat.cpp
+)
+
+include_directories(
+        ../../NavigatorLib/include/
+        ../../NavigatorLib/lib/
+)
+
+add_library( Navigator
+             STATIC
+             ${SOURCE_FILES})
+
+
 add_library( # Sets the name of the library.
              native-lib
 
@@ -17,7 +34,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             src/main/cpp/native-lib.cpp )
+             src/main/cpp/native-lib.cpp
+             )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -30,7 +48,8 @@ find_library( # Sets the name of the path variable.
 
               # Specifies the name of the NDK library that
               # you want CMake to locate.
-              log )
+              log
+              )
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
@@ -39,6 +58,7 @@ find_library( # Sets the name of the path variable.
 target_link_libraries( # Specifies the target library.
                        native-lib
 
+                       Navigator
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )

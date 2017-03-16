@@ -16,7 +16,7 @@
 namespace Navigator {
     namespace Beacons {
            
-        //using Navigator::Math::Filter;
+        //using namespace Navigator::Math::Filter;
     
         /** @brief Calculates distance as a function of RSSI for a beacon
          *

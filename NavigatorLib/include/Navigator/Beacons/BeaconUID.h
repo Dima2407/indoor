@@ -29,6 +29,18 @@ namespace Navigator {
                 push_back(minor & 0x00FF);
                 push_back((minor & 0xFF00) >> 8);
             }
+
+            /// Constructor from a long long hash (for tester, for now)
+            BeaconUID(long long h) {
+                unsigned long long u = (unsigned long long) h;
+
+                // Push a 8-byte value byte by byte
+                for (int i=0; i<8; i++){
+                    push_back(0xFF & u);
+                    u >>= 8;
+                }
+            }
+
         };
     }
 }

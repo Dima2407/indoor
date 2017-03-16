@@ -265,11 +265,10 @@ namespace ItJim {
 	std::vector<BeaconReceivedDataJson> ReadSnifferedDataFromBeacons(char const *filepath)
 	{
 		FILE* fp = fopen(filepath, "rb");  // non-Windows use "r"
-		char *readBuffer = new char[262144];  // max file size.
-		//std::shared_ptr<char> sp( new char[size_of_input_file], std::default_delete<char[]>() );
-		FileReadStream is(fp, readBuffer, 262144);
+		std::vector<char> readBuffe(262144);
+		FileReadStream is(fp, readBuffe.data(), readBuffe.capacity());
 		Document doc;
-		doc.ParseStream(is);
+		doc.ParseStream(is);  // after this buffer may/could be reused or deleted.
 		
 		// Check json-scheme and check file before parsing
 		ItJim::BeaconReceivedDataJson::CheckDOM(doc);
@@ -286,7 +285,6 @@ namespace ItJim {
 		std::sort(beaconPackets.begin(), beaconPackets.end());
 		
 		fclose(fp);
-		delete[] readBuffer;
 		return beaconPackets;
 	}
 	
@@ -318,16 +316,18 @@ namespace ItJim {
 		}
 		
 		auto receivedBeaconPackets = ItJim::ReadSnifferedDataFromBeacons("beacons-data-files/2017-24-02_06-31-51_bluetooth.json");
-		cout << "List received data from beacons:" << endl;
+		cout << endl << "List received data from beacons:" << endl;
 		cout << "| MACaddress | RSSI | Timestamp | TxPower | distance |" << endl;
+		int i=0;
 		for( auto b : receivedBeaconPackets ){
-			cout << b.MACaddress << " \t" << b.RSSI << " \t" << b.TimeStamp << " \t" << b.TXpower << " \t" << b.distance << endl;
+			cout << i++ << " \t |" << b.MACaddress << " \t" << b.RSSI << " \t" << b.TimeStamp << " \t" << b.TXpower << " \t" << b.distance << endl;
 		}
 		
 		// Process every packet and write trace;
 		cout << endl << "RESULT TRACE:" << endl;
-		cout << "# \t | \t x \t | \t y \t | \t z \t |" << endl;
-		int i=0;
+		cout << "# \t | \t x \t | \t y \t |" << endl; //\t z \t |" << endl;
+		cout.precision(2);
+		i=0;
 		for( auto b : receivedBeaconPackets ){
 			auto pos = navigator.process(
 					BeaconReceivedData(b.TimeStamp, BeaconUID(b.MACaddress), b.RSSI)

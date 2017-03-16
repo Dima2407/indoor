@@ -3,10 +3,12 @@ project(navigator-test)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# Include path to navigator_lib for *.h files
+set(libNavigatorRoot  ${CMAKE_SOURCE_DIR})  ## или "../"
+
+## Include path to libNavigator for *.h files
 include_directories(
-        ../include/
-        ../include/rapidjson/include/
+        ${libNavigatorRoot}/include/
+        rapidjson/include/  ## include path was set in upper layer CMakeLists.txt
 )
 
 set(TEAMCITY_SRC
@@ -22,7 +24,7 @@ set(SOURCE_FILES
 add_executable(navigator-test ${SOURCE_FILES})
 target_link_libraries(navigator-test Navigator cppunit)
 
-MESSAGE( STATUS "asd  " ${CMAKE_SOURCE_DIR} )
+#MESSAGE( STATUS "asd  " ${CMAKE_SOURCE_DIR} )
 
 ## Copy folder beacons-data-files to build path, near executable.
 add_custom_command(TARGET navigator-test

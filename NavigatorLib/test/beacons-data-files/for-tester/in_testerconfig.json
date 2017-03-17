@@ -1,0 +1,8 @@
+{
+  "inBeaconsFile" : "office-map-tester.json",
+  "inEventsFile" : "2017-24-02_06-31-51_bluetooth.json",
+  "inRouteFile" : "in_txyz_route.dat",
+  "ticks" : 1000,
+  "skipEvents" : 2,
+  "txFromBeacons" : true
+}

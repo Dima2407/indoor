@@ -1,0 +1,106 @@
+ [
+			{
+				"xyz": [4.36, 1.05, 1.6],
+				"MACaddress": "01:17:C5:96:AD:E3",
+				"major": 65308,
+				"minor": 48641,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [6.12, 3.5, 1.9],
+				"MACaddress": "01:17:C5:52:1D:93",
+				"major": 65308,
+				"minor": 48642,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [6.16, 6.7, 2.9],
+				"MACaddress": "01:17:C5:96:30:E7",
+				"major": 65308,
+				"minor": 48643,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [10.2, 6.55, 1.95],
+				"MACaddress": "01:17:C5:58:EA:5D",
+				"major": 65308,
+				"minor": 48644,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [8.4, 5.7, 2.1],
+				"MACaddress": "01:17:C5:5A:71:70",
+				"major": 65308,
+				"minor": 48645,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [9.95, 1.09, 2.3],
+				"MACaddress": "01:17:C5:52:E3:90",
+				"major": 65308,
+				"minor": 48646,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [6.37, 6.51, 2.95],
+				"MACaddress": "01:17:C5:58:31:42",
+				"major": 65308,
+				"minor": 48647,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [8.09, 3.05, 2],
+				"MACaddress": "01:17:C5:56:41:86",
+				"major": 65308,
+				"minor": 48648,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [6.51, 1.05, 2],
+				"MACaddress": "01:17:C5:53:23:97",
+				"major": 65308,
+				"minor": 48649,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [7.67, 0.245, 2.6],
+				"MACaddress": "01:17:C5:5B:E8:F3",
+				"major": 65308,
+				"minor": 48650,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [5.46, 0.875, 2.6],
+				"MACaddress": "01:17:C5:52:8F:CF",
+				"major": 65308,
+				"minor": 48651,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [1.12, 0.21, 2.62],
+				"MACaddress": "01:17:C5:50:A7:C4",
+				"major": 65308,
+				"minor": 48652,
+				"damp": 2,
+				"TXpower": -68.3
+			},
+			{
+				"xyz": [1.435, 2.1, 2.65],
+				"MACaddress": "01:17:C5:56:E2:A5",
+				"major": 65308,
+				"minor": 48653,
+				"damp": 2,
+				"TXpower": -68.3
+			}
+]

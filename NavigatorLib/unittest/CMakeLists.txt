@@ -24,7 +24,7 @@ set(SOURCE_FILES
         Math/Filter/MovingAverageFilterTest.cpp Math/Filter/MovingAverageFilterTest.h
         Math/Trilat/TrilatTest.cpp Math/Trilat/TrilatTest.h
         #
-        Math/Beacons/BeaconUIDTest.cpp Math/Beacons/BeaconUIDTest.h)
+        Beacons/BeaconUIDTest.cpp Beacons/BeaconUIDTest.h)
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

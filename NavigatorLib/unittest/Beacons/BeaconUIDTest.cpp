@@ -4,7 +4,7 @@
 
 #include "Navigator.h"
 
-#include "BeaconUIDTest.h"
+#include "./BeaconUIDTest.h"
 
 
 namespace NaviTest {

@@ -13,22 +13,30 @@ namespace Navigator {
         const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd) {
 
             /// The tolerance when comparing the current timestamp to the old one
-            constexpr double NEGATIVE_TOLERANCE = 1.0e-8;
+            constexpr double NEGATIVE_TOLERANCE = 1.0e-3;
 
             //----------------------------
-            // Check the timelines of all active processors, restart if needed
+            // Check the timelines of all active processors, reset it if the beacon is inactive
+            // For more than BEACON_TIMEOUT seconds
             // This is done for all beacons, not only for the beacon of the current brd
-            for (const auto &pair: beaconProcessorList)
-            {
+            //
+            // Also reset the beacon with packet's UID if the timeline
+            // Is smaller than the previos one (travelling back in time)
+            // With tolerance NEGATIVE_TOLERANCE
+            for (const auto &pair: beaconProcessorList) {
                 BeaconProcessor &processor = *pair.second;
                 if (processor.isActive()) {
                     double t = processor.getLastTimeStamp(); // Last measurement of this beacon, aka old timestamp
 
-                    // The correct new timestamp lies between t and t + BEACON_TIMEOUT
-                    // If incorrect, reset the processor, erasing filters history
+                    // The correct new timestamp must be < t + BEACON_TIMEOUT
+                    // If timed out, reset the processor, erasing filters history
                     // Note: reset makes a processor inactive
-                    if (( brd.timestamp < t - NEGATIVE_TOLERANCE) || (brd.timestamp > t + BEACON_TIMEOUT) )
-                        processor.reset(); // Reset every processsor with wrong timestamp
+                    if (brd.timestamp > t + BEACON_TIMEOUT)
+                        processor.reset(); // Reset the processsor if timed out
+
+                    if ((brd.uid == processor.getBeacon().getUid()) && (brd.timestamp < t - NEGATIVE_TOLERANCE))
+                        processor.reset(); // Reset if going back in time
+
                 }
             }
 
@@ -38,9 +46,9 @@ namespace Navigator {
             // After that, run the trilateration
 
             auto search = beaconProcessorList.find(brd.uid);
-            
+
             if (search != beaconProcessorList.end()) {
-                // Process the data package brd with the respective beacon
+                // Process the data packet brd with the respective beacon
                 // This makes the processor active if it was not before
                 search->second->process(brd.rssi, brd.timestamp);
 
@@ -62,13 +70,19 @@ namespace Navigator {
                         beaconDistances.push_back(processor.getLastDistance()); // Add distance
                     }
                 }
-                
-                // Run trilateration if there are at least 3 active beacon processors
+
+                // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors
                 // Result is written to lastPosition
-                if (beaconPositions.size() >= 3)
-                    lastPosition = Math::Trilat::trilatLocation2d(beaconPositions, beaconDistances);
+
+                if (USE_3D_TRILAT) {
+                    if (beaconPositions.size() >= 4)
+                        lastPosition = Math::Trilat::trilatLocation3d(beaconPositions, beaconDistances);
+                } else {
+                    if (beaconPositions.size() >= 3)
+                        lastPosition = Math::Trilat::trilatLocation2d(beaconPositions, beaconDistances);
+                }
             }
-            
+
             return lastPosition;
         }
     }

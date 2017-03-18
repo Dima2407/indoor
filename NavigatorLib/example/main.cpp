@@ -8,8 +8,11 @@
 #include <cmath>
 #include <vector>
 
+
+// This includes everything you need
 #include "Navigator.h"
 
+// There are a few namespaces in the librrary
 using namespace std;
 using namespace Navigator::Beacons;
 using namespace Navigator::Beacons::Factory;
@@ -130,7 +133,16 @@ int main()
 
         // Write it to stdout
         cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
+
+        // First 2 points give nan result because
+        // you need at least 3 beacons to navigate
     }
+
+    // If you want to remove a beacon
+    // navigator.deleteBeacon(BeaconUID("Guinea Pig", 1, 2));
+
+    // Or remove all beacons
+    // navigator.clear();
 
     return 0;
 }

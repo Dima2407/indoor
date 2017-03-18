@@ -49,11 +49,14 @@ namespace Navigator {
          *
          */
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {
-        public:
+        public: // == CONSTANTS ===
             /// Time to keep beacon filter history data since the last signal (in seconds)
             static constexpr double BEACON_TIMEOUT = 10.0;
 
-            // -----  Public metthods ------
+            /// Use 3D trilateration instead of the 2D one. This requires at least 4 beacons.
+            static constexpr bool USE_3D_TRILAT = false;
+
+            // -----  Public methods ------
             /// Constructor
             TrilatBeaconNavigator(const std::shared_ptr<Factory::IFilterFactory> &rssiFilterFactory,
                                   const std::shared_ptr<Factory::IFilterFactory> &distanceFilterFactory)

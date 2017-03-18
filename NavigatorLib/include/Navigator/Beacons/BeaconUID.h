@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <initializer_list>
 
 namespace Navigator {
     namespace Beacons {
@@ -41,6 +42,12 @@ namespace Navigator {
                 }
             }
 
+            /// Default constructor
+            BeaconUID() {}
+
+            /// List constructor
+            BeaconUID(std::initializer_list<std::uint8_t> iList) :
+                    vector(iList) {}
         };
     }
 }

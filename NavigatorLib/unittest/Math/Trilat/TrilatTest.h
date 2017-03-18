@@ -13,6 +13,7 @@ namespace NaviTest {
     namespace Math {
         namespace Trilat {
 
+            /// Unit tests for trilateration routines (trilat.h, trilat.cpp)
             class TrilatTest : public CPPUNIT_NS::TestFixture
             {
                 CPPUNIT_TEST_SUITE(TrilatTest);

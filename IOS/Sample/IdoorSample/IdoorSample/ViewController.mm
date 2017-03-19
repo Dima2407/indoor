@@ -7,14 +7,14 @@
 //
 
 #import "ViewController.h"
-#import "GPSMeasurementProvider.h"
+//#import "GPSMeasurementProvider.h"
 //#import "BluetoothMeasurementProvider.h"
 //#import "BeaconConfig.h"
 //#import "BluethoothProviderConfiguration.h"
 #import "IndoorLocationManager.h"
 
 @interface ViewController ()
-@property (nonatomic, strong)GPSMeasurementProvider *provider;
+//@property (nonatomic, strong)GPSMeasurementProvider *provider;
 @property (nonatomic, strong) IndoorLocationManager *BLE;
 @end
 

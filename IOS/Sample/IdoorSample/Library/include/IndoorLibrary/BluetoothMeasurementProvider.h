@@ -15,10 +15,9 @@
 
 @property (nonatomic, strong) CLLocationManager *manager;
 @property (nonatomic, strong) MeasurementEvent *event;
-@property (nonatomic, assign) NSInteger latitude;
-@property (nonatomic, assign) NSInteger longitude;
 @property (nonatomic, strong) IosMeasurementTransfer *transfer;
 
 -(instancetype)init: (IosMeasurementTransfer*) transfer;
-+(void) setBeaconMap:(NSArray*)beacons;
+-(void) setBeaconMap:(NSArray*)beaconConfigs;
+
 @end

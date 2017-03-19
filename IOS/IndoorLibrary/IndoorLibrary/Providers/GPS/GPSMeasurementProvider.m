@@ -89,7 +89,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
     
     CLLocation *location = [locations objectAtIndex:0];
-    MeasurementEvent *event = [[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLatitude:location.coordinate.longitude];
+    MeasurementEvent *event = [[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude];
     [self.transfer deliver:event];
  
     

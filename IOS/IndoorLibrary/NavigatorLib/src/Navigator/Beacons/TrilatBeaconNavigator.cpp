@@ -2,15 +2,19 @@
 // Created by  Oleksiy Grechnyev on 3/9/2017.
 //
 
-#include "Navigator/Beacons/TrilatBeaconNavigator.h"
+#include "TrilatBeaconNavigator.h"
 
-#include "Navigator/Math/Trilat/Trilat.h"
+#include "Trilat.h"
 
 namespace Navigator {
     namespace Beacons {
 
-        const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd)
-        {
+
+        const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd) {
+
+            /// The tolerance when comparing the current timestamp to the old one
+            constexpr double NEGATIVE_TOLERANCE = 1.0e-8;
+
             //----------------------------
             // Check the timelines of all active processors, restart if needed
             // This is done for all beacons, not only for the beacon of the current brd
@@ -23,7 +27,7 @@ namespace Navigator {
                     // The correct new timestamp lies between t and t + BEACON_TIMEOUT
                     // If incorrect, reset the processor, erasing filters history
                     // Note: reset makes a processor inactive
-                    if (brd.timestamp < t || brd.timestamp > t + BEACON_TIMEOUT)
+                    if (( brd.timestamp < t - NEGATIVE_TOLERANCE) || (brd.timestamp > t + BEACON_TIMEOUT) )
                         processor.reset(); // Reset every processsor with wrong timestamp
                 }
             }

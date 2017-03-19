@@ -11,7 +11,7 @@
 #import "MeasurementTranfer.h"
 
 @protocol IosMeasurementTransferDelegate <NSObject>
-@optional
+@required
 -(void)processEvent: (MeasurementEvent *) event;
 - (void)didFailWithError:(NSError *)error;
 @end

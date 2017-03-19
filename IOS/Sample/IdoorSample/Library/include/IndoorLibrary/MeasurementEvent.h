@@ -27,6 +27,6 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 @property (nonatomic, strong) CLBeacon *beacon;
 @property (nonatomic, assign) CGFloat txPower;
 
--(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude;
+-(instancetype)initWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude;
 -(instancetype)initWithBeacon:(CLBeacon *)beacon;
 @end

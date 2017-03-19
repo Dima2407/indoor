@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#include "Navigator/Math/Filter/IFilter.h"
+#include "IFilter.h"
 
 namespace Navigator {
     namespace Beacons {

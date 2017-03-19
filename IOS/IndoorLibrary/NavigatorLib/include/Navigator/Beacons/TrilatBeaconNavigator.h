@@ -5,10 +5,10 @@
 #include <unordered_map>
 #include <memory>
 
-#include "Navigator/Beacons/AbstractBeaconNavigator.h"
-#include "Navigator/Beacons/BeaconProcessor.h"
-#include "Navigator/Beacons/Factory/IFilterFactory.h"
-#include "Navigator/Math/Trilat/Trilat.h"
+#include "AbstractBeaconNavigator.h"
+#include "BeaconProcessor.h"
+#include "IFilterFactory.h"
+#include "Trilat.h"
 
 #pragma once
 namespace Navigator {

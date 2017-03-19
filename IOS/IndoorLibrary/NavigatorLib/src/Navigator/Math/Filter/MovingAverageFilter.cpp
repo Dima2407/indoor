@@ -2,7 +2,7 @@
 // Created by  Oleksiy Grechnyev on 3/13/2017.
 //
 
-#include "Navigator/Math/Filter/MovingAverageFilter.h"
+#include "MovingAverageFilter.h"
 
 namespace Navigator {
     namespace Math {

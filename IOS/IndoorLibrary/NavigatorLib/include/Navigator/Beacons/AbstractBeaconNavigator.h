@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "Navigator/Math/Position3D.h"
-#include "Navigator/Beacons/BeaconReceivedData.h"
+#include "Position3D.h"
+#include "BeaconReceivedData.h"
 
 namespace Navigator {
     namespace Beacons {

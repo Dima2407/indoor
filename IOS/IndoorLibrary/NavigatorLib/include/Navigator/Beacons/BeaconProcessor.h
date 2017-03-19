@@ -8,15 +8,15 @@
 #include <cmath>
 
 
-#include "Navigator/Math/Filter/IFilter.h"
-#include "Navigator/Math/Filter/NoFilter.h"
-#include "Navigator/Beacons/Beacon.h"
+#include "IFilter.h"
+#include "NoFilter.h"
+#include "Beacon.h"
 
 
 namespace Navigator {
     namespace Beacons {
            
-        //using Navigator::Math::Filter;
+        //using namespace Navigator::Math::Filter;
     
         /** @brief Calculates distance as a function of RSSI for a beacon
          *

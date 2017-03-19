@@ -11,6 +11,6 @@
 
 @interface BluethoothProviderConfiguration : NSObject
 
-+(void)updateCinfiguration:(NSArray<TConfig> *)inputArray;
+-(void)updateCinfiguration:(NSArray<TConfig> *)inputArray withBLEProvider:(MeasurementProvider *)provider;
 
 @end

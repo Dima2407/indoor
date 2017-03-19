@@ -11,14 +11,12 @@
 
 @interface BluethoothProviderConfiguration()<ProviderConfiguration>
 
-
-
 @end
 
 @implementation BluethoothProviderConfiguration
 
-+(void)updateCinfiguration:(NSArray<TConfig> *)inputArray{
+-(void)updateCinfiguration:(NSArray<TConfig> *)inputArray withBLEProvider:(BluetoothMeasurementProvider *)provider{
     
-    [BluetoothMeasurementProvider setBeaconMap:inputArray];
+    [provider setBeaconMap:inputArray];
 }
 @end

@@ -13,7 +13,6 @@ jobject savedListenerInstance;
 jmethodID listenerOnLocationChangedId;
 TrilatBeaconNavigator *navigator;
 
-
 extern "C" {
 
     JNIEXPORT jstring JNICALL
@@ -38,7 +37,6 @@ extern "C" {
                                                                       *env,
                                                                       jobject instance);
 }
-
 
     JNIEXPORT jstring JNICALL
     Java_pro_i_1it_indoor_providers_AndroidDebuggableMeasurementTransfer_stringFromJNI(
@@ -98,10 +96,8 @@ extern "C" {
 
         jfloatArray arrayJFloat = env->NewFloatArray(3);
         float dat[] = {2.f, 4.f, 5.f};
-
-        env->SetFloatArrayRegion(arrayJFloat, 0, 6, dat);
+        env->SetFloatArrayRegion(arrayJFloat, 0, 3, dat);
         env->CallVoidMethod(savedListenerInstance, listenerOnLocationChangedId, arrayJFloat);
-
     }
 
     JNIEXPORT void JNICALL
@@ -111,8 +107,7 @@ extern "C" {
                                                            jobject
                                                            onUpdateListener) {
 
-        savedListenerInstance = onUpdateListener;
-
+        savedListenerInstance = env->NewGlobalRef(onUpdateListener);
         auto rssiFact = make_shared<MovingAverageFilterFactory>(5);
         auto distFact = make_shared<NoFilterFactory>();
 
@@ -121,16 +116,10 @@ extern "C" {
         jclass listenerClassRef = env->GetObjectClass(savedListenerInstance);
         listenerOnLocationChangedId = env->GetMethodID(listenerClassRef, "onLocationChanged", "([F)V" );
 
-        if(listenerOnLocationChangedId==0){
+        if(listenerOnLocationChangedId == 0){
             __android_log_write(ANDROID_LOG_DEBUG, "TAG", "error listener");
             return;
         }
-
-//        jfloatArray arrayJFloat = env->NewFloatArray(6);
-//        float dat[] = {2.f, 4.f, 5.f, 2.f, 4.f, 5.f};
-//        env->SetFloatArrayRegion(arrayJFloat, 0, 6, dat);
-//        env->CallVoidMethod(savedListenerInstance, listenerOnLocationChangedId, arrayJFloat);
-
     }
 
     JNIEXPORT void JNICALL
@@ -138,7 +127,6 @@ extern "C" {
                                                               *env,
                                                               jobject instance) {
         navigator = NULL;
-        savedListenerInstance = NULL;
+        env->DeleteGlobalRef(savedListenerInstance);
         listenerOnLocationChangedId = NULL;
     }
-

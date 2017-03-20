@@ -54,27 +54,68 @@ namespace NaviTest {
 
             Position3D inPos(0.39, 0.23, 0.0); // Some input position
 
-            pos = navigator1 -> process(BeaconReceivedData(
-                    0.1, BeaconUID("Rat", 13, 0) ,
-                    fakeRSSI(inPos, beacons[0].getPos(), beacons[0].getTxPower(), beacons[0].getDamp() )
+            pos = navigator1->process(BeaconReceivedData(
+                    0.1, BeaconUID("Rat", 13, 0),
+                    fakeRSSI(inPos, beacons[0].getPos(), beacons[0].getTxPower(), beacons[0].getDamp())
             ));
             CPPUNIT_ASSERT(isnan(pos.x) && isnan(pos.y) && isnan(pos.z));
 
-            pos = navigator1 -> process(BeaconReceivedData(
-                    0.2, BeaconUID("Rat", 13, 1) ,
-                    fakeRSSI(inPos, beacons[1].getPos(), beacons[1].getTxPower(), beacons[1].getDamp() )
+            pos = navigator1->process(BeaconReceivedData(
+                    0.2, BeaconUID("Rat", 13, 1),
+                    fakeRSSI(inPos, beacons[1].getPos(), beacons[1].getTxPower(), beacons[1].getDamp())
             ));
             CPPUNIT_ASSERT(isnan(pos.x) && isnan(pos.y) && isnan(pos.z));
 
-            pos = navigator1 -> process(BeaconReceivedData(
-                    0.3, BeaconUID("Rat", 13, 2) ,
-                    fakeRSSI(inPos, beacons[2].getPos(), beacons[2].getTxPower(), beacons[2].getDamp() )
+            pos = navigator1->process(BeaconReceivedData(
+                    0.3, BeaconUID("Rat", 13, 2),
+                    fakeRSSI(inPos, beacons[2].getPos(), beacons[2].getTxPower(), beacons[2].getDamp())
             ));
             CPPUNIT_ASSERT(myDoubleEq(pos.x, inPos.x, accuracy));
             CPPUNIT_ASSERT(myDoubleEq(pos.y, inPos.y, accuracy));
             CPPUNIT_ASSERT(myDoubleEq(pos.z, inPos.z, accuracy));
 
-//            CPPUNIT_ASSERT(myDoubleEq(dist, 10.0, accuracy));
+            // Remove all data
+            navigator1->clear();
+
+            //------------------------------------
+            // And go again with all new beacons
+            const Beacon beacons2[] = {
+                    Beacon(BeaconUID("Squirrel", 11, 0), -3.7, 2.0, Position3D(0.1, 0.2, 0.0), ""),
+                    Beacon(BeaconUID("Squirrel", 11, 1), -8.2, 2.5, Position3D(1.1, 0.1, 0.0), ""),
+                    Beacon(BeaconUID("Squirrel", 11, 2), -11.0, 1.5, Position3D(-0.1, 0.9, 0.0), ""),
+                    Beacon(BeaconUID("Squirrel", 11, 3), -5.8, 3.2, Position3D(0.7, 0.4, 0.0), ""),
+                    Beacon(BeaconUID("Squirrel", 11, 4), -6.7, 2.9, Position3D(0.4, 0.7, 0.0), ""),
+            };
+
+            navigator1 -> addBeacons(beacons2);
+
+            inPos = Position3D(0.46, 0.69, 0.0);
+
+            for (int i = 0; i < 5; i++) {
+
+                double timeStamp = 0.1 * i;
+
+                const Beacon &b = beacons2[i];
+                double rssi = fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp());
+
+                BeaconUID uid = BeaconUID("Squirrel", 11, i);
+                BeaconReceivedData brd(timeStamp, uid, rssi);
+
+                // Process it and get a position
+                pos = navigator1->process(brd);
+
+                if (i < 2) {
+                    // Expected : nan
+                    CPPUNIT_ASSERT(isnan(pos.x) && isnan(pos.y) && isnan(pos.z));
+                } else {
+                    // Expected : inPos
+
+                    CPPUNIT_ASSERT(myDoubleEq(pos.x, inPos.x, accuracy));
+                    CPPUNIT_ASSERT(myDoubleEq(pos.y, inPos.y, accuracy));
+                    CPPUNIT_ASSERT(myDoubleEq(pos.z, inPos.z, accuracy));
+                }
+
+            }
 
         }
 

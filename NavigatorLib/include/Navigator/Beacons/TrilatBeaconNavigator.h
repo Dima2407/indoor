@@ -91,9 +91,10 @@ namespace Navigator {
                 beaconProcessorList.erase(uid);
             }
 
-            /// Delete all beacons
+            /// Delete all beacons and reset the position
             void clear() {
                 beaconProcessorList.clear();
+                lastPosition = Math::Position3D();
             }
 
             const Math::Position3D &getLastPosition() const {

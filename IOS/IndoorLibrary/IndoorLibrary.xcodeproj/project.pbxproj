@@ -108,8 +108,6 @@
 		06FBD6F11E7FFE2100D8902A /* SuperLUSupport in Resources */ = {isa = PBXBuildFile; fileRef = 06FBD5DE1E7FFE2100D8902A /* SuperLUSupport */; };
 		06FBD6F21E7FFE2100D8902A /* SVD in Resources */ = {isa = PBXBuildFile; fileRef = 06FBD5DF1E7FFE2100D8902A /* SVD */; };
 		06FBD6F31E7FFE2100D8902A /* UmfPackSupport in Resources */ = {isa = PBXBuildFile; fileRef = 06FBD5E01E7FFE2100D8902A /* UmfPackSupport */; };
-		06FBD6F41E7FFE2200D8902A /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 06FBD60A1E7FFE2100D8902A /* license.txt */; };
-		06FBD6F51E7FFE2200D8902A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 06FBD60B1E7FFE2100D8902A /* README.md */; };
 		06FBD6F71E7FFE2200D8902A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 06FBD60E1E7FFE2100D8902A /* CMakeLists.txt */; };
 		06FBD6F81E7FFE2200D8902A /* TrilatBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FBD6111E7FFE2100D8902A /* TrilatBeaconNavigator.cpp */; };
 		06FBD6F91E7FFE2200D8902A /* AlphaBetaFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FBD6141E7FFE2100D8902A /* AlphaBetaFilter.cpp */; };
@@ -572,8 +570,6 @@
 		06FBD6071E7FFE2100D8902A /* stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream.h; sourceTree = "<group>"; };
 		06FBD6081E7FFE2100D8902A /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
 		06FBD6091E7FFE2100D8902A /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
-		06FBD60A1E7FFE2100D8902A /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
-		06FBD60B1E7FFE2100D8902A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		06FBD60E1E7FFE2100D8902A /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		06FBD6111E7FFE2100D8902A /* TrilatBeaconNavigator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrilatBeaconNavigator.cpp; sourceTree = "<group>"; };
 		06FBD6141E7FFE2100D8902A /* AlphaBetaFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlphaBetaFilter.cpp; sourceTree = "<group>"; };
@@ -832,7 +828,6 @@
 			children = (
 				06FBD46A1E7FFE2100D8902A /* Eigen */,
 				06FBD5E11E7FFE2100D8902A /* rapidjson_min */,
-				06FBD60B1E7FFE2100D8902A /* README.md */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -1495,7 +1490,6 @@
 			isa = PBXGroup;
 			children = (
 				06FBD5E21E7FFE2100D8902A /* include */,
-				06FBD60A1E7FFE2100D8902A /* license.txt */,
 			);
 			path = rapidjson_min;
 			sourceTree = "<group>";
@@ -1750,7 +1744,6 @@
 				06FBD6E81E7FFE2100D8902A /* CMakeLists.txt in Resources */,
 				06FBD6BD1E7FFE2100D8902A /* PardisoSupport in Resources */,
 				06FBD6E61E7FFE2100D8902A /* CMakeLists.txt in Resources */,
-				06FBD6F41E7FFE2200D8902A /* license.txt in Resources */,
 				06FBD6E21E7FFE2100D8902A /* CMakeLists.txt in Resources */,
 				06FBD6E01E7FFE2100D8902A /* CMakeLists.txt in Resources */,
 				06FBD6B91E7FFE2100D8902A /* Jacobi in Resources */,
@@ -1774,7 +1767,6 @@
 				06FBCB581E7814B900D8902A /* AvailabilityError.m in Sources */,
 				06ED897E1E6D79F50011C01C /* IndoorLocationManager.m in Sources */,
 				06FBD4101E7F34A700D8902A /* BeaconConfig.m in Sources */,
-				06FBD6F51E7FFE2200D8902A /* README.md in Sources */,
 				06FBD6F91E7FFE2200D8902A /* AlphaBetaFilter.cpp in Sources */,
 				0610B68F1E66F661003EC3FA /* MeasurementProvider.m in Sources */,
 				06FBD6FB1E7FFE2200D8902A /* trilat.cpp in Sources */,
@@ -1896,6 +1888,7 @@
 		0610B6721E66F465003EC3FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				DEVELOPMENT_TEAM = CME5G2A9T6;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
@@ -1903,9 +1896,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_INPUT_FILETYPE = automatic;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/IndoorLibrary/IndoorLibrary/NavigatorLib/lib/**";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/NavigatorLib/lib/Eigen/**";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -1928,6 +1923,7 @@
 		0610B6731E66F465003EC3FA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				DEVELOPMENT_TEAM = CME5G2A9T6;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
@@ -1935,9 +1931,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_INPUT_FILETYPE = automatic;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/IndoorLibrary/IndoorLibrary/NavigatorLib/lib/**";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/NavigatorLib/lib/Eigen/**";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = (

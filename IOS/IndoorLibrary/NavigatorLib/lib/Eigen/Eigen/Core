@@ -12,7 +12,7 @@
 #define EIGEN_CORE_H
 
 // first thing Eigen does: stop the compiler from committing suicide
-#include "Eigen/src/Core/util/DisableStupidWarnings.h"
+#include "src/Core/util/DisableStupidWarnings.h"
 
 // Handle NVCC/CUDA
 #ifdef __CUDACC__

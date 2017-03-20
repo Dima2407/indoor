@@ -50,11 +50,11 @@ int main()
     //      make_shared<AlphaBetaFilterFactory>(alpha, beta)
 
 
-    auto rssiFact = make_shared<MovingAverageFilterFactory>(5);
+    const auto rssiFact = make_shared<MovingAverageFilterFactory>(5);
     // auto rssiFact = make_shared<AlphaBetaFilterFactory>(0.3, 0.3);
     // auto rssiFact = make_shared<NoFilterFactory>();
 
-    auto distFact = make_shared<NoFilterFactory>();
+    const auto distFact = make_shared<NoFilterFactory>();
 
     /* 2) Create the Beacon Navigator
      Here it is a local variable,
@@ -80,7 +80,7 @@ int main()
      *
      * In my example, only minor field is different
      */
-    Beacon beacons[] = {
+    const Beacon beacons[] = {
             Beacon(BeaconUID("Guinea Pig", 1, 0), -3.0, 2.0, Position3D(0.3, 0.5, 0.0), ""),
             Beacon(BeaconUID("Guinea Pig", 1, 1), -4.0, 2.5, Position3D(9.7, 0.4, 0.0), ""),
             Beacon(BeaconUID("Guinea Pig", 1, 2), -2.0, 3.0, Position3D(-0.2, 10.6, 0.0), "")

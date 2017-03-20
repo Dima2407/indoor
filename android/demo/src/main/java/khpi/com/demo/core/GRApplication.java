@@ -49,16 +49,16 @@ public final class GRApplication extends Application {
 
         netBridge = new NetFacade(dbBridge, sharedHelper.useProduction() ? BuildConfig.PRODUCTION_SERVER_URL : BuildConfig.DEVELOPER_SERVER_URL);
         orientationBridge = new OrientationFacade(this);
-        init(getApplicationContext());
     }
 
     public void init(Context context){
-        localManager = new IndoorLocationManager();
-        localManager.addProvider(context, MeasurementType.BLUETOOTH_VALUE);
-        localManager.addProvider(context, MeasurementType.GEO_VALUE);
-        localManager.addProvider(context, MeasurementType.SENSOR_VALUE);
-        localManager.addProvider(context, MeasurementType.WIFI_VALUE);
-
+        if(localManager == null) {
+            localManager = new IndoorLocationManager();
+            localManager.addProvider(context, MeasurementType.BLUETOOTH_VALUE);
+            localManager.addProvider(context, MeasurementType.GEO_VALUE);
+            localManager.addProvider(context, MeasurementType.SENSOR_VALUE);
+            localManager.addProvider(context, MeasurementType.WIFI_VALUE);
+        }
         //localManager.start();
         //view.updateData(DataManager.getSettingList());
     }

@@ -96,8 +96,8 @@ extern "C" {
         // Process it
         Position3D outPos = navigator->process(brd);
 
-        jfloatArray arrayJFloat = env->NewFloatArray(6);
-        float dat[] = {2.f, 4.f, 5.f, 2.f, 4.f, 5.f};
+        jfloatArray arrayJFloat = env->NewFloatArray(3);
+        float dat[] = {2.f, 4.f, 5.f};
 
         env->SetFloatArrayRegion(arrayJFloat, 0, 6, dat);
         env->CallVoidMethod(savedListenerInstance, listenerOnLocationChangedId, arrayJFloat);

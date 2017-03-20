@@ -12,7 +12,6 @@
 #import "MeasurementProvider.h"
 #import "BeaconConfig.h"
 #import "BluetoothBridge.h"
-#import "Navigator.h"
 
 
 @interface BluetoothMeasurementProvider()
@@ -91,6 +90,8 @@ rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region
 -(void) setBeaconMap:(NSArray*)beaconConfigs{
     
         BluetoothBridge_init();
+        //BluetoothBridge_setPosition();
+    
         [beaconConfigs enumerateObjectsUsingBlock:^(BeaconConfig*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 
         std::string uuidstr = std::string([obj.uuid UTF8String]);
@@ -102,8 +103,8 @@ rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region
       
         //navigator.addBeacon(beacon);
     }];
-    
-   
+//
+   BluetoothBridge_proces();
 
 
     

@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface ErrorListener : NSObject
-
+-(void)getError:(NSError*)error;
 @end

@@ -9,5 +9,7 @@
 #import "ErrorListener.h"
 
 @implementation ErrorListener
-
+-(void)getError:(NSError*)error{
+    
+}
 @end

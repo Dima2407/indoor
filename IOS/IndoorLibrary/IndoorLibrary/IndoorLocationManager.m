@@ -9,14 +9,10 @@
 #import "IndoorLocationManager.h"
 #import "MeasurementProvider.h"
 #import "BluetoothMeasurementProvider.h"
-#import "Navigator.h"
-#include <iostream>
-#include <cmath>
-#include <vector>
+
 //#import "MovingAverageFilter.h"
 //#import "NoFilter.h"
-#import "Beacon.h"
-#import "BeaconUID.h"
+
 
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>

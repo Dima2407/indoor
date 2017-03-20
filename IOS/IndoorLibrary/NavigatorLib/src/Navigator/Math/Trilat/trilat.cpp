@@ -4,10 +4,10 @@
 //
 
 #include <cmath>
-
+#include "Trilat.h"
 #include "Eigen/Dense"
 
-#include "Navigator/Math/Trilat/Trilat.h"
+
 
 namespace Navigator {
     namespace Math {

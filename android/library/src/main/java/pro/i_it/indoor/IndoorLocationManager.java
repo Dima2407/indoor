@@ -3,7 +3,7 @@ package pro.i_it.indoor;
 import android.content.Context;
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.providers.*;
-import pro.i_it.indoor.region.SpaceBeacon;
+import pro.i_it.indoor.region.BeaconsInRegionLoader;
 import pro.i_it.indoor.region.SpaceRegion;
 
 import java.util.HashSet;
@@ -17,6 +17,7 @@ public class IndoorLocationManager {
 
     private OnLocationUpdateListener internalLocationUpdateListener;
     private OnLocationUpdateListener onLocationUpdateListener;
+    private BeaconsInRegionLoader beaconsInRegionLoader;
 
     private OnErrorListener onErrorListener;
 
@@ -50,7 +51,7 @@ public class IndoorLocationManager {
         }
     }
 
-    public void addProvider(Context context, MeasurementType type){
+    public void addProvider(Context context, MeasurementType type) {
         this.addProvider(context, type, new AndroidDebuggableMeasurementTransfer());
     }
 
@@ -58,8 +59,11 @@ public class IndoorLocationManager {
         internalLocationUpdateListener = new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
-                if(onLocationUpdateListener!= null){
+                if (onLocationUpdateListener != null) {
                     onLocationUpdateListener.onLocationChanged(position);
+                }
+                if (beaconsInRegionLoader != null) {
+                    beaconsInRegionLoader.onLocationChanged(position[0], position[1], position[2]);
                 }
             }
         };
@@ -78,7 +82,7 @@ public class IndoorLocationManager {
         nativeRelease();
     }
 
-    public void updateSpaceRegion(SpaceRegion region){
+    public void updateSpaceRegion(SpaceRegion region) {
         region.updateRegion();
     }
 

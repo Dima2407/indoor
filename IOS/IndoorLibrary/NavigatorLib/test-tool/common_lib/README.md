@@ -1,1 +1,0 @@
-# Common classes for tester and faker

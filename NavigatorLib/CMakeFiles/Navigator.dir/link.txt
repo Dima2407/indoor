@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libNavigator.a  CMakeFiles/Navigator.dir/Navigator/Beacons/TrilatBeaconNavigator.cpp.o CMakeFiles/Navigator.dir/Navigator/Math/Filter/AlphaBetaFilter.cpp.o CMakeFiles/Navigator.dir/Navigator/Math/Filter/MovingAverageFilter.cpp.o CMakeFiles/Navigator.dir/Navigator/Math/Trilat/trilat.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libNavigator.a

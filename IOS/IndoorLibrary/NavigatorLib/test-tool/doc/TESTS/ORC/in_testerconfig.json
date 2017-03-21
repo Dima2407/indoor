@@ -1,8 +1,0 @@
-{
-  "inBeaconsFile" : "in_beacons.json",
-  "inEventsFile" : "out_event.json",
-  "inRouteFile" : "in_txyz_route.dat",
-  "ticks" : 1000,
-  "skipEvents" : 4,
-  "txFromBeacons" : false
-}

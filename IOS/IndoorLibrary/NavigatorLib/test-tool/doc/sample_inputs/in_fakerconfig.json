@@ -1,7 +1,0 @@
-{
-  "inBeaconsFile": "in_beacons.json",
-  "inTimesFile": "in_times.json",
-  "inRouteFile": "in_txyz_route.dat",
-  "outEventsFile": "out_event.json",
-  "ticks" : 1000
-}

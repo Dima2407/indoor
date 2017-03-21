@@ -35,7 +35,8 @@ Navigator::Math::Position3D inPos(0.75, 0.38, 0.0);
 }
 extern "C"
 void BluetoothBridge_proces() {
-    Navigator::Beacons::BeaconReceivedData brd(1., 1., 1);
+    Navigator::Beacons::BeaconUID uuid("stst",10,1);
+    Navigator::Beacons::BeaconReceivedData brd(1000, uuid, 1.f, 1.f);
     
     // Process it
     Navigator::Math::Position3D outPos = navigator->process(brd);

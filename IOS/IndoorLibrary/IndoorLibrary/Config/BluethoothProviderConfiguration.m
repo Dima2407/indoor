@@ -17,6 +17,6 @@
 
 -(void)updateCinfiguration:(NSArray<TConfig> *)inputArray withBLEProvider:(BluetoothMeasurementProvider *)provider{
     
-    [provider setBeaconMap:inputArray];
+   
 }
 @end

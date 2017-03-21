@@ -11,6 +11,7 @@
 #import "MeasurementEvent.h"
 #import "IosMeasurementTransfer.h"
 #import "IndoorLocationUpdateDelegate.h"
+#import "BeaconConfig.h"
 
 @interface IndoorLocationManager : NSObject
 
@@ -20,10 +21,10 @@
 
 
 -(void)prepare;
--(void)release;
--(void)addProvider: (MeasurementType) type;
--(void)removeProvider: (MeasurementType) type;
+-(void)addProvider: (MeasurementProviderType) type;
+-(void)removeProvider: (MeasurementProviderType) type;
 -(void)start;
 -(void)stop;
 -(void)process: (MeasurementEvent *) event;
+-(void)setBeaconConfig:(BeaconConfig*) config;
 @end

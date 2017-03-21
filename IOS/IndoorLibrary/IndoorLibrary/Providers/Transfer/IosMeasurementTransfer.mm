@@ -13,6 +13,8 @@
 
 
 @implementation IosMeasurementTransfer
+
+
 - (instancetype)init
 {
     self = [super init];
@@ -26,10 +28,14 @@
 -(void)deliver:(MeasurementEvent*)event
 {
     if(event.type == BLE_VALUE){
-        if([self.delegate respondsToSelector:@selector(processEvent:)]) {
-            [self.delegate processEvent:event];
+        //if([self.delegate respondsToSelector:@selector(processEvent:)]) {
+            //[self.delegate processEvent:event];
+            NSLog(@"Work");
+       // }
+        SEL selector = @selector(processEvent:);
+        if (self.delegate && [self.delegate respondsToSelector:selector]) {
+            [self.delegate performSelector:selector withObject:event];
         }
-        
        
 
     }
@@ -40,8 +46,8 @@
             NSLog(@"Latitude :%f, Longitude: %f",event.latitude, event.longitude);
             break;
         case BLE_VALUE:
-            NSLog(@"BLE_VALUE");
-           // NSLog(@"UUID:%zd, RSSI: %ld",ev, event.beacon.rssi);
+          //  NSLog(@"BLE_VALUE");
+           //NSLog(@"UUID:%zd, RSSI: %ld",event.beacon.proximityUUID, event.beacon.rssi);
             
             break;
         case WIFI_VALUE:

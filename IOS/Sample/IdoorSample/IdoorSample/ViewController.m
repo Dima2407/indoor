@@ -7,35 +7,47 @@
 //
 
 #import "ViewController.h"
-//#import "GPSMeasurementProvider.h"
-//#import "BluetoothMeasurementProvider.h"
-//#import "BeaconConfig.h"
-//#import "BluethoothProviderConfiguration.h"
+#import "BeaconConfig.h"
 #import "IndoorLocationManager.h"
+#import "BluetoothMeasurementProvider.h"
+#import "IosMeasurementTransfer.h"
+#import "GPSMeasurementProvider.h"
 
 @interface ViewController ()
-//@property (nonatomic, strong)GPSMeasurementProvider *provider;
-@property (nonatomic, strong) IndoorLocationManager *BLE;
+@property (nonatomic, strong)IndoorLocationManager *manager;
+@property (nonatomic, strong) BluetoothMeasurementProvider *pr;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- // self.provider = [[GPSMeasurementProvider alloc]init ];
-    self.BLE = [[IndoorLocationManager alloc] init];
+    BeaconConfig *firstBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48049 txPower:-25 damp:0.033039488 andX:4.5 andY:0.3 andZ:0];
+     BeaconConfig *secondBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48052 txPower:-37.5 damp:0.48428196 andX:0.3 andY:9.9 andZ:0];
+     BeaconConfig *thirdBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48051 txPower:-25 damp:-0.44076547 andX:4 andY:12.8 andZ:0];
+
+    self.manager = [[IndoorLocationManager alloc] init];
+    [self.manager addProvider:BLE_PROVIDER];
+//    [self.manager setBeaconConfig:firstBeacon];
+//    [self.manager setBeaconConfig:secondBeacon];
+//    [self.manager setBeaconConfig:thirdBeacon];
+//    BluetoothMeasurementProvider *pr = [[BluetoothMeasurementProvider alloc] init:[[IosMeasurementTransfer alloc] init]];
+//    [pr start];
+//   self.manager = [[GPSMeasurementProvider alloc] init:[[IosMeasurementTransfer alloc] init]];
+//    self.pr =[[BluetoothMeasurementProvider alloc] init:[[IosMeasurementTransfer alloc] init]];
+    
 
 
     
 }
 
 - (IBAction)start:(id)sender {
-  // [self.provider start];
-   // [self.BLE prepare];
+    //[self.pr start];
+  [self.manager start];
 }
 - (IBAction)stop:(id)sender {
-  // [self.provider stop];
-      //[self.BLE stop];
+    //[self.manager stop ];
+    [self.pr stop];
 }
 
 - (void)didReceiveMemoryWarning {

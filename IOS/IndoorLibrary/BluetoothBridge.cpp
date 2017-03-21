@@ -13,6 +13,7 @@
 
 std::shared_ptr<Navigator::Beacons::TrilatBeaconNavigator> navigator;
 
+
 extern "C"
 void BluetoothBridge_init() {
     auto rssiFact = std::make_shared<Navigator::Beacons::Factory::MovingAverageFilterFactory>(5);
@@ -34,12 +35,16 @@ void BluetoothBridge_setPosition(){
 Navigator::Math::Position3D inPos(0.75, 0.38, 0.0);
 }
 extern "C"
-void BluetoothBridge_proces() {
-    Navigator::Beacons::BeaconUID uuid("stst",10,1);
-    Navigator::Beacons::BeaconReceivedData brd(1000, uuid, 1.f, 1.f);
+void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi, double * output) {
+    Navigator::Beacons::BeaconUID uuid(uuidStr,major,minor);
+    Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
     
     // Process it
     Navigator::Math::Position3D outPos = navigator->process(brd);
+    output[0] = outPos.x;
+    output[1] = outPos.y;
+    output[2] = outPos.z;
+    
 }
 
 //extern "C"

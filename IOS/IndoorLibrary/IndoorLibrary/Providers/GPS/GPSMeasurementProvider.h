@@ -16,4 +16,7 @@
 @property (nonatomic, strong) MeasurementEvent *event;
 @property (nonatomic, assign) NSInteger latitude;
 @property (nonatomic, assign) NSInteger longitude;
+
+-(instancetype)init: (IosMeasurementTransfer*) transfer;
+
 @end

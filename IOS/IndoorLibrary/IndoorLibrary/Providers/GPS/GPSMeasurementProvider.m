@@ -25,7 +25,7 @@
 
 
 
-- (id) init
+-(instancetype)init: (IosMeasurementTransfer*) transfer
 {
     self = [super init];
     
@@ -36,7 +36,10 @@
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.manager requestWhenInUseAuthorization];
-        self.transfer = [[IosMeasurementTransfer alloc] init];
+        self.transfer = transfer;
+        self.type = GPS_PROVIDER;
+        
+       
     }
     return self;
 }
@@ -87,8 +90,9 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
-    
+      NSLog(@"OOOOOOOOOOO");
     CLLocation *location = [locations objectAtIndex:0];
+    NSLog(@"%f",location.coordinate.latitude);
     MeasurementEvent *event = [[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude];
     [self.transfer deliver:event];
  
@@ -139,6 +143,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             NSLog(@"AuthorizedWhenInUse");
             [self.manager startUpdatingLocation];
+          
             break;
         case kCLAuthorizationStatusAuthorizedAlways:
             NSLog(@"AuthorizedAlways");

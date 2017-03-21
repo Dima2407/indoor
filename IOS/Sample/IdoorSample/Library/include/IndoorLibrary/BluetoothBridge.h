@@ -11,6 +11,9 @@
 #include <memory>
 #include <stdio.h>
 #import "Navigator.h"
+#import "MovingAverageFilter.h"
+#import "NoFilter.h"
+
 
 
 #endif /* BluetoothBridge_hpp */
@@ -39,5 +42,6 @@ void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, doubl
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_proces();
+void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi, double * output);
+
 

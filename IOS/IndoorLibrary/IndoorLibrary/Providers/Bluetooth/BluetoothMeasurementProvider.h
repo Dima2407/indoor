@@ -13,11 +13,8 @@
 
 @interface BluetoothMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 
-@property (nonatomic, strong) CLLocationManager *manager;
-@property (nonatomic, strong) MeasurementEvent *event;
-@property (nonatomic, strong) IosMeasurementTransfer *transfer;
 
+-(void)setUuid:(NSString*)uuid;
 -(instancetype)init: (IosMeasurementTransfer*) transfer;
--(void) setBeaconMap:(NSArray*)beaconConfigs;
 
 @end

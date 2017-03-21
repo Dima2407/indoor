@@ -31,7 +31,7 @@ namespace Navigator {
             Position3D(double x, double y, double z)
                     : x(x), y(y), z(z) {}
 
-            Position3D() {}
+            Position3D() = default;
 
         public:  // == VARIABLES / FIELDS ==
             double x = nan("");
@@ -43,6 +43,13 @@ namespace Navigator {
             double distance(Position3D const& p2) const{
                 return sqrt(pow(this->x - p2.x, 2) + pow(this->y - p2.y, 2));
             }
+            
+            /// Contains one or more wrong values
+            bool isFinite(){
+                using std::isfinite;
+                return isfinite(x) && isfinite(y) && isfinite(z);
+            }
+            bool isWrong(){ return !isFinite(); };
         };
         
         

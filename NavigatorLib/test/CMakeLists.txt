@@ -19,7 +19,8 @@ set(TEAMCITY_SRC
 set(SOURCE_FILES
     ${TEAMCITY_SRC}
     cppunit_test-1.cpp
-   )
+    ItJim/JsonDataContract.cpp
+    CppUnit-main.cpp)
 
 add_executable(navigator-test ${SOURCE_FILES})
 target_link_libraries(navigator-test Navigator cppunit)
@@ -31,4 +32,12 @@ add_custom_command(TARGET navigator-test
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_CURRENT_SOURCE_DIR}/beacons-data-files
-                   $<TARGET_FILE_DIR:navigator-test>/beacons-data-files)
+                   $<TARGET_FILE_DIR:navigator-test>/beacons-data-files
+                   )
+
+## Find RapidJson's bug with writing NaN to string
+add_executable(temp
+               temp
+               ItJim/JsonDataContract.cpp
+               )
+target_link_libraries(temp Navigator cppunit)

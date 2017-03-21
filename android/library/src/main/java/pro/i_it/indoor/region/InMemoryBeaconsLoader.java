@@ -1,13 +1,14 @@
 package pro.i_it.indoor.region;
 
-import java.util.List;
+
+import java.util.Set;
 
 public class InMemoryBeaconsLoader implements BeaconsInRegionLoader{
 
-    private SpaceRegion beacons;
+    private Set<SpaceBeacon> beacons;
 
     @Override
-    public boolean onLocationChanged(float x, float y, float z) {
-        return false;
+    public SpaceRegion onLocationChanged(float x, float y, float z) {
+        throw new UnsupportedOperationException();
     }
 }

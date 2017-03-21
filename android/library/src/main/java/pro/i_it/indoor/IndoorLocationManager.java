@@ -7,6 +7,7 @@ import pro.i_it.indoor.region.BeaconsInRegionLoader;
 import pro.i_it.indoor.region.SpaceRegion;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class IndoorLocationManager {
@@ -63,7 +64,10 @@ public class IndoorLocationManager {
                     onLocationUpdateListener.onLocationChanged(position);
                 }
                 if (beaconsInRegionLoader != null) {
-                    beaconsInRegionLoader.onLocationChanged(position[0], position[1], position[2]);
+                    SpaceRegion region = beaconsInRegionLoader.onLocationChanged(position[0], position[1], position[2]);
+                    if(region.isChanged()){
+                        nativeSetBeacons(region.getBeacons());
+                    }
                 }
             }
         };
@@ -82,16 +86,11 @@ public class IndoorLocationManager {
         nativeRelease();
     }
 
-    public void updateSpaceRegion(SpaceRegion region) {
-        region.updateRegion();
-    }
-
-    //TODO надо реализовать нативный метод, в нем создать обьект навигатора
-    //TODO обьект навигатора сохранить глобально
-    //TODO также сохранить глобально слушатель переданый как аргумент
     private native void nativeInit(OnLocationUpdateListener onUpdateListener);
 
-    //TODO надо реализовать нативный метод, в нем удалить все что хранилось глобально в нативе
     private native void nativeRelease();
+
+    private native void nativeSetBeacons(Set<SpaceRegion> beacons);
+
 
 }

@@ -30,14 +30,12 @@ extern "C" {
             Java_pro_i_1it_indoor_providers_AndroidDebuggableMeasurementTransfer_stringFromJNI(
             JNIEnv *env,
             jobject
- this
 );
 
     JNIEXPORT void JNICALL
             Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
             JNIEnv *env,
             jobject
- this
 , jobject obj);
 
     JNIEXPORT void JNICALL
@@ -62,7 +60,6 @@ extern "C" {
     Java_pro_i_1it_indoor_providers_AndroidDebuggableMeasurementTransfer_stringFromJNI(
             JNIEnv *env,
             jobject
- this
 ) {
         std::string hello = "Hello from C++";
         return env->NewStringUTF(hello.c_str());
@@ -72,7 +69,6 @@ extern "C" {
     Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
             JNIEnv *env,
             jobject
- this
 , jobject obj) {
 
         jobject typeObj = env->GetObjectField(obj, meTypeField);

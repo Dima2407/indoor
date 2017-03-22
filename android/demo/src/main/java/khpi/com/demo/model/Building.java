@@ -46,7 +46,7 @@ public class Building implements Parcelable {
     @Expose
     private Date updated_at;
 
-    @SerializedName("beacon_list")
+    @SerializedName("beacon_mac_list")
     @Expose
     private List<String> beacon_list;
 

@@ -125,6 +125,8 @@ final class Mapper {
         int floorNumberIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_FLOOR_NUMBER);
         int buildingIdIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_BUILDING_ID);
         int buildingTitleIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_BUILDING_TITLE);
+        int uuidIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_UUID);
+        int txPowerIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_TXPOWER);
 
         beaconModel.setPositionX(cursor.getFloat(xIndex));
         beaconModel.setPositionY(cursor.getFloat(yIndex));
@@ -137,6 +139,8 @@ final class Mapper {
         beaconModel.setFloorNumber(cursor.getInt(floorNumberIndex));
         beaconModel.setBuildingId(cursor.getInt(buildingIdIndex));
         beaconModel.setBuildingTitle(cursor.getString(buildingTitleIndex));
+        beaconModel.setTxpower(cursor.getFloat(txPowerIndex));
+        beaconModel.setUuid(cursor.getString(uuidIndex));
         cursor.close();
         return beaconModel;
     }
@@ -154,6 +158,8 @@ final class Mapper {
         cv.put(DbHelper.Beacons.COLUMN_NAME_FLOOR_NUMBER, beaconModel.getFloorNumber());
         cv.put(DbHelper.Beacons.COLUMN_NAME_BUILDING_ID, beaconModel.getBuildingId());
         cv.put(DbHelper.Beacons.COLUMN_NAME_BUILDING_TITLE, beaconModel.getBuildingTitle());
+        cv.put(DbHelper.Beacons.COLUMN_NAME_UUID, beaconModel.getUuid());
+        cv.put(DbHelper.Beacons.COLUMN_NAME_TXPOWER, beaconModel.getTxpower());
         return cv;
     }
 
@@ -171,6 +177,8 @@ final class Mapper {
         int floorNumberIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_FLOOR_NUMBER);
         int buildingIdIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_BUILDING_ID);
         int buildingTitleIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_BUILDING_TITLE);
+        int uuidIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_UUID);
+        int txPowerIndex = cursor.getColumnIndex(DbHelper.Beacons.COLUMN_NAME_TXPOWER);
 
         if(!cursor.moveToFirst()){
             return beaconModelList;
@@ -189,6 +197,8 @@ final class Mapper {
             beaconModel.setFloorNumber(cursor.getInt(floorNumberIndex));
             beaconModel.setBuildingId(cursor.getInt(buildingIdIndex));
             beaconModel.setBuildingTitle(cursor.getString(buildingTitleIndex));
+            beaconModel.setTxpower(cursor.getFloat(txPowerIndex));
+            beaconModel.setUuid(cursor.getString(uuidIndex));
             beaconModelList.add(beaconModel);
         }while (cursor.moveToNext());
         cursor.close();

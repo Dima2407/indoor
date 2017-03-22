@@ -1,24 +1,19 @@
 package pro.i_it.indoor.events;
 
 public enum MeasurementType {
-    GEO_VALUE("gps"),
-    SENSOR_VALUE("sensor"),
-    BLUETOOTH_VALUE("beacon"),
-    WIFI_VALUE("wifi");
+    GEO_VALUE(0),
+    SENSOR_VALUE(1),
+    BLUETOOTH_VALUE(2),
+    WIFI_VALUE(3);
 
-    private final String description;
+    private final int id;
 
-    MeasurementType(String description) {
-
-        this.description = description;
+    MeasurementType(int code) {
+        this.id = code;
     }
 
-    public String getDescription(){
-        return description;
+    public int getCode(){
+        return id;
     }
 
-    @Override
-    public String toString() {
-        return description;
-    }
 }

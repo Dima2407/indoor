@@ -44,7 +44,7 @@ public final class GRApplication extends Application {
         dbBridge = new DbFacade(this);
 
         if (!sharedHelper.containsProductionFlag()) {
-            sharedHelper.setUseProduction(true);
+            sharedHelper.setUseProduction(false);
         }
 
         netBridge = new NetFacade(dbBridge, sharedHelper.useProduction() ? BuildConfig.PRODUCTION_SERVER_URL : BuildConfig.DEVELOPER_SERVER_URL);

@@ -4,13 +4,15 @@ import android.content.Context;
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.providers.*;
 import pro.i_it.indoor.region.BeaconsInRegionLoader;
+import pro.i_it.indoor.region.InMemoryBeaconsLoader;
+import pro.i_it.indoor.region.SpaceBeacon;
 import pro.i_it.indoor.region.SpaceRegion;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class IndoorLocationManager {
+
 
     static {
         System.loadLibrary("native-lib");
@@ -30,6 +32,10 @@ public class IndoorLocationManager {
 
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
         this.onLocationUpdateListener = listener;
+    }
+
+    public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader){
+        this.beaconsInRegionLoader = beaconsInRegionLoader;
     }
 
     public void setOnErrorListener(OnErrorListener onErrorListener) {
@@ -66,7 +72,10 @@ public class IndoorLocationManager {
                 if (beaconsInRegionLoader != null) {
                     SpaceRegion region = beaconsInRegionLoader.onLocationChanged(position[0], position[1], position[2]);
                     if(region.isChanged()){
-                        nativeSetBeacons(region.getBeacons());
+                        Set<SpaceBeacon> beacons = region.getBeacons();
+                        SpaceBeacon [] data = new SpaceBeacon[beacons.size()];
+                        beacons.toArray(data);
+                        nativeSetBeacons(data);
                     }
                 }
             }
@@ -90,7 +99,6 @@ public class IndoorLocationManager {
 
     private native void nativeRelease();
 
-    private native void nativeSetBeacons(Set<SpaceRegion> beacons);
-
+    private native void nativeSetBeacons(SpaceBeacon[] beacons);
 
 }

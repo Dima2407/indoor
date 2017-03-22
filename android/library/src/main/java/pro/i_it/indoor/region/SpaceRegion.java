@@ -5,6 +5,7 @@ import java.util.*;
 public class SpaceRegion {
 
     private Set<SpaceBeacon> beacons;
+    private boolean changedFromPrevious;
 
     public SpaceRegion(SpaceBeacon... beacon) {
         this.beacons = new HashSet<>(Arrays.asList(beacon));
@@ -15,18 +16,23 @@ public class SpaceRegion {
     }
 
     void addBeacon(SpaceBeacon beacon) {
-        this.beacons.add(beacon);
+        if(this.beacons.add(beacon)){
+            changedFromPrevious = true;
+        }
     }
 
     void removeBeacon(SpaceBeacon beacon) {
-        this.beacons.remove(beacon);
+        if(this.beacons.remove(beacon)){
+            changedFromPrevious = true;
+        }
     }
 
     public boolean isChanged(){
-        throw new UnsupportedOperationException();
+        return changedFromPrevious;
     }
 
-    public Set<SpaceRegion> getBeacons() {
-        throw new UnsupportedOperationException();
+    public Set<SpaceBeacon> getBeacons() {
+        changedFromPrevious = false;
+       return beacons;
     }
 }

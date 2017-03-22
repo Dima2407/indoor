@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import khpi.com.demo.R;
+import khpi.com.demo.model.BeaconModel;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Route;
@@ -36,13 +37,19 @@ import khpi.com.demo.utils.ManeuverHelper;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
+import pro.i_it.indoor.region.BluetoothBeacon;
+import pro.i_it.indoor.region.InMemoryBeaconsLoader;
+import pro.i_it.indoor.region.SpaceBeacon;
 
 //import com.indoor.beacon.IndoorPositionManager;
 import com.squareup.picasso.Picasso;
 
+import org.altbeacon.beacon.Beacon;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static pro.i_it.indoor.DebugConfig.TAG;
@@ -171,12 +178,21 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
+
                 if (IS_DEBUG) {
                     Log.d(TAG, "onLocationChanged: " + SystemClock.elapsedRealtime() / 1000 + "  " + Arrays.toString(position));
                 }
                 applyNewCoordinate(position[0], position[1], 1, 1);
             }
         });
+        Collection<SpaceBeacon> floorSpaceBeacons = new ArrayList<>();
+        for(BeaconModel beacon : floor.getBeacons()){
+                SpaceBeacon spaceBeacon = new BluetoothBeacon("todo", beacon.getMajor(), beacon.getMinor(),
+                        beacon.getTxpower(), 2, beacon.getPositionX(), beacon.getPositionY(), beacon.getPositionZ());
+            floorSpaceBeacons.add(spaceBeacon);
+        }
+
+        instance.setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floorSpaceBeacons, 10));
 //        instance.registerListener(this);
 //        instance.registerErrorListener(this);
 //        instance.startTrackPosition();

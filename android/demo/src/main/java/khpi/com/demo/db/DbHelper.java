@@ -21,7 +21,6 @@ final class DbHelper extends SQLiteOpenHelper {
 
                     Buildings.COLUMN_NAME_TITLE + TEXT_TYPE + COMA_SEP +
                     Buildings.COLUMN_NAME_SUBTITLE + TEXT_TYPE + COMA_SEP +
-                    //Buildings.COLUMN_NAME_DATA + TEXT_TYPE + COMA_SEP +
                     Buildings.COLUMN_NAME_OUTPOINT_ID + INTEGER_TYPE + COMA_SEP +
                     Buildings.COLUMN_NAME_CREATED_AT + REAL_TYPE + COMA_SEP +
                     Buildings.COLUMN_NAME_UPDATED_AT + REAL_TYPE + COMA_SEP +
@@ -73,6 +72,8 @@ final class DbHelper extends SQLiteOpenHelper {
     private static final String BEACONS_CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + Beacons.TABLE_NAME + " (" +
                     Beacons.COLUMN_NAME_MAC_ADDRESS + TEXT_TYPE + " PRIMARY KEY, " +
+                    Beacons.COLUMN_NAME_UUID + TEXT_TYPE + COMA_SEP +
+                    Beacons.COLUMN_NAME_TXPOWER + REAL_TYPE + COMA_SEP +
                     Beacons.COLUMN_NAME_X + REAL_TYPE + COMA_SEP +
                     Beacons.COLUMN_NAME_Y + REAL_TYPE + COMA_SEP +
                     Beacons.COLUMN_NAME_Z + REAL_TYPE + COMA_SEP +
@@ -169,6 +170,8 @@ final class DbHelper extends SQLiteOpenHelper {
 
     static final class Beacons {
         static final String TABLE_NAME = "beacons";
+        static final String COLUMN_NAME_UUID = "uuid";
+        static final String COLUMN_NAME_TXPOWER = "txpower";
         static final String COLUMN_NAME_X = "x";
         static final String COLUMN_NAME_Y = "y";
         static final String COLUMN_NAME_Z = "z";

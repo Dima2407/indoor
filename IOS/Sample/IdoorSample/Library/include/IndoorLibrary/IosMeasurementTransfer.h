@@ -6,14 +6,18 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "MeasurementEvent.h"
+#import "PrefixHeader.pch"
+#import "IndoorError.h"
 #import "MeasurementTranfer.h"
+//#import "ErrorTransfer.h"
+
 
 @protocol IosMeasurementTransferDelegate <NSObject>
 @required
--(void)processEvent: (MeasurementEvent *) event;
-- (void)didFailWithError:(NSError *)error;
+
+-(void)processEvent:(MeasurementEvent*) event;
+//-(void)processError:(IndoorError*) error;
+
 @end
 
 

@@ -12,12 +12,15 @@
 #import "GPSMeasurementProvider.h"
 #import "BluetoothBridge.h"
 #import "PrefixHeader.pch"
+#import "IndoorError.h"
+#import "ErrorListener.h"
 
 
 
 
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
+
 @end
 
 
@@ -35,29 +38,22 @@
 }
 
 #pragma mark - Logic
-
-
--(void) prepare {
-    
-
- 
-    
-    }
     
 -(void)addProvider:(MeasurementProviderType)type{
     MeasurementProvider * provider = nil;
     switch (type) {
         case GPS_PROVIDER:
-            provider = [[GPSMeasurementProvider alloc] init: self.transfer];
+            provider = [[GPSMeasurementProvider alloc] initWithTransfer: self.transfer];
             if(provider != nil){
-                BluetoothBridge_init();
+             
                 [self.providers addObject:provider];
             }
 
             break;
         case BLE_PROVIDER:
-            provider = [[BluetoothMeasurementProvider alloc] init: self.transfer];
+            provider = [[BluetoothMeasurementProvider alloc] initWithTransfer: self.transfer];
             if(provider != nil){
+                   BluetoothBridge_init();
                 [self.providers addObject:provider];
             }
             
@@ -99,13 +95,7 @@
     }
 
 
--(void)process: (MeasurementEvent *) event{
-    if (event.type == BLE_VALUE)
-    {
-       
-    }
-    
-}
+
 
 #pragma mark - Work with Beacon
 
@@ -140,7 +130,6 @@
 
 
 -(void)processEvent: (MeasurementEvent *) event{
-      NSLog(@"RRRRRRR");
     if (event.type == BLE_VALUE)
     {
       
@@ -148,14 +137,25 @@
         double time = event.timestamp;
         double outPosition[] = {0.0, 0.0, 0.0};
         BluetoothBridge_proces(time, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi, outPosition);
-        for (int i=0; i++; i<3)
-        {
-            NSLog(@"%zd",outPosition[i]);
-        }
+        NSMutableArray *coordinates = [NSMutableArray new];
         
+        for (int i = 0; i < 3; i++)
+        {
+            [coordinates addObject:@(outPosition[i])];
+          
+            
+            
+        }
+        [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
     }
 }
-- (void)didFailWithError:(NSError *)error{
+
+-(void)processError:(IndoorError *)error{
+    
+    //[self.errorListener getError:error];
+    
     
 }
+
+
 @end

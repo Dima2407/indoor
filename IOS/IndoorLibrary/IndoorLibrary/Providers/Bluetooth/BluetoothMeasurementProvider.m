@@ -8,11 +8,6 @@
 
 #import "BluetoothMeasurementProvider.h"
 #import <CoreLocation/CLLocationManager.h>
-#import "MeasurementEvent.h"
-#import "MeasurementProvider.h"
-#import "BeaconConfig.h"
-
-
 
 @interface BluetoothMeasurementProvider()
 @property (strong, nonatomic) NSMutableArray *beaconsArray;
@@ -20,13 +15,12 @@
 @property (nonatomic, strong) CLLocationManager *manager;
 @property (nonatomic, strong) MeasurementEvent *event;
 @property (nonatomic, strong) IosMeasurementTransfer *transfer;
-@property (nonatomic, strong) NSMutableArray *uuids;
 @end
 
 @implementation BluetoothMeasurementProvider
 
 static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
--(instancetype)init: (IosMeasurementTransfer*) transfer{
+-(instancetype)initWithTransfer:(IosMeasurementTransfer *)transfer{
     self = [super init];
     
     if(self){
@@ -36,23 +30,27 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
         self.transfer = transfer;
-        self.uuids = [NSMutableArray new];
           [self.manager requestWhenInUseAuthorization];
-        //[self.uuids addObject:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
         self.type = BLE_PROVIDER;
     }
     return self;
 }
--(void)setUuid:(NSString*)uuid{
-    [self.uuids addObject:uuid];
+
+#pragma mark - Error
+
+
+-(void)_throwErrorWithOptions:(NSUInteger)code title:(NSString*)title message:(NSString*) message
+{
+    IndoorError *error = [[IndoorError alloc] initWithOptions:code title:title message:message];
+    //[self.transfer deliverError:error];
+    
 }
 
 #pragma mark - Action
 -(void) start{
   
-         [self startBeaconWihtUUID:sensoroUUId locationManager:self.manager];
+    [self startBeaconWihtUUID:sensoroUUId locationManager:self.manager];
   
-    NSLog(@"start");
    
 }
 
@@ -62,46 +60,99 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
     
    
     [locationManager startRangingBeaconsInRegion:region];
-    NSLog(@"startBeaconWihtUUID");
+    
 }
 
 -(void)stop{
     
-  NSLog(@"stop");
+  
         NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
         CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:@"IT-JIM"];
         
         [self.manager stopRangingBeaconsInRegion:region];
   
-
-    
 }
 
 #pragma mark - CLLocationManagerDelegate -
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region{
-NSLog(@"didRangeBeacons");
+
         NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
         for(CLBeacon *beacon in beacons){
             if([beacon.proximityUUID isEqual:beaconUUID]){
                 
                 MeasurementEvent * event =[[MeasurementEvent alloc] initWithBeacon:beacon];
                 [self.transfer deliver:event];
-      
             
         }
     }
-
-
-    
-    
-    
-    
 }
+
+- (void)locationManager:(CLLocationManager *)manager
+didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+            [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            NSLog(@"AuthorizedWhenInUse");
+            if (self.startStatus)
+            {
+                [manager startUpdatingLocation];
+            }
+            
+            break;
+        case kCLAuthorizationStatusAuthorizedAlways:
+            NSLog(@"AuthorizedAlways");
+            if (self.startStatus)
+            {
+                [manager startUpdatingLocation];
+            }
+            break;
+        case kCLAuthorizationStatusRestricted:
+            
+            
+            [self _throwErrorWithOptions:3 title:@"Error Permission" message:@"App Permission Restricted. You can't enable Location Services"];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    
+    [manager stopUpdatingLocation];
+    
+    switch([error code])
+    {
+        case kCLErrorNetwork:
+            
+        {
+            [self _throwErrorWithOptions:1 title:@"Error Network" message:@"Please check your network connection"];
+        }
+            break;
+            
+        case kCLErrorDenied:{
+            
+            [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
+        }
+            break;
+            
+        default:
+        {
+            [self _throwErrorWithOptions:0 title:@"Unknown Error" message:@"Unknown network error"];
+        }
+            break;
+    }
+}
+
 - (void)locationManager:(CLLocationManager *)manager
 rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region
               withError:(NSError *)error{
-    NSLog(@"TTTTTTTTTTT",error);
-    
+ 
+    [self _throwErrorWithOptions:5 title:@"Beacon Region Error" message:error.description];
 }
 
 

@@ -16,7 +16,7 @@
 @property (nonatomic, strong)MeasurementProvider *provider;
 @property (nonatomic, assign) BOOL startStatus;
 @property (nonatomic, strong) IosMeasurementTransfer *transfer;
-
+@property (nonatomic, strong) CLLocationManager *manager;
 
 
 @end
@@ -25,8 +25,7 @@
 
 
 
--(instancetype)init: (IosMeasurementTransfer*) transfer
-{
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) transfer {
     self = [super init];
     
     if (self != nil)
@@ -43,11 +42,14 @@
     }
     return self;
 }
--(void)_showAlert:(NSString*) message
+
+#pragma mark - Error
+
+
+-(void)_throwErrorWithOptions:(NSUInteger)code title:(NSString*)title message:(NSString*) message
 {
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    
-    [alert show];
+    IndoorError *error = [[IndoorError alloc] initWithOptions:code title:title message:message];
+    //[self.transfer deliverError:error];
     
 }
 
@@ -60,8 +62,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
     
     switch (status) {
         case kCLAuthorizationStatusNotDetermined:
-             NSLog(@"Determined");
-            [manager requestWhenInUseAuthorization];
+            [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
             break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
              NSLog(@"AuthorizedWhenInUse");
@@ -79,10 +80,10 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
             }
             break;
         case kCLAuthorizationStatusRestricted:
-             NSLog(@"Restricted");
-            [self _showAlert:@"App Permission Restricted. You can't enable Location Services"];
             
-            break;
+            
+            [self _throwErrorWithOptions:3 title:@"Error Permission" message:@"App Permission Restricted. You can't enable Location Services"];
+           break;
             
         default:
             break;
@@ -90,9 +91,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(nonnull NSArray<CLLocation *> *)locations{
-      NSLog(@"OOOOOOOOOOO");
     CLLocation *location = [locations objectAtIndex:0];
-    NSLog(@"%f",location.coordinate.latitude);
     MeasurementEvent *event = [[MeasurementEvent alloc] initWithLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude];
     [self.transfer deliver:event];
  
@@ -103,26 +102,25 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     
     [manager stopUpdatingLocation];
-    NSLog(@"error%@",error);
+    
     switch([error code])
     {
         case kCLErrorNetwork:
+            
         {
-            [self _showAlert:@"Please check your network connection."];
-           
-           
+            [self _throwErrorWithOptions:1 title:@"Error Network" message:@"Please check your network connection"];
         }
             break;
+            
         case kCLErrorDenied:{
             
-            [self _showAlert:@"App Permission Denied"];
-
+            [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
        }
             break;
+            
         default:
         {
-            [self _showAlert:@"Unknown network error"];
-          
+            [self _throwErrorWithOptions:0 title:@"Unknown Error" message:@"Unknown network error"];
         }
             break;
     }
@@ -137,8 +135,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     switch (status) {
         case kCLAuthorizationStatusNotDetermined:
-            NSLog(@"Determined");
-            [self _showAlert:@"App Permission Denied"];
+         [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
             break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             NSLog(@"AuthorizedWhenInUse");
@@ -151,7 +148,7 @@ didChangeAuthorizationStatus:(CLAuthorizationStatus)status
             break;
         case kCLAuthorizationStatusRestricted:
             NSLog(@"Restricted");
-            [self _showAlert:@"App Permission Restricted. User can't enable Location Services"];
+            [self _throwErrorWithOptions:3 title:@"Error Permission" message:@"App Permission Restricted. You can't enable Location Services"];
             
             break;
             

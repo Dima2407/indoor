@@ -6,15 +6,13 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "MeasurementProvider.h"
-#import <CoreLocation/CoreLocation.h>
-#import "MeasurementTranfer.h"
+#import "PrefixHeader.pch"
+
 
 @interface BluetoothMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 
 
--(void)setUuid:(NSString*)uuid;
--(instancetype)init: (IosMeasurementTransfer*) transfer;
+
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) transfer;
 
 @end

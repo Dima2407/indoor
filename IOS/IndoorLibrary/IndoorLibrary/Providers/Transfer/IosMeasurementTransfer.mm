@@ -28,10 +28,7 @@
 -(void)deliver:(MeasurementEvent*)event
 {
     if(event.type == BLE_VALUE){
-        //if([self.delegate respondsToSelector:@selector(processEvent:)]) {
-            //[self.delegate processEvent:event];
-            NSLog(@"Work");
-       // }
+    
         SEL selector = @selector(processEvent:);
         if (self.delegate && [self.delegate respondsToSelector:selector]) {
             [self.delegate performSelector:selector withObject:event];
@@ -42,8 +39,8 @@
     NSInteger eventType = event.type;
     switch (eventType) {
         case GEO_VALUE:
-            NSLog(@"GEO_VALUE");
-            NSLog(@"Latitude :%f, Longitude: %f",event.latitude, event.longitude);
+//    TODO        NSLog(@"GEO_VALUE");
+//            NSLog(@"Latitude :%f, Longitude: %f",event.latitude, event.longitude);
             break;
         case BLE_VALUE:
           //  NSLog(@"BLE_VALUE");
@@ -63,6 +60,13 @@
         default:
             break;
             
+    }
+}
+-(void)deliverError:(IndoorError *)error{
+    
+    SEL selector = @selector(processError:);
+    if (self.delegate && [self.delegate respondsToSelector:selector]) {
+        [self.delegate performSelector:selector withObject:error];
     }
 }
 

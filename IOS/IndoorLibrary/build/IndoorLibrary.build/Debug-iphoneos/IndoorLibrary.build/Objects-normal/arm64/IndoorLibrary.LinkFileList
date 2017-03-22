@@ -1,0 +1,16 @@
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/trilat.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/AlphaBetaFilter.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/MovingAverageFilter.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/TrilatBeaconNavigator.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/BluethoothProviderConfiguration.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/BluetoothMeasurementProvider.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/IndoorError.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/IndoorLocationManager.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/BeaconConfig.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/MeasurementProvider.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/GPSMeasurementProvider.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/IosMeasurementTransfer.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/SensorMeasurementProvider.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/WIFIMeasurementProvider.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/MeasurementEvent.o
+/Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/build/IndoorLibrary.build/Debug-iphoneos/IndoorLibrary.build/Objects-normal/arm64/BluetoothBridge.o

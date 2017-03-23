@@ -25,6 +25,7 @@
 		06650E2A1E82CC1100E7D811 /* IndoorError.m in Sources */ = {isa = PBXBuildFile; fileRef = 06650E291E82CC1100E7D811 /* IndoorError.m */; };
 		06650E2C1E82EC4A00E7D811 /* ErrorTransfer.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */; };
 		06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E281E82CC1100E7D811 /* IndoorError.h */; };
+		06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E271E82C2CA00E7D811 /* ErrorListener.h */; };
 		06ED897E1E6D79F50011C01C /* IndoorLocationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */; };
 		06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6751E66F661003EC3FA /* MeasurementEvent.h */; };
 		06FBD1861E7AEBDE00D8902A /* MeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6801E66F661003EC3FA /* MeasurementProvider.h */; };
@@ -48,6 +49,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */,
 				06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */,
 				06650E2C1E82EC4A00E7D811 /* ErrorTransfer.h in Copy Files */,
 				06650E241E82BEB500E7D811 /* IndoorLocationListener.h in Copy Files */,

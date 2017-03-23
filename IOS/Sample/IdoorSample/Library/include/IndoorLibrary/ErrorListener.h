@@ -2,12 +2,12 @@
 //  ErrorListener.h
 //  IndoorLibrary
 //
-//  Created by AppleFace on 14.03.17.
+//  Created by AppleFace on 22.03.17.
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "PrefixHeader.pch"
 
-@interface ErrorListener : NSObject
--(void)getError:(NSError*)error;
+@protocol ErrorListener <NSObject>
+-(void)getError:(IndoorError*)error;
 @end

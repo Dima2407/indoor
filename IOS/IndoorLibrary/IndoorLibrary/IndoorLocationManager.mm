@@ -152,7 +152,7 @@
 
 -(void)processError:(IndoorError *)error{
     
-    //[self.errorListener getError:error];
+    [self.errorListener getError:error];
     
     
 }

@@ -9,20 +9,20 @@
 #import "PrefixHeader.pch"
 #import "IndoorError.h"
 #import "MeasurementTranfer.h"
-//#import "ErrorTransfer.h"
+#import "ErrorTransfer.h"
 
 
 @protocol IosMeasurementTransferDelegate <NSObject>
 @required
 
 -(void)processEvent:(MeasurementEvent*) event;
-//-(void)processError:(IndoorError*) error;
+-(void)processError:(IndoorError*) error;
 
 @end
 
 
 
-@interface IosMeasurementTransfer : NSObject<MeasurementTranfer>
+@interface IosMeasurementTransfer : NSObject<MeasurementTranfer,ErrorTransfer>
 
 @property (nonatomic, weak) id <IosMeasurementTransferDelegate> delegate;
 

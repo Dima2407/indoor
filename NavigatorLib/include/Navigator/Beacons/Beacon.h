@@ -26,7 +26,7 @@ namespace Navigator {
                     pos(pos),
                     meta(meta) {}
 
-            // Getters
+        public:   //=== Getters====
 
             const BeaconUID &getUid() const
             {
@@ -53,6 +53,15 @@ namespace Navigator {
                 return meta;
             }
 
+        public: //==== Setters =====
+
+            void setTxPower(double txPower) {
+                Beacon::txPower = txPower;
+            }
+
+            void setDamp(double damp) {
+                Beacon::damp = damp;
+            }
             //---------------------------------------------
             // Private fields
             //---------------------------------------------

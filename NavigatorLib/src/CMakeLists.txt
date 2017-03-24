@@ -4,11 +4,15 @@ project(Navigator)
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
-    ./Navigator/Beacons/TrilatBeaconNavigator.cpp
-    ./Navigator/Math/Filter/AlphaBetaFilter.cpp
-    ./Navigator/Math/Filter/MovingAverageFilter.cpp
-    ./Navigator/Math/Trilat/trilat.cpp
-)
+        ./Navigator/Beacons/TrilatBeaconNavigator.cpp
+        ../include/Navigator/Beacons/Beacon.h
+        #
+        ./Navigator/Math/Filter/AlphaBetaFilter.cpp
+        ./Navigator/Math/Filter/MovingAverageFilter.cpp
+        ./Navigator/Math/Trilat/trilat.cpp
+        #
+        ./Navigator/Beacons/Calibrate/BeaconCalibrator.cpp ../include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
+        ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp)
 
 include_directories(
         ../include/

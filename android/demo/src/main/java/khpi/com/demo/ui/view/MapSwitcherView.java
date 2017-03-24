@@ -105,7 +105,7 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
     }
 
     public interface ChangeMapListener{
-        void onMapSelected(int position);
+        void onMapSelected(int posit);
     }
 
 }

@@ -96,7 +96,7 @@ public class InpointsRepository extends BaseRepository {
         return Mapper.inpoints(query);
     }
 
-    List<Inpoint> getInpointsByFloorId(int floorId) {
+    List<Inpoint> getInpointsByFloorId(long floorId) {
         if (!isDatabaseOpen()) {
             openDatabase();
         }

@@ -1,6 +1,8 @@
 package pro.i_it.indoor;
 
 import android.content.Context;
+import android.util.Log;
+
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.providers.*;
 import pro.i_it.indoor.region.BeaconsInRegionLoader;
@@ -75,6 +77,7 @@ public class IndoorLocationManager {
                         Set<SpaceBeacon> beacons = region.getBeacons();
                         SpaceBeacon [] data = new SpaceBeacon[beacons.size()];
                         beacons.toArray(data);
+                        Log.d("TAGBEACON", "setBeacons, region.getBeacons.SIZE + " + region.getBeacons().size());
                         nativeSetBeacons(data);
                     }
                 }

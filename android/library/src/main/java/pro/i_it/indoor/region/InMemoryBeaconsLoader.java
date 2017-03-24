@@ -23,7 +23,10 @@ public class InMemoryBeaconsLoader implements BeaconsInRegionLoader {
 
     @Override
     public SpaceRegion onLocationChanged(float x, float y, float z) {
-        findBeaconsInRegion(x, y, z);
+        for(SpaceBeacon beacon : beacons){
+            newRegion.addBeacon(beacon);;
+        }
+//        findBeaconsInRegion(x, y, z);
         return newRegion;
     }
 

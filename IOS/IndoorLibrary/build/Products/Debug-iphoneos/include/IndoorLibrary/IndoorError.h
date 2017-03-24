@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSError *error;
 
+
 -(instancetype)initWithOptions:(NSUInteger)code title:(NSString*)title message:(NSString*) message;
 
 @end

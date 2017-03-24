@@ -132,13 +132,12 @@
 -(void)processEvent: (MeasurementEvent *) event{
     if (event.type == BLE_VALUE)
     {
-      
         std::string uuid = std::string([[NSString stringWithFormat:@"%@", event.beacon.proximityUUID] UTF8String]);
         double time = event.timestamp;
         double outPosition[] = {0.0, 0.0, 0.0};
         BluetoothBridge_proces(time, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi, outPosition);
         NSMutableArray *coordinates = [NSMutableArray new];
-        
+       
         for (int i = 0; i < 3; i++)
         {
             [coordinates addObject:@(outPosition[i])];

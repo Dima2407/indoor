@@ -9,5 +9,5 @@
 #import "PrefixHeader.pch"
 
 @protocol ErrorListener <NSObject>
--(void)getError:(IndoorError*)error;
+-(void)getError:(NSError*)error;
 @end

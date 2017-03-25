@@ -26,6 +26,9 @@ namespace Navigator {
                     pos(pos),
                     meta(meta) {}
 
+
+            Beacon() {}
+
         public:   //=== Getters====
 
             const BeaconUID &getUid() const

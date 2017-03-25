@@ -18,20 +18,6 @@ using namespace Navigator::Beacons;
 using namespace Navigator::Beacons::Factory;
 using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
-//using Navigator::Math::Trilat::fakeRSSI;
-
-/** @brief  Calculate a fake RSSI signal for 2 points
- *
- * This is for the example only, of course you don't need this for the real code
- */
-double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp)
-{
-    /*double dist = p1.distance(p2);
-    double temp = log10(dist);
-    return txPower - 10 * damp * temp;*/
-    return txPower - 10 * damp * log10( p1.distance(p2) );
-}
-
 
 /** @brief An example of Navigator usage with beacons
  *

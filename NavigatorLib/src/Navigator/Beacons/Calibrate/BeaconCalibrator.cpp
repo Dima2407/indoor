@@ -20,13 +20,13 @@ namespace Navigator {
                 // Format: 2-column table
                 // distance average_RSSI
                 // For each beacon
-                unordered_map <BeaconUID, Algorithm::CalibrationTable> calTables;
+                unordered_map<BeaconUID, Algorithm::CalibrationTable> calTables;
 
                 // Outer loop: Loop over all calibration points
                 for (CalibrationPoint const &point : points) {
 
                     // rssi for all packets of the current point only, broken by beacon, before averaging
-                    unordered_map <BeaconUID, vector<double>> rssiMap;
+                    unordered_map<BeaconUID, vector<double>> rssiMap;
 
                     // Loop over all packets of a point
                     for (BeaconReceivedData const &packet : point.packets) {
@@ -71,7 +71,7 @@ namespace Navigator {
                         if (calTables.count(uid) == 0)
                             calTables[uid] = vector<pair<double, double>>();
 
-                        calTables[uid].push_back(pair(distance, averageRSSI));
+                        //calTables[uid].push_back(make_pair(distance, averageRSSI));
                     }
                 }
 
@@ -79,10 +79,10 @@ namespace Navigator {
                 int beaconCount = 0; // Number of beacons calibrated
 
                 // Loop over all beacons in calTables;
-                for (auto const & entry: calTables) {
-                    const BeaconUID & uid = entry.first;
-                    const Algorithm::CalibrationTable & table = entry.second;
-                    Beacon & beacon = beaconMap[uid];
+                for (auto const &entry: calTables) {
+                    const BeaconUID &uid = entry.first;
+                    const Algorithm::CalibrationTable &table = entry.second;
+                    Beacon &beacon = beaconMap[uid];
 
                     // Calibrate beacon : finally
                     double txPower = beacon.getTxPower(); // Iput/Output values
@@ -106,9 +106,9 @@ namespace Navigator {
                 // Check that dist is less than max dist (e.g. 5 meters)
                 if (dist > config.maxDist)
                     return false;
-                // Now check the line-of-sight
+                    // Now check the line-of-sight
                 else
-                    return rssi > config.kLos*dist + config.bLos;
+                    return rssi > config.kLos * dist + config.bLos;
 
             }
         }

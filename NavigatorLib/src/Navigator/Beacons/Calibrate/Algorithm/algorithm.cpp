@@ -9,82 +9,115 @@ namespace Navigator {
     namespace Beacons {
         namespace Calibrate {
             namespace Algorithm {
+//================================================================================
 
                 void calibrate(const CalibrationTable &table, const CalibrationConfig config, double &txPower,
                                double &damp) {
+                    using namespace std;
 
-                    double newTxPower, newDamp; // New values of damp* txpower
+                    if (table.size() == 0) {
+                        // Empty table, nothing to do
+                        txPower = nan("");
+                        damp = nan("");
 
-                    if (table.size() == 0) return; // Empty table, nothing to do
-
-                    if (config.mode == CalibrationConfig::Mode::ONE_POINT ||
-                        config.mode == CalibrationConfig::Mode::ONE_POINT_D ||
-                        config.mode == CalibrationConfig::Mode::ONE_POINT_TEST ||
-                        table.size() == 1) {
-                        // Perform one-point calibration
-                        // We run the average of damp & txPower over all points
-                        double sumTxPower = 0, sumDamp = 0;
-
-                        // Loop over all pairs dist, rssi
-                        for (const auto &val: table) {
-                            double tempTxPower, tempDamp;
-
-                            // Choose one of the 1-point routines
-                            // Note: ONE_POINT_D is default is table.size() == 1
-
-                            if (config.mode == CalibrationConfig::Mode::ONE_POINT)
-                                calibrateOnePoint(val.first, val.second, config, tempTxPower, tempDamp);
-                            else if (config.mode == CalibrationConfig::Mode::ONE_POINT_TEST)
-                                calibrateOnePointTest(val.first, val.second, config, tempTxPower, tempDamp);
-                            else
-                                calibrateOnePointD(val.first, val.second, config, tempTxPower, tempDamp);
-
-
-                            sumTxPower += tempTxPower;
-                            sumDamp += tempDamp;
-                        }
-
-                        // New txpower
-                        newTxPower = sumTxPower / table.size();
-                        newDamp = sumDamp / table.size();
-
-                    }
-
-
-                    if (config.averageWithPrevious) {
-                        // Average with previous
-                        txPower = (txPower + newTxPower) / 2;
-                        damp = (damp + newDamp) / 2;
+                    } else if (table.size() == 1) {
+                        // Use 1-point calibration. BAD ! D-version currently.
+                        calibrateOnePointD(table[0].first, table[0].second, config, txPower, damp);
 
                     } else {
-                        // Pure new
-                        txPower = newTxPower;
-                        damp = newDamp;
+                        // Linear Least squares calibration
+                        calibrateLeastSquares(table, txPower, damp);
                     }
-                }
-
-                void calibrateOnePoint(double dist, double rssi, const CalibrationConfig config, double &txPower,
-                                       double &damp) {
 
                 }
+//================================================================================
+
+                void calibrateOnePointG(double dist, double rssi, const CalibrationConfig config, double &txPower,
+                                        double &damp) {
+
+                }
+//================================================================================
 
                 void calibrateOnePointD(double dist, double rssi, const CalibrationConfig config, double &txPower,
                                         double &damp) {
+
+                    if (dist==1.0) {
+                        txPower = std::nan("");
+                        damp = std::nan("");
+                        return;
+                    }
+
                     // Set default TxPower
                     txPower = config.initTxPower;
 
                     // Find damp from the rssi formula
                     damp = (txPower - rssi) / (10 * std::log10(dist));
-                }
 
-                void calibrateOnePointTest(double dist, double rssi, const CalibrationConfig config, double &txPower,
-                                           double &damp) {
-                    // Set default TxPower
-                    txPower = config.initTxPower;
-
-                    // Set default damp
-                    damp = config.initDamp;
+                    // Set nan if failure
+                    if (std::isnan(damp))
+                        txPower = std::nan("");
                 }
+//================================================================================
+
+                void leastSquares(const std::vector<double> &x, const std::vector<double> &y, double &a, double &b) {
+                    int n = x.size(); // Number of input points
+
+                    // This version requires at least 2 data points
+                    if (n<2 || n!=y.size()) {
+                        a = std::nan("");
+                        b = a;
+                        return ;
+                    }
+
+                    // Find average x,y
+                    double xAvg = 0, yAvg = 0;
+
+                    for (int i = 0; i < n; ++i) {
+                        xAvg += x[i];
+                        yAvg += y[i];
+                    }
+                    xAvg /= n;
+                    yAvg /= n;
+
+                    double c1 = 0, c2 = 0;
+                    // Find a, b
+                    for (int i = 0; i < n; ++i) {
+                        c1 += (x[i] - xAvg) * (y[i] - yAvg);
+                        c2 += (x[i] - xAvg) * (x[i] - xAvg);
+                    }
+
+                    // The only way you can get nan here is if
+                    // c2 = 0, i.e. all x[i] are equal
+                    a = c1 / c2;
+                    b = yAvg - a*xAvg;
+                }
+//================================================================================
+
+                void calibrateLeastSquares(const CalibrationTable &table, double &txPower, double &damp) {
+                    using namespace std;
+
+                    // data for leastSquares
+                    vector<double> x, y;
+                    double a, b;
+
+                    // Theory: we seek the dependence
+                    // R = T - 10*n*log10(d)
+                    // R = RSSI, T= TxPower, n = damp, d = distance (meters)
+                    // We use the linear least squares y = a*x +b
+                    // with y=R, x=log10(d), a = -10*n, b = T
+
+                    // Loop over pairs
+                    for (const auto & val: table) {
+                        x.push_back(log10(val.first));  // log10(dist)
+                        y.push_back(val.second); // RSSI
+                    }
+
+                    leastSquares(x, y, a, b);  // Find a, b
+
+                    txPower = b;
+                    damp = - a/10;
+                }
+//================================================================================
 
 
             }

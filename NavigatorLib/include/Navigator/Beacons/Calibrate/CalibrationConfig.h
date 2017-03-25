@@ -10,37 +10,36 @@ namespace Navigator {
 
             /// Calibration configuration data
             struct CalibrationConfig {
-                /**
-                 *
-                 */
-                enum class Mode {ONE_POINT, ONE_POINT_D, ONE_POINT_TEST, GRADIENT, MEAN_SQUARE};
+
+                // Constructor
+                CalibrationConfig(double maxDist, double kLos, double bLos, double initTxPower) :
+                        maxDist(maxDist),
+                        kLos(kLos),
+                        bLos(bLos),
+                        initTxPower(initTxPower) {}
+
+                // Constructor with all defaults
+                CalibrationConfig() {}
 
                 // ===Line-of-sight (LOS) data===
 
                 /// Max distance (e.g. 5 meters)
-                double maxDist;
+                double maxDist = 5.0;
                 /// Parameter k of line-of-sight
-                double kLos;
+                double kLos = - 3.074;
                 /// Parameter b of LOS
-                double bLos;
+                double bLos = -72.88;
 
-                /// Calibration mode
-                Mode mode;
+                /// Initial/ default txPower
+                double initTxPower = -70.0;
 
-                /// Average 50/50 with previous calibration ?
+                // ===== This should not be used !!!! ====
+                // This is for Alexey Roienko so-called "gradient decent" and such
 
-                bool averageWithPrevious;
-
-                // Initial/default txPower and damp
-
-                /// Initial txPower
-                double initTxPower;
-
-                /// Initial damp
-                double initDamp;
+                /// Initial/default damp
+                double initDamp = 2.0;
 
                 // Gradient descent parameters
-
 
 
             };

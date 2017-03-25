@@ -90,7 +90,7 @@ using namespace ItJim;
 //}
 
 
-int main()
+/*int main()
 {
 	Document d(kObjectType);
 	StringBuffer buffer;
@@ -105,4 +105,12 @@ int main()
 	d.Accept(writer);
 	const char* output = buffer.GetString();
 	printf("%s\n", output);
+}*/
+
+
+int main()
+{
+	cout << std::to_string(nan("")) << endl;
+	cout << std::to_string(inf("")) << endl;
+	cout << std::to_string(nan("")) << endl;
 }

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.7)
 project(navigator-test)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -31,9 +31,15 @@ target_link_libraries(navigator-test Navigator cppunit)
 add_custom_command(TARGET navigator-test
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_CURRENT_SOURCE_DIR}/beacons-data-files
-                   $<TARGET_FILE_DIR:navigator-test>/beacons-data-files
+                   ${CMAKE_CURRENT_SOURCE_DIR}/input
+                   $<TARGET_FILE_DIR:navigator-test>/input
                    )
+
+
+add_executable(test-gnuplot-iostream
+               test-gnuplot-iostream
+               ${TEAMCITY_SRC}
+               )
 
 ## Find RapidJson's bug with writing NaN to string
 add_executable(temp
@@ -41,3 +47,9 @@ add_executable(temp
                ItJim/JsonDataContract.cpp
                )
 target_link_libraries(temp Navigator cppunit)
+
+## CMake 3.6.3 will fail to find. v3.7.2 works
+FIND_PACKAGE( Boost 1.63 REQUIRED COMPONENTS filesystem regex )
+#FIND_PACKAGE( Boost 1.63 REQUIRED )
+ADD_DEFINITIONS(-DBOOST_SYSTEM_DYN_LINK)
+target_link_libraries(navigator-test ${Boost_LIBRARIES})

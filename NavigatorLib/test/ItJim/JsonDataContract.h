@@ -5,7 +5,7 @@
 #pragma once
 
 
-#include "memory"
+#include <memory>
 
 #include "rapidjson/rapidjson.h"
 #include <rapidjson/document.h>
@@ -22,7 +22,7 @@
 namespace ItJim {
 	namespace JsonDataContract {
 		
-		using namespace rapidjson;
+		namespace rj = rapidjson;
 		
 		/// Отражение того что дали It-Jim в своих json-файлах
 		struct BeaconReceivedDataJson
@@ -51,14 +51,30 @@ namespace ItJim {
 		};
 		
 		
+		/// Файл с именем типа `2017-24-02_06-31-51_bluetooth.json`
+		/// представляет собой 2ух мерный массив BeaconReceivedDataJson.
+		/// 1 измерение массива - группировка по МАС, 2ое список пакетов пришедших от этого МАС
+		//todo логичнее и правильнее хранить плоский одномерный массив упорядоченный по времени прихода пакетов,
+		//todo так же как оно приходит в реальном устройстве
+		struct BeaconReceivedDataJsonFile : std::vector<BeaconReceivedDataJson>
+		{
+		public:  // == CONSTRUCTORS ==
+			BeaconReceivedDataJsonFile(rapidjson::Document const& doc);
+		public:
+			//static BeaconReceivedDataJsonFile ParseDOM(rapidjson::Document const& doc);
+			//static void ParseDOM(rapidjson::Value const& val, BeaconReceivedDataJson &to);
+			//static BeaconReceivedDataJson ParseDOM(rapidjson::Value const& val);
+		};
+		
+		
 		struct BeaconOnMapJson
 		{
 			double x;
 			double y;
 			double z;
 			std::string macAddress;
-			int major;
-			int minor;
+			int    major;
+			int    minor;
 			double damp;
 			double txpower;
 		
@@ -102,10 +118,9 @@ namespace ItJim {
 		
 		struct OutputPosition : virtual public Navigator::Math::Position3D
 		{
-		public:
+		public:  // === CONSTRUCTORS ===
 			// Inherited constructor
 			using Navigator::Math::Position3D::Position3D;
-			OutputPosition() = default;
 			OutputPosition(Navigator::Math::Position3D p3d){
 				//*this = p3d;  // -> SIGSEGV
 				this->x = p3d.x;
@@ -113,6 +128,7 @@ namespace ItJim {
 				this->z = p3d.z;
 				//OutputPosition::Position3D(p3d);
 			}
+			OutputPosition() = default;
 		public:  // === STATIC ===
 			//static void CheckDOM(rapidjson::Document const& doc);
 			static void ParseDOM(rapidjson::Value const& val, OutputPosition &to);
@@ -121,6 +137,7 @@ namespace ItJim {
 				OutputPosition::ParseDOM(val,to);
 				return to;
 			};
+			static std::vector<OutputPosition> FromRapidJsonArrayToVector(rapidjson::Value const &value);
 		public:
 			///\note \param doc is needed to GetAllocator()
 			rapidjson::Value toJson(rapidjson::Document &doc) const;
@@ -128,6 +145,6 @@ namespace ItJim {
 		
 		
 		std::shared_ptr<MapJson> ReadOfficeMap(char const *filepath);
-		std::vector<BeaconReceivedDataJson> ReadSnifferedDataFromBeacons(char const *filepath);
+		BeaconReceivedDataJsonFile ReadSnifferedDataFromBeacons(char const *filepath);
 	}
 }

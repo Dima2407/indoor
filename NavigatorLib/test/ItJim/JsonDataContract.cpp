@@ -7,16 +7,17 @@
 #include <algorithm>
 
 #include "JsonDataContract.h"
-#include <cppunit/extensions/HelperMacros.h>
+//#include <cppunit/extensions/HelperMacros.h>
 
 using namespace std;
+using namespace rapidjson;
 
 
 namespace ItJim {
 	namespace JsonDataContract {
 		
 		
-		void BeaconReceivedDataJson::CheckDOM(rapidjson::Document const& doc)
+		/*void BeaconReceivedDataJson::CheckDOM(rapidjson::Document const& doc)
 		{
 			CPPUNIT_ASSERT( doc.IsArray() );
 			CPPUNIT_ASSERT( doc[0].IsArray() );
@@ -34,7 +35,7 @@ namespace ItJim {
 			CPPUNIT_ASSERT( obj.HasMember("serviceUUID") );
 			CPPUNIT_ASSERT( obj.HasMember("TXpower") );
 			CPPUNIT_ASSERT( obj.HasMember("TimeStamp") );
-		}
+		}*/
 		
 		void BeaconReceivedDataJson::ParseDOM(rapidjson::Value const& val, BeaconReceivedDataJson &to)
 		{
@@ -59,6 +60,36 @@ namespace ItJim {
 		}
 		
 		
+		///\param doc Document - 2d array of BeaconReceivedDataJson
+		///\return List of received packets, ordered by time
+		BeaconReceivedDataJsonFile::
+		BeaconReceivedDataJsonFile(rapidjson::Document const &doc)
+		{
+			// maybe todo Check json-scheme and check file before parsing
+			//BeaconReceivedDataJson::CheckDOM(doc);
+			for( auto it = doc.Begin(); it != doc.End(); ++it ) {
+				for (auto jt = it->Begin(); jt != it->End(); ++jt) {
+					this->push_back(
+							BeaconReceivedDataJson::ParseDOM(*jt)
+					);
+				}
+			}
+			std::sort(this->begin(), this->end());
+		}
+		
+		
+		///\return List of received packets, ordered by time
+		BeaconReceivedDataJsonFile ReadSnifferedDataFromBeacons(char const *filepath)
+		{
+			using namespace rapidjson;
+			FILE* fp = fopen(filepath, "rb");  // non-Windows use "r"
+			std::vector<char> buf(262144);
+			FileReadStream is(fp, buf.data(), buf.capacity());
+			Document doc;
+			doc.ParseStream(is);  // after this buffer may/could be reused or deleted.
+			fclose(fp);
+			return BeaconReceivedDataJsonFile(doc);
+		}
 		
 		
 		//todo  void BeaconOnMapJson::CheckDOM(rapidjson::Document const& doc);
@@ -88,8 +119,6 @@ namespace ItJim {
 		
 		void MapJson::ParseDOM(rapidjson::Value const& val, MapJson &to)
 		{
-			CPPUNIT_ASSERT(val.IsObject());
-			
 			//TODO//beacons
 			auto const &beacons_json = val["beacons"];
 			//for (rapidjson::SizeType i=0; i < beacons_json.Size(); i++) // Uses SizeType instead of size_t
@@ -128,11 +157,33 @@ namespace ItJim {
 		OutputPosition::
 		toJson(rapidjson::Document & doc) const
 		{
+			namespace rj = rapidjson;
 			auto ret = rapidjson::Value(kObjectType);
-			ret.AddMember( "x", this->x, doc.GetAllocator() )
-				.AddMember( "y", this->y, doc.GetAllocator() )
-				.AddMember( "z", this->z, doc.GetAllocator() );
+			if( isfinite(x) )  ret.AddMember( "x", this->x, doc.GetAllocator() );
+			else               ret.AddMember( "x", StringRef( /*to_string(this->x).c_str()*/"nan" ), doc.GetAllocator() );
+			if( isfinite(y) )  ret.AddMember( "y", this->y, doc.GetAllocator() );
+			else               ret.AddMember( "y", StringRef( /*to_string(this->y).c_str()*/"nan" ), doc.GetAllocator() );
+			if( isfinite(z) )  ret.AddMember( "z", this->z, doc.GetAllocator() );
+			else               ret.AddMember( "z", StringRef( /*to_string(this->z).c_str()*/"nan" ), doc.GetAllocator() );
 			return ret;
+		}
+		
+		
+		///
+		/// \param value
+		/// \return
+		/*static*/
+		std::vector<OutputPosition>
+		OutputPosition::FromRapidJsonArrayToVector( rapidjson::Value const& value )
+		{
+			assert(value.IsArray());
+			std::vector<OutputPosition> trace;
+			for( auto it = value.Begin(); it != value.End(); ++it ) {
+				trace.push_back(
+						OutputPosition::ParseDOM(*it)
+				);
+			}
+			return trace;
 		}
 		
 		
@@ -140,7 +191,6 @@ namespace ItJim {
 		{
 			FILE* fp = fopen(filepath, "rb"); // non-Windows use "r"
 			char *readBuffer = new char[65536];  // max file size.
-			//std::shared_ptr<char> sp( new char[size_of_input_file], std::default_delete<char[]>() );
 			FileReadStream is(fp, readBuffer, 65536);
 			Document doc;
 			doc.ParseStream(is);
@@ -155,33 +205,38 @@ namespace ItJim {
 			return map;
 		}
 		
+		shared_ptr<MapJson> ReadOfficeMap(std::string const& filepath)
+		{
+			return ReadOfficeMap(filepath.c_str());
+		}
 		
-		///\return List of received packets, ordered by time
-		std::vector<BeaconReceivedDataJson> ReadSnifferedDataFromBeacons(char const *filepath)
+		
+		///
+		std::vector<OutputPosition> ReadOutputPositionsFromRapidJsonArray(rapidjson::Value const &value)
+		{
+			assert(value.IsArray());
+			std::vector<OutputPosition> trace;
+			for( auto it = value.Begin(); it != value.End(); ++it ) {
+				trace.push_back(
+						OutputPosition::ParseDOM(*it)
+				);
+			}
+			return trace;
+		}
+		
+		
+		///
+		std::vector<OutputPosition> ReadOutputPositionsFromJsonFile(char const *filepath)
 		{
 			FILE* fp = fopen(filepath, "rb");  // non-Windows use "r"
-			std::vector<char> readBuffe(262144);
-			FileReadStream is(fp, readBuffe.data(), readBuffe.capacity());
+			std::vector<char> buf(262144);
+			FileReadStream is(fp, buf.data(), buf.capacity());
 			Document doc;
 			doc.ParseStream(is);  // after this buffer may/could be reused or deleted.
-			
-			// Check json-scheme and check file before parsing
-			BeaconReceivedDataJson::CheckDOM(doc);
-			
-			//auto beaconPackets = std::make_shared<BeaconReceivedDataJson>();
-			std::vector<BeaconReceivedDataJson> beaconPackets;
-			for( auto it = doc.Begin(); it != doc.End(); ++it ) {
-				for (auto jt = it->Begin(); jt != it->End(); ++jt) {
-					beaconPackets.push_back(
-							BeaconReceivedDataJson::ParseDOM(*jt)
-					);
-				}
-			}
-			std::sort(beaconPackets.begin(), beaconPackets.end());
-			
 			fclose(fp);
-			return beaconPackets;
+			return ReadOutputPositionsFromRapidJsonArray(doc);
 		}
+		
 		
 	}  //namespace JsonDataContract
 }  // namespace ItJim

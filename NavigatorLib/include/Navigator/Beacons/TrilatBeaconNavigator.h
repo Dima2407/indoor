@@ -92,6 +92,14 @@ namespace Navigator {
             void clear() {
                 beaconProcessorList.clear();
             }
+	        
+	        /// Reset filters and last calculated position
+	        void reset/*Filters*/(){
+		        lastPosition = Math::Position3D();
+		        for( auto & proc : beaconProcessorList ){
+			        proc.second->reset();
+		        }
+	        }
 
             const Math::Position3D &getLastPosition() const {
                 return lastPosition;

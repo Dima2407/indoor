@@ -50,6 +50,18 @@ namespace Navigator {
                 return isfinite(x) && isfinite(y) && isfinite(z);
             }
             bool isWrong(){ return !isFinite(); };
+            
+            bool approx_equals(Position3D const& other, double presesion){
+            	using std::abs;
+                return  (abs(x-other.x) <= presesion) &&
+                        (abs(y-other.y) <= presesion) &&
+                        (abs(z-other.z) <= presesion);
+            }
+            
+        public:  // == OPERATORS ==
+            bool operator==(Position3D const& other){
+                return x==other.x && y==other.y && z==other.z;
+            }
         };
         
         

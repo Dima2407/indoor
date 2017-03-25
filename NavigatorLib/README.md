@@ -26,7 +26,8 @@ __Directories__:
 * `src` : The library source code. Contains source files and private headers.
 * `include` : The only folder to be included for user
 * `lib` : This directory is for external libraries, e.g. Eigen
-* `example` : A sample executable
+* `example` : A positioning example
+* `exampleCalibrate` : A calibration example
 * `unittest` : CppUnit-based unit tests for the library
 * `test-tool` (`tester`, `faker`, `autotester`) : A tool for testing the library with events data
  from external _DAT_ or _JSON_ files.

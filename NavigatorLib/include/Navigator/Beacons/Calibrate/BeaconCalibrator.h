@@ -27,7 +27,8 @@ namespace Navigator {
 
             public: // ==== methods ====
 
-                int calibrate(const std::vector<CalibrationPoint> & points, const CalibrationConfig & config);
+                const std::unordered_map<BeaconUID, Beacon> &
+                calibrate(const std::vector<CalibrationPoint> & points, const CalibrationConfig & config);
 
                 /// Check if the (dist, rssi) point is legit (5 meters rule + line of sight (LOS))
                 bool isLegit(double dist, double rssi, const CalibrationConfig & config);

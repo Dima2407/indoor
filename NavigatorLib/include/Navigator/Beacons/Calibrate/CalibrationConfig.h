@@ -26,7 +26,7 @@ namespace Navigator {
                 /// Max distance (e.g. 5 meters)
                 double maxDist = 5.0;
                 /// Parameter k of line-of-sight
-                double kLos = - 3.074;
+                double kLos = -3.074;
                 /// Parameter b of LOS
                 double bLos = -72.88;
 

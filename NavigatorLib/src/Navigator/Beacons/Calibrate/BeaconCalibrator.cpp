@@ -12,7 +12,7 @@ namespace Navigator {
     namespace Beacons {
         namespace Calibrate {
 
-            int
+            const std::unordered_map<BeaconUID, Beacon> &
             BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config) {
                 using namespace std;
 
@@ -64,19 +64,22 @@ namespace Navigator {
                         // Calculate the distance from point to the beacon
                         double distance = beacon.getPos().distance(point.position);
 
-                        // Add (distance, average rssi) pair to the calibration table
-                        // This adds average RSSI for all beacons and the current point
+                        // Check if the distance is legit
+                        if (isLegit(distance, averageRSSI, config)) {
+                            // Add (distance, average rssi) pair to the calibration table
+                            // This adds average RSSI for all beacons and the current point
 
-                        // Create a uid entry if doesn't exist
-                        if (calTables.count(uid) == 0)
-                            calTables[uid] = vector<pair<double, double>>();
+                            // Create a uid entry if doesn't exist
+                            if (calTables.count(uid) == 0)
+                                calTables[uid] = vector<pair<double, double>>();
 
-                        //calTables[uid].push_back(make_pair(distance, averageRSSI));
+                            calTables[uid].push_back(make_pair(distance, averageRSSI));
+                        }
+
                     }
                 }
 
                 // Now the calibration table is formed
-                int beaconCount = 0; // Number of beacons calibrated
 
                 // Loop over all beacons in calTables;
                 for (auto const &entry: calTables) {
@@ -85,6 +88,7 @@ namespace Navigator {
                     Beacon &beacon = beaconMap[uid];
 
                     // Calibrate beacon : finally
+                    // Get previous values (not used currently)
                     double txPower = beacon.getTxPower(); // Iput/Output values
                     double damp = beacon.getDamp();
 
@@ -94,17 +98,16 @@ namespace Navigator {
                     if (!isnan(damp) && !isnan(txPower)) {
                         beacon.setTxPower(txPower);
                         beacon.setDamp(damp);
-                        beaconCount++;
                     }
                 }
 
-                return beaconCount;
+                return beaconMap;
             }
 
             bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) {
 
-                // Check that dist is less than max dist (e.g. 5 meters)
-                if (dist > config.maxDist)
+                // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
+                if (dist > config.maxDist || dist <= 0)
                     return false;
                     // Now check the line-of-sight
                 else

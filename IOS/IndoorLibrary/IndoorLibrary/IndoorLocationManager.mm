@@ -11,16 +11,13 @@
 #import "BluetoothMeasurementProvider.h"
 #import "GPSMeasurementProvider.h"
 #import "BluetoothBridge.h"
-#import "PrefixHeader.pch"
 #import "IndoorError.h"
-#import "ErrorListener.h"
-
 
 
 
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
-
+@property (nonatomic, strong) NSMutableArray *logs;
 @end
 
 
@@ -33,6 +30,8 @@
         self.providers = [NSMutableSet new];
         self.transfer = [[IosMeasurementTransfer alloc] init];
         self.transfer.delegate = self;
+        self.logs = [NSMutableArray new];
+        
     }
     return self;
 }
@@ -146,8 +145,22 @@
             
         }
         [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+        if (self.logger)
+        {
+            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @(time),@"timestamp",
+                                  @([event.beacon.minor intValue]),@"minor",
+                                  @(event.beacon.rssi),@"rssi",
+                                  coordinates,@"Position",
+                                  nil];
+            [self.logs addObject:data];
+        }
     }
 }
+
+
+#pragma mark - Error
+
 
 -(void)processError:(IndoorError *)error{
     
@@ -155,6 +168,17 @@
     
     
 }
+
+
+#pragma mark - Logger
+
+-(NSMutableArray*)logging{
+    
+    
+    return self.logs;
+}
+
+
 
 
 @end

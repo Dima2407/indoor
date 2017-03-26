@@ -49,7 +49,7 @@
 -(void)_throwErrorWithOptions:(NSUInteger)code title:(NSString*)title message:(NSString*) message
 {
     IndoorError *error = [[IndoorError alloc] initWithOptions:code title:title message:message];
-    //[self.transfer deliverError:error];
+    [self.transfer deliverError:error];
     
 }
 

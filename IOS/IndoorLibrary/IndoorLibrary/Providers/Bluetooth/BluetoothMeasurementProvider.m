@@ -42,7 +42,7 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
 -(void)_throwErrorWithOptions:(NSUInteger)code title:(NSString*)title message:(NSString*) message
 {
     IndoorError *error = [[IndoorError alloc] initWithOptions:code title:title message:message];
-    //[self.transfer deliverError:error];
+    [self.transfer deliverError:error];
     
 }
 

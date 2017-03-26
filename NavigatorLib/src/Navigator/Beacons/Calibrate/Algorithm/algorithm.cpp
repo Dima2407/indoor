@@ -2,6 +2,7 @@
 // Created by  Oleksiy Grechnyev on 3/24/2017.
 //
 #include <cmath>
+// #include <iostream>
 
 #include "Navigator/Beacons/Calibrate/Algorithm/algorithm.h"
 
@@ -34,14 +35,57 @@ namespace Navigator {
 
                 void calibrateOnePointG(double dist, double rssi, const CalibrationConfig config, double &txPower,
                                         double &damp) {
+                    using namespace std;
 
+                    // The so-called "gradient descent"
+                    double tx_cur = config.initTxPower;
+                    double damp_cur = config.initDamp;
+
+                    double tx_next = 0;
+                    double damp_next = 0;
+
+                    double difference = 1;
+                    int step = 1;
+
+                    double mse_tx = 0, mse_damp = 0, err = 0;
+
+                    while (difference > config.gradEps && step <= config.gradMaxSteps) {
+                        // cout << step << " : " << tx_cur << "  " << damp_cur << "  " << difference << endl;
+
+                        // Calculated rssi for dist
+                        double rssi_calc = tx_cur - 10*damp_cur*log10(dist);
+                        // RSSI error, we try to minimize err^2
+                        err = rssi_calc - rssi;
+
+                        // Gradient of err^2, I guess
+                        mse_tx = -2*err;
+                        mse_damp = 2*err*log10(dist);
+
+                        tx_next = tx_cur + 0.5*config.gradMu*mse_tx;
+                        damp_next = damp_cur + 0.5*config.gradMu*mse_damp;
+
+                        difference = fabs(tx_next - tx_cur) + fabs(damp_next - damp_cur);
+
+                        tx_cur = tx_next;
+                        damp_cur = damp_next;
+                        step++;
+                    }
+
+                    if (step <= config.gradMaxSteps) {
+                        // Converged
+                        txPower = tx_cur;
+                        damp = damp_cur;
+                    } else {
+                        txPower = nan("");
+                        damp = nan("");
+                    }
                 }
 //================================================================================
 
                 void calibrateOnePointD(double dist, double rssi, const CalibrationConfig config, double &txPower,
                                         double &damp) {
 
-                    if (dist==1.0) {
+                    if (dist == 1.0 || dist < 0) { // Wrong data
                         txPower = std::nan("");
                         damp = std::nan("");
                         return;
@@ -63,10 +107,10 @@ namespace Navigator {
                     int n = x.size(); // Number of input points
 
                     // This version requires at least 2 data points
-                    if (n<2 || n!=y.size()) {
+                    if (n < 2 || n != y.size()) {
                         a = std::nan("");
                         b = a;
-                        return ;
+                        return;
                     }
 
                     // Find average x,y
@@ -89,7 +133,7 @@ namespace Navigator {
                     // The only way you can get nan here is if
                     // c2 = 0, i.e. all x[i] are equal
                     a = c1 / c2;
-                    b = yAvg - a*xAvg;
+                    b = yAvg - a * xAvg;
                 }
 //================================================================================
 
@@ -107,7 +151,7 @@ namespace Navigator {
                     // with y=R, x=log10(d), a = -10*n, b = T
 
                     // Loop over pairs
-                    for (const auto & val: table) {
+                    for (const auto &val: table) {
                         x.push_back(log10(val.first));  // log10(dist)
                         y.push_back(val.second); // RSSI
                     }
@@ -115,7 +159,22 @@ namespace Navigator {
                     leastSquares(x, y, a, b);  // Find a, b
 
                     txPower = b;
-                    damp = - a/10;
+                    damp = -a / 10;
+                }
+
+//================================================================================
+
+                void calibrateOnePointT(double dist, double rssi, const CalibrationConfig config, double &txPower,
+                                        double &damp) {
+                    if (dist <= 0) {
+                        // Bad data
+                        damp = std::nan("");
+                        txPower = std::nan("");
+                    } else {
+                        // Good data
+                        damp = config.initDamp;
+                        txPower = rssi + 10 * damp * log10(dist);
+                    }
                 }
 //================================================================================
 

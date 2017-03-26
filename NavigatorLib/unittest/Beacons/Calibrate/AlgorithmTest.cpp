@@ -186,6 +186,65 @@ namespace NaviTest {
 
 
             }
+//================================================================================
+
+            void AlgorithmTest::testCalibrateOnePointT() {
+                using namespace std;
+                using namespace Navigator::Beacons::Calibrate::Algorithm;
+                using namespace Navigator::Beacons::Calibrate;
+                using namespace Navigator::Math::Trilat;
+
+                // The ideal TXPower, damp; 2.0 is the default damp from config
+                constexpr double txPower0 = -30.0, damp0 = 2.0;
+
+                double dist = 1.6;
+                double rssi = fakeRSSI(dist, txPower0, damp0);
+
+                double txPower, damp; // Result
+
+                calibrateOnePointT(dist, rssi, CalibrationConfig(), txPower, damp);
+
+//                cout << "txPower = " << txPower << endl;
+//                cout << "damp = " << damp << endl;
+                // Set the accuracy
+                constexpr double accuracy = 1.0e-10;
+
+                CPPUNIT_ASSERT(myDoubleEq(txPower, txPower0, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(damp, damp0, accuracy));
+
+                // The bad cases
+                // dist == 0
+                calibrateOnePointT(0.0, rssi, CalibrationConfig(), txPower, damp);
+                CPPUNIT_ASSERT(isnan(txPower) && isnan(damp));
+
+                // dist < 0
+                calibrateOnePointT(-1.0, rssi, CalibrationConfig(), txPower, damp);
+                CPPUNIT_ASSERT(isnan(txPower) && isnan(damp));
+
+            }
+//================================================================================
+
+            void AlgorithmTest::testCalibrateOnePointG() {
+                using namespace std;
+                using namespace Navigator::Beacons::Calibrate::Algorithm;
+                using namespace Navigator::Beacons::Calibrate;
+                using namespace Navigator::Math::Trilat;
+
+
+                double dist = 1.5, rssi = -100.0;
+
+                double txPower, damp; // Result
+
+                calibrateOnePointG(dist, rssi, CalibrationConfig(), txPower, damp);
+
+//                cout << "txPower = " << txPower << endl;
+//                cout << "damp = " << damp << endl;
+//                cout << "fakeRSSI = " << fakeRSSI(dist, txPower, damp) << endl;
+
+                // Check that txPower & damp are reasonable
+                CPPUNIT_ASSERT(myDoubleEq(rssi, fakeRSSI(dist, txPower, damp), 1.0e-3));
+
+            }
 
 //================================================================================
 

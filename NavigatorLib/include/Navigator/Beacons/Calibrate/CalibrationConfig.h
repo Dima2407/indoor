@@ -33,14 +33,16 @@ namespace Navigator {
                 /// Initial/ default txPower
                 double initTxPower = -70.0;
 
-                // ===== This should not be used !!!! ====
+                // ===== This should not be normally used !!!! ====
                 // This is for Alexey Roienko so-called "gradient decent" and such
 
                 /// Initial/default damp
                 double initDamp = 2.0;
 
-                // Gradient descent parameters
-
+                // So-called "Gradient descent" parameters
+                double gradMu = 0.01;
+                double gradEps = 1.0e-5;
+                int gradMaxSteps = 10000;
 
             };
 

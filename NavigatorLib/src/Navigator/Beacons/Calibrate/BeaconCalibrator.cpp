@@ -16,11 +16,17 @@ namespace Navigator {
             BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config) {
                 using namespace std;
 
+
+                // Now we have input calibration points with packets from different beacons
+                // We have to break them down by beacons, average them (for each point+beacon)
+                // And then convert calibration point position into distance to beacon
+
                 // Create the calibration tables for each beacons from the input signal
                 // Format: 2-column table
                 // distance average_RSSI
                 // For each beacon
                 unordered_map<BeaconUID, Algorithm::CalibrationTable> calTables;
+
 
                 // Outer loop: Loop over all calibration points
                 for (CalibrationPoint const &point : points) {
@@ -79,7 +85,7 @@ namespace Navigator {
                     }
                 }
 
-                // Now the calibration table is formed
+                // Now the calibration table is finished, ready to calibrate
 
                 // Loop over all beacons in calTables;
                 for (auto const &entry: calTables) {
@@ -98,6 +104,7 @@ namespace Navigator {
                     if (!isnan(damp) && !isnan(txPower)) {
                         beacon.setTxPower(txPower);
                         beacon.setDamp(damp);
+                        beacon.setCalibrated(true);
                     }
                 }
 

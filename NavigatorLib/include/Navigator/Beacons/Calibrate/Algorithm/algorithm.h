@@ -71,6 +71,7 @@ namespace Navigator {
                  *
                  *  Note: I follow the exact strange algorithm of Alexey Roienko
                  *  The so-called gradient descent
+                 *  Could be a reasonable compromise between T and D ?
                  *
                  * @param[in]       dist      Distance
                  * @param[in]       rssi      RSSI
@@ -84,7 +85,7 @@ namespace Navigator {
                                         double &txPower,
                                         double &damp);
 
-                /** @brief Calibrate using one-point calibration method
+                /** @brief Calibrate using one-point calibration method (D = damp only)
                  *
                  *  Note: This version finds damp only, using default txPower
                  *  Warning : can give negative damp !!!
@@ -97,6 +98,22 @@ namespace Navigator {
                  * @param[out]      damp      Result: damp
                  */
                 void calibrateOnePointD(double dist,
+                                        double rssi,
+                                        const CalibrationConfig config,
+                                        double &txPower,
+                                        double &damp);
+
+                /** @brief Calibrate using one-point calibration method (T = TxPower only)
+                 *
+                 *  Note: This version finds txPower only, using default damp
+                 *
+                 * @param[in]       dist      Distance
+                 * @param[in]       rssi      RSSI
+                 * @param[in]       config    Configuration data
+                 * @param[out]      txPower   Result: txPower
+                 * @param[out]      damp      Result: damp
+                 */
+                void calibrateOnePointT(double dist,
                                         double rssi,
                                         const CalibrationConfig config,
                                         double &txPower,

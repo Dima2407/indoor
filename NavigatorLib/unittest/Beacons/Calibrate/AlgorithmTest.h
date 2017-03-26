@@ -19,17 +19,25 @@ namespace NaviTest {
                     CPPUNIT_TEST(testLeastSquares);
                     CPPUNIT_TEST(testCalibrateLeastSquares);
                     CPPUNIT_TEST(testCalibrateOnePointD);
+                    CPPUNIT_TEST(testCalibrateOnePointT);
+                    CPPUNIT_TEST(testCalibrateOnePointG);
                 CPPUNIT_TEST_SUITE_END();
             public: // === Methods ===
 
-                // Test linear least squares
+                /// Test linear least squares
                 void testLeastSquares();
 
-                // Test least squares calibration
+                /// Test least squares calibration
                 void testCalibrateLeastSquares();
 
-                // Test 1-point calibration
+                /// Test 1-point calibration (D)
                 void testCalibrateOnePointD();
+
+                // Test 1-point calibration (T)
+                void testCalibrateOnePointT();
+
+                // Test 1-point calibration (G)
+                void testCalibrateOnePointG();
 
             };
         }

@@ -56,6 +56,10 @@ namespace Navigator {
                 return meta;
             }
 
+            bool isCalibrated() const {
+                return calibrated;
+            }
+
         public: //==== Setters =====
 
             void setTxPower(double txPower) {
@@ -64,6 +68,10 @@ namespace Navigator {
 
             void setDamp(double damp) {
                 Beacon::damp = damp;
+            }
+
+            void setCalibrated(bool calibrated) {
+                Beacon::calibrated = calibrated;
             }
             //---------------------------------------------
             // Private fields
@@ -83,6 +91,9 @@ namespace Navigator {
 
             /// Some extra data if needed, don't ask
             std::string meta;
+
+            /// Set to true upon successful calibration
+            bool calibrated = false;
 
         };
     }

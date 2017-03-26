@@ -27,7 +27,9 @@ set(SOURCE_FILES
         #
         Beacons/BeaconUIDTest.cpp Beacons/BeaconUIDTest.h
         Beacons/BeaconProcessorTest.cpp Beacons/BeaconProcessorTest.h
-        Beacons/TrilatBeaconNavigatorTest.cpp Beacons/TrilatBeaconNavigatorTest.h Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h)
+        Beacons/TrilatBeaconNavigatorTest.cpp Beacons/TrilatBeaconNavigatorTest.h
+        Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h
+        Beacons/Calibrate/BeaconCalibratorTest.cpp Beacons/Calibrate/BeaconCalibratorTest.h)
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

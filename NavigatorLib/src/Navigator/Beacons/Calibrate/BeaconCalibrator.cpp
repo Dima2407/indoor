@@ -91,7 +91,7 @@ namespace Navigator {
                 for (auto const &entry: calTables) {
                     const BeaconUID &uid = entry.first;
                     const Algorithm::CalibrationTable &table = entry.second;
-                    Beacon &beacon = beaconMap[uid];
+                    Beacon &beacon = beaconMap.at(uid);
 
                     // Calibrate beacon : finally
                     // Get previous values (not used currently)
@@ -110,6 +110,7 @@ namespace Navigator {
 
                 return beaconMap;
             }
+//================================================================================
 
             bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) {
 
@@ -117,10 +118,13 @@ namespace Navigator {
                 if (dist > config.maxDist || dist <= 0)
                     return false;
                     // Now check the line-of-sight
-                else
-                    return rssi > config.kLos * dist + config.bLos;
-
+                else {
+                    double temp = config.kLos * dist + config.bLos;
+                    return rssi > temp;
+                }
             }
+//================================================================================
+
         }
     }
 }

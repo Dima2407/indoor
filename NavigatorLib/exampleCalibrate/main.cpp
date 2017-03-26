@@ -43,11 +43,11 @@ int main() {
     // And so are weak RSSI signals (the line-of-sight question ),
     // see CalibrationConfig.h for details
     //
-    // When calibrrating with at least 2 legitimete points (for a beacon)
+    // When calibrrating with at least 2 legitimate points (for a beacon)
     // It uses linear least squares
     // If only one point, it returns damp for the default txPower, it's bad
     //
-    // In this example I simulate beacon data packets with fake RSSI
+    // In this example I simulate beacon data packets with fake RSSIs
     //
     // We also create a calibrator and give it positions of all beacons
     //
@@ -103,7 +103,7 @@ int main() {
     };
 
     // Create the vector of calibration points
-    // Each calibration point includes position and a vector of beacon signals
+    // Each calibration point includes position and a std::vector of beacon signals
     vector<CalibrationPoint> calPoints(4);
 
     // Now we create fake RSSI's for this example.
@@ -125,15 +125,15 @@ int main() {
             // We generate several packets for each point and beacon, with a simulated noise
             // Calibrator should simply average over it
             for (int noiseInd = -5; noiseInd <= +5; noiseInd++) {
-                double noise = noiseInd*0.5;
+                double noise = noiseInd * 0.5;
 
                 // Timestamp is not used for calibration, we put 0.0
-                const double timeStamp = 0.5;
+                const double timeStamp = 0.0;
                 // The correct uid of the beacon
                 BeaconUID uid("Chipmunk", 1, beacInd);
                 // Fake rssi signal for given calibration point and beacon + noise
                 double rssi = noise + fakeRSSI(points[pointInd], beaconPositions[beacInd],
-                                       fakeTxPower[beacInd], fakeDamp[beacInd]);
+                                               fakeTxPower[beacInd], fakeDamp[beacInd]);
 
                 // Add data packet with uid and rssi
                 calPoints[pointInd].packets.push_back(
@@ -152,22 +152,36 @@ int main() {
     CalibrationConfig config(5.0, -3.074, -72.88, -70.0);
 
     // Run the calibration finally
-    const auto &result = calibrator.calibrate(calPoints, config);
+    const auto & result = calibrator.calibrate(calPoints, config);
 
     // Print the result
     // The result is a std::unordered_map<BeaconUID, Beacon>
-    // We can also access individual beacons as result[uid]
+
+    cout << "All beacons : " << endl;
 
     for (const auto &val : result) {
         // Result is a std::pair<BeaconUID, Beacon>
         const BeaconUID &uid = val.first;
         const Beacon &beacon = val.second;
 
-        cout << "Beacon " << (int)uid[10] << " : txPower = " << beacon.getTxPower()
-             << ", damp = " << beacon.getDamp() << endl;
+        cout << "Beacon " << (int) uid[10] << " : txPower = " << beacon.getTxPower()
+             << ", damp = " << beacon.getDamp() << " : " <<
+             (beacon.isCalibrated() ? "SUCCESS" : "FAILURE") << endl;
 
     }
 
+    // We can also access individual beacons as result.at(uid) if you know uid
+    // Note that result[uid] syntax does not work with a const map, at() is cleaner
+    cout << "Beacons by UID : " << endl;
+    for (int beacInd = 0; beacInd < 5; ++beacInd) {
+        // The correct uid of the beacon
+        BeaconUID uid("Chipmunk", 1, beacInd);
+        const Beacon &beacon = result.at(uid);
+
+        cout << "Beacon " << beacInd << " : txPower = " << beacon.getTxPower()
+             << ", damp = " << beacon.getDamp() << " : " <<
+             (beacon.isCalibrated() ? "SUCCESS" : "FAILURE") << endl;
+    }
 
     return 0;
 }

@@ -22,6 +22,8 @@ namespace Navigator {
                 CalibrationConfig() {}
 
                 // ===Line-of-sight (LOS) data===
+                // LOS equation: rssi = k*dist + b
+                // smaller rssi are discraded
 
                 /// Max distance (e.g. 5 meters)
                 double maxDist = 5.0;

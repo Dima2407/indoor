@@ -20,8 +20,22 @@ namespace Navigator {
     namespace Beacons {
         namespace Calibrate {
 
-            /**
+            /** @brief This class is used to calibrate beacons
              *
+             * @startuml
+             * class BeaconCalibrator{
+             * // This class is used to calibrate beacons //
+             * --
+             * - beaconMap : std::unordered_map<BeaconUID, Beacon>
+             * --
+             * + calibrate(points : const std::vector<CalibrationPoint> & , config : const CalibrationConfig & ) :
+             * const std::unordered_map<BeaconUID, Beacon> &
+             * + isLegit(dist : double, rssi : double, config : const CalibrationConfig &) : bool
+             * + addBeacon(beacon : const Beacon &) : void
+             * + addBeacons<IterableT>(beacons : IterableT const&) : void
+             * + deleteBeacon(uid : const BeaconUID &) : void
+             * }
+             * @enduml
              */
             class BeaconCalibrator {
 

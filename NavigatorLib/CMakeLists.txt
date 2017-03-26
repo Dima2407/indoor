@@ -3,6 +3,9 @@ project(NavigatorLib)
 
 set(CMAKE_CXX_STANDARD 14)
 
+## Tell CMake to search first in directories listed in CMAKE_MODULE_PATH when you use FIND_PACKAGE() or INCLUDE() 
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/lib)
+#SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeScripts)
 
 ## Build libNavigator.a
 add_subdirectory(src)
@@ -24,6 +27,9 @@ add_subdirectory(example)
 
 # Build unittest
 add_subdirectory(unittest)
+
+# Build NavigatorJson 
+add_subdirectory(NavigatorJson)
 
 # Пока нет нужды. Хватает хэдеров
 #add_subdirectory(lib/Eigen)

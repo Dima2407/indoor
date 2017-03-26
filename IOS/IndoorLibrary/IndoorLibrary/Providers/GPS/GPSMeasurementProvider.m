@@ -22,10 +22,10 @@
 @end
 
 @implementation GPSMeasurementProvider
+@synthesize transfer;
 
 
-
--(instancetype)initWithTransfer: (IosMeasurementTransfer*) transfer {
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) gpsTransfer {
     self = [super init];
     
     if (self != nil)
@@ -35,7 +35,7 @@
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.manager requestWhenInUseAuthorization];
-        self.transfer = transfer;
+        self.transfer = gpsTransfer;
         self.type = GPS_PROVIDER;
         
        

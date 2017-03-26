@@ -18,9 +18,10 @@
 @end
 
 @implementation BluetoothMeasurementProvider
+@synthesize transfer;
 
 static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
--(instancetype)initWithTransfer:(IosMeasurementTransfer *)transfer{
+-(instancetype)initWithTransfer:(IosMeasurementTransfer *)bleTransfer{
     self = [super init];
     
     if(self){
@@ -29,7 +30,7 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
         self.manager = [[CLLocationManager alloc]init];
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
-        self.transfer = transfer;
+        self.transfer = bleTransfer;
           [self.manager requestWhenInUseAuthorization];
         self.type = BLE_PROVIDER;
     }

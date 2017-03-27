@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD 14)
 ## Boost
 ## -----
 set( Boost_USE_STATIC_LIBS $false )
-set( BOOST_ROOT  ../lib/boost_1_63_0 )  ## Better to set CMAKE_MODULES
+#set( BOOST_ROOT  ../lib/boost_1_63_0 )  ## Better to set CMAKE_PREFIX_PATH
+
 ## CMake 3.6.3 will fail to find. v3.7.2 works
 FIND_PACKAGE( Boost 1.63 REQUIRED COMPONENTS filesystem regex )
 #ADD_DEFINITIONS(-DBOOST_SYSTEM_DYN_LINK)  ## Failed on windows
@@ -33,4 +34,12 @@ add_custom_command(TARGET NavigatorJson
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_CURRENT_SOURCE_DIR}/input
                    $<TARGET_FILE_DIR:NavigatorJson>/input
+                   )
+
+## Copy README.md
+add_custom_command(TARGET NavigatorJson
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy
+                   ${CMAKE_CURRENT_SOURCE_DIR}/README.md
+                   $<TARGET_FILE_DIR:NavigatorJson>/README.md
                    )

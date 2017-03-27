@@ -123,6 +123,7 @@ namespace ItJim {
 					fs::create_directory(traceDir);
 				std::string traceFilename = "trace-";
 				traceFilename += itr->path().filename().string();
+				cout << "Write file " << traceFilename << endl;
 				WriteTraceToFile(trace, traceDir.append(traceFilename.c_str()).string() );
 			}
 		}

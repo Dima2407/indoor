@@ -36,10 +36,10 @@ add_custom_command(TARGET navigator-test
                    )
 
 
-add_executable(test-gnuplot-iostream
-               test-gnuplot-iostream
-               ${TEAMCITY_SRC}
-               )
+#add_executable(test-gnuplot-iostream
+#               test-gnuplot-iostream
+#               ${TEAMCITY_SRC}
+#               )
 
 ## Find RapidJson's bug with writing NaN to string
 add_executable(temp
@@ -49,6 +49,7 @@ add_executable(temp
 target_link_libraries(temp Navigator cppunit)
 
 ## CMake 3.6.3 will fail to find. v3.7.2 works
+#set( BOOST_ROOT  ../lib/boost_1_63_0 )  ## Better to set CMAKE_PREFIX_PATH
 FIND_PACKAGE( Boost 1.63 REQUIRED COMPONENTS filesystem regex )
 #FIND_PACKAGE( Boost 1.63 REQUIRED )
 ADD_DEFINITIONS(-DBOOST_SYSTEM_DYN_LINK)

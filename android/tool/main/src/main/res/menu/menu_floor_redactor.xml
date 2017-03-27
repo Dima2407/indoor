@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/beacon_add_tool"
+        android:checkable="true"
+        android:icon="@drawable/ic_wifi_tethering_black_36dp"
+        android:title="Add/Edit beacons"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/remove_beacons_tool"
+        android:checkable="true"
+        android:icon="@drawable/ic_remove_circle_outline_black_36dp"
+        android:title="Remove beacons"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/calibration_tool"
+        android:checkable="true"
+        android:icon="@drawable/ic_autorenew_black_36dp"
+        android:title="Calibrate beacons"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share_variant"
+        android:title="Share"
+        app:showAsAction="never" />
+
+    <group android:id="@+id/unselected_items">
+
+        <item
+            android:id="@+id/show_info_window"
+            android:icon="@drawable/ic_info_outline_black_36dp"
+            android:title="Show map information"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/save_map"
+            android:icon="@drawable/ic_info_outline_black_36dp"
+            android:title="Send map to server"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/clear_calibration"
+            android:icon="@drawable/ic_info_outline_black_36dp"
+            android:title="Clear calibration data"
+            app:showAsAction="never" />
+    </group>
+</menu>

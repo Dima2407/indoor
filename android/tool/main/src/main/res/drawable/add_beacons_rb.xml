@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/colorPrimaryDark"/>
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_wifi_tethering_white_36dp"/>
+        </layer-list>
+    </item>
+    <item android:drawable="@drawable/ic_wifi_tethering_black_36dp"/>
+</selector>

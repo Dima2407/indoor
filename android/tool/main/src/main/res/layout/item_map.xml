@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="?attr/selectableItemBackground"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/im_image"
+        android:layout_marginEnd="8dp"
+        android:layout_width="@dimen/item_map_image_width"
+        android:layout_height="@dimen/item_map_image_height"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/map_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="mac"
+            android:textColor="#000"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/map_size"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="mac"
+            android:textColor="#444"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/beacons_size"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="mac"
+            android:textColor="#444"
+            android:textSize="18sp"/>
+    </LinearLayout>
+</LinearLayout>

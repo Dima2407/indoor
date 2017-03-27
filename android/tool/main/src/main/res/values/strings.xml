@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Indoor-tool</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="photo">Photo</string>
+    <string name="gallery">Gallery</string>
+    <string name="enter_distance_between_points_in_meters">Enter distance between points in meters:</string>
+    <string name="Save">save</string>
+    <string name="update_beacon_success">Update beacon success</string>
+    <string name="fail_update_beacon_success">Fail update beacon success</string>
+    <string name="update_floor_config_success">Update floor config success</string>
+    <string name="fail_update_floor_config_success">Fail update floor config success</string>
+
+</resources>

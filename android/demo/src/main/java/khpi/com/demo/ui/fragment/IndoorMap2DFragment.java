@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import khpi.com.demo.R;
+import khpi.com.demo.model.BeaconModel;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Route;
@@ -36,13 +37,19 @@ import khpi.com.demo.utils.ManeuverHelper;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
+import pro.i_it.indoor.region.BluetoothBeacon;
+import pro.i_it.indoor.region.InMemoryBeaconsLoader;
+import pro.i_it.indoor.region.SpaceBeacon;
 
 //import com.indoor.beacon.IndoorPositionManager;
 import com.squareup.picasso.Picasso;
 
+import org.altbeacon.beacon.Beacon;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static pro.i_it.indoor.DebugConfig.TAG;
@@ -146,7 +153,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                //getActivityBridge().getLauncher().launchIndoorCameraFragment(floor);
+                getActivityBridge().getLauncher().launchIndoorCameraFragment(floor);
             }
         });
 
@@ -171,12 +178,69 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
+
                 if (IS_DEBUG) {
                     Log.d(TAG, "onLocationChanged: " + SystemClock.elapsedRealtime() / 1000 + "  " + Arrays.toString(position));
                 }
                 applyNewCoordinate(position[0], position[1], 1, 1);
             }
         });
+
+        List<BeaconModel> list = new ArrayList<>();
+        BeaconModel beacon1 = new BeaconModel();
+        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+        beacon1.setMajor(61902);
+        beacon1.setMinor(48049);
+        beacon1.setTxpower(-71.2f);
+        beacon1.setDamp(2);
+        beacon1.setPositionX(4.5f);
+        beacon1.setPositionY(0.0f);
+        beacon1.setPositionZ(2.3f);
+        list.add(beacon1);
+
+        beacon1 = new BeaconModel();
+        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+        beacon1.setMajor(61902);
+        beacon1.setMinor(48050);
+        beacon1.setTxpower(-71.2f);
+        beacon1.setDamp(2);
+        beacon1.setPositionX(0.0f);
+        beacon1.setPositionY(3.7f);
+        beacon1.setPositionZ(2.6f);
+        list.add(beacon1);
+
+        beacon1 = new BeaconModel();
+        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+        beacon1.setMajor(61902);
+        beacon1.setMinor(48051);
+        beacon1.setTxpower(-71.2f);
+        beacon1.setDamp(2);
+        beacon1.setPositionX(4.0f);
+        beacon1.setPositionY(12.8f);
+        beacon1.setPositionZ(2.3f);
+        list.add(beacon1);
+
+        beacon1 = new BeaconModel();
+        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+        beacon1.setMajor(61902);
+        beacon1.setMinor(48052);
+        beacon1.setTxpower(-71.2f);
+        beacon1.setDamp(2);
+        beacon1.setPositionX(0.3f);
+        beacon1.setPositionY(9.9f);
+        beacon1.setPositionZ(2.6f);
+        list.add(beacon1);
+
+        floor.setBeacons(list);
+
+        Collection<SpaceBeacon> floorSpaceBeacons = new ArrayList<>();
+        for(BeaconModel beacon : floor.getBeacons()){
+                SpaceBeacon spaceBeacon = new BluetoothBeacon("23a01af0-232a-4518-9c0e-323fb773f5ef", beacon.getMajor(), beacon.getMinor(),
+                        beacon.getTxpower(), 2, beacon.getPositionX(), beacon.getPositionY(), beacon.getPositionZ());
+            floorSpaceBeacons.add(spaceBeacon);
+        }
+
+        instance.setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floorSpaceBeacons, 10));
 //        instance.registerListener(this);
 //        instance.registerErrorListener(this);
 //        instance.startTrackPosition();
@@ -192,7 +256,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     }
 
     @Override
-    public void onMapSelected(int position) {
+    public void onMapSelected(int posi) {
         //map.setCurrentFloorIndex(position - 1);
 //        floor = map.getFloors().get(position - 1);
         mapView.setRoute(new float[0]);
@@ -216,13 +280,13 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
         //instance.setBeaconsPosition(ConverterUtil.toBeaconsPosition(floor.getBeacons()));
         mapView.setBeacons(floor.getBeacons());
-//        List<Integer> inpointIdList = floor.getInpointIdList();
-//        List<Inpoint> inpoints = new ArrayList<>();
-//        for(int i : inpointIdList){
-//            inpoints.add(getActivityBridge().getDbBridge().getInpointById(i));
-//        }
-//        //List<Inpoint> inpointsByMapId = getActivityBridge().getDbBridge().getInpointsByBuildingAndFloorId(map.getId(), position);
-//        mapView.setInpoints(inpoints);
+        List<Integer> inpointIdList = floor.getInpointIdList();
+        List<Inpoint> inpoints = new ArrayList<>();
+        for(int i : inpointIdList){
+            inpoints.add(getActivityBridge().getDbBridge().getInpointById(i));
+        }
+        //List<Inpoint> inpointsByMapId = getActivityBridge().getDbBridge().getInpointsByBuildingAndFloorId(map.getId(), position);
+        mapView.setInpoints(inpoints);
 
     }
 

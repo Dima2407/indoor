@@ -17,6 +17,7 @@ import java.util.Observable;
 
 public final class DbFacade extends Observable implements DbBridge {
 
+
     private BuildingRepository buildingRepository;
     private InpointsRepository inpointsRepository;
     private FloorRepository floorRepository;
@@ -143,9 +144,15 @@ public final class DbFacade extends Observable implements DbBridge {
         List<BeaconModel> beaconModelList = new ArrayList<>();
         for(Floor floor : floorRepository.getFloorsByBuildingId(id)){
             beaconModelList = beaconRepository.getBeaconsByFloorId(floor.getId());
+            floor.setInpointIdList(inpointsRepository.getInpointsIdByFloorId(floor.getId()));
             floor.setBeacons(beaconModelList);
             floorList.add(floor);
         }
         return floorList;
+    }
+
+    @Override
+    public List<Inpoint> getInpointByFloorId(long id) {
+        return inpointsRepository.getInpointsByFloorId(id);
     }
 }

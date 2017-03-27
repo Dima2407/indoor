@@ -86,6 +86,10 @@ namespace Navigator {
                     this->addBeacon(b);
             }
 
+            int getBeacons(){
+                return beaconProcessorList.size();
+            }
+
             /// Delete a beacon by uid
             void deleteBeacon(const BeaconUID &uid) {
                 beaconProcessorList.erase(uid);

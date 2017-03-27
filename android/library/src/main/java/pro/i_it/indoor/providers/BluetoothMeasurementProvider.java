@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.RemoteException;
-import android.util.Log;
 import org.altbeacon.beacon.*;
 import pro.i_it.indoor.events.MeasurementEvent;
 import pro.i_it.indoor.local.beacon.model.AltBeaconConfigModel;
@@ -29,14 +28,43 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
             }
         }
     };
+
+    private MonitorNotifier monitorNotifier = new MonitorNotifier() {
+        @Override
+        public void didEnterRegion(Region region) {
+            try {
+                beaconManager.startRangingBeaconsInRegion(region);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void didExitRegion(Region region) {
+            try {
+                beaconManager.stopRangingBeaconsInRegion(region);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void didDetermineStateForRegion(int i, Region region) {
+
+        }
+    };
     private org.altbeacon.beacon.BeaconManager beaconManager;
     private Context context;
     private AltBeaconConfigModel configModel;
     private final BeaconConsumer beaconConsumer = new BeaconConsumer() {
         @Override
         public void onBeaconServiceConnect() {
+            final Region region = new Region("rangingId", Identifier.parse("23A01AF0-232A-4518-9C0E-323FB773F5EF"), null, null);
+
+            beaconManager.addMonitorNotifier(monitorNotifier);
+            beaconManager.addRangeNotifier(rangeNotifier);
             try {
-                beaconManager.startRangingBeaconsInRegion(new Region(configModel.getBeaconRangingId(), null, null, null));
+                beaconManager.startMonitoringBeaconsInRegion(region);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -70,25 +98,23 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
 
     public void updateSettings(SettingModel settings) {
         beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(context);
-        beaconManager.setForegroundScanPeriod(configModel.getBeaconsScanningPeriodForeground());
-        beaconManager.setForegroundBetweenScanPeriod(configModel.getBeaconsScanningForegroundBeatwen());
-        beaconManager.setBackgroundScanPeriod(configModel.getBeaconsScanningPeriodBackground());
-        beaconManager.setBackgroundBetweenScanPeriod(configModel.getBeaconsScanningBackgroundBeatwen());
+        beaconManager.setForegroundScanPeriod(configModel.getForegroundScanPeriod());
+        beaconManager.setForegroundBetweenScanPeriod(configModel.getForegroundBetweenScanPeriod());
+        beaconManager.setBackgroundScanPeriod(configModel.getBackgroundScanPeriod());
+        beaconManager.setBackgroundBetweenScanPeriod(configModel.getBackgroundBetweenScanPeriod());
         BeaconParser parser = new BeaconParser().setBeaconLayout(configModel.getRangingBeaconsFormat());
         beaconManager.getBeaconParsers().add(parser);
     }
 
     @Override
     public void start() {
-        beaconManager.addRangeNotifier(rangeNotifier);
         beaconManager.bind(beaconConsumer);
-
-
     }
 
     @Override
     public void stop() {
         beaconManager.removeRangeNotifier(rangeNotifier);
+        beaconManager.removeMonitoreNotifier(monitorNotifier);
         beaconManager.unbind(beaconConsumer);
     }
 }

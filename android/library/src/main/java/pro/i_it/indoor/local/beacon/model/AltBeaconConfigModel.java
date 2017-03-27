@@ -1,18 +1,23 @@
 package pro.i_it.indoor.local.beacon.model;
 
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.Region;
+
+import java.util.UUID;
+
 /**
  * Created by syn on 19.12.16.
  */
 
 public class AltBeaconConfigModel {
     private String rangingBeaconsFormat = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25";
-    private String beaconRangingId = "rangingId";
+    private String beaconRangingId ="rangingId";// System.currentTimeMillis() + "";
+    private String beaconIdentifierId = "23A01AF0-232A-4518-9C0E-323FB773F5EF";
     private long beaconsScanningPeriodForeground = 1000;
     private long beaconsScanningForegroundBeatwen = 10000;
     private long beaconsScanningForegroundBeatenConcurrency = 2000;
     private long beaconsScanningPeriodBackground = 2000;
     private long beaconsScanningBackgroundBeatwen = 30000;
-
 
     public AltBeaconConfigModel() {
     }
@@ -80,5 +85,34 @@ public class AltBeaconConfigModel {
 
     public void setBeaconRangingId(String beaconRangingId) {
         this.beaconRangingId = beaconRangingId;
+    }
+
+    public Identifier getBeaconIdentifierId() {
+        //return Identifier.fromUuid(UUID.fromString(beaconIdentifierId));
+        return Identifier.parse(beaconIdentifierId);
+    }
+
+    public void setBeaconIdentifierId(String beaconIdentifierId) {
+        this.beaconIdentifierId = beaconIdentifierId;
+    }
+
+    public Region getRegion(){
+       return new Region(getBeaconRangingId(), getBeaconIdentifierId(), null, null);
+    }
+
+    public long getForegroundScanPeriod() {
+        return 300;
+    }
+
+    public long getForegroundBetweenScanPeriod() {
+        return 0;
+    }
+
+    public long getBackgroundScanPeriod() {
+        return 1000;
+    }
+
+    public long getBackgroundBetweenScanPeriod() {
+        return 0;
     }
 }

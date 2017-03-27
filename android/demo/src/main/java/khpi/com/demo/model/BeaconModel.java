@@ -9,6 +9,32 @@ import com.google.gson.annotations.SerializedName;
 
 public class BeaconModel implements Parcelable {
 
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setTxpower(float txpower) {
+        this.txpower = txpower;
+    }
+
+    public String getUuid() {
+
+        return uuid;
+    }
+
+    public float getTxpower() {
+        return txpower;
+    }
+
+    @SerializedName("txpower")
+    @Expose
+
+    private float txpower;
+
     @SerializedName("x")
     @Expose
     private float positionX;
@@ -175,6 +201,8 @@ public class BeaconModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(uuid);
+        parcel.writeFloat(txpower);
         parcel.writeString(macAddress);
         parcel.writeFloat(positionX);
         parcel.writeFloat(positionY);
@@ -189,6 +217,8 @@ public class BeaconModel implements Parcelable {
     }
 
     private BeaconModel(Parcel parcel) {
+        uuid = parcel.readString();
+        txpower = parcel.readFloat();
         macAddress = parcel.readString();
         positionX = parcel.readFloat();
         positionY = parcel.readFloat();

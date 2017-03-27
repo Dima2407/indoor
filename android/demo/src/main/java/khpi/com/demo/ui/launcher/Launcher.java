@@ -48,11 +48,11 @@ public final class Launcher {
         launch(IndoorMap2DFragment.makeInstance(floor));
     }
 
-    public void launchIndoorCameraFragment(Building map) {
-        launch(IndoorCameraFragment.makeInstance(map));
-    }
-
-//    public void launchIndoorCameraFragment(Floor map) {
+//    public void launchIndoorCameraFragment(Building map) {
 //        launch(IndoorCameraFragment.makeInstance(map));
 //    }
+
+    public void launchIndoorCameraFragment(Floor map) {
+        launch(IndoorCameraFragment.makeInstance(map));
+    }
 }

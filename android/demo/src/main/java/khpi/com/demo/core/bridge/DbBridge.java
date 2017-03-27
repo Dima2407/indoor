@@ -45,7 +45,9 @@ public interface DbBridge {
     List<Inpoint> getInpoints();
 
     List<Inpoint> getInpointsByBuildingAndFloorId(long id, int floorId);
+    List<Inpoint> getInpointByFloorId(long id);
     void saveFloors(List<Floor> floors);
 
     Inpoint getInpointById(int id);
+
 }

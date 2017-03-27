@@ -1,6 +1,7 @@
 package khpi.com.demo.ui.activity;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import khpi.com.demo.R;
+import khpi.com.demo.core.GRApplication;
 import khpi.com.demo.ui.BottomSheet;
 import khpi.com.demo.ui.adapter.RouteDataAdapter;
 
@@ -29,6 +31,8 @@ public final class MainActivity extends GenericActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final GRApplication application = (GRApplication) getApplication();
+        application.init(this);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -46,7 +46,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     //private IndoorPositionManager positionManager;
     private IndoorCameraOverlay indoorCameraOverlay;
     private CameraPreview cameraPreview;
-    private Building building;
+//    private Building building;
+    private Floor floor;
     //private IndoorPositionManager.PositionListener listener;
     private IndoorRadarView radarView;
 
@@ -54,10 +55,18 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     private RecyclerView.OnScrollListener scrollListener;
     private Point destinationPoint;
 
-    public static Fragment makeInstance(Building map) {
+//    public static Fragment makeInstance(Building map) {
+//        IndoorCameraFragment fragment = new IndoorCameraFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("map", map);
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
+
+    public static Fragment makeInstance(Floor floor){
         IndoorCameraFragment fragment = new IndoorCameraFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("map", map);
+        bundle.putParcelable("floor", floor);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -65,7 +74,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        building = getArguments().getParcelable("map");
+        floor = getArguments().getParcelable("floor");
+//        building = getArguments().getParcelable("map");
         //positionManager = IndoorPositionManager.getInstance(getContext());
     }
 
@@ -128,7 +138,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         view.findViewById(R.id.indoor_camera_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                //getActivityBridge().getLauncher().launchIndoorMapFragment(building);
+                getActivityBridge().getLauncher().launchIndoorMapFragment(floor);
             }
         });
     }
@@ -167,19 +177,19 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         getActivityBridge().getOrientationBridge().startOrientationTracking(deviceOrientationListener);
 
         radarView.setRoute(new float[0]);
-        radarView.initMapImage(FileUtil.getLocacPath(getActivity(), String.valueOf(building.getId()), String.valueOf(1), "map").getAbsolutePath(), building.getFloors().get(0).getPixelSize());
-
+        //radarView.initMapImage(FileUtil.getLocacPath(getActivity(), String.valueOf(building.getId()), String.valueOf(1), "map").getAbsolutePath(), building.getFloors().get(0).getPixelSize());
+        radarView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
     }
 
     private void onNewPosition(final float x, final float y) {
         if (getContext() == null) {
             return;
         }
-        final Floor floor = building.getFloors().get(building.getCurrentFloorIndex());
+//        final Floor floor = building.getFloors().get(building.getCurrentFloorIndex());
         indoorCameraOverlay.onCurrentPositionChanged(x * floor.getPixelSize(), y * floor.getPixelSize());
 
-        List<Inpoint> inpoints = getActivityBridge().getDbBridge().getInpointsByBuildingAndFloorId(building.getId(), building.getCurrentFloorIndex() + 1);
-
+        //List<Inpoint> inpoints = getActivityBridge().getDbBridge().getInpointsByBuildingAndFloorId(building.getId(), building.getCurrentFloorIndex() + 1);
+        List<Inpoint> inpoints = getActivityBridge().getDbBridge().getInpointByFloorId(floor.getId());
         if (destinationPoint == null) {
             indoorCameraOverlay.updateInpoints(inpoints, floor);
         } else {
@@ -258,7 +268,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
 
         List<RouteHelper.Motion> motions = getActivityBridge().getRouteHelper().getMoutions(route);
 
-        final Route r = getActivityBridge().getRouteHelper().buildRoute(motions, building.getFloors().get(building.getCurrentFloorIndex()));
+        final Route r = getActivityBridge().getRouteHelper().buildRoute(motions, floor/*building.getFloors().get(building.getCurrentFloorIndex())*/);
 
         indoorCameraOverlay.queueEvent(new Runnable() {
             @Override

@@ -22,6 +22,9 @@ add_subdirectory(test)
 # Build example
 add_subdirectory(example)
 
+# Build exampleCalibrate
+add_subdirectory(exampleCalibrate)
+
 # Build unittest
 add_subdirectory(unittest)
 

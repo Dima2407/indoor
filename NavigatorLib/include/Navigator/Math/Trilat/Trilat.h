@@ -6,6 +6,7 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
 
 #include "Navigator/Math/Position3D.h"
 
@@ -13,7 +14,31 @@
 namespace Navigator {
     namespace Math {
         namespace Trilat {
-            
+
+            /** @brief  Calculate a fake RSSI signal for 2 points
+             *
+             * This is for the example only, of course you don't need this for the real code
+             */
+            double inline fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp) {
+                /*double dist = p1.distance(p2);
+                double temp = log10(dist);
+                return txPower - 10 * damp * temp;*/
+                return txPower - 10 * damp * log10(p1.distance(p2));
+            }
+
+
+            /** @brief  Calculate a fake RSSI signal for a distance
+             *
+             * This is for the example only, of course you don't need this for the real code
+             */
+            double inline fakeRSSI(double dist, double txPower, double damp) {
+                /*double dist = p1.distance(p2);
+                double temp = log10(dist);
+                return txPower - 10 * damp * temp;*/
+                return txPower - 10 * damp * log10(dist);
+            }
+
+
             /** \brief Trilateration in 2D.
              *
              * Trilateration in 2D with a minimum of reference 3 points (beacons).
@@ -61,12 +86,8 @@ namespace Navigator {
             /// This version throws exception if failure
             Position3D trilatLocation3d(const std::vector<Position3D> &beaconsPos,
                                         const std::vector<double> &beaconsDist);
-    
-            /*/// Calculate a fake RSSI signal for 2 points
-            double fakeRSSI(const Position3D &p1, const Position3D &p2, double txPower, double damp)
-            {
-                return txPower - 10 * damp * log10( p1.distance(p2) );
-            }*/
+
+
         }
     }
 }

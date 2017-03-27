@@ -82,7 +82,7 @@ namespace Navigator {
             /// Add Beacons
             template <typename IterableT>
             void addBeacons(IterableT const& beacons) {
-                for( auto b : beacons )
+                for( const auto & b : beacons )
                     this->addBeacon(b);
             }
 

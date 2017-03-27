@@ -6,7 +6,13 @@
 #include "./BeaconReceivedData.h"
 #include "./BeaconUID.h"
 #include "./TrilatBeaconNavigator.h"
+#
 #include "./Factory/IFilterFactory.h"
 #include "./Factory/AlphaBetaFilterFactory.h"
 #include "./Factory/MovingAverageFilterFactory.h"
 #include "./Factory/NoFilterFactory.h"
+#
+#include "./Calibrate/BeaconCalibrator.h"
+#include "./Calibrate/CalibrationConfig.h"
+#include "./Calibrate/CalibrationPoint.h"
+#include "./Calibrate/Algorithm/algorithm.h"

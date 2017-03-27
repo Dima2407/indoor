@@ -14,6 +14,7 @@
 //#import "IosMeasurementTransfer.h"
 
 @interface ViewController ()<IndoorLocationListener,ErrorListener>
+@property (weak, nonatomic) IBOutlet UISwitch *loggerSwitch;
 @property (nonatomic, strong)IndoorLocationManager *manager;
 @end
 
@@ -37,7 +38,7 @@
     [self.manager setBeaconConfig:firstBeacon];
     [self.manager setBeaconConfig:secondBeacon];
     [self.manager setBeaconConfig:thirdBeacon];
-     [self.manager setBeaconConfig:forthBeacon];
+    [self.manager setBeaconConfig:forthBeacon];
 
 
     
@@ -59,14 +60,91 @@
 #pragma mark - Action
 
 
-- (IBAction)start:(id)sender {
+- (IBAction)start:(UIButton *)sender {
     //[self.pr start];
   [self.manager start];
+    if (self.loggerSwitch.on)
+    {
+        self.manager.logger = YES;
+    }
+    else{
+        self.manager.logger = NO;
+    }
 }
-- (IBAction)stop:(id)sender {
+- (IBAction)stop:(UIButton *)sender {
     [self.manager stop ];
-    //[self.pr stop];
+    if (self.manager.logger)
+    {
+        [self sendLogs];
+    }
 }
+
+- (IBAction)record:(UISwitch *)sender {
+    if (sender.on){
+         self.manager.logger = YES;
+    }
+    else{
+         self.manager.logger = NO;
+    }
+   
+}
+
+
+
+#pragma mark - Logging
+-(void)sendLogs{
+    NSError *error = nil;
+   
+    
+    NSData *jsonIndoorData = [NSJSONSerialization dataWithJSONObject:[self.manager logging] options:NSJSONReadingAllowFragments error:&error];
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    
+    
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd_hh-mm-ss_"];
+        NSDate *date = [NSDate date];
+        [dateFormatter stringFromDate:date];
+    
+    
+    
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@IndoorLogs.txt",[dateFormatter stringFromDate:date]]];
+    [jsonIndoorData writeToFile:path atomically:YES];
+    NSURL *filePath = [NSURL fileURLWithPath:path];
+    NSArray *activity =[NSArray arrayWithObject:filePath];
+    UIActivityViewController* activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:activity
+                                      applicationActivities:nil];
+    
+ 
+    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        NSLog(@"iPad");
+        
+        UIPopoverController* pop =  [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        [pop presentPopoverFromRect:CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 100) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else
+    {
+        NSLog(@"iPhone");
+        
+        
+        
+        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+        };
+        [activityViewController setValue:@"IndoorLogs" forKey:@"subject"];
+        [self presentViewController:activityViewController animated:YES completion:nil];
+        
+    }
+    
+
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

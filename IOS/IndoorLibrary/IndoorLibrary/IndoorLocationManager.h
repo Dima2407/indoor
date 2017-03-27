@@ -23,4 +23,5 @@
 -(void)start;
 -(void)stop;
 -(void)setBeaconConfig:(BeaconConfig*) config;
+-(NSMutableArray*)logging;
 @end

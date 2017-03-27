@@ -4,7 +4,7 @@
 //
 //  Created by AppleFace on 06.03.17.
 //  Copyright © 2017 PischenkoL. All rights reserved.
-//OOOOOOOOOOOOOO
+
 #import "PrefixHeader.pch"
 
 
@@ -15,6 +15,7 @@
 @property (nonatomic, strong) IosMeasurementTransfer *transfer;
 @property (nonatomic, strong) id<IndoorLocationListener> locationListener;
 @property (nonatomic, strong) id<ErrorListener> errorListener;
+@property (nonatomic, assign) BOOL logger;
 
 
 -(void)addProvider: (MeasurementProviderType) type;
@@ -22,4 +23,5 @@
 -(void)start;
 -(void)stop;
 -(void)setBeaconConfig:(BeaconConfig*) config;
+-(NSMutableArray*)logging;
 @end

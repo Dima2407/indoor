@@ -13,6 +13,6 @@
 
 
 
--(instancetype)initWithTransfer: (IosMeasurementTransfer*) transfer;
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) bleTransfer;
 
 @end

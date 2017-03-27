@@ -78,7 +78,7 @@
 
                 }
                  
-                else if (type ==GPS_PROVIDER){
+                else if (type == GPS_PROVIDER){
                     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
                         if (obj.type == BLE_PROVIDER)
                         {
@@ -151,7 +151,9 @@
                                   @(time),@"timestamp",
                                   @([event.beacon.minor intValue]),@"minor",
                                   @(event.beacon.rssi),@"rssi",
-                                  coordinates,@"Position",
+                                  [NSString stringWithFormat:@"%@",[coordinates objectAtIndex:0]],@"X",
+                                   [NSString stringWithFormat:@"%@",[coordinates objectAtIndex:1]],@"Y",
+                                  [NSString stringWithFormat:@"%@",[coordinates objectAtIndex:2]],@"Z",
                                   nil];
             [self.logs addObject:data];
         }

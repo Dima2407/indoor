@@ -12,6 +12,6 @@
 
 @interface GPSMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
 
--(instancetype)initWithTransfer: (IosMeasurementTransfer*) transfer;
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) gpsTransfer;
 
 @end

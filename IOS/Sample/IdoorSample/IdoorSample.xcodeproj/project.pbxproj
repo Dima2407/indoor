@@ -421,6 +421,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				DEVELOPMENT_TEAM = CME5G2A9T6;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../IndoorLibrary/build/Products/Debug-iphoneos/include/**";
 				INFOPLIST_FILE = IdoorSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -447,6 +448,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				DEVELOPMENT_TEAM = CME5G2A9T6;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../IndoorLibrary/build/Products/Debug-iphoneos/include/**";
 				INFOPLIST_FILE = IdoorSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

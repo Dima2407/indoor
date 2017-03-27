@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "02CFDAAC45639DDBCFEE1164305B27C7F52ABE87",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7F980E00EF2A36C9BED9F1EA9E09EFE035DBC1FD" : 9223372036854775807,
+    "02CFDAAC45639DDBCFEE1164305B27C7F52ABE87" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "5690EB6B-1B2B-4D7A-93FA-A152938C96C0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7F980E00EF2A36C9BED9F1EA9E09EFE035DBC1FD" : "..\/..",
+    "02CFDAAC45639DDBCFEE1164305B27C7F52ABE87" : "IOS_BLE\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "iosNavigation",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "iosNavigation.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/kaa-solutions\/indoor-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "02CFDAAC45639DDBCFEE1164305B27C7F52ABE87"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/kaa-solutions\/indoor-sdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7F980E00EF2A36C9BED9F1EA9E09EFE035DBC1FD"
+    }
+  ]
+}

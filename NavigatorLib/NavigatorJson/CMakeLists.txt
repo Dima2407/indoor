@@ -28,6 +28,11 @@ set(SOURCE_FILES
 add_executable(NavigatorJson ${SOURCE_FILES})
 target_link_libraries(NavigatorJson Navigator ${Boost_LIBRARIES})
 
+if(WIN32)  #and mingw
+#set_target_properties(NavigatorJson PROPERTIES LINK_FLAGS --disable-shared)
+set_target_properties(NavigatorJson PROPERTIES LINK_FLAGS -static -static-libgcc -static-libstdc++)
+endif(WIN32)
+	
 ## Copy folder beacons-data-files to build path, near executable.
 add_custom_command(TARGET NavigatorJson
                    POST_BUILD

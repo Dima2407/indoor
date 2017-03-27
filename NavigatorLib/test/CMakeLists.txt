@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(NavigatorTest)
+project(navigator-test)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -22,17 +22,17 @@ set(SOURCE_FILES
     ItJim/JsonDataContract.cpp
     CppUnit-main.cpp)
 
-add_executable(NavigatorCppUnitTest ${SOURCE_FILES})
-target_link_libraries(NavigatorCppUnitTest Navigator cppunit)
+add_executable(navigator-test ${SOURCE_FILES})
+target_link_libraries(navigator-test Navigator cppunit)
 
 #MESSAGE( STATUS "asd  " ${CMAKE_SOURCE_DIR} )
 
 ## Copy folder beacons-data-files to build path, near executable.
-add_custom_command(TARGET NavigatorCppUnitTest
+add_custom_command(TARGET navigator-test
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_CURRENT_SOURCE_DIR}/input
-                   $<TARGET_FILE_DIR:NavigatorCppUnitTest>/input
+                   $<TARGET_FILE_DIR:navigator-test>/input
                    )
 
 
@@ -48,10 +48,8 @@ add_executable(temp
                )
 target_link_libraries(temp Navigator cppunit)
 
-set( BOOST_ROOT  ../lib/boost_1_63_0 )
 ## CMake 3.6.3 will fail to find. v3.7.2 works
 FIND_PACKAGE( Boost 1.63 REQUIRED COMPONENTS filesystem regex )
 #FIND_PACKAGE( Boost 1.63 REQUIRED )
 ADD_DEFINITIONS(-DBOOST_SYSTEM_DYN_LINK)
-target_link_libraries(NavigatorCppUnitTest ${Boost_LIBRARIES})
-
+target_link_libraries(navigator-test ${Boost_LIBRARIES})

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import khpi.com.demo.BuildConfig;
 import khpi.com.demo.R;
+import khpi.com.demo.core.bridge.DbBridge;
 import khpi.com.demo.model.Building;
 import khpi.com.demo.ui.adapter.AbstractRecyclerAdapter;
 import khpi.com.demo.ui.adapter.BuildingAdapter;
@@ -20,13 +21,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class IndorMapsFragment extends GenericFragment implements AbstractRecyclerAdapter.OnClickListener<Building>/*, NetUtil.NetFileListener*/, Observer {
+public class BuildingsFragment extends GenericFragment implements AbstractRecyclerAdapter.OnClickListener<Building>, Observer {
 
     private RecyclerView recycler;
     private BuildingAdapter buildingAdapter;
-    private ProgressDialog progressDialog;
-    private Building item;
-    private ProgressDialog dialog;
 
 
     @Nullable
@@ -68,11 +66,6 @@ public class IndorMapsFragment extends GenericFragment implements AbstractRecycl
 
     @Override
     public void onClick(View v, Building item, int position) {
-//        this.item = item;
-//        progressDialog = new ProgressDialog(getContext());
-//        progressDialog.setMessage("Wait...");
-//        progressDialog.show();
-//        getActivityBridge().getNetBridge().loadInpointsByBuildingId(item.getId());
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         FloorsFragment floorsFragment = new FloorsFragment();
         Bundle bundle = new Bundle();
@@ -84,38 +77,14 @@ public class IndorMapsFragment extends GenericFragment implements AbstractRecycl
         ft.commit();
     }
 
-//    @Override
-//    public void onError(Throwable throwable) {
-//
-//    }
-//
-//    @Override
-//    public void onSuccess(File result) {
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                progressDialog.dismiss();
-//                getActivityBridge().getLauncher().launchIndoorMapFragment(item);
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public void onProgress(int done, int total) {
-//
-//    }
-
     @Override
     public void update(Observable o, Object arg) {
-//        if (arg.equals(DbBridge.BUILDINGS_UPDATED)) {
-//            List<Building> buildings = getActivityBridge().getDbBridge().getBuildings();
-//            buildingAdapter.clear();
-//            buildingAdapter.addItems(buildings);
-//            return;
-//        }
-//        if(arg.equals(DbBridge.INPOINTS_UPDATED)){
-//            MapCacheHelper.cacheMapData(getContext(), item, this);
-//            return;
-//        }
+        if (arg.equals(DbBridge.BUILDINGS_UPDATED)) {
+            List<Building> buildings = getActivityBridge().getDbBridge().getBuildings();
+            buildingAdapter.clear();
+            buildingAdapter.addItems(buildings);
+            return;
+        }
+
     }
 }

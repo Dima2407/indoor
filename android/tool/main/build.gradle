@@ -9,11 +9,11 @@ android {
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
-        versionName "0.2.1"
+        versionName "0.2.2"
 
         externalNativeBuild {
             cmake {
-                arguments "-DANDROID_STL=c++_shared"
+                arguments "-DANDROID_STL=c++_shared", "-DANDROID_NATIVE_API_LEVEL=19"
             }
         }
     }

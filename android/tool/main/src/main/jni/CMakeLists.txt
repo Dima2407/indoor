@@ -5,30 +5,19 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -stdlib=libc++14")
 
 file(GLOB_RECURSE LIBRARY "../../../../../../NavigatorLib/src/Navigator/*.cpp")
 
-include_directories(
-                    ../../../../../../NavigatorLib/include
-                    ../../../../../../NavigatorLib/lib
-                    )
+include_directories(../../../../../../NavigatorLib/include
+                    ../../../../../../NavigatorLib/lib)
 
 add_library( Navigator
              STATIC
              ${LIBRARY})
 
-add_library( # Sets the name of the library.
-             native-lib
-
-             # Sets the library as a shared library.
+add_library( native-lib
              SHARED
+             native-lib.cpp)
 
-             # Provides a relative path to your source file(s).
-             native-lib.cpp
-             ${LIBRARY}
-             )
-
-find_library(
-              log-lib
-              log
-              )
+find_library( log-lib
+              log)
 
 target_link_libraries(
                        native-lib

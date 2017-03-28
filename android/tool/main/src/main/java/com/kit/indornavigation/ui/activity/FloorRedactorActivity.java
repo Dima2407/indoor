@@ -707,6 +707,8 @@ public final class FloorRedactorActivity extends BaseActivity {
             return;
         }
 
+        previousItem = null;
+
         calibrationThread.interrupt();
         try {
             calibrationThread.join();

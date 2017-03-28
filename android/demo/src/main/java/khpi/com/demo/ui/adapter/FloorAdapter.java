@@ -28,9 +28,9 @@ public class FloorAdapter extends AbstractRecyclerAdapter<Floor> {
         }
 
         @Override
-        public void fill(Floor map, int position) {
-            title.setText(map.getSubtitle());
-            subtitle.setText(map.getSubtitle());
+        public void fill(Floor floor, int position) {
+            title.setText("Floor " + floor.getNumber());
+            subtitle.setText(floor.getSubtitle());
         }
     }
 }

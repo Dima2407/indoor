@@ -5,12 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import khpi.com.demo.R;
-import khpi.com.demo.model.Building;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.ui.fragment.FloorsFragment;
 import khpi.com.demo.ui.fragment.IndoorCameraFragment;
 import khpi.com.demo.ui.fragment.IndoorMap2DFragment;
-import khpi.com.demo.ui.fragment.IndorMapsFragment;
+import khpi.com.demo.ui.fragment.BuildingsFragment;
 
 public final class Launcher {
 
@@ -33,24 +32,16 @@ public final class Launcher {
     }
 
     public void launchIndoorMapsFragment() {
-        launch(new IndorMapsFragment());
+        launch(new BuildingsFragment());
     }
 
     public void launchFloorFragment(){
         launch(new FloorsFragment());
     }
 
-//    public void launchIndoorMapFragment(Building map) {
-//        launch(IndoorMap2DFragment.makeInstance(map));
-//    }
-
     public void launchIndoorMapFragment(Floor floor) {
         launch(IndoorMap2DFragment.makeInstance(floor));
     }
-
-//    public void launchIndoorCameraFragment(Building map) {
-//        launch(IndoorCameraFragment.makeInstance(map));
-//    }
 
     public void launchIndoorCameraFragment(Floor map) {
         launch(IndoorCameraFragment.makeInstance(map));

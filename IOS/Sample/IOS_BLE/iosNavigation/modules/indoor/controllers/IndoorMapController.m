@@ -33,11 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //self.manager = [[SessionManager alloc] init];
-
-   // [[SessionManager sharedManager] getMapListWithComplitionBlock:^(NSArray *mapList) {
-           // }];
-
+ 
     self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     self.routeInfoView.hidden = YES;
     self.clearRouteButton.enabled = NO;
@@ -47,13 +43,6 @@
     [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
     [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
-//    [self getMapData:self.map.mapID floor:@"1" fileType:@"map" mapModel:self.map completionBlock:^(MapModel *map) {
-//        if(map.mapImage != nil){
-//        [self setMapImage:map.mapImage];
-//        }
-//        else{
-//        }
-//    }];
     [[SessionManager sharedManager] getFloorMap:self.floor.mapPath dataType:@"map" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
         if(map.mapImage != nil){
             [self setMapImage:map.mapImage];
@@ -277,5 +266,6 @@
     self.drawView.startPoint = CGPointZero;
     [self.drawView setNeedsDisplay];
 }
+
 
 @end

@@ -12,7 +12,7 @@
 #import "FloorModel.h"
 
 @interface IndoorMainController ()
-//@property (nonatomic, strong) SessionManager *manager;
+
 @end
 
 @implementation IndoorMainController

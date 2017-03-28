@@ -29,6 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self createDropdownMenu];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -75,6 +76,19 @@
     IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
     vc.floor = floor;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Create Drop Down Menu -
+-(void) createDropdownMenu{
+    
+    SWRevealViewController *revealViewController = self.revealViewController;
+    if ( revealViewController )
+    {
+        self.revealViewController.rearViewRevealWidth = self.view.bounds.size.width * 0.8f;
+        [self.menuButton setTarget: self.revealViewController];
+        [self.menuButton setAction: @selector( revealToggle: )];
+        [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    }
 }
 
 /*

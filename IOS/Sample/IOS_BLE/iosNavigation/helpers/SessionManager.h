@@ -15,6 +15,7 @@
 
 @interface SessionManager : NSObject
 
+
 +(SessionManager*) sharedManager;
 -(void)loginToServer;
 -(void) getMarkersFromServerWithLatitude:(NSString*)lallitude Longitude:(NSString*)longitude complitionBlock:(void(^)(NSSet *poiModels))complitionBlock;
@@ -22,6 +23,5 @@
 -(void) getMapListWithComplitionBlock:(void(^)(NSArray *mapList))complitionBlock;
 -(void) getIndoorPoiForMapID:(NSString*)mapID complitionBlock:(void(^)(NSDictionary *poiDictionary))complitionBlock;
 -(void) getFloorMap:(NSString*)path dataType:(NSString*)typefile floorModel:(FloorModel*)floor withCoplitionBlock:(void(^)(FloorModel *map))complitionBlock;
--(void)requesrtToServer:(NSURL*)url httpBody:(NSString*)httpBody withBlock:(void(^)(NSData *data))complitionBlock;
 -(void) getIndoorPoiForFloorID:(NSString*)floorID complitionBlock:(void(^)(NSDictionary *poiDictionary))complitionBlock;
 @end

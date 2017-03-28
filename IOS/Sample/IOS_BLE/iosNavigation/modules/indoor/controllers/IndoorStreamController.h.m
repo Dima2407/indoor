@@ -28,6 +28,20 @@
 -(void) viewDidLoad{
     [super viewDidLoad];
     
+    
+    //////////////////////TODO//////////////////////////////
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRadar"])
+//    {
+//        [self createRadarView];
+//    }
+//    else{
+//        self.scrollView.hidden = YES;
+//    }
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
+//    {
+//        self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
+//    }
+    /////////////////////////////////////////////////////////
     [self createRadarView];
      self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     self.routeInfoView.hidden = YES;

@@ -92,7 +92,7 @@
     
  NSString* pathLogin = @"http://185.86.76.206:8081/mobile/login";
     NSDictionary* params = @{@"username" : @"test",
-                             @"password" : @"test321user"};
+                             @"password" : @"test123user"};
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -101,7 +101,8 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject objectForKey:@"error"] == nil)
         {
-            NSString* message = [[responseObject objectForKey:@"error"] objectForKey:@"message"] ;
+            NSString* message = [[responseObject objectForKey:@"error"] objectForKey:@"message"];
+            
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [alert show];
         }

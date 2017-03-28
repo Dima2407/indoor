@@ -174,10 +174,11 @@
 
 #pragma mark - Logger
 
--(NSMutableArray*)logging{
+-(NSArray*)logging{
+    NSArray *indoorLogs = [NSArray arrayWithArray:self.logs];
+    [self.logs removeAllObjects];
     
-    
-    return self.logs;
+    return indoorLogs;
 }
 
 

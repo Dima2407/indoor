@@ -10,8 +10,9 @@
 
 @interface MenuViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UISwitch *showRadadr;
+@property (weak, nonatomic) IBOutlet UISwitch *showRadar;
 @property (weak, nonatomic) IBOutlet UISwitch *showRout;
 @property (weak, nonatomic) IBOutlet UISwitch *showPOI;
-
+@property (weak, nonatomic) IBOutlet UISwitch *OnLogs;
+@property (weak, nonatomic) IBOutlet UIButton *sendLogButton;
 @end

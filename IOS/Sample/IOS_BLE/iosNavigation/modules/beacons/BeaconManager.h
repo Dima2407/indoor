@@ -16,10 +16,13 @@
 @interface BeaconManager : NSObject
 
 @property (weak, nonatomic) id <BeaconManagerDelegate> delegate;
+@property (nonatomic, assign) BOOL status;
 
 +(BeaconManager*) sharedManager;
 -(void) setBeaconMap:(FloorModel*)map withBeaconData:(NSArray*)data;
 -(void) startBeacon;
+-(void) stopBeacon;
+-(NSArray*)getLogs;
 
 @end
 

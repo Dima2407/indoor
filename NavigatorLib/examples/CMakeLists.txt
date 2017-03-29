@@ -7,5 +7,7 @@ set(CMAKE_CXX_STANDARD 14)
 # Build all examples
 add_subdirectory(example1)
 
+add_subdirectory(example2)
+
 add_subdirectory(exampleCalibrate)
 

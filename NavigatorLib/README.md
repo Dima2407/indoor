@@ -17,7 +17,7 @@ old `tracking_lib` are used.
 
 __Build__: Directories `src`, `include` and `lib` contain the library source code. To build the library 
 (`libNavigator.a`) with
-`CMake` use  the `CMakeLiists.txt` file in the `src` directory. If you're in the directory `indoor-sdk/NavigatorLib` ,
+`CMake` use  the `CMakeLists.txt` file in the `src` directory. If you're in the directory `indoor-sdk/NavigatorLib` ,
 type in bash/cmd:
 
 mkdir build
@@ -42,8 +42,8 @@ cmake --build .
 
 __Usage__: To use the library you have to add the `indoor-sdk/NavigatorLib/include` directory
  to your incluude path. Then include _Navigator.h_ and create an
-instance of the class _TrilatBeaconNavigator_.  See the file `example/main.cpp` for more info. 
-See `exampleCalibrate/main.cpp` for info on calibration. 
+instance of the class _TrilatBeaconNavigator_.  See `example1`,  `example2` for more info. 
+See `exampleCalibrate` for info on calibration. 
 
 __Note__: 
 
@@ -59,8 +59,7 @@ __Directories__:
 * `src` : The library source code. Contains source files and private headers.
 * `include` : The only folder to be included for user
 * `lib` : This directory is for external libraries, e.g. Eigen
-* `example` : A positioning example
-* `exampleCalibrate` : A calibration example
+* `examples` : Examples
 * `unittest` : CppUnit-based unit tests for the library
 * `test-tool` (`tester`, `faker`, `autotester`) : A tool for testing the library with events data
  from external _DAT_ or _JSON_ files.

@@ -31,10 +31,15 @@ namespace Navigator {
          *                        distanceFilterFactory : const std::shared_ptr<IFilterFactory> &)
          * ..
          * + process(const BeaconReceivedData &brd) : const Position3D &
+         * + process(const std::vector<BeaconReceivedData> &brds) : const Position3D &
          * + addBeacon(beacon: const Beacon &) : void
          * + deleteBeacon(uid: const BeaconUID &) : void
          * + clear() : void
          * + const getLastPosition() : const Math::Position3D &
+         * ..
+         * - runTrilat() : void
+         * - processPacket(brd : const BeaconReceivedData &) : void
+         * - checkTimeout(timeStamp : double) : void
          * }
          * note bottom
          * // This is the trilateration-based beacon navigator //

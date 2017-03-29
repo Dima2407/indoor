@@ -19,12 +19,16 @@ using namespace Navigator::Beacons::Factory;
 using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
 
-/** @brief An example of Navigator usage with beacons
+/** @brief Example 1: An example of Navigator usage with beacons
+ *
+ * Note : this is a bit outdated, use example2 instead
  *
  * @return
  */
 int main()
 {
+    cout << "EXAMPLE 1 \n";
+
     // 1) Filter factories:
     // We have to choose filters  for rssi and distances
     // Options:
@@ -86,7 +90,7 @@ int main()
      * In real life, you receive events (timestamp, beacon uid, rssi) from you device
      * And send them to the navigator
      */
-    Position3D inPos(0.75, 0.38, 0.0); // Some given position
+    Position3D inPos(7.52, 3.84, 0.0); // Some given position
     
     cout << "  x  \t  y  \t  z  " << endl;
     for (int i = 0; i < 3; i++) {

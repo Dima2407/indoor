@@ -13,28 +13,40 @@ namespace Navigator {
              * @startuml
              * interface IFilter{
              * ..
-             * + {abstract} process(in: double) : double
+             * + {abstract} process(in: Value) : Value
              * ..
              * + reset() : void
              * ..
-             * + operator() (in: double) : double -> process()
+             * + operator() (in: Value) : Value -> process()
              * --
              * + ~IFilter()
              * }
              * note bottom
              * // Filter functional interface. //
              * // operator() is an alias to process() //
+             * // The data is pair<double,double> //
+             * // The pair is (RSSI, timestamp) //
              * end note
              * @enduml
              */
             class IFilter {
             public:
+
+                /// Data type too be filtered, similar to Pair but with everything allowed
+                struct Value {
+                    Value(double val, double timeStamp) : val(val), timeStamp(timeStamp) {}
+
+                    Value() {}
+
+                    double val, timeStamp;
+                };
+
                 //------------------------------------
                 // Public abstract method: must implement
                 //------------------------------------
 
-                /// Run a double value through the filter
-                virtual double process(double in) = 0;
+                /// Run a value through the filter
+                virtual Value process(Value in) = 0;
 
                 //------------------------------------
                 // Public methods: default and optional
@@ -45,7 +57,7 @@ namespace Navigator {
 
                 /// Alias to process() by default
                 /// Do not override - forbidden
-                double operator()(double in) {
+                Value operator()(Value in) {
                     return process(in);
                 }
 

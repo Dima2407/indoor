@@ -88,26 +88,7 @@ namespace Navigator {
              * @param[in]   timeStamp  The input timestamp
              * @return                 The distance in meters
              */
-            double process(double rssi, double timeStamp)
-            {
-                // Filter rssi
-                double filteredRssi = rssi;
-
-                if (rssiFilter != nullptr) // Apply rssi filter if defined
-                    filteredRssi = rssiFilter -> process(filteredRssi);
-
-                // Calculate raw distance from the filtered RSSI
-                double distance = calculateDistance(filteredRssi);
-
-                if (distanceFilter != nullptr) // Apply distance filter if defined
-                    distance = distanceFilter -> process(distance);
-
-                active = true; // We are now active
-                lastTimeStamp = timeStamp; // Save timestamp
-                lastDistance = distance; // Save distance
-
-                return distance;
-            }
+            double process(double rssi, double timeStamp);
 
             /// Reset the filters
             void reset()

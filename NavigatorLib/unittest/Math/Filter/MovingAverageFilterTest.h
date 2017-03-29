@@ -20,8 +20,15 @@ namespace NaviTest {
                 CPPUNIT_TEST_SUITE(MovingAverageFilterTest);
                 CPPUNIT_TEST(testAvg);
                 CPPUNIT_TEST_SUITE_END();
-            public:
+            public: // Methods
                 void testAvg();
+
+                /// Run a double through the filter, addding unused zero timestamp
+                double runMA(Navigator::Math::Filter::MovingAverageFilter & filter, double in) {
+                    return filter.process(
+                            Navigator::Math::Filter::IFilter::Value(in, 0.0)
+                    ).val;
+                }
 
             };
         }

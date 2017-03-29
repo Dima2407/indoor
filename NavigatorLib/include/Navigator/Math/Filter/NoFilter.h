@@ -13,7 +13,7 @@ namespace Navigator {
             /// Empty filter implementation: returns the input double value
             class NoFilter : public IFilter {
             public:
-                double process(double in) override {
+                Value process(Value in) override {
                     return in;
                 }
             };

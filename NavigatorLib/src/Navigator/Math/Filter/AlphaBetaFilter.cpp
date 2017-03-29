@@ -8,7 +8,7 @@ namespace Navigator {
     namespace Math {
         namespace Filter {
 
-            double AlphaBetaFilter::process(double in) {
+            IFilter::Value AlphaBetaFilter::process(IFilter::Value in) {
                 double x = 0; // The result (new position)
                 double v = 0; // The new velocity
 
@@ -21,14 +21,14 @@ namespace Navigator {
                     v = v0;
 
                     // Adjust x, v based on the value of in
-                    double residue = in - x;
+                    double residue = in.val - x;
 
                     x += alpha * residue;
                     v += beta * residue / DT;
                 } else {
                     // This IS the first data value
                     // Initialize
-                    x = in;
+                    x = in.val;
                     v = 0;
                     initialized = true; // Set the initialized flag HERE
                 }
@@ -37,7 +37,7 @@ namespace Navigator {
                 x0 = x;
                 v0 = v;
 
-                return x;
+                return Value(x, in.timeStamp);
             }
         }
     }

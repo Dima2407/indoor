@@ -57,7 +57,7 @@ namespace Navigator {
                 }
 
                 /// Run a double value through the filter
-                double process(double in) override;
+                Value process(Value in) override;
 
                 /// Reset the filter and forget all history
                 void reset() override {
@@ -73,7 +73,7 @@ namespace Navigator {
                 unsigned winSize;
 
                 /// The ring buffer
-                RingBuffer<double> buffer;
+                RingBuffer<Value> buffer;
 
                 /// The current data count in the filter, 0 <= dataCount <= winSize
                 unsigned dataCount = 0;

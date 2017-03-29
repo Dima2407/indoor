@@ -101,7 +101,7 @@ namespace Navigator {
                 lastPosition = Math::Position3D();
             }
 
-            const Math::Position3D &getLastPosition() const {
+            const Math::Position3D &getLastPosition() const override {
                 return lastPosition;
             }
 

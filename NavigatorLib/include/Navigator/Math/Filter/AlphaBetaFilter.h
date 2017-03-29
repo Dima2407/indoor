@@ -42,7 +42,7 @@ namespace Navigator {
                         beta(beta) {}
 
                 /// Run a double value through the filter
-                double process(double in) override;
+                Value process(Value in) override;
 
                 /// Reset the filter and forget all history
                 void reset() override {

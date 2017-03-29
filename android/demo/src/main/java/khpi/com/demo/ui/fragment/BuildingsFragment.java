@@ -61,7 +61,6 @@ public class BuildingsFragment extends GenericFragment implements AbstractRecycl
     @Override
     public void onResume() {
         super.onResume();
-        getActivityBridge().getNetBridge().logIn(BuildConfig.USERNAME, BuildConfig.PASSWORD);
     }
 
     @Override

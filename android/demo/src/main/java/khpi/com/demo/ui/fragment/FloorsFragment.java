@@ -74,7 +74,8 @@ public class FloorsFragment extends GenericFragment implements AbstractRecyclerA
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Wait...");
         progressDialog.show();
-        getActivityBridge().getNetBridge().loadInpointsByBuildingId(item.getId());
+        MapCacheHelper.cacheMapData(getContext(), item, this);
+        getActivityBridge().getNetBridge().loadInpointsByBuildingId(item.getBuildingId());
     }
 
     @Override
@@ -104,10 +105,6 @@ public class FloorsFragment extends GenericFragment implements AbstractRecyclerA
             List<Floor> floors = getActivityBridge().getDbBridge().getFloorsByBuildingId(item.getBuildingId());
             floorAdapter.clear();
             floorAdapter.addItems(floors);
-            return;
-        }
-        if(arg.equals(DbBridge.INPOINTS_UPDATED)){
-            MapCacheHelper.cacheMapData(getContext(), item, this);
             return;
         }
     }

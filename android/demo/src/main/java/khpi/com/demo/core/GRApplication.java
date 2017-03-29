@@ -49,6 +49,7 @@ public final class GRApplication extends Application {
 
         netBridge = new NetFacade(dbBridge, sharedHelper.useProduction() ? BuildConfig.PRODUCTION_SERVER_URL : BuildConfig.DEVELOPER_SERVER_URL);
         orientationBridge = new OrientationFacade(this);
+        getNetBridge().logIn(BuildConfig.USERNAME, BuildConfig.PASSWORD);
     }
 
     public void init(Context context){

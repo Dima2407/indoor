@@ -10,6 +10,8 @@
 
 #import "BeaconModel.h"
 #import "IndoorLocationManager.h"
+#include <math.h>
+
 
 
 @interface BeaconManager () <CLLocationManagerDelegate,IndoorLocationListener,ErrorListener>
@@ -73,29 +75,14 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     CGFloat x = [[coordinte objectAtIndex:0] floatValue];
     CGFloat y = [[coordinte objectAtIndex:1] floatValue];
     
-    if (x != x  )
+    if (isnan(x)) 
+
     {
         
         NSLog(@"Get NAN");
     }
     else{
 
-        if (x<0)
-        {
-            x*=-1;
-        }
-        if (y<0)
-        {
-            y*=-1;
-        }
-        if (x>6)
-        {
-            x/=2;
-        }
-        if (y>12)
-        {
-            x/=2;
-        }
         NSLog(@"%f  %f",x,y);
     [self.delegate currentLocation:CGPointMake(x, y)];
 

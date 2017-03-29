@@ -16,6 +16,7 @@
 @property (nonatomic, strong) id<IndoorLocationListener> locationListener;
 @property (nonatomic, strong) id<ErrorListener> errorListener;
 @property (nonatomic, assign) BOOL logger;
+@property (nonatomic, strong) NSTimer *timer;
 
 
 -(void)addProvider: (MeasurementProviderType) type;

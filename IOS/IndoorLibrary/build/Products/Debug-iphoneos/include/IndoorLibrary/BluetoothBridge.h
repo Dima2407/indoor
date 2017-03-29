@@ -42,6 +42,9 @@ void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, doubl
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi, double * output);
+void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi);
 
-
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_getLastPosition(double * output);

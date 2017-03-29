@@ -35,18 +35,22 @@ void BluetoothBridge_setPosition(){
 Navigator::Math::Position3D inPos(0.75, 0.38, 0.0);
 }
 extern "C"
-void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi, double * output) {
+void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi) {
     Navigator::Beacons::BeaconUID uuid(uuidStr,major,minor);
     Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
     
     // Process it
-    Navigator::Math::Position3D outPos = navigator->process(brd);
+    navigator->process(brd);
+  
+    
+}
+extern "C"
+void BluetoothBridge_getLastPosition(double * output){
+Navigator::Math::Position3D outPos = navigator->getLastPosition();
     output[0] = outPos.x;
     output[1] = outPos.y;
     output[2] = outPos.z;
-    
 }
-
 //extern "C"
 
 

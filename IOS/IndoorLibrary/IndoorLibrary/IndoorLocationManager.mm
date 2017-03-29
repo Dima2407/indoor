@@ -18,6 +18,8 @@
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
 @property (nonatomic, strong) NSMutableArray *logs;
+@property (nonatomic, assign) NSTimeInterval time;
+
 @end
 
 
@@ -31,6 +33,7 @@
         self.transfer = [[IosMeasurementTransfer alloc] init];
         self.transfer.delegate = self;
         self.logs = [NSMutableArray new];
+        self.time = 1;
         
     }
     return self;
@@ -106,6 +109,24 @@
     
 }
 
+#pragma mark - Get Coordinates
+-(void)getCoordinates{
+    NSMutableArray *coordinates = [NSMutableArray new];
+    double outPosition[] = {0.0, 0.0, 0.0};
+    BluetoothBridge_getLastPosition(outPosition);
+    for (int i = 0; i < 3; i++)
+    {
+        [coordinates addObject:@(outPosition[i])];
+        
+        
+        
+    }
+    [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+    
+}
+
+
+
 #pragma mark - Action
 
 
@@ -113,13 +134,26 @@
     
     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
         [obj start];
-    }];
+        if (obj.type == BLE_PROVIDER)
+        {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
+                                         target:self
+                                       selector:@selector(getCoordinates)
+                                       userInfo:nil
+                                        repeats:YES];
+        }}];
+    
 }
 
 -(void) stop{
     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
         [obj stop];
-    }];
+        if (obj.type == BLE_PROVIDER)
+        {
+            [self.timer  invalidate];
+            self.timer = nil;
+     
+        }}];
 }
 
 
@@ -132,32 +166,18 @@
     if (event.type == BLE_VALUE)
     {
         std::string uuid = std::string([[NSString stringWithFormat:@"%@", event.beacon.proximityUUID] UTF8String]);
-        double time = event.timestamp;
-        double outPosition[] = {0.0, 0.0, 0.0};
-        BluetoothBridge_proces(time, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi, outPosition);
-        NSMutableArray *coordinates = [NSMutableArray new];
-       
-        for (int i = 0; i < 3; i++)
-        {
-            [coordinates addObject:@(outPosition[i])];
-          
-            
-            
-        }
-        [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
-        if (self.logger)
-        {
-            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  @(time),@"timestamp",
-                                  @([event.beacon.minor intValue]),@"minor",
-                                  @(event.beacon.rssi),@"rssi",
-                                  [NSString stringWithFormat:@"%@",[coordinates objectAtIndex:0]],@"X",
-                                   [NSString stringWithFormat:@"%@",[coordinates objectAtIndex:1]],@"Y",
-                                  [NSString stringWithFormat:@"%@",[coordinates objectAtIndex:2]],@"Z",
-                                  nil];
-            [self.logs addObject:data];
-        }
+        double timestamp = event.timestamp;
+        BluetoothBridge_proces(timestamp, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi);
+        
+    if (self.logger)
+    {
+        NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                              @(timestamp),@"timestamp",
+                              @([event.beacon.minor intValue]),@"minor",
+                              @(event.beacon.rssi),@"rssi",nil];
+        [self.logs addObject:data];
     }
+  }
 }
 
 

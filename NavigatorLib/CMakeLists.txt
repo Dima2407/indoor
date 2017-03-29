@@ -19,11 +19,9 @@ include_directories(lib/rapidjson_min/include)
 add_subdirectory(test)
 
 
-# Build example
-add_subdirectory(example)
+# Build all examples
+add_subdirectory(examples)
 
-# Build exampleCalibrate
-add_subdirectory(exampleCalibrate)
 
 # Build unittest
 add_subdirectory(unittest)

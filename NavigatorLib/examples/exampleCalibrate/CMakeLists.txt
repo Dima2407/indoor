@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 # Include path to navigator_lib for *.h files
 include_directories(
-                    ../include/
+                    ../../include/
                     )
 
 set(SOURCE_FILES

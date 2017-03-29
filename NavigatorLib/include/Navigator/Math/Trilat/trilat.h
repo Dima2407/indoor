@@ -8,8 +8,7 @@
 #include <vector>
 #include <cmath>
 
-#include "Navigator/Math/Position3D.h"
-
+#include "./TrilatRecord.h"
 
 namespace Navigator {
     namespace Math {
@@ -49,18 +48,15 @@ namespace Navigator {
              *
              * Based on https://github.com/Wayne82/Trilateration
              *
-             * \param[in]  beaconsPos   Vector of beacon positions .
-             * \param[in]  beaconsDist  Vector of distances to beacons .
+             * \param[in]  records      Vector of beacon positions + distances
              * \param[out] location     The result of trilateration.
              * \result                  true if success, false otherwise.
              */
-            bool trilatLocation2d(const std::vector<Position3D> &beaconsPos,
-                                  const std::vector<double> &beaconsDist,
+            bool trilatLocation2d(const std::vector<TrilatRecord> &records,
                                   Position3D &location);
 
             /// This version throws exception if failure
-            Position3D trilatLocation2d(const std::vector<Position3D> &beaconsPos,
-                                        const std::vector<double> &beaconsDist);
+            Position3D trilatLocation2d(const std::vector<TrilatRecord> &records);
 
             /** \brief Trilateration in 3D.
             *
@@ -72,20 +68,17 @@ namespace Navigator {
             *
             * Based on https://github.com/Wayne82/Trilateration
             *
-            * \param[in]  beaconsPos   List of beacon positions (list<Point>).
-            * \param[in]  beaconsDist  List of distances to beacons (list<double>).
+            * \param[in]  records      Vector of beacon positions + distances
             * \param[out] location     The result of trilateration.
             * \result                  true if success, false otherwise.
             * \sa TrilatLocation2d()
             */
-            bool trilatLocation3d(const std::vector<Position3D> &beaconsPos,
-                                  const std::vector<double> &beaconsDist,
+            bool trilatLocation3d(const std::vector<TrilatRecord> &records,
                                   Position3D &location);
 
 
             /// This version throws exception if failure
-            Position3D trilatLocation3d(const std::vector<Position3D> &beaconsPos,
-                                        const std::vector<double> &beaconsDist);
+            Position3D trilatLocation3d(const std::vector<TrilatRecord> &records);
 
 
         }

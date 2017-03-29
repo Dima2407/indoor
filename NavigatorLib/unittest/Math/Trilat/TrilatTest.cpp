@@ -25,25 +25,29 @@ namespace NaviTest {
                 using namespace std;
                 using namespace Navigator;
                 using namespace Navigator::Math;
+                using namespace Navigator::Math::Trilat;
 
-                // Create vector of 3 points
-                vector<Position3D> points;// = { {0.3, 0.5, 0.0} };
-                points.emplace_back(0.3, 0.5, 0.0);
-                points.emplace_back(9.7, 0.4, 0.0);
-                points.emplace_back(-0.2, 10.6, 0.0);
+                // 3 points
+                const Position3D points[] = {
+                        Position3D(0.3, 0.5, 0.0),
+                        Position3D(9.7, 0.4, 0.0),
+                        Position3D(-0.2, 10.6, 0.0)
+                };
 
                 // Reference point
                 Position3D refPoint(5.6, 2.7, 0.0);
 
-                // Vector of distances
-                vector<double> distances;
-                for (const Position3D & p : points)
-                    distances.push_back(p.distance(refPoint));
-				
+                // Vector of trilat records
+                vector<TrilatRecord> records;
+
+                for (const Position3D & p : points) {
+                    records.push_back(TrilatRecord(p, p.distance(refPoint)));
+                }
+
                 // Result point
                 //Position3D resultPoint;
                 //Navigator::Math::Trilat::trilatLocation2d(points, distances, resultPoint);
-	            Position3D resultPoint = Navigator::Math::Trilat::trilatLocation2d(points, distances);
+	            Position3D resultPoint = trilatLocation2d(records);
 	            
                 // Check if results are reasionable
                 constexpr double accuracy = 1.0e-5;
@@ -57,26 +61,30 @@ namespace NaviTest {
                 using namespace std;
                 using namespace Navigator;
                 using namespace Navigator::Math;
+                using namespace Navigator::Math::Trilat;
 
-                // Create vector of 4 points
-                vector<Position3D> points;// = { {0.3, 0.5, 0.0} };
-                points.emplace_back(0.3, 0.5, 0.0);
-                points.emplace_back(9.7, 0.4, 0.0);
-                points.emplace_back(-0.2, 10.6, 0.0);
-                points.emplace_back(0.1, 0.2, 8.4);
+                //  4 points
+                const Position3D points[] = {
+                        Position3D(0.3, 0.5, 0.0),
+                        Position3D(9.7, 0.4, 0.0),
+                        Position3D(-0.2, 10.6, 0.0),
+                        Position3D(0.1, 0.2, 8.4)
+                };
 
                 // Reference point
                 Position3D refPoint(2.3, 4.1, 3.9);
 
-                // Vector of distances
-                vector<double> distances;
-                for (const Position3D & p : points)
-                    distances.push_back(p.distance(refPoint));
+                // Vector of trilat records
+                vector<TrilatRecord> records;
+
+                for (const Position3D & p : points) {
+                    records.push_back(TrilatRecord(p, p.distance(refPoint)));
+                }
 
                 // Result point
 //                Position3D resultPoint;
 //                Navigator::Math::Trilat::trilatLocation3d(points, distances, resultPoint);
-                Position3D resultPoint = Navigator::Math::Trilat::trilatLocation3d(points, distances);
+                Position3D resultPoint = trilatLocation3d(records);
 
 //                cout << resultPoint.x << "  " << resultPoint.y << "  " << resultPoint.z << endl;
 

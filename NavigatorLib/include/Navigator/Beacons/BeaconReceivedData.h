@@ -31,18 +31,20 @@ namespace Navigator {
                     rssi(rssi),
                     txPower(txPower) {}
 
+            BeaconReceivedData() {}
+
             /// Timestamp in seconds
-            double timestamp;
+            double timestamp = std::nan("");
 
             /// Beacon uid
             BeaconUID uid;
             
             /// Received signal strength
-            double rssi;
+            double rssi = std::nan("");
 
             //todo remove. Usually this parameter is calibrated, beacon sends wrong info
             /// TxPower from the measurement (optional, better not use?)
-            double txPower = nan("");
+            double txPower = std::nan("");
         };
     }
 }

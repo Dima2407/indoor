@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <cmath>
+
 namespace Navigator {
     namespace Math {
         namespace Filter {
@@ -38,7 +40,8 @@ namespace Navigator {
 
                     Value() {}
 
-                    double val, timeStamp;
+                    double val = std::nan("");
+                    double timeStamp  = std::nan("");
                 };
 
                 //------------------------------------

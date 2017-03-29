@@ -24,7 +24,7 @@ namespace Navigator {
              * note bottom
              * // Filter functional interface. //
              * // operator() is an alias to process() //
-             * // The data is pair<double,double> //
+             * // The data is Value  //
              * // The pair is (RSSI, timestamp) //
              * end note
              * @enduml

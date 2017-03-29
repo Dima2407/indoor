@@ -49,12 +49,7 @@ namespace Navigator {
          *
          */
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {
-        public: // == CONSTANTS ===
-            /// Time to keep beacon filter history data since the last signal (in seconds)
-            static constexpr double BEACON_TIMEOUT = 10.0;
-
-            /// Use 3D trilateration instead of the 2D one. This requires at least 4 beacons.
-            static constexpr bool USE_3D_TRILAT = false;
+        public:
 
             // -----  Public methods ------
             /// Constructor
@@ -105,9 +100,11 @@ namespace Navigator {
                 return lastPosition;
             }
 
-            //----------------------------
-            //---   Private data ------
-        private:
+        private: // ========= Methods =============
+            /// Run the trilateration once based on current active beacons
+            void runTrilat();
+
+        private: // ======= Fields ===============
             /// The RSSI filter factory
             std::shared_ptr<Factory::IFilterFactory> rssiFilterFactory;
 
@@ -119,6 +116,14 @@ namespace Navigator {
             
             /// Last located position
             Math::Position3D lastPosition = Math::Position3D();
+
+        private: // =========== Configuration fields ==================
+
+            /// Time to keep beacon filter history data since the last signal (in seconds)
+            static constexpr double beaconTimeout = 10.0;
+
+            /// Use 3D trilateration instead of the 2D one. This requires at least 4 beacons.
+            static constexpr bool use3DTrilat = false;
         };
     }
 }

@@ -29,9 +29,9 @@ namespace Navigator {
              * - average : double
              * --
              * + MovingAverageFilter(winSize : unsigned int)
-             * + process(in: double) : double
+             * + process(in: Value) : Value
              * + reset() : void
-             * + operator() (in: double) : double
+             * + operator() (in: Value) : Value
              * }
              *
              * MovingAverageFilter <|.. interface IFilter

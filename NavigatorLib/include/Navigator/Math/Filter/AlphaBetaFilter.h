@@ -19,7 +19,7 @@ namespace Navigator {
              * class AlphaBetaFilter {
              *   ..
              *   + AlphaBetaFilter(alpha: double, beta: double)
-             *   + process(in: double) : double
+             *   + process(in: Value) : Value
              *   + reset() : void
              * }
              * note bottom

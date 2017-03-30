@@ -19,7 +19,7 @@ namespace Navigator {
              * class AlphaBetaFilter {
              *   ..
              *   + AlphaBetaFilter(alpha: double, beta: double)
-             *   + process(in: double) : double
+             *   + process(in: Value) : Value
              *   + reset() : void
              * }
              * note bottom
@@ -42,7 +42,7 @@ namespace Navigator {
                         beta(beta) {}
 
                 /// Run a double value through the filter
-                double process(double in) override;
+                Value process(Value in) override;
 
                 /// Reset the filter and forget all history
                 void reset() override {

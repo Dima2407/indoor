@@ -18,21 +18,28 @@ namespace Navigator {
          *
          * @startuml
          * class TrilatBeaconNavigator {
-         * + {static} BEACON_TIMEOUT : double = 10.0
-         * ..
          * - rssiFilterFactory : std::shared_ptr<IFilterFactory>
          * - distanceFilterFactory : std::shared_ptr<IFilterFactory>
          * - beaconProcessorList : std::unordered_map<BeaconUID, std::shared_ptr<BeaconProcessor>>
          * - lastPosition : Position3D
+         * ..
+         * - beaconTimeout : double
+         * - use3DTrilat : bool
+         * - useNearest : unsigned
          * --
          * + TrilatBeaconNavigator(rssiFilterFactory : const std::shared_ptr<IFilterFactory> &,
          *                        distanceFilterFactory : const std::shared_ptr<IFilterFactory> &)
          * ..
          * + process(const BeaconReceivedData &brd) : const Position3D &
+         * + process(const std::vector<BeaconReceivedData> &brds) : const Position3D &
          * + addBeacon(beacon: const Beacon &) : void
          * + deleteBeacon(uid: const BeaconUID &) : void
          * + clear() : void
          * + const getLastPosition() : const Math::Position3D &
+         * ..
+         * - runTrilat() : void
+         * - processPacket(brd : const BeaconReceivedData &) : void
+         * - checkTimeout(timeStamp : double) : void
          * }
          * note bottom
          * // This is the trilateration-based beacon navigator //
@@ -49,12 +56,7 @@ namespace Navigator {
          *
          */
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {
-        public: // == CONSTANTS ===
-            /// Time to keep beacon filter history data since the last signal (in seconds)
-            static constexpr double BEACON_TIMEOUT = 10.0;
-
-            /// Use 3D trilateration instead of the 2D one. This requires at least 4 beacons.
-            static constexpr bool USE_3D_TRILAT = false;
+        public:
 
             // -----  Public methods ------
             /// Constructor
@@ -65,6 +67,9 @@ namespace Navigator {
 
             /// Process a single input data
             const Math::Position3D &process(const BeaconReceivedData &brd) override;
+
+            /// Process a vector of input data, assuming identical timestamps
+            const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
 
             //------ Beacon operations -----
 
@@ -101,13 +106,46 @@ namespace Navigator {
                 lastPosition = Math::Position3D();
             }
 
-            const Math::Position3D &getLastPosition() const {
+            const Math::Position3D &getLastPosition() const override {
                 return lastPosition;
             }
 
-            //----------------------------
-            //---   Private data ------
-        private:
+        public: // ========= Config getters + setters =============
+            double getBeaconTimeout() const {
+                return beaconTimeout;
+            }
+
+            void setBeaconTimeout(double beaconTimeout) {
+                TrilatBeaconNavigator::beaconTimeout = beaconTimeout;
+            }
+
+            bool isUse3DTrilat() const {
+                return use3DTrilat;
+            }
+
+            void setUse3DTrilat(bool use3DTrilat) {
+                TrilatBeaconNavigator::use3DTrilat = use3DTrilat;
+            }
+
+            unsigned int getUseNearest() const {
+                return useNearest;
+            }
+
+            void setUseNearest(unsigned int useNearest) {
+                TrilatBeaconNavigator::useNearest = useNearest;
+            }
+
+        private: // ========= Methods =============
+            /// Run the trilateration once based on current active beacons
+            void runTrilat();
+
+            /// Process a single input packet, no trilateration
+            void processPacket(const BeaconReceivedData &brd);
+
+            /// Check all beacons for the timeout using currentt timestamp
+            void checkTimeout(double timeStamp);
+
+        private: // ======= Fields ===============
             /// The RSSI filter factory
             std::shared_ptr<Factory::IFilterFactory> rssiFilterFactory;
 
@@ -119,6 +157,17 @@ namespace Navigator {
             
             /// Last located position
             Math::Position3D lastPosition = Math::Position3D();
+
+        private: // =========== Configuration fields ==================
+
+            /// Time to keep beacon filter history data since the last signal (in seconds)
+            double beaconTimeout = 10.0;
+
+            /// Use 3D trilateration instead of the 2D one. This requires at least 4 beacons.
+            bool use3DTrilat = false;
+
+            /// How many nearest beacon to use at most (0 = unlimited), 3(4) are needed for trilat 2D(3D)
+            unsigned useNearest = 0;
         };
     }
 }

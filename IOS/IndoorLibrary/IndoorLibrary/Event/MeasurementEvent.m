@@ -19,7 +19,7 @@
 
 @implementation MeasurementEvent
 
--(instancetype)initWithLatitude:(CGFloat)latitude andLatitude:(CGFloat)longitude {
+-(instancetype)initWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude {
     
     self = [super init];
    

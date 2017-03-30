@@ -10,30 +10,32 @@
 
 
 @interface BeaconConfig()
-@property (nonatomic, assign) CGFloat txPower;
-@property (nonatomic, assign) CGFloat damp;
-@property (nonatomic, strong) NSString* uuid;
-@property (nonatomic, assign) NSUInteger major;
 
-
-@property (nonatomic, assign) CGFloat z;
-@property (nonatomic, strong) NSArray *position;
 
 @end
-
+//    Beacon(const BeaconUID &uid, double txPower, double damp, const Math::Position3D &pos, const std::string &meta = "") :
+//    uid(uid),
+//    txPower(txPower),
+//    damp(damp),
+//    pos(pos),
+//    meta(meta) {}
+//
 
 @implementation BeaconConfig
 
--(instancetype)initWithX:(CGFloat)x andY:(CGFloat)y andUUID:(NSInteger)uuid{
+-(instancetype)initWithUUID:(NSString*)uuid major:(NSUInteger)major minor:(NSUInteger)minor txPower:(CGFloat)txPower damp:(CGFloat)damp andX:(CGFloat)x andY:(CGFloat)y andZ:(CGFloat)z{
     self = [super init];
     
     if(self){
         
-     
-        
-        self.x = x ;
+        self.uuid = uuid ;
+        self.major = major;
+        self.minor = minor;
+        self.txPower = txPower;
+        self.damp = damp;
+        self.x = x;
         self.y = y;
-        self.minor = uuid;
+        self.z = z;
   
        
     }

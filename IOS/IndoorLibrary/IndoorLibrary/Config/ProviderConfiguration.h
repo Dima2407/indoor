@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "TConfig.h"
+#import "MeasurementProvider.h"
 
 
 @protocol ProviderConfiguration
 
-+(void)updateCinfiguration:(NSArray<TConfig> *)inputArray;
+-(void)updateCinfiguration:(NSArray<TConfig> *)inputArray withBLEProvider:(MeasurementProvider *)provider;
 
 
 

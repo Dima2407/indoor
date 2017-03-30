@@ -8,22 +8,20 @@
 
 #import "BluetoothMeasurementProvider.h"
 #import <CoreLocation/CLLocationManager.h>
-#import "MeasurementEvent.h"
-#import "MeasurementProvider.h"
-#import "BeaconConfig.h"
 
 @interface BluetoothMeasurementProvider()
 @property (strong, nonatomic) NSMutableArray *beaconsArray;
 @property (nonatomic, assign) BOOL startStatus;
-
-
-
+@property (nonatomic, strong) CLLocationManager *manager;
+@property (nonatomic, strong) MeasurementEvent *event;
+@property (nonatomic, strong) IosMeasurementTransfer *transfer;
 @end
 
 @implementation BluetoothMeasurementProvider
-static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
+@synthesize transfer;
 
--(instancetype)init: (IosMeasurementTransfer*) transfer{
+static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
+-(instancetype)initWithTransfer:(IosMeasurementTransfer *)bleTransfer{
     self = [super init];
     
     if(self){
@@ -32,83 +30,132 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
         self.manager = [[CLLocationManager alloc]init];
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
-        self.transfer = transfer;
+        self.transfer = bleTransfer;
+          [self.manager requestWhenInUseAuthorization];
+        self.type = BLE_PROVIDER;
     }
     return self;
 }
 
+#pragma mark - Error
+
+
+-(void)_throwErrorWithOptions:(NSUInteger)code title:(NSString*)title message:(NSString*) message
+{
+    IndoorError *error = [[IndoorError alloc] initWithOptions:code title:title message:message];
+    [self.transfer deliverError:error];
+    
+}
+
 #pragma mark - Action
 -(void) start{
-    
+  
     [self startBeaconWihtUUID:sensoroUUId locationManager:self.manager];
+  
    
 }
 
 -(void) startBeaconWihtUUID:(NSString*)uuid locationManager:(CLLocationManager*)locationManager{
-    
     NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:uuid];
     CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:@"IT-JIM"];
     
    
     [locationManager startRangingBeaconsInRegion:region];
+    
 }
 
 -(void)stop{
     
-    NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
-    CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:@"IT-JIM"];
-    
-    [self.manager stopRangingBeaconsInRegion:region];
+  
+        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
+        CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:@"IT-JIM"];
+        
+        [self.manager stopRangingBeaconsInRegion:region];
+  
 }
 
 #pragma mark - CLLocationManagerDelegate -
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region{
-    
-    NSUUID *sensoro = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
-    
-    
-    
-    for(CLBeacon *beacon in beacons){
-        if([beacon.proximityUUID isEqual:sensoro]){
-            
-            MeasurementEvent * event =[[MeasurementEvent alloc] initWithBeacon:beacon];
+
+        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
+        for(CLBeacon *beacon in beacons){
+            if([beacon.proximityUUID isEqual:beaconUUID]){
+                
+                MeasurementEvent * event =[[MeasurementEvent alloc] initWithBeacon:beacon];
                 [self.transfer deliver:event];
+            
         }
-       
     }
 }
+
+- (void)locationManager:(CLLocationManager *)manager
+didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+            [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            NSLog(@"AuthorizedWhenInUse");
+            if (self.startStatus)
+            {
+                [manager startUpdatingLocation];
+            }
+            
+            break;
+        case kCLAuthorizationStatusAuthorizedAlways:
+            NSLog(@"AuthorizedAlways");
+            if (self.startStatus)
+            {
+                [manager startUpdatingLocation];
+            }
+            break;
+        case kCLAuthorizationStatusRestricted:
+            
+            
+            [self _throwErrorWithOptions:3 title:@"Error Permission" message:@"App Permission Restricted. You can't enable Location Services"];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    
+    [manager stopUpdatingLocation];
+    
+    switch([error code])
+    {
+        case kCLErrorNetwork:
+            
+        {
+            [self _throwErrorWithOptions:1 title:@"Error Network" message:@"Please check your network connection"];
+        }
+            break;
+            
+        case kCLErrorDenied:{
+            
+            [self _throwErrorWithOptions:2 title:@"Error Permission" message:@"App Permission Denied"];
+        }
+            break;
+            
+        default:
+        {
+            [self _throwErrorWithOptions:0 title:@"Unknown Error" message:@"Unknown network error"];
+        }
+            break;
+    }
+}
+
 - (void)locationManager:(CLLocationManager *)manager
 rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region
               withError:(NSError *)error{
-    NSLog(@"%@",error);
-}
-#pragma mark - Set Beacon Data -
-+(void) setBeaconMap:(NSArray*)beacons{
-    
-    
-    [beacons enumerateObjectsUsingBlock:^(BeaconConfig*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        float x = obj.x;
-        float y = obj.y;
-        int major = (int)obj.minor ;
-        //SensorBridge_onNewBeaconCoords(major, 2.f, x, y);
-        NSLog(@"%d\n %f\n %f",major,x,y);
-    }];
-
-
-    
+ 
+    [self _throwErrorWithOptions:5 title:@"Beacon Region Error" message:error.description];
 }
 
-
-
-#pragma mark - Error
--(void)_showAlert:(NSString*) message
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    
-    [alert show];
-    
-}
 
 
 @end

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(Navigator)
 
 set(CMAKE_CXX_STANDARD 14)
+set(arch arm64)
 
 set(SOURCE_FILES
         ./Navigator/Beacons/TrilatBeaconNavigator.cpp

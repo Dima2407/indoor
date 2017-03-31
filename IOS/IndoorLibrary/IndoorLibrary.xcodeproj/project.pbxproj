@@ -27,6 +27,7 @@
 		06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E281E82CC1100E7D811 /* IndoorError.h */; };
 		06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E271E82C2CA00E7D811 /* ErrorListener.h */; };
 		06ED897E1E6D79F50011C01C /* IndoorLocationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */; };
+		06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */; };
 		06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6751E66F661003EC3FA /* MeasurementEvent.h */; };
 		06FBD1861E7AEBDE00D8902A /* MeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6801E66F661003EC3FA /* MeasurementProvider.h */; };
 		06FBD1871E7AEBDE00D8902A /* BluetoothMeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B67B1E66F661003EC3FA /* BluetoothMeasurementProvider.h */; };
@@ -101,6 +102,7 @@
 		06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorTransfer.h; path = ../../ErrorManager/ErrorTransfer.h; sourceTree = "<group>"; };
 		06ED897C1E6D79F50011C01C /* IndoorLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationManager.h; sourceTree = "<group>"; };
 		06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndoorLocationManager.mm; sourceTree = "<group>"; };
+		06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeaconProcessor.cpp; path = ../../NavigatorLib/src/Navigator/Beacons/BeaconProcessor.cpp; sourceTree = "<group>"; };
 		06FBC9991E76F5E900D8902A /* MeasurementTranfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeasurementTranfer.h; sourceTree = "<group>"; };
 		06FBD4041E7F1F2B00D8902A /* BluetoothBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BluetoothBridge.cpp; sourceTree = "<group>"; };
 		06FBD4051E7F1F2B00D8902A /* BluetoothBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 		0610B65F1E66F465003EC3FA = {
 			isa = PBXGroup;
 			children = (
+				06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */,
 				06650E1F1E81769E00E7D811 /* trilat.cpp */,
 				06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */,
 				06650E1C1E81768600E7D811 /* MovingAverageFilter.cpp */,
@@ -348,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */,
 				06650E201E81769E00E7D811 /* trilat.cpp in Sources */,
 				06650E1D1E81768600E7D811 /* AlphaBetaFilter.cpp in Sources */,
 				06650E1E1E81768600E7D811 /* MovingAverageFilter.cpp in Sources */,

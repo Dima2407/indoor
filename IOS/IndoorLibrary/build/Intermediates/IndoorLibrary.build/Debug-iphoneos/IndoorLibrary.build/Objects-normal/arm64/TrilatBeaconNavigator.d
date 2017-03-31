@@ -11,4 +11,5 @@ dependencies: \
   ../../NavigatorLib/include/Navigator/Math/Filter/NoFilter.h \
   ../../NavigatorLib/include/Navigator/Beacons/Beacon.h \
   ../../NavigatorLib/include/Navigator/Beacons/Factory/IFilterFactory.h \
-  ../../NavigatorLib/include/Navigator/Math/Trilat/Trilat.h
+  ../../NavigatorLib/include/Navigator/Math/Trilat/Trilat.h \
+  ../../NavigatorLib/include/Navigator/Math/Trilat/./TrilatRecord.h

@@ -168,4 +168,5 @@ dependencies: \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
   ../../NavigatorLib/include/Navigator/Math/Trilat/Trilat.h \
+  ../../NavigatorLib/include/Navigator/Math/Trilat/./TrilatRecord.h \
   ../../NavigatorLib/include/Navigator/Math/Position3D.h

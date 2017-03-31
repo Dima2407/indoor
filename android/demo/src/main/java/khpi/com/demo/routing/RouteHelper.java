@@ -144,7 +144,6 @@ public class RouteHelper {
         algorithm = new DijkstraAlgorithm(graph);
     }
 
-
     public void findPath(final PointF start, final PointF end, final RouteListener listener) {
         final Handler handler = new Handler(Looper.getMainLooper());
         routeExecutor.execute(new Runnable() {
@@ -188,6 +187,10 @@ public class RouteHelper {
     @WorkerThread
     private float[] findPath(PointF start, PointF end) {
         long s = System.currentTimeMillis();
+        if(start==null){
+            Log.d("RouteHelper", "wrong start point");
+            return new float[0];
+        }
         Vertex startPoint = getDestNodeByName(formatNode(start));
 
         if (startPoint == null) {

@@ -24,7 +24,6 @@ public final class MainActivity extends GenericActivity {
     private static final int REQUEST_PERMISSION = 100;
 
     private BottomSheet bottomSheet;
-    private TabLayout tabLayout;
 
 
     @SuppressWarnings("ConstantConditions")
@@ -50,27 +49,6 @@ public final class MainActivity extends GenericActivity {
         this.bottomSheet = new BottomSheet(bottomSheet, layout);
         this.bottomSheet.getDataList().setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         this.bottomSheet.getDataList().setAdapter(new RouteDataAdapter(this));
-
-        tabLayout = (TabLayout) findViewById(R.id.main_activity_tab_host);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                String text = String.valueOf(tab.getText());
-                switch (text) {
-                    case "indoor":
-                        getLauncher().launchIndoorMapsFragment();
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
 
         getLauncher().launchIndoorMapsFragment();
     }
@@ -109,7 +87,6 @@ public final class MainActivity extends GenericActivity {
 
     @Override
     public void onBackPressed() {
-        tabLayout.getTabAt(0).select();
         getLauncher().launchIndoorMapsFragment();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }

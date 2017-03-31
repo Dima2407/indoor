@@ -186,52 +186,52 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             }
         });
 
-        List<BeaconModel> list = new ArrayList<>();
-        BeaconModel beacon1 = new BeaconModel();
-        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48049);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(4.5f);
-        beacon1.setPositionY(0.0f);
-        beacon1.setPositionZ(2.3f);
-        list.add(beacon1);
-
-        beacon1 = new BeaconModel();
-        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48050);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(0.0f);
-        beacon1.setPositionY(3.7f);
-        beacon1.setPositionZ(2.6f);
-        list.add(beacon1);
-
-        beacon1 = new BeaconModel();
-        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48051);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(4.0f);
-        beacon1.setPositionY(12.8f);
-        beacon1.setPositionZ(2.3f);
-        list.add(beacon1);
-
-        beacon1 = new BeaconModel();
-        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48052);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(0.3f);
-        beacon1.setPositionY(9.9f);
-        beacon1.setPositionZ(2.6f);
-        list.add(beacon1);
-
-        floor.setBeacons(list);
+//        List<BeaconModel> list = new ArrayList<>();
+//        BeaconModel beacon1 = new BeaconModel();
+//        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+//        beacon1.setMajor(61902);
+//        beacon1.setMinor(48049);
+//        beacon1.setTxpower(-71.2f);
+//        beacon1.setDamp(2);
+//        beacon1.setPositionX(4.5f);
+//        beacon1.setPositionY(0.0f);
+//        beacon1.setPositionZ(2.3f);
+//        list.add(beacon1);
+//
+//        beacon1 = new BeaconModel();
+//        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+//        beacon1.setMajor(61902);
+//        beacon1.setMinor(48050);
+//        beacon1.setTxpower(-71.2f);
+//        beacon1.setDamp(2);
+//        beacon1.setPositionX(0.0f);
+//        beacon1.setPositionY(3.7f);
+//        beacon1.setPositionZ(2.6f);
+//        list.add(beacon1);
+//
+//        beacon1 = new BeaconModel();
+//        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+//        beacon1.setMajor(61902);
+//        beacon1.setMinor(48051);
+//        beacon1.setTxpower(-71.2f);
+//        beacon1.setDamp(2);
+//        beacon1.setPositionX(4.0f);
+//        beacon1.setPositionY(12.8f);
+//        beacon1.setPositionZ(2.3f);
+//        list.add(beacon1);
+//
+//        beacon1 = new BeaconModel();
+//        beacon1.setUuid("23A01AF0-232A-4518-9C0E-323FB773F5EF");
+//        beacon1.setMajor(61902);
+//        beacon1.setMinor(48052);
+//        beacon1.setTxpower(-71.2f);
+//        beacon1.setDamp(2);
+//        beacon1.setPositionX(0.3f);
+//        beacon1.setPositionY(9.9f);
+//        beacon1.setPositionZ(2.6f);
+//        list.add(beacon1);
+//
+//        floor.setBeacons(list);
 
         Collection<SpaceBeacon> floorSpaceBeacons = new ArrayList<>();
         for(BeaconModel beacon : floor.getBeacons()){

@@ -46,9 +46,10 @@ public class SplashActivity extends GenericActivity {
                 return;
             }
         }
-        MainActivity.start(this);
-        finish();
-
+        if (PermissionUtil.checkAllPermissions(this)) {
+            MainActivity.start(this);
+            finish();
+        }
     }
 
     private void enableBluetooth() {

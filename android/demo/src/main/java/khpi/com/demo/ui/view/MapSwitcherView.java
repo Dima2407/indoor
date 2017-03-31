@@ -48,7 +48,6 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
 
         inflate(getContext(), R.layout.view_map_switcher_root,this);
         floors = (LinearLayout) findViewById(R.id.floor_container);
-        findViewById(R.id.open_close).setOnClickListener(this);
 
         floors.setVisibility((open) ? View.VISIBLE : View.GONE);
 
@@ -85,11 +84,6 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.open_close:
-                open=!open;
-                floors.setVisibility((open) ? View.VISIBLE : View.GONE);
-                break;
-
             default:
                 Integer pos = (Integer) view.getTag();
                 Log.d("MapSwitcherView", "pos:" + pos);

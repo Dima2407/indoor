@@ -101,7 +101,7 @@ public class AltBeaconConfigModel {
     }
 
     public long getForegroundScanPeriod() {
-        return 300;
+        return 420;
     }
 
     public long getForegroundBetweenScanPeriod() {

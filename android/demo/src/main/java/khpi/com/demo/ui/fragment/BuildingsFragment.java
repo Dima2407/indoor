@@ -14,18 +14,23 @@ import khpi.com.demo.BuildConfig;
 import khpi.com.demo.R;
 import khpi.com.demo.core.bridge.DbBridge;
 import khpi.com.demo.model.Building;
+import khpi.com.demo.model.Floor;
+import khpi.com.demo.net.MapCacheHelper;
 import khpi.com.demo.ui.adapter.AbstractRecyclerAdapter;
 import khpi.com.demo.ui.adapter.BuildingAdapter;
+import khpi.com.demo.utils.NetUtil;
 
+import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BuildingsFragment extends GenericFragment implements AbstractRecyclerAdapter.OnClickListener<Building>, Observer {
+public class BuildingsFragment extends GenericFragment implements AbstractRecyclerAdapter.OnClickListener<Building>, NetUtil.NetFileListener, Observer {
 
     private RecyclerView recycler;
     private BuildingAdapter buildingAdapter;
-
+    private ProgressDialog progressDialog;
+    private Floor floor;
 
     @Nullable
     @Override
@@ -65,6 +70,15 @@ public class BuildingsFragment extends GenericFragment implements AbstractRecycl
 
     @Override
     public void onClick(View v, Building item, int position) {
+        if(getActivityBridge().getDbBridge().getFloorsByBuildingId(item.getId()).size() == 1){
+            floor = getActivityBridge().getDbBridge().getFloorsByBuildingId(item.getId()).get(0);
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Wait...");
+            progressDialog.show();
+            MapCacheHelper.cacheMapData(getContext(), floor, this);
+            getActivityBridge().getNetBridge().loadInpointsByBuildingId(item.getId());
+            return;
+        }
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         FloorsFragment floorsFragment = new FloorsFragment();
         Bundle bundle = new Bundle();
@@ -84,6 +98,27 @@ public class BuildingsFragment extends GenericFragment implements AbstractRecycl
             buildingAdapter.addItems(buildings);
             return;
         }
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSuccess(File result) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                getActivityBridge().getLauncher().launchIndoorMapFragment(floor);
+            }
+        });
+    }
+
+    @Override
+    public void onProgress(int done, int total) {
 
     }
 }

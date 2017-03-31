@@ -28,7 +28,6 @@ public class FloorsFragment extends GenericFragment implements AbstractRecyclerA
     private FloorAdapter floorAdapter;
     private ProgressDialog progressDialog;
     private Floor item;
-    private ProgressDialog dialog;
 
     @Nullable
     @Override

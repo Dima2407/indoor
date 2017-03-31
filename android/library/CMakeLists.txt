@@ -4,6 +4,8 @@
 # Sets the minimum version of CMake required to build the native library.
 
 cmake_minimum_required(VERSION 3.4.1)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -stdlib=libc++14")
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -15,6 +17,19 @@ set(SOURCE_FILES
     ../../NavigatorLib/src/Navigator/Math/Filter/AlphaBetaFilter.cpp
     ../../NavigatorLib/src/Navigator/Math/Filter/MovingAverageFilter.cpp
     ../../NavigatorLib/src/Navigator/Math/Trilat/trilat.cpp
+
+    #
+    ../../NavigatorLib/src/Navigator/Beacons/BeaconProcessor.cpp
+    ../../NavigatorLib/src/Navigator/Beacons/Calibrate/BeaconCalibrator.cpp
+    ../../NavigatorLib/src/Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
+
+    #
+    ../../NavigatorLib/include/Navigator/Beacons/Beacon.h
+    ../../NavigatorLib/include/Navigator/Beacons/BeaconProcessor.h
+    ../../NavigatorLib/include/Navigator/Math/Filter/AlphaBetaFilter.h
+    ../../NavigatorLib/include/Navigator/Math/Trilat/TrilatRecord.h
+    ../../NavigatorLib/include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
+    ../../NavigatorLib/include/Navigator/Math/Trilat/trilat.h
 )
 
 include_directories(

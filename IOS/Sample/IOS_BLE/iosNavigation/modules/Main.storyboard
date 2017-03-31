@@ -591,11 +591,11 @@
                         <sections>
                             <tableViewSection id="Yec-aa-ISH">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="214" id="OEq-0m-Dx5">
-                                        <rect key="frame" x="0.0" y="35" width="375" height="214"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="145" id="OEq-0m-Dx5">
+                                        <rect key="frame" x="0.0" y="35" width="375" height="145"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="OEq-0m-Dx5" id="lSK-tm-Q6W">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Draw poi on radar:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opU-EF-dKE">
@@ -640,31 +640,6 @@
                                                         <action selector="switchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="s7B-4G-vuM"/>
                                                     </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Turn on logs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pln-sO-Qsf">
-                                                    <rect key="frame" x="17" y="135" width="195" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OD1-4s-Xpq">
-                                                    <rect key="frame" x="253" y="130" width="51" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <connections>
-                                                        <action selector="switchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="sWP-QV-q9I"/>
-                                                    </connections>
-                                                </switch>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5O-v8-lBN">
-                                                    <rect key="frame" x="149" y="175" width="78" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" red="0.2627450980392157" green="0.83137254901960789" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <state key="normal" title="Send Logs">
-                                                        <color key="titleColor" red="0.95933557164610261" green="1" blue="0.97390719921112034" alpha="1" colorSpace="calibratedRGB"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="sendLogs:" destination="8mY-qX-4Jg" eventType="touchUpInside" id="Mgg-YO-ykB"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </tableViewCellContentView>
@@ -678,8 +653,6 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="OnLogs" destination="OD1-4s-Xpq" id="16i-4I-NLl"/>
-                        <outlet property="sendLogButton" destination="l5O-v8-lBN" id="3cH-E6-zc6"/>
                         <outlet property="showPOI" destination="BjL-wU-rQU" id="HhW-2a-pXy"/>
                         <outlet property="showRadar" destination="q2c-t1-5Me" id="3A4-Q9-G59"/>
                         <outlet property="showRout" destination="uFy-rY-Zan" id="Mw2-A4-5df"/>

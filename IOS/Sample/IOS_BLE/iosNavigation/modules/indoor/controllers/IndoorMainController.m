@@ -173,11 +173,11 @@
 -(void) createRouteAlertWithTitle:(NSString*)title text:(NSString*)text complitionBlock:(void(^)())complitionBlock{
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:text preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *buildRoutAction = [UIAlertAction actionWithTitle:@"Build route" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *buildRoutAction = [UIAlertAction actionWithTitle:@"To point" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         complitionBlock();
     }];
-    UIAlertAction *canselAction = [UIAlertAction actionWithTitle:@"Canсel" style:UIAlertActionStyleDestructive handler:nil];
+    UIAlertAction *canselAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:nil];
     [alert addAction:buildRoutAction];
     [alert addAction:canselAction];
     [self presentViewController:alert animated:YES completion:nil];

@@ -63,7 +63,7 @@
 
     
     FloorModel *floor = self.map.froorsArray[indexPath.row];
-    cell.textLabel.text = [ NSString stringWithFormat:@"%ld",(long)floor.number];
+    cell.textLabel.text = [ NSString stringWithFormat:@"Floor %ld",(long)floor.number];
     cell.detailTextLabel.text = floor.subtitle;
     
     return cell;

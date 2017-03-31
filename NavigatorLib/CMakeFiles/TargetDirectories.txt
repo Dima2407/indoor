@@ -1,3 +1,0 @@
-/Users/appleface/Documents/sdk/indoor-sdk/NavigatorLib/CMakeFiles/rebuild_cache.dir
-/Users/appleface/Documents/sdk/indoor-sdk/NavigatorLib/CMakeFiles/edit_cache.dir
-/Users/appleface/Documents/sdk/indoor-sdk/NavigatorLib/CMakeFiles/Navigator.dir

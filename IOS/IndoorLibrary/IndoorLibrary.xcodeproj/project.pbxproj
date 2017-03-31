@@ -490,12 +490,15 @@
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../../NavigatorLib/**";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DBRIDGE_LIBRARY",
 					"-std=c++14",
 					"-I",
 					/usr/local/include/eigen3/,
+					"-fembed-bitcode",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -533,12 +536,14 @@
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../../NavigatorLib/**";
+				OTHER_CFLAGS = "-fembed-bitcode";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DBRIDGE_LIBRARY",
 					"-std=c++14",
 					"-I",
 					/usr/local/include/eigen3/,
+					"-fembed-bitcode",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

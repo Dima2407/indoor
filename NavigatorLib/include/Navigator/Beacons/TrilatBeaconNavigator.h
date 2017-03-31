@@ -32,6 +32,8 @@ namespace Navigator {
          * ..
          * + process(const BeaconReceivedData &brd) : const Position3D &
          * + process(const std::vector<BeaconReceivedData> &brds) : const Position3D &
+         * + findProcessorByUid(uid : BeaconUID) : const std::shared_ptr<BeaconProcessor>
+         * ..
          * + addBeacon(beacon: const Beacon &) : void
          * + deleteBeacon(uid: const BeaconUID &) : void
          * + clear() : void
@@ -70,6 +72,9 @@ namespace Navigator {
 
             /// Process a vector of input data, assuming identical timestamps
             const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
+
+            /// Find a BeaconProcessor by uid, nullptr if not found
+            const std::shared_ptr<BeaconProcessor> findProcessorByUid(BeaconUID uid);
 
             //------ Beacon operations -----
 

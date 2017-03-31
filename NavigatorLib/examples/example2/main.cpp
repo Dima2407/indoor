@@ -167,6 +167,17 @@ int main() {
 
     cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
 
+
+    // Try findProcessorByUid
+    auto processor = navigator.findProcessorByUid(BeaconUID("Guinea Pig", 1, 2));
+    if (processor == nullptr) {
+        cout << "Beacon Processor not found !!! " << endl;
+    } else {
+        cout << "Last distance = " << processor -> getLastDistance() << endl;
+        cout << "Last timestamp = " << processor -> getLastTimeStamp() << endl;
+    }
+
+
     // If you want to remove a beacon
     // navigator.deleteBeacon(BeaconUID("Guinea Pig", 1, 2));
 

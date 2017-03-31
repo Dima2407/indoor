@@ -134,6 +134,17 @@ namespace Navigator {
 
             return lastPosition;
         }
+//====================================================
+
+        const std::shared_ptr<BeaconProcessor> TrilatBeaconNavigator::findProcessorByUid(BeaconUID uid) {
+            auto search = beaconProcessorList.find(uid);
+
+            if (search == beaconProcessorList.end()) {
+                return nullptr;
+            } else {
+                return (*search).second;
+            }
+        }
 
 //====================================================
 

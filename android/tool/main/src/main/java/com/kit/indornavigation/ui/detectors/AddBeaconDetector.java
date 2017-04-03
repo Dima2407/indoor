@@ -1,6 +1,7 @@
 package com.kit.indornavigation.ui.detectors;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.graphics.PointF;
 import android.view.GestureDetector;
@@ -67,10 +68,14 @@ public final class AddBeaconDetector extends GestureDetector {
                             }
                         }
                     });
-                } else {
+                } else
+                    if (!BluetoothAdapter.getDefaultAdapter().isEnabled()){
+                        dialog.setMessage("Bluetooth is not enable");
+                        dialog.setNegativeButton("Cancel", null);
+                    } else {
                     dialog.setMessage("No beacons near");
                     dialog.setNegativeButton("Cancel", null);
-                }
+                    }
 
                 dialog.show();
                 return false;

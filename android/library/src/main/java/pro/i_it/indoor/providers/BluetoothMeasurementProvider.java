@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.RemoteException;
+import android.util.Log;
+
 import org.altbeacon.beacon.*;
 import pro.i_it.indoor.events.MeasurementEvent;
 import pro.i_it.indoor.local.beacon.model.AltBeaconConfigModel;
@@ -20,6 +22,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         @Override
         public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
             if (transfer != null) {
+                Log.d("onLocationChanged", "number of beacons " + collection.size());
                 for (Beacon beacon : collection) {
                     final MeasurementEvent event = MeasurementEvent.createBluetooth(beacon);
                     transfer.deliver(event);
@@ -59,7 +62,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
     private final BeaconConsumer beaconConsumer = new BeaconConsumer() {
         @Override
         public void onBeaconServiceConnect() {
-            final Region region = new Region("rangingId", Identifier.parse("23A01AF0-232A-4518-9C0E-323FB773F5EF"), null, null);
+            final Region region = new Region("rangingId", Identifier.parse("23a01af0-232a-4518-9c0e-323fb773f5ef"), null, null);
 
             beaconManager.addMonitorNotifier(monitorNotifier);
             beaconManager.addRangeNotifier(rangeNotifier);

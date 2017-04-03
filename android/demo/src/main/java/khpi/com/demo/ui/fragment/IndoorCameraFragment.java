@@ -35,6 +35,9 @@ import khpi.com.demo.ui.view.IndoorRadarView;
 import khpi.com.demo.utils.FileUtil;
 import khpi.com.demo.utils.ManeuverHelper;
 import khpi.com.demo.utils.PixelsUtil;
+import pro.i_it.indoor.IndoorLocationManager;
+import pro.i_it.indoor.OnLocationUpdateListener;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -46,9 +49,11 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     //private IndoorPositionManager positionManager;
     private IndoorCameraOverlay indoorCameraOverlay;
     private CameraPreview cameraPreview;
-//    private Building building;
+    //private Building building;
     private Floor floor;
     //private IndoorPositionManager.PositionListener listener;
+
+    private IndoorLocationManager instance;
     private IndoorRadarView radarView;
 
     private BottomSheet bottomSheet;
@@ -77,6 +82,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         floor = getArguments().getParcelable("floor");
 //        building = getArguments().getParcelable("map");
         //positionManager = IndoorPositionManager.getInstance(getContext());
+        instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
     @Nullable
@@ -150,12 +156,14 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         initCamera();
         cameraPreview.updateCamera(getCamera());
 
-//        listener = new IndoorPositionManager.PositionListener() {
-//            @Override
-//            public void onPositionChanged(final float x, final float y, final float tx, final float ty) {
-//                onNewPosition(x, y);
-//            }
-//        };
+        instance.start();
+        instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
+            @Override
+            public void onLocationChanged(float[] position) {
+                onNewPosition(position[0], position[1]);
+            }
+        });
+
         //positionManager.registerListener(listener);
 
         deviceOrientationListener = new OrientationBridge.DeviceOrientationListener() {
@@ -177,7 +185,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         getActivityBridge().getOrientationBridge().startOrientationTracking(deviceOrientationListener);
 
         radarView.setRoute(new float[0]);
-        //radarView.initMapImage(FileUtil.getLocacPath(getActivity(), String.valueOf(building.getId()), String.valueOf(1), "map").getAbsolutePath(), building.getFloors().get(0).getPixelSize());
         radarView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
     }
 
@@ -185,10 +192,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         if (getContext() == null) {
             return;
         }
-//        final Floor floor = building.getFloors().get(building.getCurrentFloorIndex());
         indoorCameraOverlay.onCurrentPositionChanged(x * floor.getPixelSize(), y * floor.getPixelSize());
 
-        //List<Inpoint> inpoints = getActivityBridge().getDbBridge().getInpointsByBuildingAndFloorId(building.getId(), building.getCurrentFloorIndex() + 1);
         List<Inpoint> inpoints = getActivityBridge().getDbBridge().getInpointByFloorId(floor.getId());
         if (destinationPoint == null) {
             indoorCameraOverlay.updateInpoints(inpoints, floor);
@@ -229,11 +234,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 bottomSheet.getHintContainer().setVisibility(View.GONE);
                 bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
                 bottomSheet.getCancelButton().setVisibility(View.GONE);
-
                 radarView.setRoute(new float[0]);
-
                 getActivityBridge().getRouteHelper().clear();
-
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) radarView.getLayoutParams();
                 layoutParams.bottomMargin = PixelsUtil.dpToPx(16, getContext());
                 radarView.setLayoutParams(layoutParams);

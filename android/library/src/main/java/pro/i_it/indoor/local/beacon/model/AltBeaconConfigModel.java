@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class AltBeaconConfigModel {
     private String rangingBeaconsFormat = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25";
-    private String beaconRangingId ="rangingId";// System.currentTimeMillis() + "";
-    private String beaconIdentifierId = "23A01AF0-232A-4518-9C0E-323FB773F5EF";
+    private String beaconRangingId ="rangingId";
+    private String beaconIdentifierId = "23a01af0-232a-4518-9c0e-323fb773f5ef";
     private long beaconsScanningPeriodForeground = 1000;
     private long beaconsScanningForegroundBeatwen = 10000;
     private long beaconsScanningForegroundBeatenConcurrency = 2000;
@@ -88,7 +88,6 @@ public class AltBeaconConfigModel {
     }
 
     public Identifier getBeaconIdentifierId() {
-        //return Identifier.fromUuid(UUID.fromString(beaconIdentifierId));
         return Identifier.parse(beaconIdentifierId);
     }
 

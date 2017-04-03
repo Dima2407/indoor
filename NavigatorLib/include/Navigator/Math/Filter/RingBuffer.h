@@ -24,13 +24,13 @@ namespace Navigator {
              * //  Note: It operates elements by value and uses assignments //
              * //  If you want to keep refs instead, try  T = shared_ptr<someclass> //
              * --
-             * - size : unsigned
+             * - capacity : unsigned
              * - data : T*
              * - readIndex : unsigned
              * - writeIndex : unsigned
              * - empty : bool
              * --
-             * + RingBuffer(size: unsigned)
+             * + RingBuffer(capacity: unsigned)
              * + ~RingBuffer()
              * ..
              * + const isFull() : bool
@@ -55,11 +55,11 @@ namespace Navigator {
             public:
 
                 /// Constructor
-                RingBuffer(unsigned size) : size(size) {
-                    assert(size > 0);
+                RingBuffer(unsigned capacity) : capacity(capacity) {
+                    assert(capacity > 0);
 
                     // The good old dynamic array
-                    data = new T[size];
+                    data = new T[capacity];
                 }
 
                 /// Destructor
@@ -136,6 +136,28 @@ namespace Navigator {
                     empty = true;
                 }
 
+                /// The current size of the buffer (number of stored data items)
+                unsigned size() const {
+                    if (empty)
+                        return 0;
+                    else if (writeIndex > readIndex)
+                        return writeIndex - readIndex;
+                    else
+                        return capacity - readIndex + writeIndex;
+                }
+
+                /// Peek the element pos < size (0 = oldest, 1 = next oldest etc.) w/o removing
+                bool peek(unsigned pos, T &t) const {
+                    if (pos >= size())
+                        return false;
+                    else {
+                        unsigned ind = (readIndex + pos) % capacity; // Set index
+                        t = data[ind]; // Get the data
+
+                        return true;
+                    }
+                }
+
                 //------------------------------------
                 // Private methods
                 //------------------------------------
@@ -147,20 +169,20 @@ namespace Navigator {
                 /// Disable assignment
                 RingBuffer &operator=(const RingBuffer<T> &) = delete;
 
-                /// Increment i by 1, wrapping around size
+                /// Increment i by 1, wrapping around capacity
                 void next(unsigned &i) {
                     i++;
-                    i %= size;
+                    i %= capacity;
                 }
 
                 //------------------------------------
                 // Private fields
                 //------------------------------------
             private:
-                /// Buffer (maximal) size = size of the array data[]
-                unsigned size;
+                /// Buffer (maximal) capacity = capacity of the array data[]
+                unsigned capacity;
 
-                /// The data as a dynamic array of size
+                /// The data as a dynamic array of capacity
                 T *data = nullptr;
 
                 // Note: readIndex == writeIndex means either empty or full buffer

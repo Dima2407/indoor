@@ -17,7 +17,7 @@ set(SOURCE_FILES
         ./Navigator/Beacons/Calibrate/BeaconCalibrator.cpp ../include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
         ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
         ./Navigator/Beacons/BeaconProcessor.cpp
-        )
+        ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h)
 
 include_directories(
         ../include/

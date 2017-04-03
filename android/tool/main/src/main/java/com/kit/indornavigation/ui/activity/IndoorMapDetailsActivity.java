@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -93,13 +95,24 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
             @Override
             protected void onErrorUi(int code) {
-                Toast.makeText(app, "Error loading floors, code: " + code, Toast.LENGTH_SHORT).show();
+                if (!isOnline())
+                    Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(app, "Error loading floors, code: " + code, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+            return true;
+        return false;
+    }
+
     private void downloadFiles(final FloorModel floorModel, final int floorIndex) {
-        fileDownloadsResult = new int[] {-1, -1, -1};
+        fileDownloadsResult = new int[]{-1, -1, -1};
 
         final Dialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog_downloading_files)

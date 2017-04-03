@@ -1,7 +1,10 @@
 package com.kit.indornavigation.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -28,10 +31,21 @@ public class SplashActivity extends BaseActivity {
 
                 @Override
                 protected void onErrorUi(int code) {
-                    Toast.makeText(SplashActivity.this, "Error logging in", Toast.LENGTH_SHORT).show();
+                    if (!isOnline())
+                        Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(SplashActivity.this, "Error logging in", Toast.LENGTH_SHORT).show();
                 }
             });
         }
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+            return true;
+        return false;
     }
 
     @Override

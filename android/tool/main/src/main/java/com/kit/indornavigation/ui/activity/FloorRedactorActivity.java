@@ -67,6 +67,7 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public final class FloorRedactorActivity extends BaseActivity {
 
@@ -106,7 +107,12 @@ public final class FloorRedactorActivity extends BaseActivity {
     private Handler uiHandler;
     private Toast noTapPointToast;
 
-    public static void start(Activity activity, final IndoorMap map, final FloorModel floorModelv2, int requestCode) {
+    public static void start(
+            Activity activity,
+            final IndoorMap map,
+            final FloorModel floorModelv2,
+            int requestCode
+    ) {
         Intent intent = new Intent(activity, FloorRedactorActivity.class);
         intent.putExtra(EXTRA_FLOOR, (Parcelable) floorModelv2);
         intent.putExtra(PARENT_MAP, map);
@@ -307,7 +313,10 @@ public final class FloorRedactorActivity extends BaseActivity {
                     case R.id.calibration_tool:
                         if (!item.isChecked()) {
                             if (img.getBeaconModels().size() < 3) {
-                                Toast.makeText(FloorRedactorActivity.this, "Put at least 3 beacons on map.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FloorRedactorActivity.this,
+                                               "Put at least 3 beacons on map.",
+                                               Toast.LENGTH_SHORT
+                                ).show();
                                 return true;
                             }
 
@@ -338,9 +347,14 @@ public final class FloorRedactorActivity extends BaseActivity {
                         File file = new File(filePath);
 
                         if (file.exists() && file.length() > 0) {
-                            ShareUtils.shareFile(Uri.parse("file://" + filePath), FloorRedactorActivity.this);
+                            ShareUtils.shareFile(Uri.parse("file://" + filePath),
+                                                 FloorRedactorActivity.this
+                            );
                         } else {
-                            Toast.makeText(app, "Log file is empty. Start calibration for sharing results.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(app,
+                                           "Log file is empty. Start calibration for sharing results.",
+                                           Toast.LENGTH_SHORT
+                            ).show();
                         }
                         break;
 
@@ -390,7 +404,6 @@ public final class FloorRedactorActivity extends BaseActivity {
             });
         }
     }
-
 
     private void startTimer() {
         startTimerTime = System.currentTimeMillis();
@@ -455,29 +468,43 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         saveCalibrationResults();
         if (floorModel.getBeacons() == null || floorModel.getBeacons().size() == 0) {
-            Toast.makeText(FloorRedactorActivity.this, "Calibration data null ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FloorRedactorActivity.this, "Calibration data null ", Toast.LENGTH_SHORT)
+                    .show();
             return;
         }
-        app.getNetBridge().updateBeaconInFloor(floorModel.getId(), floorModel.getBeacons(), new Callback() {
-            @Override
-            protected void onSuccessUi() {
-                Toast.makeText(FloorRedactorActivity.this, R.string.update_beacon_success, Toast.LENGTH_SHORT).show();
-            }
+        app.getNetBridge()
+                .updateBeaconInFloor(floorModel.getId(), floorModel.getBeacons(), new Callback() {
+                    @Override
+                    protected void onSuccessUi() {
+                        Toast.makeText(FloorRedactorActivity.this,
+                                       R.string.update_beacon_success,
+                                       Toast.LENGTH_SHORT
+                        ).show();
+                    }
 
-            @Override
-            protected void onErrorUi(int code) {
-                Toast.makeText(FloorRedactorActivity.this, R.string.fail_update_beacon_success, Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    protected void onErrorUi(int code) {
+                        Toast.makeText(FloorRedactorActivity.this,
+                                       R.string.fail_update_beacon_success,
+                                       Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                });
         app.getNetBridge().uploadFloor(floorModel, new Callback() {
             @Override
             protected void onSuccessUi() {
-                Toast.makeText(FloorRedactorActivity.this, R.string.update_floor_config_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(FloorRedactorActivity.this,
+                               R.string.update_floor_config_success,
+                               Toast.LENGTH_SHORT
+                ).show();
             }
 
             @Override
             protected void onErrorUi(int code) {
-                Toast.makeText(FloorRedactorActivity.this, R.string.fail_update_floor_config_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(FloorRedactorActivity.this,
+                               R.string.fail_update_floor_config_success,
+                               Toast.LENGTH_SHORT
+                ).show();
             }
         });
     }
@@ -498,7 +525,8 @@ public final class FloorRedactorActivity extends BaseActivity {
         }
 
         if (getExternalCacheDir() != null) {
-            filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + file + ".json";
+            filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    .getAbsolutePath() + "/" + file + ".json";
 
             try (FileWriter writer = new FileWriter(filePath)) {
                 writer.write(json);
@@ -539,7 +567,10 @@ public final class FloorRedactorActivity extends BaseActivity {
             }
 
             if (noTapPointToast == null) {
-                noTapPointToast = Toast.makeText(app, "You forget to select your position.", Toast.LENGTH_SHORT);
+                noTapPointToast = Toast.makeText(app,
+                                                 "You forget to select your position.",
+                                                 Toast.LENGTH_SHORT
+                );
             }
 
             noTapPointToast.show();
@@ -568,10 +599,14 @@ public final class FloorRedactorActivity extends BaseActivity {
                 final SparseArray<List<Double>> txPower = new SparseArray<>();
                 final SparseArray<List<Double>> distance = new SparseArray<>();
                 final SparseArray<FilteringAlgorithm> algorithms = new SparseArray<>();
+                final SparseArray<List<Long>> timestamps = new SparseArray<>();
 
                 BeaconSearcher.BeaconListener beaconListener = new BeaconSearcher.BeaconListener() {
                     @Override
-                    public void onBeaconsDetected(Collection<Beacon> stableBeacons, Collection<Beacon> currentBeacons) {
+                    public void onBeaconsDetected(
+                            Collection<Beacon> stableBeacons,
+                            Collection<Beacon> currentBeacons
+                    ) {
                         for (Beacon beacon : stableBeacons) {
                             BeaconLogModel logModel = new BeaconLogModel(beacon);
 
@@ -579,7 +614,8 @@ public final class FloorRedactorActivity extends BaseActivity {
 
                             List<BeaconModel> beaconModels = img.getBeaconModels();
                             for (BeaconModel beaconModel : beaconModels) {
-                                if (beaconModel.getMacAddress().compareTo(beacon.getBluetoothAddress()) == 0) {
+                                if (beaconModel.getMacAddress()
+                                        .compareTo(beacon.getBluetoothAddress()) == 0) {
                                     beaconOnMap = beaconModel;
                                     break;
                                 }
@@ -591,6 +627,14 @@ public final class FloorRedactorActivity extends BaseActivity {
                                 if (!beacons.contains(beaconOnMap)) {
                                     beacons.add(beaconOnMap);
                                 }
+
+                                List<Long> timeArray = timestamps.get(hashCode);
+                                if (timeArray == null) {
+                                    timeArray = new ArrayList<>();
+                                    timestamps.put(hashCode, timeArray);
+                                }
+
+                                timeArray.add(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
 
                                 FilteringAlgorithm algorithm = algorithms.get(hashCode);
 
@@ -616,9 +660,10 @@ public final class FloorRedactorActivity extends BaseActivity {
                                 PointF position = beaconOnMap.getPosition();
                                 PointF calibrationDataPosition = calibrationData.getPosition();
 
-                                double distance = Math.sqrt(Math.pow(position.x - calibrationDataPosition.x, 2) + Math.pow(position.y - calibrationDataPosition.y, 2));
+                                double distance = Math.sqrt(Math.pow(position.x - calibrationDataPosition.x,
+                                                                     2
+                                ) + Math.pow(position.y - calibrationDataPosition.y, 2));
                                 list.add(distance * floorModel.getPixelSize());
-
                             }
 
                             logModel.setCreateTime(System.currentTimeMillis() - startTime);
@@ -658,6 +703,7 @@ public final class FloorRedactorActivity extends BaseActivity {
                     configData.setRssiData(rssi.get(hashcode));
                     configData.setTxData(txPower.get(hashcode));
                     configData.setDistanceData(distance.get(hashcode));
+                    configData.setTimestampsData(timestamps.get(hashcode));
 
                     configDataList.add(configData);
                 }
@@ -719,7 +765,12 @@ public final class FloorRedactorActivity extends BaseActivity {
         stopTimer();
 
         for (CalibrationData calibrationData : calibrationDatas) {
-            List<BeaconModel> results = app.getAlgoManager().calibrateBeacons(calibrationData, floorModel);
+            List<BeaconModel> results = app.getAlgoManager()
+                    .calibrateBeacons(calibrationData,
+                                      img.getBeaconModels(),
+                                      (float) floorModel.getPixelSize(),
+                                      floorModel
+                    );
 
             for (BeaconModel calibrationResult : results) {
                 if (!calibrationResults.contains(calibrationResult)) {
@@ -727,7 +778,8 @@ public final class FloorRedactorActivity extends BaseActivity {
                     continue;
                 }
 
-                float distance = calibrationResults.get(calibrationResults.indexOf(calibrationResult)).getCalibratedDistance();
+                float distance = calibrationResults.get(calibrationResults.indexOf(calibrationResult))
+                        .getCalibratedDistance();
 
                 if (distance > calibrationResult.getCalibratedDistance()) {
                     calibrationResults.remove(calibrationResult);
@@ -754,7 +806,9 @@ public final class FloorRedactorActivity extends BaseActivity {
         for (int i = 0; i < beacons.size(); i++) {
             BeaconModel model = beacons.get(i);
             BeaconModel beaconModel = new BeaconModel(model);
-            beaconModel.setPosition(new PointF(((float) (model.getPosition().x * floorModel.getPixelSize())), (float) (model.getPosition().y * floorModel.getPixelSize())));
+            beaconModel.setPosition(new PointF(((float) (model.getPosition().x * floorModel.getPixelSize())),
+                                               (float) (model.getPosition().y * floorModel.getPixelSize())
+            ));
 
             result.add(i, beaconModel);
         }

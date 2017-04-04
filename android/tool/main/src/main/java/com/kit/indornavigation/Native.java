@@ -8,7 +8,15 @@ public final class Native {
 
     public static native void addCalibrationBeacon(String hash, int major, int minor, float[] position);
 
-    public static native void addCalibrationData(float[] beaconPosition, double[] rssi, float[] calibrationPosition, String hash, int major, int minor);
+    public static native void addCalibrationData(
+            float[] beaconPosition,
+            double[] rssi,
+            long[] timestamps,
+            float[] calibrationPosition,
+            String hash,
+            int major,
+            int minor
+    );
 
     public static native void calibrate();
 

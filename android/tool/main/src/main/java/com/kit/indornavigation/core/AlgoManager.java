@@ -21,19 +21,26 @@ public class AlgoManager {
         app = (App) context.getApplicationContext();
     }
 
-    private List<BeaconModel> calibrateMap(CalibrationData calibrationData, FloorModel map) {
+    private List<BeaconModel> calibrateMap(
+            CalibrationData calibrationData,
+            FloorModel map,
+            float pixelSize
+    ) {
         List<BeaconModel> calibrationResults = new ArrayList<>();
         List<BeaconConfigData> configDatas = calibrationData.getConfigDatas();
 
-        float[] calibrationPosition = new float[]{(float) (calibrationData.getPosition().x * map.getPixelSize()), (float) (calibrationData.getPosition().y * map.getPixelSize())};
+        float[] calibrationPosition = new float[]{calibrationData.getPosition().x * pixelSize, calibrationData
+                .getPosition().y * pixelSize};
         for (BeaconConfigData configData : configDatas) {
             BeaconModel beaconModel = configData.getBeaconModel();
 
-            float[] beaconPosition = new float[]{(float) (beaconModel.getPosition().x * map.getPixelSize()), (float) (beaconModel.getPosition().y * map.getPixelSize())};
+            float[] beaconPosition = new float[]{beaconModel.getPosition().x * pixelSize, beaconModel
+                    .getPosition().y * pixelSize};
 
             Native.addCalibrationData(
                     beaconPosition,
-                    asArray(configData.getRssiData()),
+                    asDoubleArray(configData.getRssiData()),
+                    asLongArray(configData.getTimestampsData()),
                     calibrationPosition,
                     beaconModel.getMacAddress(),
                     (int) beaconModel.getMajor(),
@@ -56,8 +63,12 @@ public class AlgoManager {
                 continue;
             }
 
-            configData.setTxData(Collections.nCopies(configData.getDistanceData().size(), results[0]));
-            configData.setDampData(Collections.nCopies(configData.getDistanceData().size(), results[1]));
+            configData.setTxData(Collections.nCopies(configData.getDistanceData().size(),
+                                                     results[0]
+            ));
+            configData.setDampData(Collections.nCopies(configData.getDistanceData().size(),
+                                                       results[1]
+            ));
 
             beaconModel.setCalibratedDistance(calculateAverage(configData.getDistanceData()));
             beaconModel.setDamp((float) results[1]);
@@ -72,18 +83,22 @@ public class AlgoManager {
         return calibrationResults;
     }
 
-    public List<BeaconModel> calibrateBeacons(CalibrationData calibrationData, FloorModel floorModel) {
-        List<BeaconModel> beacons = floorModel.getBeacons();
+    public List<BeaconModel> calibrateBeacons(
+            CalibrationData calibrationData,
+            List<BeaconModel> beacons,
+            float pixelSize,
+            FloorModel map
+    ) {
         for (BeaconModel beacon : beacons) {
             Native.addCalibrationBeacon(
                     beacon.getMacAddress(),
                     (int) beacon.getMajor(),
                     (int) beacon.getMinor(),
-                    new float[]{(float) (beacon.getPosition().x * floorModel.getPixelSize()), (float) (beacon.getPosition().y * floorModel.getPixelSize())}
+                    new float[]{beacon.getPosition().x * pixelSize, beacon.getPosition().y * pixelSize}
             );
         }
 
-        return calibrateMap(calibrationData, floorModel);
+        return calibrateMap(calibrationData, map, pixelSize);
     }
 
     private float calculateAverage(List<Double> distanceData) {
@@ -96,7 +111,7 @@ public class AlgoManager {
         return (float) sum / distanceData.size();
     }
 
-    private double[] asArray(List<Double> data) {
+    private double[] asDoubleArray(List<Double> data) {
         double[] result = new double[data.size()];
 
         for (int i = 0; i < data.size(); i++) {
@@ -105,4 +120,15 @@ public class AlgoManager {
 
         return result;
     }
+
+    private long[] asLongArray(final List<Long> data) {
+        long[] result = new long[data.size()];
+
+        for (int i = 0; i < data.size(); i++) {
+            result[i] = data.get(i);
+        }
+
+        return result;
+    }
+
 }

@@ -11,6 +11,7 @@ public final class BeaconConfigData {
     private List<Double> txData;
     private List<Double> distanceData;
     private List<Double> dampData;
+    private List<Long> timestampsData;
 
     public int getHash() {
         return hash;
@@ -58,5 +59,13 @@ public final class BeaconConfigData {
 
     public void setBeaconModel(BeaconModel beaconModel) {
         this.beaconModel = beaconModel;
+    }
+
+    public List<Long> getTimestampsData() {
+        return timestampsData;
+    }
+
+    public void setTimestampsData(final List<Long> timestampsData) {
+        this.timestampsData = timestampsData;
     }
 }

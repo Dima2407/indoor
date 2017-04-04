@@ -72,4 +72,8 @@ public class MainActivity extends BaseActivity {
     public int getLayResId() {
         return R.layout.activity_poi_details;
     }
+
+    public void finishActivity(){
+        this.finish();
+    }
 }

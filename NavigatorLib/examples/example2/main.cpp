@@ -63,7 +63,7 @@ int main() {
     // Do we use full 3D trilat instead of 2D ? (default = false)
     navigator.setUse3DTrilat(false);
 
-    // Max number of nearest beacons to use on eac trilateration
+    // Max number of nearest beacons to use on each trilateration
     // 0 = unlimited, default = 0
     navigator.setUseNearest(3);
 

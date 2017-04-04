@@ -133,4 +133,6 @@ class Position3D <<(S,#99DDFF)>> {
 'Position3D <. Beacon
 Position3D <.. AbstractBeaconNavigator : returns
 
+
+
 @enduml

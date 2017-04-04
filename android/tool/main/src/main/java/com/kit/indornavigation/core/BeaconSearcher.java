@@ -41,7 +41,7 @@ public class BeaconSearcher implements BeaconConsumer, RangeNotifier {
         this.context = context;
         beaconManager = BeaconManager.getInstanceForApplication(context.getApplicationContext());
         beaconManager.setBackgroundScanPeriod(500);
-        beaconManager.setForegroundScanPeriod(2000);
+        beaconManager.setForegroundScanPeriod(420);
         beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(FRAME_EDDISTONE_UID));
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23," +

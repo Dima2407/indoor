@@ -75,7 +75,7 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        if(map.getFloors().size() == 1){
+        if (map.getFloors().size() == 1) {
             downloadFiles(map.getFloors().get(POSITION_IF_SINGLE_FLOOR), POSITION_IF_SINGLE_FLOOR);
             return;
         }
@@ -100,13 +100,16 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
             @Override
             protected void onErrorUi(int code) {
-                Toast.makeText(app, "Error loading floors, code: " + code, Toast.LENGTH_SHORT).show();
+                if (!NetworkUtils.isOnline(getApplicationContext()))
+                    Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(app, "Error loading floors, code: " + code, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void downloadFiles(final FloorModel floorModel, final int floorIndex) {
-        fileDownloadsResult = new int[] {-1, -1, -1};
+        fileDownloadsResult = new int[]{-1, -1, -1};
 
         final Dialog dialog = new AlertDialog.Builder(this)
                 .setView(R.layout.dialog_downloading_files)
@@ -201,7 +204,7 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
         dialog.dismiss();
         FloorRedactorActivity.start(this, map, floorModel, REQUEST_CODE);
-        if(map.getFloors().size() == 1){
+        if (map.getFloors().size() == 1) {
             this.finish();
         }
     }

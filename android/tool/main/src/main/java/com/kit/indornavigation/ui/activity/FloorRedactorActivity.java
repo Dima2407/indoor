@@ -743,7 +743,7 @@ public final class FloorRedactorActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        stopCalibration();
+        //stopCalibration();
 
         List<BeaconModel> beacons = img.getBeaconModels();
         Log.i(TAG, "onSaveInstanceState: " + beacons);

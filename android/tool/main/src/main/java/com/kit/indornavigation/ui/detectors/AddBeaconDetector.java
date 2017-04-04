@@ -37,7 +37,7 @@ public final class AddBeaconDetector extends GestureDetector {
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext())
                         .setTitle(isEditMode ? "Edit beacon with " + String.format("major: 0x%X; minor: 0x%X", beaconWithPoint.getMajor(), beaconWithPoint.getMinor()) :
-                                "Choose beacon model: ");
+                                "Select beacon that should be added to the map: ");
 
                 final App application = (App) view.getContext().getApplicationContext();
                 final List<BeaconModel> beacons = application.getBeaconSearcher().getBeacons();

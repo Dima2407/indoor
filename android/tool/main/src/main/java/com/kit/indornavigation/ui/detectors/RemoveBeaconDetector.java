@@ -1,6 +1,8 @@
 package com.kit.indornavigation.ui.detectors;
 
+import android.content.DialogInterface;
 import android.graphics.PointF;
+import android.support.v7.app.AlertDialog;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -24,9 +26,16 @@ public final class RemoveBeaconDetector extends GestureDetector {
                 if (GeometryUtils.isCoordinatesInvalid(view, gesturePoint)) {
                     return false;
                 }
-
-                view.tryRemoveBeacon(gesturePoint);
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext())
+                        .setTitle("The beacon is ready to be removed")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                view.tryRemoveBeacon(gesturePoint);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+                builder.show();
                 return super.onSingleTapConfirmed(e);
             }
         });

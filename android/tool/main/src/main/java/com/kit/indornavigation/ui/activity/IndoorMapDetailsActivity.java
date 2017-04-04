@@ -24,6 +24,7 @@ import com.kit.indornavigation.R;
 import com.kit.indornavigation.ui.adapter.AbstractRecyclerAdapter;
 import com.kit.indornavigation.ui.adapter.FloorsAdapter;
 import com.kit.indornavigation.utils.NavigationButtonFactory;
+import com.kit.indornavigation.utils.NetworkUtils;
 
 import java.io.File;
 import java.util.List;
@@ -95,20 +96,12 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
             @Override
             protected void onErrorUi(int code) {
-                if (!isOnline())
+                if (!NetworkUtils.isOnline(getApplicationContext()))
                     Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(app, "Error loading floors, code: " + code, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-            return true;
-        return false;
     }
 
     private void downloadFiles(final FloorModel floorModel, final int floorIndex) {

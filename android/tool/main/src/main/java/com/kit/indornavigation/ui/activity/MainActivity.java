@@ -22,6 +22,7 @@ import com.kit.indornavigation.R;
 import com.kit.indornavigation.core.App;
 import com.kit.indornavigation.ui.adapter.AbstractRecyclerAdapter;
 import com.kit.indornavigation.ui.adapter.IndoorMapsAdapter;
+import com.kit.indornavigation.utils.NetworkUtils;
 
 import java.util.List;
 
@@ -70,20 +71,12 @@ public class MainActivity extends BaseActivity {
 
             @Override
             protected void onErrorUi(final int code) {
-                if (!isOnline())
+                if (!NetworkUtils.isOnline(getApplicationContext()))
                     Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(app, "Error loading items", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-            return true;
-        return false;
     }
 
     @Override

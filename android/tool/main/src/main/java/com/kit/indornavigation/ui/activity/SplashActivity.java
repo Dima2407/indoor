@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.github.alwayswannasleep.network.Callback;
 import com.kit.indornavigation.R;
+import com.kit.indornavigation.utils.NetworkUtils;
 import com.kit.indornavigation.utils.PermissionUtil;
 
 public class SplashActivity extends BaseActivity {
@@ -31,21 +32,13 @@ public class SplashActivity extends BaseActivity {
 
                 @Override
                 protected void onErrorUi(int code) {
-                    if (!isOnline())
+                    if (!NetworkUtils.isOnline(getApplicationContext()))
                         Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
                     else
                         Toast.makeText(SplashActivity.this, "Error logging in", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-            return true;
-        return false;
     }
 
     @Override

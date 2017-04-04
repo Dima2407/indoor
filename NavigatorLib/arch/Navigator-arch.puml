@@ -1,0 +1,136 @@
+@startuml
+
+title   NavigatorLibrary \n
+set namespaceSeparator ::
+
+
+abstract "**AbstractBeaconNavigator**" as AbstractBeaconNavigator {
+    + {abstract} process(const BeaconReceivedData &brd) : const Position3D &
+    + {abstract} process(const std::vector<BeaconReceivedData> &brd) : const Position3D &
+    + {abstract} const getLastPosition() : const Math::Position3D &
+}
+
+class "**TrilatBeaconNavigator**" as TrilatBeaconNavigator {
+- rssiFilterFactory : std::shared_ptr<IFilterFactory>
+- distanceFilterFactory : std::shared_ptr<IFilterFactory>
+- beaconProcessorList : std::unordered_map<BeaconUID, std::shared_ptr<BeaconProcessor>>
+- lastPosition : Position3D
+..
+- beaconTimeout : double
+- use3DTrilat : bool
+- useNearest : unsigned
+--
++ TrilatBeaconNavigator(rssiFilterFactory : const std::shared_ptr<IFilterFactory> &,
+               distanceFilterFactory : const std::shared_ptr<IFilterFactory> &)
+..
++ process(const BeaconReceivedData &brd) : const Position3D &
++ process(const std::vector<BeaconReceivedData> &brds) : const Position3D &
++ findProcessorByUid(uid : BeaconUID) : const std::shared_ptr<BeaconProcessor>
+..
++ addBeacon(beacon: const Beacon &) : void
++ deleteBeacon(uid: const BeaconUID &) : void
++ clear() : void
++ const getLastPosition() : const Math::Position3D &
+..
+- runTrilat() : void
+- processPacket(brd : const BeaconReceivedData &) : void
+- checkTimeout(timeStamp : double) : void
+}
+
+                   note bottom
+                    // This is the trilateration-based beacon navigator //
+                    // You must add at least 3 beacons //
+                    // And process events for at least 3 beacons //
+                    // To get a nonzero result //
+                    // Currently in 2D (z is ignored) //
+                    endnote
+
+class TrilatBeaconNavigator ..|> abstract AbstractBeaconNavigator
+
+interface IFilterFactory {
+//  A factory interface for filter creation //
+..
++ {abstract} createFilter() : std::shared_ptr<IFilter>
+}
+
+TrilatBeaconNavigator "1" o-- "2" IFilterFactory
+
+class BeaconProcessor {
+- beacon : Beacon
+- rssiFilter : std::shared_ptr<IFilter>
+- distanceFilter : std::shared_ptr<IFilter>
+- lastTimeStamp : double
+- lastDistance : double
+- active : bool
+--
++ BeaconProcessor(beacon : const Beacon &,
+                           rssiFilter : const std::shared_ptr<IFilter> &,
+                           distanceFilter : const std::shared_ptr<IFilter> &)
+..
++ process(rssi : double, timeStamp : double) : double
++ reset() : void
++ reset(newBeacon : const Beacon &) : void
+..
++ getters()
+..
+- const calculateDistance(rssi : double ) : double
+}
+note bottom
+          // Beacon Processor //
+          // Calculates distance as a function of RSSI for a beacon //
+          // using both RSSI filter and distance filter //
+          // Includes beacon data, and shared_ptr's to the filters //
+          // Keeps last timestamp and distance //
+endnote
+
+TrilatBeaconNavigator "1" o--"0..*" BeaconProcessor
+
+interface IFilter{
+// Filter functional interface  //
+// operator() is an alias to process() //
+// The data is Value pair (RSSI, timestamp)//
+..
++ {abstract} process(in: Value) : Value
+..
++ reset() : void
+..
++ operator() (in: Value) : Value -> process()
+--
++ ~IFilter()
+}
+
+BeaconProcessor "1" o-- "2" IFilter
+
+
+class Beacon {
+//All important information about a single BLE beacon//
+..
+- uid : ByteArray  //Beacon's Unique ID, a byte sequence//
+- txPower : double  //Found by calibration//
+- damp : double  //Found by calibration//
+- pos : Position3D  //Beacon location//
+- meta : std::string  //Some exttra info, UNUSED//
+__
++ getters()
++ setters()
+}
+
+BeaconProcessor "1" o-- "1" Beacon
+
+class BeaconReceivedData <<(S,#99DDFF)>> {
+	+ timestamp : double  //in seconds//
+	+ uid : BeaconUID
+	+ rssi : double
+	+  txPower : double
+}
+
+BeaconReceivedData <.. AbstractBeaconNavigator : receives (passed to)
+
+class Position3D <<(S,#99DDFF)>> {
+	+ x,y,z : double 
+}
+
+'Position3D <. Beacon
+Position3D <.. AbstractBeaconNavigator : returns
+
+@enduml

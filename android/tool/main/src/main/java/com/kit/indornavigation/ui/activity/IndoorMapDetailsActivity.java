@@ -199,7 +199,9 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
         dialog.dismiss();
         FloorRedactorActivity.start(this, map, floorModel, REQUEST_CODE);
-        finishActivity();
+        if(map.getFloors().size() == 1){
+            this.finish();
+        }
     }
 
     @Override
@@ -221,9 +223,5 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
     @Override
     public int getLayResId() {
         return R.layout.activity_new_map_creator;
-    }
-
-    public void finishActivity(){
-        this.finish();
     }
 }

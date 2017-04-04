@@ -13,7 +13,6 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++11 -frtti -fexceptions"
                 arguments "-DANDROID_STL=c++_shared", "-DANDROID_NATIVE_API_LEVEL=19"
             }
         }

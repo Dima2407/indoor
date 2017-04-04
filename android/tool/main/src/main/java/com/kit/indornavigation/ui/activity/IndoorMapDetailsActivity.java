@@ -1,6 +1,5 @@
 package com.kit.indornavigation.ui.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +33,6 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
     private static final String INDOOR_MAP_KEY = "indoor map key";
     private static final int REQUEST_CODE = 1001;
     private static final String TAG = IndoorMapDetailsActivity.class.getSimpleName();
-    private static final int POSITION_IF_SINGLE_FLOOR = 0;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -73,10 +71,7 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        if(map.getFloors().size() == 1){
-            downloadFiles(map.getFloors().get(POSITION_IF_SINGLE_FLOOR), POSITION_IF_SINGLE_FLOOR);
-            return;
-        }
+
         adapter.setClickListener(new AbstractRecyclerAdapter.OnClickListener<FloorModel>() {
             @Override
             public void onClick(View v, FloorModel item, int position) {
@@ -199,7 +194,6 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
 
         dialog.dismiss();
         FloorRedactorActivity.start(this, map, floorModel, REQUEST_CODE);
-        finishActivity();
     }
 
     @Override
@@ -221,9 +215,5 @@ public final class IndoorMapDetailsActivity extends BaseActivity {
     @Override
     public int getLayResId() {
         return R.layout.activity_new_map_creator;
-    }
-
-    public void finishActivity(){
-        this.finish();
     }
 }

@@ -1,10 +1,11 @@
 package com.kit.indornavigation.ui.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import com.kit.indornavigation.R;
 import com.kit.indornavigation.ui.adapter.AbstractRecyclerAdapter;
 import com.kit.indornavigation.ui.adapter.FloorsAdapter;
 import com.kit.indornavigation.utils.NavigationButtonFactory;
+import com.kit.indornavigation.utils.NetworkUtils;
 
 import java.io.File;
 import java.util.List;

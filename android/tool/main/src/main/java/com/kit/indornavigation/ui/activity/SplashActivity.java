@@ -1,12 +1,16 @@
 package com.kit.indornavigation.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.github.alwayswannasleep.network.Callback;
 import com.kit.indornavigation.R;
+import com.kit.indornavigation.utils.NetworkUtils;
 import com.kit.indornavigation.utils.PermissionUtil;
 
 public class SplashActivity extends BaseActivity {
@@ -28,7 +32,10 @@ public class SplashActivity extends BaseActivity {
 
                 @Override
                 protected void onErrorUi(int code) {
-                    Toast.makeText(SplashActivity.this, "Error logging in", Toast.LENGTH_SHORT).show();
+                    if (!NetworkUtils.isOnline(getApplicationContext()))
+                        Toast.makeText(app, "No connecting", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(SplashActivity.this, "Error logging in", Toast.LENGTH_SHORT).show();
                 }
             });
         }

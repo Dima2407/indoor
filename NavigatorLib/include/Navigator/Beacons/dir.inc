@@ -10,6 +10,7 @@
 #include "./Factory/IFilterFactory.h"
 #include "./Factory/AlphaBetaFilterFactory.h"
 #include "./Factory/MovingAverageFilterFactory.h"
+#include "./Factory/AlphaTrimmedFilterFactory.h"
 #include "./Factory/NoFilterFactory.h"
 #
 #include "./Calibrate/BeaconCalibrator.h"

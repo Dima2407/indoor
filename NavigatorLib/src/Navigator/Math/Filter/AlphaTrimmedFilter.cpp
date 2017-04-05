@@ -30,7 +30,7 @@ namespace Navigator {
                 unsigned size = buffer.size();
 
                 // How many min and max elements to skip ?
-                unsigned nskip = (unsigned) alpha*size;
+                unsigned nskip = (unsigned) (alpha*size);
 
                 if (2*nskip == size)
                     nskip--; // You cannot skip everything

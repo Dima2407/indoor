@@ -229,7 +229,7 @@ public final class FloorRedactorActivity extends BaseActivity {
         super.onStart();
 
         uiHandler = new Handler(Looper.getMainLooper());
-        bindService(new Intent(this, CalibrationService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+
     }
 
     private void loadConfigFile() {
@@ -549,6 +549,9 @@ public final class FloorRedactorActivity extends BaseActivity {
     }
 
     private void startCalibration() {
+
+        bindService(new Intent(this, CalibrationService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+
         if (!img.hasTapPoint()) {
             if (startPauseBtnWrapper.getVisibility() == View.VISIBLE) {
                 startPauseBtn.setChecked(false);
@@ -570,7 +573,7 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         img.removeCurrentPositionDetector();
 
-        Runnable task = new Runnable() {
+        final Runnable task = new Runnable() {
             @Override
             public void run() {
                 startTimer();
@@ -689,7 +692,17 @@ public final class FloorRedactorActivity extends BaseActivity {
             }
         };
 
-        calibrationService.getService().startCalibration(task);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                calibrationService.getService().startCalibration(task);
+            }
+        }).start();
 
     }
 

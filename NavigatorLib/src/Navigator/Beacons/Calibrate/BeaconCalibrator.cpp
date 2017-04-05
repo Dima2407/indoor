@@ -60,7 +60,7 @@ namespace Navigator {
                         // Find beacon with this id
                         const Beacon &beacon = beaconMap[uid];
 
-                        // Find average rssi
+                        // Find the average rssi
                         double averageRSSI = 0;
                         for (double d : val.second)
                             averageRSSI += d;
@@ -95,13 +95,14 @@ namespace Navigator {
 
                     // Calibrate beacon : finally
                     // Get previous values (not used currently)
-                    double txPower = beacon.getTxPower(); // Iput/Output values
+                    double txPower = beacon.getTxPower(); // Input/Output values
                     double damp = beacon.getDamp();
 
                     Algorithm::calibrate(table, config, txPower, damp);
 
                     // Store the calibration result if OK
-                    if (!isnan(damp) && !isnan(txPower)) {
+                    // In the present version damp<=0 is discarded
+                    if (!isnan(damp) && !isnan(txPower) && damp > 0) {
                         beacon.setTxPower(txPower);
                         beacon.setDamp(damp);
                         beacon.setCalibrated(true);

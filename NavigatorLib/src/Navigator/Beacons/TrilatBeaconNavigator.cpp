@@ -79,9 +79,12 @@ namespace Navigator {
                 // Rreset if the timestamp is negative
                 BeaconProcessor &processor = *(search->second);
 
-                // Reset if going back in time (timestamp < last timestamp)
-                if (brd.timestamp < processor.getLastTimeStamp() - NEGATIVE_TOLERANCE)
-                    processor.reset();
+                // EXCEPTION if going back in time (timestamp < last timestamp)
+                // Previously reset, now exception
+                if (brd.timestamp < processor.getLastTimeStamp() - NEGATIVE_TOLERANCE) {
+//                    processor.reset();
+                    throw std::runtime_error("TrilatBeaconNavigator: Travelling back in time is forbidden.");
+                }
 
                 // Process the data packet brd with the respective beacon
                 // This makes the processor active if it was not active before

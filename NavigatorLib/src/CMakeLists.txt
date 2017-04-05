@@ -15,6 +15,7 @@ set(SOURCE_FILES
         ../include/Navigator/Math/Trilat/TrilatRecord.h
         #
         ./Navigator/Beacons/Calibrate/BeaconCalibrator.cpp ../include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
+        ../include/Navigator/Beacons/Calibrate/CalibrationPoint.h
         ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
         ./Navigator/Beacons/BeaconProcessor.cpp
         ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h)

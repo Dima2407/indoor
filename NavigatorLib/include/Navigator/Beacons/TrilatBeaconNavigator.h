@@ -8,7 +8,7 @@
 #include "Navigator/Beacons/AbstractBeaconNavigator.h"
 #include "Navigator/Beacons/BeaconProcessor.h"
 #include "Navigator/Beacons/Factory/IFilterFactory.h"
-#include "Navigator/Math/Trilat/Trilat.h"
+#include "Navigator/Math/Trilat/trilat.h"
 
 #pragma once
 namespace Navigator {

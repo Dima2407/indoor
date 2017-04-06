@@ -74,7 +74,7 @@ namespace Navigator {
             const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
 
             /// Find a BeaconProcessor by uid, nullptr if not found
-            const std::shared_ptr<BeaconProcessor> findProcessorByUid(BeaconUID uid);
+            const std::shared_ptr<BeaconProcessor> findProcessorByUid(BeaconUID uid) const;
 
             //------ Beacon operations -----
 

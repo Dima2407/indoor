@@ -43,7 +43,7 @@ namespace Navigator {
 
                 average = result; // Save the new average
 
-                // Kepp the in timestamp for out
+                // Keep the in timestamp for out
                 return Value(result, in.timeStamp);
             }
         }

@@ -1,0 +1,33 @@
+@startuml
+
+title NavigatorLibrary calibration classes \n
+
+class BeaconCalibrator{
+// This class is used to calibrate beacons //
+--
+- beaconMap : std::unordered_map<BeaconUID, Beacon>
+--
++ calibrate(points : const std::vector<CalibrationPoint> & , config : const CalibrationConfig & ) :
+const std::unordered_map<BeaconUID, Beacon> &
++ isLegit(dist : double, rssi : double, config : const CalibrationConfig &) : bool
++ addBeacon(beacon : const Beacon &) : void
++ addBeacons<IterableT>(beacons : IterableT const&) : void
++ deleteBeacon(uid : const BeaconUID &) : void
+}
+
+class CalibrationPoint  <<(S,#99DDFF)>> {
++ position : Position3D
++ packets : std::vector<BeaconReceivedData>
+}
+
+class CalibrationConfig  <<(S,#99DDFF)>> {
++ maxDist : double = 5.0
++ kLos : double = -3.074
++ bLos : double = -72.88
++ initTxPower : double = -70.0
+}
+
+BeaconCalibrator ..> CalibrationPoint
+BeaconCalibrator ..> CalibrationConfig
+
+@enduml

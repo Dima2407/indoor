@@ -110,6 +110,14 @@ namespace Navigator {
                 beaconProcessorList.clear();
                 lastPosition = Math::Position3D();
             }
+	        
+	        /// Reset filters and last calculated position
+	        void reset/*Filters*/(){
+		        lastPosition = Math::Position3D();
+		        for( auto & proc : beaconProcessorList ){
+			        proc.second->reset();
+		        }
+	        }
 
             const Math::Position3D &getLastPosition() const override {
                 return lastPosition;

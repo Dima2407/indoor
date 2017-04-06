@@ -1,5 +1,6 @@
 .idea/
 cmake-build-debug/
+cmake-build-win/
 build/
 CMakeCache.txt
 CMakeFiles/

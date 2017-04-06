@@ -32,7 +32,7 @@ namespace Navigator {
             Position3D(double x, double y, double z)
                     : x(x), y(y), z(z) {}
 
-            Position3D() {}
+            Position3D() = default;
 
         public:  // == VARIABLES / FIELDS ==
             double x = nan("");
@@ -43,6 +43,25 @@ namespace Navigator {
             /// Calculate distance to other point/position
             double distance(Position3D const& p2) const{
                 return sqrt(pow(this->x - p2.x, 2) + pow(this->y - p2.y, 2) + pow(this->z - p2.z, 2));
+            }
+            
+            /// Contains one or more wrong values
+            bool isFinite(){
+                using std::isfinite;
+                return isfinite(x) && isfinite(y) && isfinite(z);
+            }
+            bool isWrong(){ return !isFinite(); };
+            
+            bool approx_equals(Position3D const& other, double presesion){
+            	using std::abs;
+                return  (abs(x-other.x) <= presesion) &&
+                        (abs(y-other.y) <= presesion) &&
+                        (abs(z-other.z) <= presesion);
+            }
+            
+        public:  // == OPERATORS ==
+            bool operator==(Position3D const& other){
+                return x==other.x && y==other.y && z==other.z;
             }
         };
 

@@ -1,12 +1,14 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.7)
 project(navigator-test)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# Include path to navigator_lib for *.h files
+set(libNavigatorRoot  ${CMAKE_SOURCE_DIR})  ## или "../"
+
+## Include path to libNavigator for *.h files
 include_directories(
-        ../include/
-        ../include/rapidjson/include/
+        ${libNavigatorRoot}/include/
+        rapidjson/include/  ## include path was set in upper layer CMakeLists.txt
 )
 
 set(TEAMCITY_SRC
@@ -17,16 +19,38 @@ set(TEAMCITY_SRC
 set(SOURCE_FILES
     ${TEAMCITY_SRC}
     cppunit_test-1.cpp
-   )
+    ItJim/JsonDataContract.cpp
+    CppUnit-main.cpp)
 
 add_executable(navigator-test ${SOURCE_FILES})
 target_link_libraries(navigator-test Navigator cppunit)
 
-MESSAGE( STATUS "asd  " ${CMAKE_SOURCE_DIR} )
+#MESSAGE( STATUS "asd  " ${CMAKE_SOURCE_DIR} )
 
 ## Copy folder beacons-data-files to build path, near executable.
 add_custom_command(TARGET navigator-test
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_CURRENT_SOURCE_DIR}/beacons-data-files
-                   $<TARGET_FILE_DIR:navigator-test>/beacons-data-files)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/input
+                   $<TARGET_FILE_DIR:navigator-test>/input
+                   )
+
+
+#add_executable(test-gnuplot-iostream
+#               test-gnuplot-iostream
+#               ${TEAMCITY_SRC}
+#               )
+
+## Find RapidJson's bug with writing NaN to string
+add_executable(temp
+               temp
+               ItJim/JsonDataContract.cpp
+               )
+target_link_libraries(temp Navigator cppunit)
+
+## CMake 3.6.3 will fail to find. v3.7.2 works
+#set( BOOST_ROOT  ../lib/boost_1_63_0 )  ## Better to set CMAKE_PREFIX_PATH
+FIND_PACKAGE( Boost 1.63 REQUIRED COMPONENTS filesystem regex )
+#FIND_PACKAGE( Boost 1.63 REQUIRED )
+ADD_DEFINITIONS(-DBOOST_SYSTEM_DYN_LINK)
+target_link_libraries(navigator-test ${Boost_LIBRARIES})

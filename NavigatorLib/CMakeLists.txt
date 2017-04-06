@@ -29,5 +29,8 @@ add_subdirectory(unittest)
 # Build test-tool
 add_subdirectory(test-tool)
 
+# Build NavigatorJson 
+add_subdirectory(NavigatorJson)
+
 # Пока нет нужды. Хватает хэдеров
 #add_subdirectory(lib/Eigen)

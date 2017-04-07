@@ -53,6 +53,24 @@ namespace NaviTest {
                 CPPUNIT_ASSERT(myDoubleEq(runMA(filter, 0.0), 0.0, accuracy));
 
             }
+
+            void MovingAverageFilterTest::test1() {
+
+                using namespace Navigator::Math::Filter;
+
+                MovingAverageFilter filter(1); // The filter to test, window size = 1
+
+                constexpr double accuracy = 1.0e-10;
+
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, 15.9), 15.9, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, -15.9), -15.9, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, 3.14), 3.14, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, 83.14), 83.14, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, 93.14), 93.14, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, -73.14), -73.14, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(runMA(filter, 4.56), 4.56, accuracy));
+
+            }
         }
     }
 }

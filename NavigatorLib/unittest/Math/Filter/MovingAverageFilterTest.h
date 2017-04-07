@@ -19,9 +19,14 @@ namespace NaviTest {
             {
                 CPPUNIT_TEST_SUITE(MovingAverageFilterTest);
                 CPPUNIT_TEST(testAvg);
+                CPPUNIT_TEST(test1);
                 CPPUNIT_TEST_SUITE_END();
             public: // Methods
+                // Test a 4-filter
                 void testAvg();
+
+                // Test an 1-filter
+                void test1();
 
                 /// Run a double through the filter, addding unused zero timestamp
                 double runMA(Navigator::Math::Filter::MovingAverageFilter & filter, double in) {

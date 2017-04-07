@@ -4,6 +4,9 @@
 
 #include "RingBufferTest.h"
 
+#include "Navigator/Math/Filter/IFilter.h"
+
+
 namespace NaviTest {
     namespace Math {
         namespace Filter {
@@ -168,6 +171,86 @@ namespace NaviTest {
                 CPPUNIT_ASSERT(127 == val);
 
                 CPPUNIT_ASSERT(buffer.size() == 3);
+            }
+
+ //--------------------------------------------------------
+
+            void RingBufferTest::testsize1() {
+                using namespace Navigator::Math::Filter;
+                using namespace Navigator;
+
+                RingBuffer<int> buffer(1);
+                int val;
+
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+
+                CPPUNIT_ASSERT(buffer.push(18)); // PUSH
+                CPPUNIT_ASSERT(!buffer.isEmpty() && buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 1);
+
+                CPPUNIT_ASSERT(! buffer.push(18)); // PUSH FAIL: buffer full !!!
+                CPPUNIT_ASSERT(!buffer.isEmpty() && buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 1);
+
+                CPPUNIT_ASSERT(buffer.pop(val));
+                CPPUNIT_ASSERT(val == 18);
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+
+                CPPUNIT_ASSERT(! buffer.pop(val)); // POP FAIL : buffer empty !
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+
+
+                CPPUNIT_ASSERT(buffer.push(-19)); // PUSH
+                CPPUNIT_ASSERT(!buffer.isEmpty() && buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 1);
+
+
+                CPPUNIT_ASSERT(buffer.pop(val));
+                CPPUNIT_ASSERT(val == -19);
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+            }
+//--------------------------------------------------------
+            void RingBufferTest::testValue() {
+                using namespace Navigator::Math::Filter;
+                using namespace Navigator;
+
+                RingBuffer<IFilter::Value> buffer(1);
+                IFilter::Value val;
+
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+
+                CPPUNIT_ASSERT(buffer.push(IFilter::Value(13.5, 12.7)) ); // PUSH
+                CPPUNIT_ASSERT(!buffer.isEmpty() && buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 1);
+
+                CPPUNIT_ASSERT(! buffer.push(IFilter::Value(713.5, 712.7)) ); // PUSH FAIL: buffer full !!!
+                CPPUNIT_ASSERT(!buffer.isEmpty() && buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 1);
+
+                CPPUNIT_ASSERT(buffer.pop(val));
+                CPPUNIT_ASSERT(val.val == 13.5 && val.timeStamp == 12.7);
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+
+                CPPUNIT_ASSERT(! buffer.pop(val)); // POP FAIL : buffer empty !
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
+
+
+                CPPUNIT_ASSERT(buffer.push(IFilter::Value(-3.14, -666.666)) ); // PUSH
+                CPPUNIT_ASSERT(!buffer.isEmpty() && buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 1);
+
+
+                CPPUNIT_ASSERT(buffer.pop(val));
+                CPPUNIT_ASSERT(val.val == -3.14 && val.timeStamp == -666.666);
+                CPPUNIT_ASSERT(buffer.isEmpty() && !buffer.isFull());
+                CPPUNIT_ASSERT(buffer.size() == 0);
             }
         }
     }

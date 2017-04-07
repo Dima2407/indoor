@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import khpi.com.demo.R;
 import khpi.com.demo.core.bridge.OrientationBridge;
-import khpi.com.demo.model.Building;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Point;
@@ -46,12 +45,9 @@ import java.util.List;
 public final class IndoorCameraFragment extends BaseCameraFragment {
 
     private OrientationBridge.DeviceOrientationListener deviceOrientationListener;
-    //private IndoorPositionManager positionManager;
     private IndoorCameraOverlay indoorCameraOverlay;
     private CameraPreview cameraPreview;
-    //private Building building;
     private Floor floor;
-    //private IndoorPositionManager.PositionListener listener;
 
     private IndoorLocationManager instance;
     private IndoorRadarView radarView;
@@ -59,14 +55,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     private BottomSheet bottomSheet;
     private RecyclerView.OnScrollListener scrollListener;
     private Point destinationPoint;
-
-//    public static Fragment makeInstance(Building map) {
-//        IndoorCameraFragment fragment = new IndoorCameraFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("map", map);
-//        fragment.setArguments(bundle);
-//        return fragment;
-//    }
 
     public static Fragment makeInstance(Floor floor){
         IndoorCameraFragment fragment = new IndoorCameraFragment();
@@ -80,8 +68,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         floor = getArguments().getParcelable("floor");
-//        building = getArguments().getParcelable("map");
-        //positionManager = IndoorPositionManager.getInstance(getContext());
         instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
@@ -163,8 +149,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 onNewPosition(position[0], position[1]);
             }
         });
-
-        //positionManager.registerListener(listener);
 
         deviceOrientationListener = new OrientationBridge.DeviceOrientationListener() {
             @Override
@@ -329,7 +313,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         bottomSheet.getHintContainer().setVisibility(View.GONE);
         bottomSheet.getCancelButton().setVisibility(View.GONE);
 
-        //positionManager.unregisterListener(listener);
         getActivityBridge().getOrientationBridge().stopOrientationTracking(deviceOrientationListener);
 
         getActivityBridge().getBottomSheet().getDataList().removeOnScrollListener(scrollListener);

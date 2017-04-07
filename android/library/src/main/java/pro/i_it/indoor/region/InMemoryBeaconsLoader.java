@@ -1,8 +1,6 @@
 package pro.i_it.indoor.region;
 
 
-import android.util.Log;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +24,6 @@ public class InMemoryBeaconsLoader implements BeaconsInRegionLoader {
         for(SpaceBeacon beacon : beacons){
             newRegion.addBeacon(beacon);
         }
-//        findBeaconsInRegion(x, y, z);
         return newRegion;
     }
 

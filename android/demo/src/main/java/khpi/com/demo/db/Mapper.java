@@ -20,7 +20,6 @@ final class Mapper {
         contentValues.put(DbHelper.Buildings._ID, building.getId());
         contentValues.put(DbHelper.Buildings.COLUMN_NAME_TITLE, building.getTitle());
         contentValues.put(DbHelper.Buildings.COLUMN_NAME_SUBTITLE, building.getSubtitle());
-        //contentValues.put(DbHelper.Buildings.COLUMN_NAME_DATA, GsonWrapper.getGson().toJson(building.getFloors()));
         contentValues.put(DbHelper.Buildings.COLUMN_NAME_OUTPOINT_ID, building.getOutpointId());
         contentValues.put(DbHelper.Buildings.COLUMN_NAME_CREATED_AT, building.getCreated_at().getTime());
         contentValues.put(DbHelper.Buildings.COLUMN_NAME_UPDATED_AT, building.getUpdated_at().getTime());
@@ -51,7 +50,6 @@ final class Mapper {
         int idIndex = cursor.getColumnIndex(DbHelper.Buildings._ID);
         int titleIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_TITLE);
         int subtitleIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_SUBTITLE);
-        //int dataIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_DATA);
         int outpoint_idIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_OUTPOINT_ID);
         int created_atIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_CREATED_AT);
         int updated_atIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_UPDATED_AT);
@@ -66,7 +64,6 @@ final class Mapper {
             building.setId(cursor.getInt(idIndex));
             building.setTitle(cursor.getString(titleIndex));
             building.setSubtitle(cursor.getString(subtitleIndex));
-            //building.setFloors((List<Floor>) GsonWrapper.getGson().fromJson(cursor.getString(dataIndex),new TypeToken<List<Floor>>(){}.getType()));
             building.setOutpointId(cursor.getInt(outpoint_idIndex));
             building.setCreated_at(new Date(cursor.getLong(created_atIndex)));
             building.setUpdated_at(new Date(cursor.getLong(updated_atIndex)));
@@ -88,7 +85,6 @@ final class Mapper {
         int idIndex = cursor.getColumnIndex(DbHelper.Buildings._ID);
         int titleIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_TITLE);
         int subtitleIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_SUBTITLE);
-        //int dataIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_DATA);
         int outpoint_idIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_OUTPOINT_ID);
         int created_atIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_CREATED_AT);
         int updated_atIndex = cursor.getColumnIndex(DbHelper.Buildings.COLUMN_NAME_UPDATED_AT);
@@ -97,7 +93,6 @@ final class Mapper {
         building.setId(cursor.getLong(idIndex));
         building.setTitle(cursor.getString(titleIndex));
         building.setSubtitle(cursor.getString(subtitleIndex));
-        //building.data = GsonWrapper.getGson().fromJson(cursor.getString(dataIndex),new TypeToken<List<Floor>>(){}.getType());
         building.setOutpointId(cursor.getLong(outpoint_idIndex));
         building.setCreated_at(new Date(cursor.getLong(created_atIndex)));
         building.setUpdated_at(new Date(cursor.getLong(updated_atIndex)));

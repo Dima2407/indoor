@@ -26,6 +26,9 @@ jmethodID mtCodeMethod;
 
 double timeS = 0;
 
+FILE *f;
+
+
 extern "C" {
 
 JNIEXPORT jstring JNICALL
@@ -48,6 +51,9 @@ JNIEXPORT void JNICALL
         Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         JNIEnv *env, jobject instance, jobjectArray beacons);
 
+JNIEXPORT void JNICALL
+        Java_pro_i_1it_indoor_IndoorLocationManager_callEvent(JNIEnv *env, jobject instance);
+
 }
 
 JNIEXPORT jstring JNICALL
@@ -60,37 +66,82 @@ Java_pro_i_1it_indoor_providers_AndroidDebuggableMeasurementTransfer_stringFromJ
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
         JNIEnv *env,  jobject, jobject obj) {
-
+    f = fopen("/storage/emulated/0/Download/loglog.txt", "a");
+    fprintf(f, "METHOD: DELIVER \n\n");
     jobject typeObj = env->GetObjectField(obj, meTypeField);
     jint eventTypeCode = env->CallIntMethod(typeObj, mtCodeMethod); //value of enum MeasurementType
     long timeStamp = (long) env->GetLongField(obj, meTimestampField);// value timestamp
-
+    __android_log_print(ANDROID_LOG_DEBUG, "TIMESTAMP", "TIMESTAMP %ld", timeStamp);
     jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj, meDataField);
     double *data = env->GetDoubleArrayElements(dataArray, NULL);
     jstring uuidString = (jstring)env->GetObjectField(obj, meUUIDField);
 
     const char * uuid = env->GetStringUTFChars(uuidString, 0);
+    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "x - %f y - %f z - %f", data[0], data[1], data[2]);
+    __android_log_print(ANDROID_LOG_DEBUG, "UUID", "uuid- %s", uuid);
 
-
+    fprintf(f, "BeaconUID uid(%s, %f, %f)\n", uuid, (int)data[0], (int)data[1]);
     BeaconUID uid(uuid, (int)data[0], (int)data[1]);
+//    BeaconUID uid("RABBIT", (int)data[0], (int)data[1]);
+    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "beacon mv %s, %f, %f", uuid, data[0], data[1]);
+    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "data to lib %s, %f, %f", uuid, timeStamp, data[3]);
 
+    fprintf(f, "BeaconReceivedData brd(%s, %f, %f)\n", uuid, (1.0*((timeStamp-timeS)/1000)), data[3]);
+    fprintf(f, "timestamp/1000(%f)", (1.0*((timeStamp-timeS)/1000)));
     BeaconReceivedData brd((1.0*((timeStamp-timeS)/1000)), uid, data[3], data[2]);
-    timeS = timeStamp;
 
+    __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacons in navigator deliver %d", navigator->getBeacons());
+    fprintf(f, "BEACONS IN NAVIGATOR: %d \n", navigator->getBeacons());
+    __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "timestamp = %f, rssi = %f", brd.timestamp, brd.rssi);
+    // Process it
     Position3D outPos = navigator->process(brd);
-    jfloatArray arrayJFloat = env->NewFloatArray(3);
-    float dat[] = {(float)outPos.x, (float)outPos.y, (float)outPos.z};
+    __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "POS x - %f y - %f z - %f", outPos.x, outPos.y, outPos.z);
+    fprintf(f, "POSITION x - %f y - %f z - %f \n\n", outPos.x, outPos.y, outPos.z);
 
+    auto processor = navigator->findProcessorByUid(uid);
+    if (processor == nullptr) {
+        __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "NULPOINTER");
+    } else {
+        if(processor->isActive()){
+            __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "IS_ACTIVE = true");
+        }else {
+            __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "IS_ACTIVE = false");
+        }
+        __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "LAST_DIST = %f ", processor -> getLastDistance());
+        __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "LAST_TIMESTAMP = %f ", processor -> getLastTimeStamp());
+    }
+
+//    float dat[] = {(float)outPos.x, (float)outPos.y, (float)outPos.z};
     env->ReleaseStringUTFChars(uuidString, uuid);
+//    env->SetFloatArrayRegion(arrayJFloat, 0, 3, dat);
+//    env->CallVoidMethod(savedListenerInstance, listenerOnLocationChangedId, arrayJFloat);
+    fclose(f);
+}
+
+void putToJavaOnLocationChanged(JNIEnv *env){
+    f = fopen("/storage/emulated/0/Download/loglog.txt", "a");
+    Position3D outPos = navigator->getLastPosition();
+    __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "POS x - %f y - %f z - %f", outPos.x, outPos.y, outPos.z);
+    fprintf(f, "getLastPosition x - %f y - %f z - %f \n\n", outPos.x, outPos.y, outPos.z);
+    float dat[] = {(float)outPos.x, (float)outPos.y, (float)outPos.z};
+    jfloatArray arrayJFloat = env->NewFloatArray(3);
     env->SetFloatArrayRegion(arrayJFloat, 0, 3, dat);
     env->CallVoidMethod(savedListenerInstance, listenerOnLocationChangedId, arrayJFloat);
+    fclose(f);
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jobject onUpdateListener) {
+    f = fopen("/storage/emulated/0/Download/loglog.txt", "a");
+    if (f == NULL)
+    {
+        __android_log_print(ANDROID_LOG_DEBUG, "TAG", "Error opening file!\n");
+    }
+
     savedListenerInstance = env->NewGlobalRef(onUpdateListener);
-    auto rssiFact = make_shared<MovingAverageFilterFactory>(5);
+//    auto rssiFact = make_shared<NoFilterFactory>();
+    auto rssiFact = make_shared<MovingAverageFilterFactory>(1);
     auto distFact = make_shared<NoFilterFactory>();
 
     navigator = new TrilatBeaconNavigator(rssiFact, distFact);
@@ -121,6 +172,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
     jclass measurementTypeEnum = env->FindClass("pro/i_it/indoor/events/MeasurementType");
     mtCodeMethod = env->GetMethodID(measurementTypeEnum, "getCode", "()I");
+    fclose(f);
 }
 
 JNIEXPORT void JNICALL
@@ -134,11 +186,14 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         JNIEnv *env, jobject instance, jobjectArray beacons) {
+    f = fopen("/storage/emulated/0/Download/loglog.txt", "a");
     jint size = env->GetArrayLength(beacons);
 
     jfloatArray position;
     jstring id;
     jfloatArray values;
+    fprintf(f, "METHOD: SetBeacons\n");
+    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "size %i", size);
     for(int i = 0; i < size; i++){
         jobject beacon = env->GetObjectArrayElement(beacons, i);
         position = (jfloatArray)env->CallObjectMethod(beacon, getPositionId);
@@ -148,11 +203,26 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         jfloat *elements = env->GetFloatArrayElements(values, 0);
         jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
         const char* uuid = env->GetStringUTFChars(id, 0);
+        __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacon %s, %f, %f", uuid, elements[0], elements[1]);
+        __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacon %f, %f, %f", elementsPos[0], elementsPos[1], elementsPos[2]);
+
+//        const BeaconUID &uid = BeaconUID(uuid, (int)elements[0], (int)elements[1]);
+//        BeaconUID uid("RABBIT", elements[0], (int)elements[1]);
         BeaconUID uid(uuid, elements[0], (int)elements[1]);
         navigator->addBeacon(Beacon(uid, elements[2], elements[3],
                                     Position3D(elementsPos[0], elementsPos[1], elementsPos[2]), ""));
 
+        fprintf(f, "ADD BEACONS TO NAVIGATOR: uuid: %s, major: %f, minor: %f, txpower: %f, damp: %f, x: %f, y: %f, z: %f \n", uuid, elements[0], elements[1], elements[2], elements[3], elementsPos[0], elementsPos[1], elementsPos[2]);
+
+        __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacons in navigator setBeacons %d", navigator->getBeacons());
+
         env->ReleaseStringUTFChars(id, uuid);
 
     }
+    fclose(f);
+}
+
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_callEvent(JNIEnv *env, jobject instance) {
+    putToJavaOnLocationChanged(env);
 }

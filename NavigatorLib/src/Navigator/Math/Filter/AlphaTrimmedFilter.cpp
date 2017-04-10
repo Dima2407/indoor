@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 
 #include "Navigator/Math/Filter/AlphaTrimmedFilter.h"
@@ -12,6 +13,7 @@ namespace Navigator {
     namespace Math {
         namespace Filter {
 
+            bool status;
 
             IFilter::Value AlphaTrimmedFilter::process(IFilter::Value in) {
                 using namespace std;
@@ -20,7 +22,8 @@ namespace Navigator {
                     // Buffer full, we need to pop before we push anything
                     IFilter::Value temp;
 
-                    assert(buffer.pop(temp));
+                    status = buffer.pop(temp);
+                    assert(status);
                 }
 
                 // Push the new value
@@ -42,7 +45,8 @@ namespace Navigator {
                 // Copy data into this array
                 for (unsigned i = 0; i < size; i++) {
                     Value temp;
-                    assert(buffer.peek(i, temp));
+                    status = buffer.peek(i, temp);
+                    assert(status);
                     data.push_back(temp.val);
                 }
 
@@ -57,6 +61,11 @@ namespace Navigator {
                     sum += data[i];
 
                 double result = sum / (size - 2*nskip);
+
+                // Reset the filter on Nan
+                if (std::isnan(result))
+                    reset();
+
                 // Keep the in timestamp for out
                 return Value(result, in.timeStamp);
             }

@@ -30,7 +30,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
 
     @SerializedName("uuid")
     @Expose
-    private int uuid;
+    private String uuid;
 
     @Expose
     @SerializedName("macAddress")
@@ -83,7 +83,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     }
 
     protected BeaconModel(Parcel in) {
-        uuid = in.readInt();
+        uuid = in.readString();
         positionX = in.readFloat();
         positionY = in.readFloat();
         positionZ = in.readFloat();
@@ -102,7 +102,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(uuid);
+        dest.writeString(uuid);
         dest.writeFloat(positionX);
         dest.writeFloat(positionY);
         dest.writeFloat(positionZ);
@@ -145,11 +145,11 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
         return null;
     }
 
-    public int getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(int uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

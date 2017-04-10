@@ -47,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static pro.i_it.indoor.DebugConfig.TAG;
 import static pro.i_it.indoor.config.DebugConfig.IS_DEBUG;
@@ -157,10 +159,23 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         }
     }
 
+
+    TimerTask task;
+    Timer timer;
+
     @Override
     public void onResume() {
         super.onResume();
         instance.start();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                instance.callEvent();
+            }
+        };
+        timer = new Timer();
+        timer.schedule(task, 0l, 1000l);
+
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
@@ -220,7 +235,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         floor.setBeacons(list);
 
         Collection<SpaceBeacon> floorSpaceBeacons = new ArrayList<>();
-        for (BeaconModel beacon : floor.getBeacons()) {
+        for(BeaconModel beacon : floor.getBeacons()){
             SpaceBeacon spaceBeacon = new BluetoothBeacon("23a01af0-232a-4518-9c0e-323fb773f5ef", beacon.getMajor(), beacon.getMinor(),
                     beacon.getTxpower(), 2, beacon.getPositionX(), beacon.getPositionY(), beacon.getPositionZ());
             floorSpaceBeacons.add(spaceBeacon);
@@ -231,7 +246,11 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onPause() {
+        Log.d("onLocationChanged", "onPause: ");
         super.onPause();
+        timer.cancel();
+        task.cancel();
+        timer.purge();
         instance.stop();
     }
 
@@ -259,7 +278,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView.setBeacons(floor.getBeacons());
         List<Integer> inpointIdList = floor.getInpointIdList();
         List<Inpoint> inpoints = new ArrayList<>();
-        for (int i : inpointIdList) {
+        for(int i : inpointIdList){
             inpoints.add(getActivityBridge().getDbBridge().getInpointById(i));
         }
         mapView.setInpoints(inpoints);
@@ -331,6 +350,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         fragment.setArguments(bundle);
         return fragment;
     }
+
 
     private void applyNewCoordinate(float x, float y, float tx, float ty) {
         if (getActivity() == null) {

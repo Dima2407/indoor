@@ -40,10 +40,7 @@ import pro.i_it.indoor.region.BluetoothBeacon;
 import pro.i_it.indoor.region.InMemoryBeaconsLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
 
-//import com.indoor.beacon.IndoorPositionManager;
 import com.squareup.picasso.Picasso;
-
-import org.altbeacon.beacon.Beacon;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,15 +57,11 @@ import static pro.i_it.indoor.config.DebugConfig.IS_DEBUG;
  * Created by kit on 9/15/16.
  */
 public class IndoorMap2DFragment extends GenericFragment implements IndoorMapView.DestinationListener,
-        /* IndoorPositionManager.PositionListener,
-         IndoorPositionManager.ErrorListener,*/
         IndoorMapView.InpointClickListener,
         MapSwitcherView.ChangeMapListener {
 
     private IndoorMapView mapView;
 
-    //private Building map;
-    //private IndoorPositionManager instance;
     private IndoorLocationManager instance;
     private BottomSheet bottomSheet;
     private RecyclerView.OnScrollListener listener;
@@ -80,9 +73,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-//        map = arguments.getParcelable("mapView");
         floor = arguments.getParcelable("mapView");
-        //instance = IndoorPositionManager.getInstance(getActivity());
         instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
@@ -145,10 +136,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView.setInpointClickListener(this);
         MapSwitcherView switcherView = (MapSwitcherView) view.findViewById(R.id.map_switcher);
         switcherView.setListener(this);
-//        switcherView.setMap(map.getFloors());
-//        if (map.getFloors().size() <= 1) {
-//            switcherView.setVisibility(View.GONE);
-//        }
 
         cameraBtn = view.findViewById(R.id.indoor_map_camera_btn);
         cameraBtn.setOnClickListener(new View.OnClickListener() {
@@ -255,9 +242,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         }
 
         instance.setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floorSpaceBeacons, 10));
-//        instance.registerListener(this);
-//        instance.registerErrorListener(this);
-//        instance.startTrackPosition();
     }
 
     @Override
@@ -268,15 +252,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         task.cancel();
         timer.purge();
         instance.stop();
-//        instance.unregisterListener(this);
-//        instance.unregisterErrorListener(this);
-//        instance.startTrackPosition();
     }
 
     @Override
     public void onMapSelected(int posi) {
-        //map.setCurrentFloorIndex(position - 1);
-//        floor = map.getFloors().get(position - 1);
         mapView.setRoute(new float[0]);
         mapView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -296,14 +275,12 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             }
         });
 
-        //instance.setBeaconsPosition(ConverterUtil.toBeaconsPosition(floor.getBeacons()));
         mapView.setBeacons(floor.getBeacons());
         List<Integer> inpointIdList = floor.getInpointIdList();
         List<Inpoint> inpoints = new ArrayList<>();
         for(int i : inpointIdList){
             inpoints.add(getActivityBridge().getDbBridge().getInpointById(i));
         }
-        //List<Inpoint> inpointsByMapId = getActivityBridge().getDbBridge().getInpointsByBuildingAndFloorId(map.getId(), position);
         mapView.setInpoints(inpoints);
 
     }
@@ -374,10 +351,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         return fragment;
     }
 
-//    @Override
-//    public void onPositionChanged(float x, float y, float tx, float ty) {
-//        applyNewCoordinate(x, y, tx, ty);
-//    }
 
     private void applyNewCoordinate(float x, float y, float tx, float ty) {
         if (getActivity() == null) {
@@ -416,11 +389,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             }
         });
     }
-
-//    @Override
-//    public void onError(Throwable t) {
-//
-//    }
 
     @Override
     public void onInpoictClicked(final Inpoint inpoint) {

@@ -28,9 +28,9 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     @Expose
     private float positionZ;
 
-    @SerializedName("id")
+    @SerializedName("uuid")
     @Expose
-    private String id;
+    private int uuid;
 
     @Expose
     @SerializedName("macAddress")
@@ -71,12 +71,11 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     private float calibratedDistance;
 
     public BeaconModel() {
-        id = UUID.randomUUID().toString();
         setDefaultCalibrationData();
     }
 
     public BeaconModel(BeaconModel beaconModel) {
-        id = beaconModel.getId();
+        uuid = beaconModel.getUuid();
         macAddress = beaconModel.getMacAddress();
         major = beaconModel.getMajor();
         minor = beaconModel.getMinor();
@@ -84,7 +83,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     }
 
     protected BeaconModel(Parcel in) {
-        id = in.readString();
+        uuid = in.readInt();
         positionX = in.readFloat();
         positionY = in.readFloat();
         positionZ = in.readFloat();
@@ -103,7 +102,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeInt(uuid);
         dest.writeFloat(positionX);
         dest.writeFloat(positionY);
         dest.writeFloat(positionZ);
@@ -146,12 +145,12 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
         return null;
     }
 
-    public String getId() {
-        return id;
+    public int getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
     }
 
     public String getMacAddress() {

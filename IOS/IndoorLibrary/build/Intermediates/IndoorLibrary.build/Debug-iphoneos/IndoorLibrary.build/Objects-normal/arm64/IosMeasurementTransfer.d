@@ -26,13 +26,15 @@ dependencies: \
   ../../NavigatorLib/include/Navigator/Math/Filter/NoFilter.h \
   ../../NavigatorLib/include/Navigator/Beacons/./TrilatBeaconNavigator.h \
   ../../NavigatorLib/include/Navigator/Beacons/Factory/IFilterFactory.h \
-  ../../NavigatorLib/include/Navigator/Math/Trilat/Trilat.h \
+  ../../NavigatorLib/include/Navigator/Math/Trilat/trilat.h \
   ../../NavigatorLib/include/Navigator/Math/Trilat/./TrilatRecord.h \
   ../../NavigatorLib/include/Navigator/Beacons/./Factory/AlphaBetaFilterFactory.h \
   ../../NavigatorLib/include/Navigator/Beacons/Factory/../../Math/Filter/AlphaBetaFilter.h \
   ../../NavigatorLib/include/Navigator/Beacons/./Factory/MovingAverageFilterFactory.h \
   ../../NavigatorLib/include/Navigator/Math/Filter/MovingAverageFilter.h \
   ../../NavigatorLib/include/Navigator/Math/Filter/./RingBuffer.h \
+  ../../NavigatorLib/include/Navigator/Beacons/./Factory/AlphaTrimmedFilterFactory.h \
+  ../../NavigatorLib/include/Navigator/Math/Filter/AlphaTrimmedFilter.h \
   ../../NavigatorLib/include/Navigator/Beacons/./Factory/NoFilterFactory.h \
   ../../NavigatorLib/include/Navigator/Beacons/./Calibrate/BeaconCalibrator.h \
   ../../NavigatorLib/include/Navigator/Beacons/Calibrate/./CalibrationConfig.h \

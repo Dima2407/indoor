@@ -30,6 +30,7 @@ dependencies: \
   /usr/local/include/eigen3/Eigen/src/Core/functors/StlFunctors.h \
   /usr/local/include/eigen3/Eigen/src/Core/functors/AssignmentFunctors.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/CUDA/Complex.h \
+  /usr/local/include/eigen3/Eigen/src/Core/IO.h \
   /usr/local/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h \
   /usr/local/include/eigen3/Eigen/src/Core/DenseBase.h \
   /usr/local/include/eigen3/Eigen/src/Core/../plugins/BlockMethods.h \
@@ -75,7 +76,6 @@ dependencies: \
   /usr/local/include/eigen3/Eigen/src/Core/Redux.h \
   /usr/local/include/eigen3/Eigen/src/Core/Visitor.h \
   /usr/local/include/eigen3/Eigen/src/Core/Fuzzy.h \
-  /usr/local/include/eigen3/Eigen/src/Core/IO.h \
   /usr/local/include/eigen3/Eigen/src/Core/Swap.h \
   /usr/local/include/eigen3/Eigen/src/Core/CommaInitializer.h \
   /usr/local/include/eigen3/Eigen/src/Core/GeneralProduct.h \
@@ -167,6 +167,6 @@ dependencies: \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
-  ../../NavigatorLib/include/Navigator/Math/Trilat/Trilat.h \
+  ../../NavigatorLib/include/Navigator/Math/Trilat/trilat.h \
   ../../NavigatorLib/include/Navigator/Math/Trilat/./TrilatRecord.h \
   ../../NavigatorLib/include/Navigator/Math/Position3D.h

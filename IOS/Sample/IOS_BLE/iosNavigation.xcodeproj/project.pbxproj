@@ -16,7 +16,6 @@
 		0617DD791E4DE1E6000FE59C /* RouteInfoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617DD731E4DE1E6000FE59C /* RouteInfoListController.m */; };
 		0617DD7A1E4DE1E6000FE59C /* RouteInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617DD751E4DE1E6000FE59C /* RouteInfoView.m */; };
 		06FB4D011E8D558F0007DF80 /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FB4D001E8D558F0007DF80 /* libIndoorLibrary.a */; };
-		06FB4D161E8D7D7D0007DF80 /* libPods-iosNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AE7DD5638FD1406E997325 /* libPods-iosNavigation.a */; };
 		680C25521D956B32002A2879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23801D956B31002A2879 /* AppDelegate.m */; };
 		680C25531D956B32002A2879 /* BeaconManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23831D956B31002A2879 /* BeaconManager.m */; };
 		680C25541D956B32002A2879 /* BeaconListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23861D956B31002A2879 /* BeaconListController.m */; };
@@ -35,8 +34,6 @@
 		68BDB8BA1D9A82E3001C8C61 /* MapModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BDB8B81D9A82E3001C8C61 /* MapModel.m */; };
 		68BDB8BD1D9A863F001C8C61 /* Graph.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BDB8BC1D9A863F001C8C61 /* Graph.m */; };
 		68BDB8C01D9A8A33001C8C61 /* AOShortestPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BDB8BF1D9A8A33001C8C61 /* AOShortestPath.m */; };
-		68BDB8C41D9AB300001C8C61 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BDB8C21D9AB300001C8C61 /* Fabric.framework */; };
-		68BDB8C51D9AB300001C8C61 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BDB8C31D9AB300001C8C61 /* Crashlytics.framework */; };
 		68FCB0531DAE651B0058B6EE /* EKEdge.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FCB04C1DAE651B0058B6EE /* EKEdge.m */; };
 		68FCB0541DAE651B0058B6EE /* EKGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FCB04E1DAE651B0058B6EE /* EKGraph.m */; };
 		68FCB0551DAE651B0058B6EE /* EKGraphPicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 68FCB04F1DAE651B0058B6EE /* EKGraphPicture.png */; };
@@ -183,10 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06FB4D161E8D7D7D0007DF80 /* libPods-iosNavigation.a in Frameworks */,
 				06FB4D011E8D558F0007DF80 /* libIndoorLibrary.a in Frameworks */,
-				68BDB8C51D9AB300001C8C61 /* Crashlytics.framework in Frameworks */,
-				68BDB8C41D9AB300001C8C61 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,17 +763,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "";
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 8MJN994E42;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)/**",
-					"$(PROJECT_DIR)/**",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../IndoorLibrary/build/Products/Debug-iphoneos/include/**",
-					"$(PROJECT_DIR)/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../IndoorLibrary/build/Products/Debug-iphoneos/include/**";
 				INFOPLIST_FILE = "$(SRCROOT)/iosNavigation/supporting_files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -790,6 +780,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DBRIDGE_LIBRARY",
+					"-std=c++14",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kaa-solutions.iosNavigation";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -805,17 +796,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "";
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 8MJN994E42;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)/**",
-					"$(PROJECT_DIR)/**",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../IndoorLibrary/build/Products/Debug-iphoneos/include/**",
-					"$(PROJECT_DIR)/**",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../IndoorLibrary/build/Products/Debug-iphoneos/include/**";
 				INFOPLIST_FILE = "$(SRCROOT)/iosNavigation/supporting_files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -827,6 +814,7 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DBRIDGE_LIBRARY",
+					"-std=c++14",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kaa-solutions.iosNavigation";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -24,7 +24,7 @@ import java.util.Observer;
 
 public class FloorsFragment extends GenericFragment implements AbstractRecyclerAdapter.OnClickListener<Floor>, NetUtil.NetFileListener, Observer {
 
-    RecyclerView recycler;
+    private RecyclerView recycler;
     private FloorAdapter floorAdapter;
     private ProgressDialog progressDialog;
     private Floor item;
@@ -40,9 +40,8 @@ public class FloorsFragment extends GenericFragment implements AbstractRecyclerA
         super.onViewCreated(view, savedInstanceState);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Bundle mBundle = new Bundle();
-        mBundle = getArguments();
-        long buildingId = mBundle.getLong("build");
+        Bundle mBundle = getArguments();
+        long buildingId = mBundle.getLong(BuildingsFragment.KEY_BUILD_ID);
         floorAdapter = new FloorAdapter();
         recycler.setAdapter(floorAdapter);
         floorAdapter.setClickListener(this);

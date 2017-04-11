@@ -302,13 +302,14 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     public void onPause() {
         super.onPause();
 
+        instance.stop();
         indoorCameraOverlay.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
+        instance.stop();
         bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
         bottomSheet.getHintContainer().setVisibility(View.GONE);
         bottomSheet.getCancelButton().setVisibility(View.GONE);

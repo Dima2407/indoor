@@ -61,19 +61,23 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         MapSwitcherView.ChangeMapListener {
 
     private IndoorMapView mapView;
-
     private IndoorLocationManager instance;
     private BottomSheet bottomSheet;
     private RecyclerView.OnScrollListener listener;
     private Floor floor;
     private View cameraBtn;
+
+    private TimerTask task;
+    private Timer timer;
+
+    public static String KEY_FLOOR_MAP = "floorMap";
     public static PointF dest = new PointF();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        floor = arguments.getParcelable("mapView");
+        floor = arguments.getParcelable(KEY_FLOOR_MAP);
         instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
@@ -158,10 +162,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             dest = getActivityBridge().getRouteHelper().getDestinationPoint();
         }
     }
-
-
-    TimerTask task;
-    Timer timer;
 
     @Override
     public void onResume() {
@@ -249,8 +249,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         Log.d("onLocationChanged", "onPause: ");
         super.onPause();
         timer.cancel();
-        task.cancel();
         timer.purge();
+        task.cancel();
         instance.stop();
     }
 
@@ -260,7 +260,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
-        File path = FileUtil.getLocacPath(getActivity(), floor.getGraphPath());
         getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
             @Override
             public void onMapProcessed() {
@@ -343,10 +342,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         bottomSheet.getTotalDistance().setText(String.format("Total distance: %s", route.getDistance()));
     }
 
-    public static Fragment makeInstance(Floor map) {
+    public static Fragment makeInstance(Floor floor) {
         IndoorMap2DFragment fragment = new IndoorMap2DFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("mapView", map);
+        bundle.putParcelable(KEY_FLOOR_MAP, floor);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -430,7 +429,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     @Override
     public void onStop() {
         super.onStop();
-
         bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
         bottomSheet.getCancelButton().setVisibility(View.GONE);
         bottomSheet.getHintContainer().setVisibility(View.GONE);

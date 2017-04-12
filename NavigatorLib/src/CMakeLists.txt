@@ -19,6 +19,7 @@ set(SOURCE_FILES
         #
         ./Navigator/Beacons/Calibrate/BeaconCalibrator.cpp ../include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
         ../include/Navigator/Beacons/Calibrate/CalibrationPoint.h
+        ../include/Navigator/Beacons/Calibrate/CalibrationConfig.h
         ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
         ./Navigator/Beacons/BeaconProcessor.cpp
         )

@@ -114,13 +114,14 @@ namespace Navigator {
 //================================================================================
 
             bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) {
+                using namespace std;
 
                 // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
                 if (dist > config.maxDist || dist <= 0)
                     return false;
-                    // Now check the line-of-sight
                 else {
-                    double temp = config.kLos * dist + config.bLos;
+                    // Now check the line-of-sight
+                    double temp = config.kLos * 10 * log10(dist) + config.bLos;
                     return rssi > temp;
                 }
             }

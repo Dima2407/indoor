@@ -39,7 +39,7 @@ int main() {
     // in a CalibrationPoint structure a form an std::vector of such structure
     //
     //
-    // Note that distances above max distance (typically 5 meters) are discarded
+    // Note that distances above max distance (typically 6 meters) are discarded
     // And so are weak RSSI signals (the line-of-sight question ),
     // see CalibrationConfig.h for details
     //
@@ -110,7 +110,7 @@ int main() {
     // In real life you take RSSI from beacons at each calibration point
     // We have to define txPower and damp for the fake RSSI's
     // We want to reproduce them by calibration
-    const double fakeTxPower[] = {-30.0, -35.0, -45.0, -40.0, -50.0};
+    const double fakeTxPower[] = {-50.0, -55.0, -65.0, -60.0, -70.0};
     const double fakeDamp[] = {2.1, 1.7, 2.4, 2.7, 3.1};
 
     // Loop over 4 calibration points
@@ -147,9 +147,10 @@ int main() {
     //------------------------------------
     // 3) Create configuration and do the actual calibration
 
-    // Create the config, the last parameter is default txPower for 1-point calibration
+    // Create the config
     // See other parameters in CalibrationConfig.h
-    CalibrationConfig config(5.0, -3.074, -72.88, -70.0);
+//    CalibrationConfig config(6.0, -2.021, -74.21, -70.0, 2.2);
+    CalibrationConfig config;  // Default config
 
     // Run the calibration finally
     const auto & result = calibrator.calibrate(calPoints, config);

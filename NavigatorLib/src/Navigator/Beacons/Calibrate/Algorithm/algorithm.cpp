@@ -20,15 +20,27 @@ namespace Navigator {
                         // Empty table, nothing to do
                         txPower = nan("");
                         damp = nan("");
+                        return;
 
                     } else if (table.size() == 1) {
-                        // Use 1-point calibration. BAD ! D-version currently.
-                        calibrateOnePointD(table[0].first, table[0].second, config, txPower, damp);
+                        // Use 1-point calibration. BAD ! T-version currently.
+                        calibrateOnePointT(table[0].first, table[0].second, config, txPower, damp);
 
                     } else {
                         // Linear Least squares calibration
                         calibrateLeastSquares(table, txPower, damp);
                     }
+
+                    // Check the boundaries
+                    if (damp > 5)
+                        damp = 4.5;
+                    else if (damp < 1)
+                        damp = 1.5;
+
+                    if (txPower < -90.0)
+                        txPower = -75.0;
+                    else if (txPower > -40.0)
+                        txPower = -63.0;
 
                 }
 //================================================================================

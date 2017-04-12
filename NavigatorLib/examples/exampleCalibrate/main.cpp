@@ -153,8 +153,8 @@ int main() {
 //    CalibrationConfig config(6.0, -2.021, -74.21, -70.0, 2.2);
     CalibrationConfig config;  // Default config
 
-    // Run the calibration finally
-    const auto &result = calibrator.calibrate(calPoints, config);
+    // Run the calibration finally (true = reset calTable)
+    const auto &result = calibrator.calibrate(calPoints, config, true);
 
     // Print the result
     // The result is a std::unordered_map<BeaconUID, Beacon>
@@ -193,14 +193,55 @@ int main() {
 
     for (const auto &ct : calTables) {
         const BeaconUID &uid = ct.first;
-        const CalibrationTable  &table = ct.second;
+        const CalibrationTable &table = ct.second;
         cout << " -------------------- \n";
         cout << " Beacon " << (int) uid[10] << "\n";
 
         // Loop over all rows in the table
-        for (const auto & row : table)
+        for (const auto &row : table)
             cout << row.first << " : " << row.second << "\n";
     }
+
+
+    // How do I create calibration tables  from scratch ? Example:
+
+    std::unordered_map<BeaconUID, CalibrationTable> calTables2;
+
+    // Loop over all beacons
+    for (const Beacon &b : beacons) {
+        const BeaconUID &uid = b.getUid();
+
+        CalibrationTable ct; // New table for beacon uid
+
+        // Add some dist, rssi pairs
+        ct.push_back(std::make_pair(1.5, -50.6)); // dist, rssi
+        ct.push_back(std::make_pair(3.5, -75.1)); // dist, rssi
+
+        calTables2[uid] = ct;
+
+    }
+
+    // You can also all dist, rssi pairs with arbitary uid1 like this
+    // New map entry for uid1 is created if absent
+    BeaconUID uid1("Some UID");
+    if (calTables2.count(uid1) == 0)
+        calTables2[uid1] = CalibrationTable{std::make_pair(1.5, -50.6)}; // dist, rssi
+    else
+        calTables2[uid1].push_back(std::make_pair(1.5, -50.6));  // dist, rssi
+
+
+    // Clear the cal. table
+//    calibrator.clearCalTables();
+
+    // Set the calTables at the calibrator replacing the old one
+    calibrator.setCalTables(calTables2);
+
+
+    // Calibrate using the new calTables
+//    const auto &result2 = calibrator.calibrate(calPoints, config);
+
+    // Calibrate adding new points to existing calTable (reset = false)
+//    const auto &result3 = calibrator.calibrate(calPoints, config, false);
 
     return 0;
 }

@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <algorithm>
 
 #include "Navigator/Beacons/Calibrate/BeaconCalibrator.h"
 
@@ -12,7 +13,8 @@ namespace Navigator {
         namespace Calibrate {
 
             const std::unordered_map<BeaconUID, Beacon> &
-            BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config) {
+            BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config,
+                                        bool reset) {
                 using namespace std;
 
 
@@ -20,8 +22,10 @@ namespace Navigator {
                 // We have to break them down by beacons, average them (for each point+beacon)
                 // And then convert calibration point position into distance to beacon
 
-                // We start with a clean calibration table. For now at least.
-                calTables.clear();
+                // Clear calTables if reset = true
+                if (reset)
+                    clearCalTables();
+
 
                 // Outer loop: Loop over all calibration points
                 for (CalibrationPoint const &point : points) {
@@ -82,7 +86,33 @@ namespace Navigator {
 
                 // Now the calibration table is finished, ready to calibrate
 
-                // Loop over all beacons in calTables;
+                calibrate(config);
+
+                return beaconMap;
+            }
+//================================================================================
+
+            bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) const{
+                using namespace std;
+
+                // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
+                if (dist > config.maxDist || dist <= 0)
+                    return false;
+                else {
+                    // Now check the line-of-sight
+                    double temp = config.kLos * 10 * log10(dist) + config.bLos;
+                    return rssi > temp;
+                }
+            }
+//================================================================================
+
+            const std::unordered_map<BeaconUID, Beacon> &BeaconCalibrator::calibrate(const CalibrationConfig &config) {
+                using namespace std;
+
+                // Check if all data is OK
+                checkCalTable(config);
+
+                // Loop over all beacons present in calTables;
                 for (auto const &entry: calTables) {
                     const BeaconUID &uid = entry.first;
                     const Algorithm::CalibrationTable &table = entry.second;
@@ -108,16 +138,31 @@ namespace Navigator {
             }
 //================================================================================
 
-            bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) {
+            void BeaconCalibrator::checkCalTable(const CalibrationConfig &config) {
                 using namespace std;
 
-                // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
-                if (dist > config.maxDist || dist <= 0)
-                    return false;
-                else {
-                    // Now check the line-of-sight
-                    double temp = config.kLos * 10 * log10(dist) + config.bLos;
-                    return rssi > temp;
+                // First remove tables with wrong uid
+                for (auto iter = calTables.begin(); iter != calTables.end();) {
+                    const BeaconUID &uid = iter->first;
+
+                    // Check uid
+                    auto search = beaconMap.find(uid);
+
+                    if (search == beaconMap.end())   // NOt found  = erase
+                        iter = calTables.erase(iter);
+                    else // Found = OK
+                        iter++;
+                }
+
+                // Check all data for being legit
+                for (auto &table : calTables) {
+                    Algorithm::CalibrationTable &t = table.second;
+                    t.erase(std::remove_if(t.begin(),
+                                           t.end(),
+                                           [this, &config](const std::pair<double, double> &dp) {
+                                               return ! isLegit(dp.first, dp.second, config);
+                                           }),
+                    t.end());
                 }
             }
 //================================================================================

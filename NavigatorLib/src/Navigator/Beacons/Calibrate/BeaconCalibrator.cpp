@@ -16,6 +16,7 @@ namespace Navigator {
             BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config,
                                         bool reset) {
                 using namespace std;
+                using namespace Navigator::Beacons::Calibrate::Algorithm;
 
 
                 // Now we have input calibration points with packets from different beacons
@@ -78,7 +79,12 @@ namespace Navigator {
                             if (calTables.count(uid) == 0)
                                 calTables[uid] = vector<pair<double, double>>();
 
-                            calTables[uid].push_back(make_pair(distance, averageRSSI));
+                            auto newPair = make_pair(distance, averageRSSI);
+                            CalibrationTable &ct = calTables[uid];
+
+                            // Add new pair if not present
+                            if (std::find(ct.begin(), ct.end(), newPair) == ct.end())
+                                calTables[uid].push_back(newPair);
                         }
 
                     }
@@ -92,7 +98,7 @@ namespace Navigator {
             }
 //================================================================================
 
-            bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) const{
+            bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) const {
                 using namespace std;
 
                 // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
@@ -160,9 +166,9 @@ namespace Navigator {
                     t.erase(std::remove_if(t.begin(),
                                            t.end(),
                                            [this, &config](const std::pair<double, double> &dp) {
-                                               return ! isLegit(dp.first, dp.second, config);
+                                               return !isLegit(dp.first, dp.second, config);
                                            }),
-                    t.end());
+                            t.end());
                 }
             }
 //================================================================================

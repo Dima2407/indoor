@@ -25,12 +25,14 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BuildingsFragment extends GenericFragment implements AbstractRecyclerAdapter.OnClickListener<Building>, NetUtil.NetFileListener, Observer {
+public class BuildingsFragment extends GenericFragment
+        implements AbstractRecyclerAdapter.OnClickListener<Building>, NetUtil.NetFileListener, Observer {
 
     private RecyclerView recycler;
     private BuildingAdapter buildingAdapter;
     private ProgressDialog progressDialog;
     private Floor floor;
+    public static String KEY_BUILD_ID = "buildId";
 
     @Nullable
     @Override
@@ -82,8 +84,7 @@ public class BuildingsFragment extends GenericFragment implements AbstractRecycl
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         FloorsFragment floorsFragment = new FloorsFragment();
         Bundle bundle = new Bundle();
-        final String key = "build";
-        bundle.putLong(key, item.getId());
+        bundle.putLong(KEY_BUILD_ID, item.getId());
         floorsFragment.setArguments(bundle);
         ft.replace(R.id.fragment_container, floorsFragment);
         ft.isAddToBackStackAllowed();

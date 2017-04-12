@@ -56,10 +56,12 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     private RecyclerView.OnScrollListener scrollListener;
     private Point destinationPoint;
 
+    public static String KEY_PARCELABLE_FLOOR = "floor";
+
     public static Fragment makeInstance(Floor floor){
         IndoorCameraFragment fragment = new IndoorCameraFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("floor", floor);
+        bundle.putParcelable(KEY_PARCELABLE_FLOOR, floor);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -67,7 +69,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        floor = getArguments().getParcelable("floor");
+        floor = getArguments().getParcelable(KEY_PARCELABLE_FLOOR);
         instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
@@ -254,7 +256,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
 
         List<RouteHelper.Motion> motions = getActivityBridge().getRouteHelper().getMoutions(route);
 
-        final Route r = getActivityBridge().getRouteHelper().buildRoute(motions, floor/*building.getFloors().get(building.getCurrentFloorIndex())*/);
+        final Route r = getActivityBridge().getRouteHelper().buildRoute(motions, floor);
 
         indoorCameraOverlay.queueEvent(new Runnable() {
             @Override

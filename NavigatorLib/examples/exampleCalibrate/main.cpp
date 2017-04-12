@@ -18,6 +18,7 @@
 using namespace std;
 using namespace Navigator::Beacons;
 using namespace Navigator::Beacons::Calibrate;
+using namespace Navigator::Beacons::Calibrate::Algorithm;
 using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
 
@@ -39,7 +40,7 @@ int main() {
     // in a CalibrationPoint structure a form an std::vector of such structure
     //
     //
-    // Note that distances above max distance (typically 5 meters) are discarded
+    // Note that distances above max distance (typically 6 meters) are discarded
     // And so are weak RSSI signals (the line-of-sight question ),
     // see CalibrationConfig.h for details
     //
@@ -110,7 +111,7 @@ int main() {
     // In real life you take RSSI from beacons at each calibration point
     // We have to define txPower and damp for the fake RSSI's
     // We want to reproduce them by calibration
-    const double fakeTxPower[] = {-30.0, -35.0, -45.0, -40.0, -50.0};
+    const double fakeTxPower[] = {-50.0, -55.0, -65.0, -60.0, -70.0};
     const double fakeDamp[] = {2.1, 1.7, 2.4, 2.7, 3.1};
 
     // Loop over 4 calibration points
@@ -147,12 +148,13 @@ int main() {
     //------------------------------------
     // 3) Create configuration and do the actual calibration
 
-    // Create the config, the last parameter is default txPower for 1-point calibration
+    // Create the config
     // See other parameters in CalibrationConfig.h
-    CalibrationConfig config(5.0, -3.074, -72.88, -70.0);
+//    CalibrationConfig config(6.0, -2.021, -74.21, -70.0, 2.2);
+    CalibrationConfig config;  // Default config
 
-    // Run the calibration finally
-    const auto & result = calibrator.calibrate(calPoints, config);
+    // Run the calibration finally (true = reset calTable)
+    const auto &result = calibrator.calibrate(calPoints, config, true);
 
     // Print the result
     // The result is a std::unordered_map<BeaconUID, Beacon>
@@ -182,6 +184,64 @@ int main() {
              << ", damp = " << beacon.getDamp() << " : " <<
              (beacon.isCalibrated() ? "SUCCESS" : "FAILURE") << endl;
     }
+
+    //-------------------------------------
+    // Example of accessing calibration tables
+    cout << "\n CALIBRATION TABLES : \n";
+
+    const auto &calTables = calibrator.getCalTables();
+
+    for (const auto &ct : calTables) {
+        const BeaconUID &uid = ct.first;
+        const CalibrationTable &table = ct.second;
+        cout << " -------------------- \n";
+        cout << " Beacon " << (int) uid[10] << "\n";
+
+        // Loop over all rows in the table
+        for (const auto &row : table)
+            cout << row.first << " : " << row.second << "\n";
+    }
+
+
+    // How do I create calibration tables  from scratch ? Example:
+
+    std::unordered_map<BeaconUID, CalibrationTable> calTables2;
+
+    // Loop over all beacons
+    for (const Beacon &b : beacons) {
+        const BeaconUID &uid = b.getUid();
+
+        CalibrationTable ct; // New table for beacon uid
+
+        // Add some dist, rssi pairs
+        ct.push_back(std::make_pair(1.5, -50.6)); // dist, rssi
+        ct.push_back(std::make_pair(3.5, -75.1)); // dist, rssi
+
+        calTables2[uid] = ct;
+
+    }
+
+    // You can also all dist, rssi pairs with arbitary uid1 like this
+    // New map entry for uid1 is created if absent
+    BeaconUID uid1("Some UID");
+    if (calTables2.count(uid1) == 0)
+        calTables2[uid1] = CalibrationTable{std::make_pair(1.5, -50.6)}; // dist, rssi
+    else
+        calTables2[uid1].push_back(std::make_pair(1.5, -50.6));  // dist, rssi
+
+
+    // Clear the cal. table
+//    calibrator.clearCalTables();
+
+    // Set the calTables at the calibrator replacing the old one
+    calibrator.setCalTables(calTables2);
+
+
+    // Calibrate using the new calTables
+//    const auto &result2 = calibrator.calibrate(calPoints, config);
+
+    // Calibrate adding new points to existing calTable (reset = false)
+//    const auto &result3 = calibrator.calibrate(calPoints, config, false);
 
     return 0;
 }

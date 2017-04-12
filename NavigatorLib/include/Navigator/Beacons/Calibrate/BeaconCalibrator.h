@@ -13,6 +13,8 @@
 
 #include "./CalibrationConfig.h"
 #include "./CalibrationPoint.h"
+#include "Navigator/Beacons/Calibrate/Algorithm/algorithm.h"
+
 
 #pragma once
 
@@ -75,9 +77,19 @@ namespace Navigator {
                     return beaconMap;
                 }
 
+                const std::unordered_map<BeaconUID, Algorithm::CalibrationTable> &getCalTables() const {
+                    return calTables;
+                }
+
             private: // === data ====
                 /// Map of beacons currently in use versus their UID for easier search
                 std::unordered_map<BeaconUID, Beacon> beaconMap;
+
+                // Calibration tables for each beacons from the input signal
+                // Format: 2-column table
+                // distance average_RSSI
+                // For each beacon
+                std::unordered_map<BeaconUID, Algorithm::CalibrationTable> calTables;
             };
 
         }

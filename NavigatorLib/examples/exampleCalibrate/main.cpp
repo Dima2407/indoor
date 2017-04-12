@@ -18,6 +18,7 @@
 using namespace std;
 using namespace Navigator::Beacons;
 using namespace Navigator::Beacons::Calibrate;
+using namespace Navigator::Beacons::Calibrate::Algorithm;
 using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
 
@@ -153,7 +154,7 @@ int main() {
     CalibrationConfig config;  // Default config
 
     // Run the calibration finally
-    const auto & result = calibrator.calibrate(calPoints, config);
+    const auto &result = calibrator.calibrate(calPoints, config);
 
     // Print the result
     // The result is a std::unordered_map<BeaconUID, Beacon>
@@ -182,6 +183,23 @@ int main() {
         cout << "Beacon " << beacInd << " : txPower = " << beacon.getTxPower()
              << ", damp = " << beacon.getDamp() << " : " <<
              (beacon.isCalibrated() ? "SUCCESS" : "FAILURE") << endl;
+    }
+
+    //-------------------------------------
+    // Example of accessing calibration tables
+    cout << "\n CALIBRATION TABLES : \n";
+
+    const auto &calTables = calibrator.getCalTables();
+
+    for (const auto &ct : calTables) {
+        const BeaconUID &uid = ct.first;
+        const CalibrationTable  &table = ct.second;
+        cout << " -------------------- \n";
+        cout << " Beacon " << (int) uid[10] << "\n";
+
+        // Loop over all rows in the table
+        for (const auto & row : table)
+            cout << row.first << " : " << row.second << "\n";
     }
 
     return 0;

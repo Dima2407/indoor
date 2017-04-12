@@ -6,7 +6,6 @@
 
 #include "Navigator/Beacons/Calibrate/BeaconCalibrator.h"
 
-#include "Navigator/Beacons/Calibrate/Algorithm/algorithm.h"
 
 namespace Navigator {
     namespace Beacons {
@@ -21,12 +20,8 @@ namespace Navigator {
                 // We have to break them down by beacons, average them (for each point+beacon)
                 // And then convert calibration point position into distance to beacon
 
-                // Create the calibration tables for each beacons from the input signal
-                // Format: 2-column table
-                // distance average_RSSI
-                // For each beacon
-                unordered_map<BeaconUID, Algorithm::CalibrationTable> calTables;
-
+                // We start with a clean calibration table. For now at least.
+                calTables.clear();
 
                 // Outer loop: Loop over all calibration points
                 for (CalibrationPoint const &point : points) {

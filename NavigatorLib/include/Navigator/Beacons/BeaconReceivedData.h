@@ -15,10 +15,10 @@ namespace Navigator {
         /// Data package for one beacon
         /** @startuml
          *  class BeaconReceivedData <<(S,#FF7700)>>{
-         *      + double timestamp
-         *      + BeaconUID uid
-         *      + double rssi
-         *      + double txPower
+         *      +  timestamp : double
+         *      +  uid : BeaconUID
+         *      +  rssi : double
+         *      +  txPower : double
          *  }
          *  note bottom : struct
          *  @enduml

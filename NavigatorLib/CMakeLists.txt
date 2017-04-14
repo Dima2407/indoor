@@ -16,7 +16,9 @@ include_directories(lib/rapidjson_min/include)
 ## Tests
 #add_subdirectory(./lib/teamcity-cpp)
 #add_subdirectory(./lib/rapidjson/)
-add_subdirectory(test)
+
+# Uncomment if you have Boost installed
+#add_subdirectory(test)
 
 
 # Build all examples
@@ -28,6 +30,10 @@ add_subdirectory(unittest)
 
 # Build test-tool
 add_subdirectory(test-tool)
+
+# Build NavigatorJson
+# Uncomment if you have Boost installed
+#add_subdirectory(NavigatorJson)
 
 # Пока нет нужды. Хватает хэдеров
 #add_subdirectory(lib/Eigen)

@@ -10,11 +10,16 @@ set(SOURCE_FILES
         ./Navigator/Beacons/BeaconProcessor.cpp ../include/Navigator/Beacons/BeaconProcessor.h
         #
         ./Navigator/Math/Filter/AlphaBetaFilter.cpp ../include/Navigator/Math/Filter/AlphaBetaFilter.h
+        ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h
         ./Navigator/Math/Filter/MovingAverageFilter.cpp
         ./Navigator/Math/Trilat/trilat.cpp
         ../include/Navigator/Math/Trilat/TrilatRecord.h
         #
+        ../include/Navigator/Beacons/Factory/AlphaTrimmedFilterFactory.h
+        #
         ./Navigator/Beacons/Calibrate/BeaconCalibrator.cpp ../include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
+        ../include/Navigator/Beacons/Calibrate/CalibrationPoint.h
+        ../include/Navigator/Beacons/Calibrate/CalibrationConfig.h
         ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
         ./Navigator/Beacons/BeaconProcessor.cpp
         )

@@ -104,4 +104,5 @@ public class IndoorLocationManager {
 
     private native void nativeSetBeacons(SpaceBeacon[] beacons);
 
+    public native void callEvent();
 }

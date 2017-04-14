@@ -194,8 +194,8 @@ namespace NaviTest {
                 using namespace Navigator::Beacons::Calibrate;
                 using namespace Navigator::Math::Trilat;
 
-                // The ideal TXPower, damp; 2.0 is the default damp from config
-                constexpr double txPower0 = -30.0, damp0 = 2.0;
+                // The ideal TXPower, damp; 2.2 is the default damp from config
+                constexpr double txPower0 = -30.0, damp0 = 2.2;
 
                 double dist = 1.6;
                 double rssi = fakeRSSI(dist, txPower0, damp0);

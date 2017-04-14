@@ -138,6 +138,7 @@ public class BeaconSearcher implements BeaconConsumer, RangeNotifier {
         for (Beacon beacon : beacons.values()) {
             BeaconModel beaconModel = new BeaconModel();
             beaconModel.setMacAddress(beacon.getBluetoothAddress());
+            beaconModel.setUuid(beacon.getId1().toString());
             beaconModel.setMajor(beacon.getId2().toInt());
             beaconModel.setMinor(beacon.getId3().toInt());
 

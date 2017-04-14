@@ -8,7 +8,7 @@
 #include "Navigator/Beacons/AbstractBeaconNavigator.h"
 #include "Navigator/Beacons/BeaconProcessor.h"
 #include "Navigator/Beacons/Factory/IFilterFactory.h"
-#include "Navigator/Math/Trilat/Trilat.h"
+#include "Navigator/Math/Trilat/trilat.h"
 
 #pragma once
 namespace Navigator {
@@ -74,7 +74,7 @@ namespace Navigator {
             const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
 
             /// Find a BeaconProcessor by uid, nullptr if not found
-            const std::shared_ptr<BeaconProcessor> findProcessorByUid(BeaconUID uid);
+            const std::shared_ptr<BeaconProcessor> findProcessorByUid(BeaconUID uid) const;
 
             //------ Beacon operations -----
 
@@ -110,6 +110,14 @@ namespace Navigator {
                 beaconProcessorList.clear();
                 lastPosition = Math::Position3D();
             }
+	        
+	        /// Reset filters and last calculated position
+	        void reset/*Filters*/(){
+		        lastPosition = Math::Position3D();
+		        for( auto & proc : beaconProcessorList ){
+			        proc.second->reset();
+		        }
+	        }
 
             const Math::Position3D &getLastPosition() const override {
                 return lastPosition;

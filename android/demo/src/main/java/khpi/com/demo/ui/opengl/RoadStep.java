@@ -35,12 +35,10 @@ public class RoadStep extends SceneObject {
             return;
         }
 
-        //Mat4 parentMatrix = getModelMatrix();
         Mat4 parentRotScaleMatrix = getRotScaleMatrix();
         Vec3 parentPos = getPosition();
 
         for (RoadElement roadElement : roadElements) {
-            //roadElement.draw(parentMatrix, viewMatrix, projectionMatrix);
             roadElement.draw(parentPos, parentRotScaleMatrix, viewMatrix, projectionMatrix);
         }
     }

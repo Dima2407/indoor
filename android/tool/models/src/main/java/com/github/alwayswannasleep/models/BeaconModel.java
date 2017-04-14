@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class BeaconModel implements Parcelable, Serializable, Cloneable {
 
@@ -26,6 +27,10 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     @SerializedName("z")
     @Expose
     private float positionZ;
+
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
 
     @Expose
     @SerializedName("macAddress")
@@ -70,6 +75,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     }
 
     public BeaconModel(BeaconModel beaconModel) {
+        uuid = beaconModel.getUuid();
         macAddress = beaconModel.getMacAddress();
         major = beaconModel.getMajor();
         minor = beaconModel.getMinor();
@@ -77,6 +83,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
     }
 
     protected BeaconModel(Parcel in) {
+        uuid = in.readString();
         positionX = in.readFloat();
         positionY = in.readFloat();
         positionZ = in.readFloat();
@@ -95,6 +102,7 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
         dest.writeFloat(positionX);
         dest.writeFloat(positionY);
         dest.writeFloat(positionZ);
@@ -135,6 +143,14 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
         }
 
         return null;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getMacAddress() {

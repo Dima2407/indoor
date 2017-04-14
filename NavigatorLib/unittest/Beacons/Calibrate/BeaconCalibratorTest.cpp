@@ -55,7 +55,7 @@ namespace NaviTest {
                 vector<CalibrationPoint> calPoints(4);
 
                 // Data for fake RSSI's for this example.
-                const double fakeTxPower[] = {-35.0, -45.0, -40.0, -50.0, -30.0};
+                const double fakeTxPower[] = {-55.0, -65.0, -60.0, -70.0, -50.0};
                 const double fakeDamp[] = {2.2, 1.8, 2.3, 2.8, 3.2};
 
                 // Loop over 4 calibration points
@@ -81,7 +81,7 @@ namespace NaviTest {
                     }
                 }
                 // Do the actual calibration
-                CalibrationConfig config(5.0, -3.074, -72.88, -70.0);
+                CalibrationConfig config;
                 const auto & result = calibrator.calibrate(calPoints, config);
 
                 constexpr double accuracy = 1.0e-10;
@@ -110,6 +110,9 @@ namespace NaviTest {
                 using namespace Navigator::Math::Trilat;
                 using Navigator::Math::Position3D;
 
+                // Note: at present it is a T-version
+                // 1 -point calibrate finds TxPower for the default damp
+
                 BeaconUID uid("Rat");
 
                 vector<CalibrationPoint> calPoints(1);
@@ -124,36 +127,56 @@ namespace NaviTest {
 
                 double dist = bPos.distance(cPos);
 
+
+
                 calPoints[0].position = cPos;
                 calPoints[0].packets.push_back(
-                        BeaconReceivedData(0.0, uid, fakeRSSI(dist, -70.0, 1.8))
+                        BeaconReceivedData(0.0, uid, fakeRSSI(dist, -73.0, 2.2))
                 );
 
                 // Normal 1-point calibration
-                CalibrationConfig config(5.0, -3.074, -72.88, -70.0);
+                CalibrationConfig config;
+
+                /*cout << "dist = " << dist << "\n";
+                double rssi_min = config.kLos*10*log10(dist) + config.bLos;
+                cout << "rssi_min = " << rssi_min << "\n";
+                cout << "tx_min = " << 10*2.2*log10(dist) + rssi_min << "\n";*/
+
                 const auto & result = calibrator.calibrate(calPoints, config);
 
                 constexpr double accuracy = 1.0e-10;
-                CPPUNIT_ASSERT(myDoubleEq(result.at(uid).getTxPower(), -70.0, accuracy));
-                CPPUNIT_ASSERT(myDoubleEq(result.at(uid).getDamp(), 1.8, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(result.at(uid).getTxPower(), -73.0, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(result.at(uid).getDamp(), 2.2, accuracy));
 
                 // Now we go just below the line of sight
                 // Don't forget to reset the beacon
                 calibrator.deleteBeacon(uid);
                 calibrator.addBeacon(beacon);
-                calPoints[0].packets[0] = BeaconReceivedData(0.0, uid, fakeRSSI(dist, -70.0, 2.7));
+                calPoints[0].packets[0] = BeaconReceivedData(0.0, uid, fakeRSSI(dist, -74.0, 2.2));
                 calibrator.calibrate(calPoints, config);
                 CPPUNIT_ASSERT(isnan(result.at(uid).getTxPower()) && isnan(result.at(uid).getDamp()));
 
-                // Now check the 5-meter rule : distance 5.1m
-                cPos = Position3D(6.3, 2.3, 0.0);
+                // Now check the 6-meter rule :
+                // distance 6.1m
+                cPos = Position3D(7.3, 2.3, 0.0);
                 dist = bPos.distance(cPos);
                 calibrator.deleteBeacon(uid);
                 calibrator.addBeacon(beacon);
                 calPoints[0].position = cPos;
-                calPoints[0].packets[0] = BeaconReceivedData(0.0, uid, fakeRSSI(dist, -40.0, 2.0));
+                calPoints[0].packets[0] = BeaconReceivedData(0.0, uid, fakeRSSI(dist, -60.0, 2.2));
                 calibrator.calibrate(calPoints, config);
                 CPPUNIT_ASSERT(isnan(result.at(uid).getTxPower()) && isnan(result.at(uid).getDamp()));
+
+                // Distance 5.9m
+                cPos = Position3D(7.1, 2.3, 0.0);
+                dist = bPos.distance(cPos);
+                calibrator.deleteBeacon(uid);
+                calibrator.addBeacon(beacon);
+                calPoints[0].position = cPos;
+                calPoints[0].packets[0] = BeaconReceivedData(0.0, uid, fakeRSSI(dist, -60.0, 2.2));
+                calibrator.calibrate(calPoints, config);
+                CPPUNIT_ASSERT(myDoubleEq(result.at(uid).getTxPower(), -60.0, accuracy));
+                CPPUNIT_ASSERT(myDoubleEq(result.at(uid).getDamp(), 2.2, accuracy));
             }
 //================================================================================
 

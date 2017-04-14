@@ -8,7 +8,6 @@
 #include <cmath>
 #include <vector>
 
-
 // This includes everything you need
 #include "Navigator.h"
 
@@ -39,11 +38,14 @@ int main() {
     //      make_shared<MovingAverageFilterFactory>(winSize)
     // Alpha-beta filter:
     //      make_shared<AlphaBetaFilterFactory>(alpha, beta)
+    // Alpha trimmed filter with window size and alpha:
+    //      make_shared<AlphaTrimmedFilterFactory>(winSize, alpha)
 
 
     const auto rssiFact = make_shared<MovingAverageFilterFactory>(3);
-    // auto rssiFact = make_shared<AlphaBetaFilterFactory>(0.3, 0.3);
-    // auto rssiFact = make_shared<NoFilterFactory>();
+//    const auto rssiFact = make_shared<AlphaTrimmedFilterFactory>(5, 0.3);
+    // const auto rssiFact = make_shared<AlphaBetaFilterFactory>(0.3, 0.3);
+    // const auto rssiFact = make_shared<NoFilterFactory>();
 
     const auto distFact = make_shared<NoFilterFactory>();
 
@@ -63,7 +65,7 @@ int main() {
     // Do we use full 3D trilat instead of 2D ? (default = false)
     navigator.setUse3DTrilat(false);
 
-    // Max number of nearest beacons to use on eac trilateration
+    // Max number of nearest beacons to use on each trilateration
     // 0 = unlimited, default = 0
     navigator.setUseNearest(3);
 

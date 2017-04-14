@@ -3,29 +3,29 @@
 //
 
 #include <cmath>
+#include <algorithm>
 
 #include "Navigator/Beacons/Calibrate/BeaconCalibrator.h"
 
-#include "Navigator/Beacons/Calibrate/Algorithm/algorithm.h"
 
 namespace Navigator {
     namespace Beacons {
         namespace Calibrate {
 
             const std::unordered_map<BeaconUID, Beacon> &
-            BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config) {
+            BeaconCalibrator::calibrate(const std::vector<CalibrationPoint> &points, const CalibrationConfig &config,
+                                        bool reset) {
                 using namespace std;
+                using namespace Navigator::Beacons::Calibrate::Algorithm;
 
 
                 // Now we have input calibration points with packets from different beacons
                 // We have to break them down by beacons, average them (for each point+beacon)
                 // And then convert calibration point position into distance to beacon
 
-                // Create the calibration tables for each beacons from the input signal
-                // Format: 2-column table
-                // distance average_RSSI
-                // For each beacon
-                unordered_map<BeaconUID, Algorithm::CalibrationTable> calTables;
+                // Clear calTables if reset = true
+                if (reset)
+                    clearCalTables();
 
 
                 // Outer loop: Loop over all calibration points
@@ -60,7 +60,7 @@ namespace Navigator {
                         // Find beacon with this id
                         const Beacon &beacon = beaconMap[uid];
 
-                        // Find average rssi
+                        // Find the average rssi
                         double averageRSSI = 0;
                         for (double d : val.second)
                             averageRSSI += d;
@@ -79,7 +79,12 @@ namespace Navigator {
                             if (calTables.count(uid) == 0)
                                 calTables[uid] = vector<pair<double, double>>();
 
-                            calTables[uid].push_back(make_pair(distance, averageRSSI));
+                            auto newPair = make_pair(distance, averageRSSI);
+                            CalibrationTable &ct = calTables[uid];
+
+                            // Add new pair if not present
+                            if (std::find(ct.begin(), ct.end(), newPair) == ct.end())
+                                calTables[uid].push_back(newPair);
                         }
 
                     }
@@ -87,7 +92,33 @@ namespace Navigator {
 
                 // Now the calibration table is finished, ready to calibrate
 
-                // Loop over all beacons in calTables;
+                calibrate(config);
+
+                return beaconMap;
+            }
+//================================================================================
+
+            bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) const {
+                using namespace std;
+
+                // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
+                if (dist > config.maxDist || dist <= 0)
+                    return false;
+                else {
+                    // Now check the line-of-sight
+                    double temp = config.kLos * 10 * log10(dist) + config.bLos;
+                    return rssi > temp;
+                }
+            }
+//================================================================================
+
+            const std::unordered_map<BeaconUID, Beacon> &BeaconCalibrator::calibrate(const CalibrationConfig &config) {
+                using namespace std;
+
+                // Check if all data is OK
+                checkCalTable(config);
+
+                // Loop over all beacons present in calTables;
                 for (auto const &entry: calTables) {
                     const BeaconUID &uid = entry.first;
                     const Algorithm::CalibrationTable &table = entry.second;
@@ -95,13 +126,14 @@ namespace Navigator {
 
                     // Calibrate beacon : finally
                     // Get previous values (not used currently)
-                    double txPower = beacon.getTxPower(); // Iput/Output values
+                    double txPower = beacon.getTxPower(); // Input/Output values
                     double damp = beacon.getDamp();
 
                     Algorithm::calibrate(table, config, txPower, damp);
 
                     // Store the calibration result if OK
-                    if (!isnan(damp) && !isnan(txPower)) {
+                    // In the present version damp<=0 is discarded
+                    if (!isnan(damp) && !isnan(txPower) && damp > 0) {
                         beacon.setTxPower(txPower);
                         beacon.setDamp(damp);
                         beacon.setCalibrated(true);
@@ -112,15 +144,31 @@ namespace Navigator {
             }
 //================================================================================
 
-            bool BeaconCalibrator::isLegit(double dist, double rssi, const CalibrationConfig &config) {
+            void BeaconCalibrator::checkCalTable(const CalibrationConfig &config) {
+                using namespace std;
 
-                // Invalid if dist is greater than max dist (e.g. 5 meters), or <=0
-                if (dist > config.maxDist || dist <= 0)
-                    return false;
-                    // Now check the line-of-sight
-                else {
-                    double temp = config.kLos * dist + config.bLos;
-                    return rssi > temp;
+                // First remove tables with wrong uid
+                for (auto iter = calTables.begin(); iter != calTables.end();) {
+                    const BeaconUID &uid = iter->first;
+
+                    // Check uid
+                    auto search = beaconMap.find(uid);
+
+                    if (search == beaconMap.end())   // NOt found  = erase
+                        iter = calTables.erase(iter);
+                    else // Found = OK
+                        iter++;
+                }
+
+                // Check all data for being legit
+                for (auto &table : calTables) {
+                    Algorithm::CalibrationTable &t = table.second;
+                    t.erase(std::remove_if(t.begin(),
+                                           t.end(),
+                                           [this, &config](const std::pair<double, double> &dp) {
+                                               return !isLegit(dp.first, dp.second, config);
+                                           }),
+                            t.end());
                 }
             }
 //================================================================================

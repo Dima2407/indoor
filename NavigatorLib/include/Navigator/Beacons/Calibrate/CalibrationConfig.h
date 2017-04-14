@@ -12,34 +12,37 @@ namespace Navigator {
             struct CalibrationConfig {
 
                 // Constructor
-                CalibrationConfig(double maxDist, double kLos, double bLos, double initTxPower) :
-                        maxDist(maxDist),
-                        kLos(kLos),
-                        bLos(bLos),
-                        initTxPower(initTxPower) {}
+                CalibrationConfig(double maxDist, double kLos, double bLos, double initTxPower, double initDamp)
+                        : maxDist(maxDist),
+                          kLos(kLos),
+                          bLos(bLos),
+                          initTxPower(initTxPower),
+                          initDamp(initDamp) {}
 
                 // Constructor with all defaults
                 CalibrationConfig() {}
 
                 // ===Line-of-sight (LOS) data===
-                // LOS equation: rssi = k*dist + b
-                // smaller rssi are discraded
+                // Note: changed at some point since the 1st version
+                // LOS equation: rssi = k*10*log10(dist) + b
+                // smaller rssi (after averaging) are discarded
 
-                /// Max distance (e.g. 5 meters)
-                double maxDist = 5.0;
+                /// Max distance (e.g. 6 meters)
+                double maxDist = 6.0;
                 /// Parameter k of line-of-sight
-                double kLos = -3.074;
+                double kLos = -2.021;
                 /// Parameter b of LOS
-                double bLos = -72.88;
+                double bLos = -74.21;
 
                 /// Initial/ default txPower
                 double initTxPower = -70.0;
 
+                /// Initial/default damp
+                double initDamp = 2.2;
+
                 // ===== This should not be normally used !!!! ====
                 // This is for Alexey Roienko so-called "gradient decent" and such
 
-                /// Initial/default damp
-                double initDamp = 2.0;
 
                 // So-called "Gradient descent" parameters
                 double gradMu = 0.01;

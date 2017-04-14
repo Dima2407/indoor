@@ -17,6 +17,12 @@ namespace Navigator {
              *
              */
             struct CalibrationPoint {
+
+                CalibrationPoint() {}
+
+                CalibrationPoint(const Math::Position3D &position, const std::vector<BeaconReceivedData> &packets)
+                        : position(position), packets(packets) {}
+
                 /// Coordinates of the point where the calibration is made
                 Math::Position3D position;
 

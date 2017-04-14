@@ -2,14 +2,18 @@ package com.kit.indornavigation.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -40,6 +44,7 @@ import com.kit.indornavigation.R;
 import com.kit.indornavigation.core.BeaconSearcher;
 import com.kit.indornavigation.core.algos.FilteringAlgorithm;
 import com.kit.indornavigation.core.algos.MovingAverage;
+import com.kit.indornavigation.core.service.CalibrationService;
 import com.kit.indornavigation.model.BeaconConfigData;
 import com.kit.indornavigation.model.BeaconLogModel;
 import com.kit.indornavigation.model.CalibrationData;
@@ -94,7 +99,6 @@ public final class FloorRedactorActivity extends BaseActivity {
 
     private IndoorMap map;
     private FloorModel floorModel;
-    private Thread calibrationThread;
     private List<CalibrationData> calibrationDatas;
     private List<BeaconModel> calibrationResults;
     private Toolbar toolbar;
@@ -107,12 +111,10 @@ public final class FloorRedactorActivity extends BaseActivity {
     private Handler uiHandler;
     private Toast noTapPointToast;
 
-    public static void start(
-            Activity activity,
-            final IndoorMap map,
-            final FloorModel floorModelv2,
-            int requestCode
-    ) {
+    private ServiceConnection serviceConnection;
+    private CalibrationService.CalibrationBindService calibrationService;
+
+    public static void start(Activity activity, final IndoorMap map, final FloorModel floorModelv2, int requestCode) {
         Intent intent = new Intent(activity, FloorRedactorActivity.class);
         intent.putExtra(EXTRA_FLOOR, (Parcelable) floorModelv2);
         intent.putExtra(PARENT_MAP, map);
@@ -128,6 +130,17 @@ public final class FloorRedactorActivity extends BaseActivity {
         gestureDetectors = new ArrayList<>();
         handler = new Handler();
         timerRunnable = getTimerRunnable();
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                calibrationService = (CalibrationService.CalibrationBindService) service;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                calibrationService = null;
+            }
+        };
 
         initViews();
         ImageSource image;
@@ -217,6 +230,7 @@ public final class FloorRedactorActivity extends BaseActivity {
         super.onStart();
 
         uiHandler = new Handler(Looper.getMainLooper());
+
     }
 
     private void loadConfigFile() {
@@ -558,6 +572,9 @@ public final class FloorRedactorActivity extends BaseActivity {
     }
 
     private void startCalibration() {
+
+        bindService(new Intent(this, CalibrationService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+
         if (!img.hasTapPoint()) {
             if (startPauseBtnWrapper.getVisibility() == View.VISIBLE) {
                 startPauseBtn.setChecked(false);
@@ -582,7 +599,7 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         img.removeCurrentPositionDetector();
 
-        Runnable task = new Runnable() {
+        final Runnable task = new Runnable() {
             @Override
             public void run() {
                 startTimer();
@@ -715,12 +732,23 @@ public final class FloorRedactorActivity extends BaseActivity {
                 stopTimer();
             }
         };
-        calibrationThread = new Thread(task);
-        calibrationThread.start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                calibrationService.getService().startCalibration(task);
+            }
+        }).start();
+
     }
 
     private void pauseCalibration() {
-        calibrationThread.interrupt();
+        calibrationService.getService().pauseCalibration();
         img.removeTapPoint();
 
         if (startPauseBtnWrapper.getVisibility() != View.VISIBLE) {
@@ -749,19 +777,11 @@ public final class FloorRedactorActivity extends BaseActivity {
         calibrationBtn.setText("Start.");
         calibrationBtn.setChecked(false);
 
-        if (calibrationThread == null) {
-            return;
-        }
-
         previousItem = null;
 
-        calibrationThread.interrupt();
-        try {
-            calibrationThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        calibrationThread = null;
+        calibrationService.getService().stopCalibration();
+        unbindService(serviceConnection);
+
         stopTimer();
 
         for (CalibrationData calibrationData : calibrationDatas) {
@@ -795,7 +815,6 @@ public final class FloorRedactorActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        stopCalibration();
 
         List<BeaconModel> beacons = img.getBeaconModels();
         Log.i(TAG, "onSaveInstanceState: " + beacons);
@@ -833,6 +852,7 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         uiHandler = null;
     }
+
 
     private class CalibrationStartStopListener implements CompoundButton.OnCheckedChangeListener {
 

@@ -1,6 +1,8 @@
 //
 // Created by  Oleksiy Grechnyev on 3/13/2017.
 //
+#include <cmath>
+
 
 #include "Navigator/Math/Filter/MovingAverageFilter.h"
 
@@ -8,9 +10,9 @@ namespace Navigator {
     namespace Math {
         namespace Filter {
 
-            //todo Maybe make Iterative mean to improve speed
             IFilter::Value MovingAverageFilter::process(IFilter::Value in) {
                 double result;
+                bool status;
 
                 if (0 == dataCount) {
                     // The very first value
@@ -24,7 +26,8 @@ namespace Navigator {
                     // dataCount never changes from now on
 
                     IFilter::Value oldestPair;
-                    assert(buffer.pop(oldestPair)); // Pop the oldest value
+                    status = buffer.pop(oldestPair);
+                    assert(status); // Pop the oldest value
 
                     // The oldest element, we discard it
                     result = average + (in.val - oldestPair.val) / dataCount; // Update the average
@@ -39,11 +42,16 @@ namespace Navigator {
                 }
 
 
-                assert(buffer.push(in)); // Push the latest value
+                status = buffer.push(in);
+                assert(status); // Push the latest value
 
                 average = result; // Save the new average
 
-                // Kepp the in timestamp for out
+                // Reset the filter on Nan
+                if (std::isnan(result))
+                    reset();
+
+                // Keep the in timestamp for out
                 return Value(result, in.timeStamp);
             }
         }

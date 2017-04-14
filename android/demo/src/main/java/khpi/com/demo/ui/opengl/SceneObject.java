@@ -38,13 +38,6 @@ public abstract class SceneObject {
     private static int textureHandle;
     private static int textureCoordHandle;
 
-    /*protected int positionHandle;
-    protected int colorHandle;
-    private int mvpMatrixHandle;
-
-    private int textureHandle;
-    private int textureCoordHandle;*/
-
     private int textureDataHandle;
 
     private Mat4 modelMatrix;
@@ -84,11 +77,6 @@ public abstract class SceneObject {
             int textureCoordinateHandle,
             int textureHandle
     ) {
-        /*this.positionHandle = positionHandle;
-        this.colorHandle = colorHandle;
-        this.mvpMatrixHandle = mvpMatrixHandle;
-        this.textureHandle = textureHandle;
-        this.textureCoordHandle = textureCoordinateHandle;*/
 
         SceneObject.positionHandle = positionHandle;
         SceneObject.colorHandle = colorHandle;

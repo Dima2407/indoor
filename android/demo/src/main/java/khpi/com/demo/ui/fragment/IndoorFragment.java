@@ -30,13 +30,11 @@ public final class IndoorFragment extends GenericFragment {
     @Override
     public void onStart() {
         super.onStart();
-//        IndoorPositionManager.getInstance(getActivity());
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        //IndoorPositionManager.release();
     }
 
     public static Fragment makeInstance(Building building) {

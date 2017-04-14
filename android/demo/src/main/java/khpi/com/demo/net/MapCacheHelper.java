@@ -20,21 +20,9 @@ import java.util.concurrent.Executors;
 
 public class MapCacheHelper {
 
-    public static String FILE_MAP = "map";
-    public static String FILE_MASK = "mask";
-    public static String FILE_GRAPH = "graph";
-    public static String FILE_CONFIG = "config";
-
     public static String FOLDER_MAP_DATA = "MapData";
     private static String token = LoginModel.getLoginModel().getToken();
     private static List<String> files = new ArrayList<>();
-
-    private static String MAP_FILES[] = new String[]{
-            FILE_MAP,
-            FILE_MASK,
-            FILE_GRAPH,
-            FILE_CONFIG
-    };
 
     private static ExecutorService netExecutor;
 
@@ -57,16 +45,11 @@ public class MapCacheHelper {
             @Override
             public void run() {
 
-                //for (int i = 0; i < building.getFloors().size(); i++) {
                     for (String filename : files) {
 
                         if(filename==null) continue;
                         File destination = FileUtil.getLocacPath(baseFolder, filename);
 
-                        int j =1;
-                        if(filename == FILE_MAP){
-                            j = 2;
-                        }
                         URL url = FileUtil.getServerPath(
                                 "http://185.86.76.206:8081/mob",
                                 filename
@@ -77,11 +60,9 @@ public class MapCacheHelper {
                             e.printStackTrace();
                         }
                     }
-               // }
                 listener.onSuccess(null);
             }
         });
-
 
     }
 

@@ -269,44 +269,6 @@ const CwiseBinaryOp<internal::scalar_difference_op<T,Scalar>,Constant<T>,Derived
   operator/(const T& s,const StorageBaseType& a);
 #endif
 
-/** \returns an expression of the coefficient-wise && operator of *this and \a other
-  *
-  * \warning this operator is for expression of bool only.
-  *
-  * Example: \include Cwise_boolean_and.cpp
-  * Output: \verbinclude Cwise_boolean_and.out
-  *
-  * \sa operator||(), select()
-  */
-template<typename OtherDerived>
-EIGEN_DEVICE_FUNC
-inline const CwiseBinaryOp<internal::scalar_boolean_and_op, const Derived, const OtherDerived>
-operator&&(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
-{
-  EIGEN_STATIC_ASSERT((internal::is_same<bool,Scalar>::value && internal::is_same<bool,typename OtherDerived::Scalar>::value),
-                      THIS_METHOD_IS_ONLY_FOR_EXPRESSIONS_OF_BOOL);
-  return CwiseBinaryOp<internal::scalar_boolean_and_op, const Derived, const OtherDerived>(derived(),other.derived());
-}
-
-/** \returns an expression of the coefficient-wise || operator of *this and \a other
-  *
-  * \warning this operator is for expression of bool only.
-  *
-  * Example: \include Cwise_boolean_or.cpp
-  * Output: \verbinclude Cwise_boolean_or.out
-  *
-  * \sa operator&&(), select()
-  */
-template<typename OtherDerived>
-EIGEN_DEVICE_FUNC
-inline const CwiseBinaryOp<internal::scalar_boolean_or_op, const Derived, const OtherDerived>
-operator||(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
-{
-  EIGEN_STATIC_ASSERT((internal::is_same<bool,Scalar>::value && internal::is_same<bool,typename OtherDerived::Scalar>::value),
-                      THIS_METHOD_IS_ONLY_FOR_EXPRESSIONS_OF_BOOL);
-  return CwiseBinaryOp<internal::scalar_boolean_or_op, const Derived, const OtherDerived>(derived(),other.derived());
-}
-
 /** \returns an expression of the coefficient-wise ^ operator of *this and \a other
  *
  * \warning this operator is for expression of bool only.
@@ -330,6 +292,8 @@ operator^(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other) const
 #if 0
 /** \cpp11 \returns an expression of the coefficient-wise polygamma function.
   *
+  * \specialfunctions_module
+  *
   * It returns the \a n -th derivative of the digamma(psi) evaluated at \c *this.
   *
   * \warning Be careful with the order of the parameters: x.polygamma(n) is equivalent to polygamma(n,x)
@@ -345,6 +309,8 @@ polygamma(const EIGEN_CURRENT_STORAGE_BASE_CLASS<DerivedN> &n) const
 #endif
 
 /** \returns an expression of the coefficient-wise zeta function.
+  *
+  * \specialfunctions_module
   *
   * It returns the Riemann zeta function of two arguments \c *this and \a q:
   *

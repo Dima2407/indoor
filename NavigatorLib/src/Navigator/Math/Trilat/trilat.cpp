@@ -5,6 +5,10 @@
 
 #include <cmath>
 
+// Super-safety for Eigen to avoid issues
+
+#define EIGEN_DONT_ALIGN
+
 #include "Eigen/Dense"
 
 #include "Navigator/Math/Trilat/trilat.h"

@@ -41,8 +41,10 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
     private Rect currentPointRect;
     private Paint calibratedFilter;
     private Paint unCalibratedFilter;
+    private Paint lastCalibratedFilter;
 
     private List<CalibrationResult> calibrationResults;
+    private List<CalibrationResult> lastSessionCalibrationResults;
 
     public IndoorMapRedactor(Context context, AttributeSet attr) {
         super(context, attr);
@@ -60,6 +62,7 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
 
     private void init(Context context) {
         calibrationResults = new ArrayList<>();
+        lastSessionCalibrationResults = new ArrayList<>();
         distancePoints = new ArrayList<>(2);
         beaconModels = new ArrayList<>();
         gestureDetectors = new ArrayList<>();
@@ -80,6 +83,10 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
 
         calibratedFilter = new Paint(Paint.FILTER_BITMAP_FLAG);
         calibratedFilter.setColorFilter(new PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY));
+
+        lastCalibratedFilter = new Paint(Paint.FILTER_BITMAP_FLAG);
+        lastCalibratedFilter.setColorFilter(new PorterDuffColorFilter(Color.BLUE,
+                                                                      PorterDuff.Mode.MULTIPLY));
     }
 
     @Override
@@ -166,7 +173,12 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
             PointF p = sourceToViewCoord(beaconModel.getPosition());
             beaconRect.set((int) p.x - width, (int) p.y - height, (int) p.x + width, (int) p.y + height);
 
-            canvas.drawBitmap(beaconBitmap, null, beaconRect, isCalibrated(beaconModel) ? calibratedFilter : unCalibratedFilter);
+            canvas.drawBitmap(beaconBitmap,
+                              null,
+                              beaconRect,
+                              CalibrationResult.listContainsBeacon(lastSessionCalibrationResults,
+                                                                   beaconModel) ? lastCalibratedFilter : isCalibrated(
+                                      beaconModel) ? calibratedFilter : unCalibratedFilter);
         }
 
         if (tapPointX != DEFAULT_TAP_POINT_POSITION) {
@@ -282,6 +294,14 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
         }
 
         return result;
+    }
+
+    public void setLastSessionCalibrationResults(final List<CalibrationResult> lastSessionCalibrationResults) {
+        this.lastSessionCalibrationResults.addAll(lastSessionCalibrationResults);
+    }
+
+    public void clearLastSessionCalibrationResults() {
+        this.lastSessionCalibrationResults.clear();
     }
 
     public boolean hasTapPoint() {

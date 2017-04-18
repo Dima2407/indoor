@@ -563,6 +563,9 @@ public final class FloorRedactorActivity extends BaseActivity {
     }
 
     private void startCalibration() {
+        img.clearLastSessionCalibrationResults();
+        img.setCalibrationData(calibrationResults);
+        img.invalidate();
 
         bindService(new Intent(this, CalibrationService.class),
                     serviceConnection,
@@ -748,6 +751,30 @@ public final class FloorRedactorActivity extends BaseActivity {
         }
 
         img.setCurrentPositionDetector();
+
+        List<CalibrationResult> newCalibrationResults = app.getAlgoManager()
+                .calibrateBeacons(img.getBeaconModels(),
+                                  calibrationResults,
+                                  calibrationDatas,
+                                  floorModel);
+
+        List<CalibrationResult> tmp = new ArrayList<>(newCalibrationResults);
+
+        for (int i = 0; i < tmp.size(); i++) {
+            if (!calibrationResults.contains(tmp.get(i))) {
+                continue;
+            }
+
+            if (calibrationResults.get(calibrationResults.indexOf(tmp.get(i)))
+                    .getResults()
+                    .size() == tmp.get(i).getResults().size()) {
+                tmp.remove(i--);
+            }
+        }
+
+        img.setLastSessionCalibrationResults(tmp);
+        calibrationResults = newCalibrationResults;
+
         Toast.makeText(this, "Please choose your real position on map.", Toast.LENGTH_SHORT).show();
     }
 
@@ -776,12 +803,7 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         stopTimer();
 
-        calibrationResults = app.getAlgoManager()
-                .calibrateBeacons(img.getBeaconModels(),
-                                  calibrationResults,
-                                  calibrationDatas,
-                                  floorModel);
-
+        img.clearLastSessionCalibrationResults();
         img.setCalibrationData(calibrationResults);
     }
 

@@ -87,7 +87,7 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
             default:
                 Integer pos = (Integer) view.getTag();
                 Log.d("MapSwitcherView", "pos:" + pos);
-                listener.onMapSelected(pos);
+                listener.onMapSelected();
                 open=!open;
                 floors.setVisibility((open) ? View.VISIBLE : View.GONE);
                 break;
@@ -99,7 +99,7 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
     }
 
     public interface ChangeMapListener{
-        void onMapSelected(int posit);
+        void onMapSelected();
     }
 
 }

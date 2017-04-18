@@ -42,7 +42,6 @@ import pro.i_it.indoor.region.SpaceBeacon;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -71,6 +70,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     private Timer timer;
 
     public static String KEY_FLOOR_MAP = "floorMap";
+    public static int REGION_RADIUS = 10;
     public static PointF dest = new PointF();
 
     @Override
@@ -136,7 +136,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView = (IndoorMapView) view.findViewById(R.id.map_view);
         mapView.setCoordinates(0, 0, 0, 0);
         mapView.setDestinationListener(this);
-        onMapSelected(1);
+        onMapSelected();
         mapView.setInpointClickListener(this);
         MapSwitcherView switcherView = (MapSwitcherView) view.findViewById(R.id.map_switcher);
         switcherView.setListener(this);
@@ -241,7 +241,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             floorSpaceBeacons.add(spaceBeacon);
         }
 
-        instance.setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floorSpaceBeacons, 10));
+        instance.setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floorSpaceBeacons, REGION_RADIUS));
     }
 
     @Override
@@ -255,7 +255,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     }
 
     @Override
-    public void onMapSelected(int posi) {
+    public void onMapSelected() {
         mapView.setRoute(new float[0]);
         mapView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());

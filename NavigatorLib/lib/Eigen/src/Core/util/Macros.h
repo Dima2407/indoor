@@ -12,8 +12,8 @@
 #define EIGEN_MACROS_H
 
 #define EIGEN_WORLD_VERSION 3
-#define EIGEN_MAJOR_VERSION 2
-#define EIGEN_MINOR_VERSION 92
+#define EIGEN_MAJOR_VERSION 3
+#define EIGEN_MINOR_VERSION 3
 
 #define EIGEN_VERSION_AT_LEAST(x,y,z) (EIGEN_WORLD_VERSION>x || (EIGEN_WORLD_VERSION>=x && \
                                       (EIGEN_MAJOR_VERSION>y || (EIGEN_MAJOR_VERSION>=y && \
@@ -28,9 +28,9 @@
   #define EIGEN_COMP_GNUC 0
 #endif
 
-/// \internal EIGEN_COMP_CLANG set to 1 if the compiler is clang (alias for __clang__)
+/// \internal EIGEN_COMP_CLANG set to major+minor version (e.g., 307 for clang 3.7) if the compiler is clang
 #if defined(__clang__)
-  #define EIGEN_COMP_CLANG 1
+  #define EIGEN_COMP_CLANG (__clang_major__*100+__clang_minor__)
 #else
   #define EIGEN_COMP_CLANG 0
 #endif
@@ -71,8 +71,17 @@
   #define EIGEN_COMP_MSVC 0
 #endif
 
-/// \internal EIGEN_COMP_MSVC_STRICT set to 1 if the compiler is really Microsoft Visual C++ and not ,e.g., ICC
-#if EIGEN_COMP_MSVC && !(EIGEN_COMP_ICC)
+// For the record, here is a table summarizing the possible values for EIGEN_COMP_MSVC:
+//  name  ver   MSC_VER
+//  2008    9      1500
+//  2010   10      1600
+//  2012   11      1700
+//  2013   12      1800
+//  2015   14      1900
+//  "15"   15      1900
+
+/// \internal EIGEN_COMP_MSVC_STRICT set to 1 if the compiler is really Microsoft Visual C++ and not ,e.g., ICC or clang-cl
+#if EIGEN_COMP_MSVC && !(EIGEN_COMP_ICC || EIGEN_COMP_LLVM || EIGEN_COMP_CLANG)
   #define EIGEN_COMP_MSVC_STRICT _MSC_VER
 #else
   #define EIGEN_COMP_MSVC_STRICT 0
@@ -347,6 +356,13 @@
 #define EIGEN_MAX_CPP_VER 99
 #endif
 
+#if EIGEN_MAX_CPP_VER>=11 && (defined(__cplusplus) && (__cplusplus >= 201103L) || EIGEN_COMP_MSVC >= 1900)
+#define EIGEN_HAS_CXX11 1
+#else
+#define EIGEN_HAS_CXX11 0
+#endif
+
+
 // Do we support r-value references?
 #ifndef EIGEN_HAS_RVALUE_REFERENCES
 #if EIGEN_MAX_CPP_VER>=11 && \
@@ -383,8 +399,8 @@
 // Does the compiler support variadic templates?
 #ifndef EIGEN_HAS_VARIADIC_TEMPLATES
 #if EIGEN_MAX_CPP_VER>=11 && (__cplusplus > 199711L || EIGEN_COMP_MSVC >= 1900) \
-    && ( !defined(__NVCC__) || !EIGEN_ARCH_ARM_OR_ARM64 )
-    // ^^ Disable the use of variadic templates when compiling with nvcc on ARM devices:
+  && ( !defined(__NVCC__) || !EIGEN_ARCH_ARM_OR_ARM64 || (defined __CUDACC_VER__ && __CUDACC_VER__ >= 80000) )
+    // ^^ Disable the use of variadic templates when compiling with versions of nvcc older than 8.0 on ARM devices:
     //    this prevents nvcc from crashing when compiling Eigen on Tegra X1
 #define EIGEN_HAS_VARIADIC_TEMPLATES 1
 #else
@@ -481,10 +497,11 @@
 // attribute to maximize inlining. This should only be used when really necessary: in particular,
 // it uses __attribute__((always_inline)) on GCC, which most of the time is useless and can severely harm compile times.
 // FIXME with the always_inline attribute,
-// gcc 3.4.x reports the following compilation error:
+// gcc 3.4.x and 4.1 reports the following compilation error:
 //   Eval.h:91: sorry, unimplemented: inlining failed in call to 'const Eigen::Eval<Derived> Eigen::MatrixBase<Scalar, Derived>::eval() const'
 //    : function body not available
-#if EIGEN_GNUC_AT_LEAST(4,0)
+//   See also bug 1367
+#if EIGEN_GNUC_AT_LEAST(4,2)
 #define EIGEN_ALWAYS_INLINE __attribute__((always_inline)) inline
 #else
 #define EIGEN_ALWAYS_INLINE EIGEN_STRONG_INLINE
@@ -643,6 +660,9 @@ namespace Eigen {
 // If the user explicitly disable vectorization, then we also disable alignment
 #if defined(EIGEN_DONT_VECTORIZE)
   #define EIGEN_IDEAL_MAX_ALIGN_BYTES 0
+#elif defined(EIGEN_VECTORIZE_AVX512)
+  // 64 bytes static alignmeent is preferred only if really required
+  #define EIGEN_IDEAL_MAX_ALIGN_BYTES 64
 #elif defined(__AVX__)
   // 32 bytes static alignmeent is preferred only if really required
   #define EIGEN_IDEAL_MAX_ALIGN_BYTES 32
@@ -792,7 +812,7 @@ namespace Eigen {
 // just an empty macro !
 #define EIGEN_EMPTY
 
-#if EIGEN_COMP_MSVC_STRICT && EIGEN_COMP_MSVC < 1900 // for older MSVC versions using the base operator is sufficient (cf Bug 1000)
+#if EIGEN_COMP_MSVC_STRICT && (EIGEN_COMP_MSVC < 1900 ||  defined(__CUDACC_VER__)) // for older MSVC versions, as well as 1900 && CUDA 8, using the base operator is sufficient (cf Bugs 1000, 1324)
   #define EIGEN_INHERIT_ASSIGNMENT_EQUAL_OPERATOR(Derived) \
     using Base::operator =;
 #elif EIGEN_COMP_CLANG // workaround clang bug (see http://forum.kde.org/viewtopic.php?f=74&t=102653)
@@ -897,6 +917,9 @@ namespace Eigen {
     return EIGEN_CWISE_BINARY_RETURN_TYPE(Derived,OtherDerived,OPNAME)(derived(), other.derived()); \
   }
 
+#define EIGEN_SCALAR_BINARY_SUPPORTED(OPNAME,TYPEA,TYPEB) \
+  (Eigen::internal::has_ReturnType<Eigen::ScalarBinaryOpTraits<TYPEA,TYPEB,EIGEN_CAT(EIGEN_CAT(Eigen::internal::scalar_,OPNAME),_op)<TYPEA,TYPEB>  > >::value)
+
 #define EIGEN_EXPR_BINARYOP_SCALAR_RETURN_TYPE(EXPR,SCALAR,OPNAME) \
   CwiseBinaryOp<EIGEN_CAT(EIGEN_CAT(internal::scalar_,OPNAME),_op)<typename internal::traits<EXPR>::Scalar,SCALAR>, const EXPR, \
                 const typename internal::plain_constant_type<EXPR,SCALAR>::type>
@@ -905,20 +928,27 @@ namespace Eigen {
   CwiseBinaryOp<EIGEN_CAT(EIGEN_CAT(internal::scalar_,OPNAME),_op)<SCALAR,typename internal::traits<EXPR>::Scalar>, \
                 const typename internal::plain_constant_type<EXPR,SCALAR>::type, const EXPR>
 
+// Workaround for MSVC 2010 (see ML thread "patch with compile for for MSVC 2010")
+#if EIGEN_COMP_MSVC_STRICT<=1600
+#define EIGEN_MSVC10_WORKAROUND_BINARYOP_RETURN_TYPE(X) typename internal::enable_if<true,X>::type
+#else
+#define EIGEN_MSVC10_WORKAROUND_BINARYOP_RETURN_TYPE(X) X
+#endif
+
 #define EIGEN_MAKE_SCALAR_BINARY_OP_ONTHERIGHT(METHOD,OPNAME) \
   template <typename T> EIGEN_DEVICE_FUNC inline \
-  const EIGEN_EXPR_BINARYOP_SCALAR_RETURN_TYPE(Derived,typename internal::promote_scalar_arg<Scalar EIGEN_COMMA T EIGEN_COMMA ScalarBinaryOpTraits<Scalar EIGEN_COMMA T EIGEN_COMMA EIGEN_CAT(EIGEN_CAT(internal::scalar_,OPNAME),_op)<Scalar EIGEN_COMMA T> >::Defined>::type,OPNAME) \
+  EIGEN_MSVC10_WORKAROUND_BINARYOP_RETURN_TYPE(const EIGEN_EXPR_BINARYOP_SCALAR_RETURN_TYPE(Derived,typename internal::promote_scalar_arg<Scalar EIGEN_COMMA T EIGEN_COMMA EIGEN_SCALAR_BINARY_SUPPORTED(OPNAME,Scalar,T)>::type,OPNAME))\
   (METHOD)(const T& scalar) const { \
-    typedef typename internal::promote_scalar_arg<Scalar,T,ScalarBinaryOpTraits<Scalar,T,EIGEN_CAT(EIGEN_CAT(internal::scalar_,OPNAME),_op)<Scalar,T> >::Defined>::type PromotedT; \
+    typedef typename internal::promote_scalar_arg<Scalar,T,EIGEN_SCALAR_BINARY_SUPPORTED(OPNAME,Scalar,T)>::type PromotedT; \
     return EIGEN_EXPR_BINARYOP_SCALAR_RETURN_TYPE(Derived,PromotedT,OPNAME)(derived(), \
            typename internal::plain_constant_type<Derived,PromotedT>::type(derived().rows(), derived().cols(), internal::scalar_constant_op<PromotedT>(scalar))); \
   }
 
 #define EIGEN_MAKE_SCALAR_BINARY_OP_ONTHELEFT(METHOD,OPNAME) \
   template <typename T> EIGEN_DEVICE_FUNC inline friend \
-  const EIGEN_SCALAR_BINARYOP_EXPR_RETURN_TYPE(typename internal::promote_scalar_arg<Scalar EIGEN_COMMA T EIGEN_COMMA ScalarBinaryOpTraits<T EIGEN_COMMA Scalar EIGEN_COMMA EIGEN_CAT(EIGEN_CAT(internal::scalar_,OPNAME),_op)<T EIGEN_COMMA Scalar> >::Defined>::type,Derived,OPNAME) \
+  EIGEN_MSVC10_WORKAROUND_BINARYOP_RETURN_TYPE(const EIGEN_SCALAR_BINARYOP_EXPR_RETURN_TYPE(typename internal::promote_scalar_arg<Scalar EIGEN_COMMA T EIGEN_COMMA EIGEN_SCALAR_BINARY_SUPPORTED(OPNAME,T,Scalar)>::type,Derived,OPNAME)) \
   (METHOD)(const T& scalar, const StorageBaseType& matrix) { \
-    typedef typename internal::promote_scalar_arg<Scalar,T,ScalarBinaryOpTraits<T,Scalar,EIGEN_CAT(EIGEN_CAT(internal::scalar_,OPNAME),_op)<T,Scalar> >::Defined>::type PromotedT; \
+    typedef typename internal::promote_scalar_arg<Scalar,T,EIGEN_SCALAR_BINARY_SUPPORTED(OPNAME,T,Scalar)>::type PromotedT; \
     return EIGEN_SCALAR_BINARYOP_EXPR_RETURN_TYPE(PromotedT,Derived,OPNAME)( \
            typename internal::plain_constant_type<Derived,PromotedT>::type(matrix.derived().rows(), matrix.derived().cols(), internal::scalar_constant_op<PromotedT>(scalar)), matrix.derived()); \
   }
@@ -935,8 +965,8 @@ namespace Eigen {
 #  define EIGEN_CATCH(X) catch (X)
 #else
 #  ifdef __CUDA_ARCH__
-#    define EIGEN_THROW_X(X) asm("trap;") return {}
-#    define EIGEN_THROW asm("trap;"); return {}
+#    define EIGEN_THROW_X(X) asm("trap;")
+#    define EIGEN_THROW asm("trap;")
 #  else
 #    define EIGEN_THROW_X(X) std::abort()
 #    define EIGEN_THROW std::abort()

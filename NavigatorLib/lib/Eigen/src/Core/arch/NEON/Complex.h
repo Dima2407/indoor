@@ -2,6 +2,7 @@
 // for linear algebra.
 //
 // Copyright (C) 2010 Gael Guennebaud <gael.guennebaud@inria.fr>
+// Copyright (C) 2010 Konstantinos Margaritis <markos@freevec.org>
 //
 // This Source Code Form is subject to the terms of the Mozilla
 // Public License v. 2.0. If a copy of the MPL was not distributed
@@ -15,8 +16,14 @@ namespace Eigen {
 namespace internal {
 
 inline uint32x4_t p4ui_CONJ_XOR() {
+// See bug 1325, clang fails to call vld1q_u64.
+#if EIGEN_COMP_CLANG
+  uint32x4_t ret = { 0x00000000, 0x80000000, 0x00000000, 0x80000000 };
+  return ret;
+#else
   static const uint32_t conj_XOR_DATA[] = { 0x00000000, 0x80000000, 0x00000000, 0x80000000 };
   return vld1q_u32( conj_XOR_DATA );
+#endif
 }
 
 inline uint32x2_t p2ui_CONJ_XOR() {
@@ -281,11 +288,13 @@ ptranspose(PacketBlock<Packet2cf,2>& kernel) {
 //---------- double ----------
 #if EIGEN_ARCH_ARM64 && !EIGEN_APPLE_DOUBLE_NEON_BUG
 
-// FIX BY VITALII VOVK
-inline uint64x2_t p2ul_CONJ_XOR () {
-  static const uint64_t  p2ul_conj_XOR_DATA[] = { 0x0, 0x8000000000000000 };
-  return vld1q_u64( p2ul_conj_XOR_DATA );
-}
+// See bug 1325, clang fails to call vld1q_u64.
+#if EIGEN_COMP_CLANG
+  static uint64x2_t p2ul_CONJ_XOR = {0x0, 0x8000000000000000};
+#else
+  const uint64_t  p2ul_conj_XOR_DATA[] = { 0x0, 0x8000000000000000 };
+  static uint64x2_t p2ul_CONJ_XOR = vld1q_u64( p2ul_conj_XOR_DATA );
+#endif
 
 struct Packet1cd
 {
@@ -328,7 +337,7 @@ template<> EIGEN_STRONG_INLINE Packet1cd pset1<Packet1cd>(const std::complex<dou
 template<> EIGEN_STRONG_INLINE Packet1cd padd<Packet1cd>(const Packet1cd& a, const Packet1cd& b) { return Packet1cd(padd<Packet2d>(a.v,b.v)); }
 template<> EIGEN_STRONG_INLINE Packet1cd psub<Packet1cd>(const Packet1cd& a, const Packet1cd& b) { return Packet1cd(psub<Packet2d>(a.v,b.v)); }
 template<> EIGEN_STRONG_INLINE Packet1cd pnegate(const Packet1cd& a) { return Packet1cd(pnegate<Packet2d>(a.v)); }
-template<> EIGEN_STRONG_INLINE Packet1cd pconj(const Packet1cd& a) { return Packet1cd(vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64(a.v), p2ul_CONJ_XOR()))); }
+template<> EIGEN_STRONG_INLINE Packet1cd pconj(const Packet1cd& a) { return Packet1cd(vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64(a.v), p2ul_CONJ_XOR))); }
 
 template<> EIGEN_STRONG_INLINE Packet1cd pmul<Packet1cd>(const Packet1cd& a, const Packet1cd& b)
 {
@@ -343,7 +352,7 @@ template<> EIGEN_STRONG_INLINE Packet1cd pmul<Packet1cd>(const Packet1cd& a, con
   // Multiply the imag a with b
   v2 = vmulq_f64(v2, b.v);
   // Conjugate v2 
-  v2 = vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64(v2), p2ul_CONJ_XOR()));
+  v2 = vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64(v2), p2ul_CONJ_XOR));
   // Swap real/imag elements in v2.
   v2 = preverse<Packet2d>(v2);
   // Add and return the result

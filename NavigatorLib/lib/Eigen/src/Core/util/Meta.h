@@ -22,6 +22,16 @@
 
 namespace Eigen {
 
+typedef EIGEN_DEFAULT_DENSE_INDEX_TYPE DenseIndex;
+
+/**
+ * \brief The Index type as used for the API.
+ * \details To change this, \c \#define the preprocessor symbol \c EIGEN_DEFAULT_DENSE_INDEX_TYPE.
+ * \sa \blank \ref TopicPreprocessorDirectives, StorageIndex.
+ */
+
+typedef EIGEN_DEFAULT_DENSE_INDEX_TYPE Index;
+
 namespace internal {
 
 /** \internal
@@ -358,6 +368,48 @@ struct result_of<Func(ArgType0,ArgType1,ArgType2)> {
 };
 #endif
 
+struct meta_yes { char a[1]; };
+struct meta_no  { char a[2]; };
+
+// Check whether T::ReturnType does exist
+template <typename T>
+struct has_ReturnType
+{
+  template <typename C> static meta_yes testFunctor(typename C::ReturnType const *);
+  template <typename C> static meta_no testFunctor(...);
+
+  enum { value = sizeof(testFunctor<T>(0)) == sizeof(meta_yes) };
+};
+
+template<typename T> const T* return_ptr();
+
+template <typename T, typename IndexType=Index>
+struct has_nullary_operator
+{
+  template <typename C> static meta_yes testFunctor(C const *,typename enable_if<(sizeof(return_ptr<C>()->operator()())>0)>::type * = 0);
+  static meta_no testFunctor(...);
+
+  enum { value = sizeof(testFunctor(static_cast<T*>(0))) == sizeof(meta_yes) };
+};
+
+template <typename T, typename IndexType=Index>
+struct has_unary_operator
+{
+  template <typename C> static meta_yes testFunctor(C const *,typename enable_if<(sizeof(return_ptr<C>()->operator()(IndexType(0)))>0)>::type * = 0);
+  static meta_no testFunctor(...);
+
+  enum { value = sizeof(testFunctor(static_cast<T*>(0))) == sizeof(meta_yes) };
+};
+
+template <typename T, typename IndexType=Index>
+struct has_binary_operator
+{
+  template <typename C> static meta_yes testFunctor(C const *,typename enable_if<(sizeof(return_ptr<C>()->operator()(IndexType(0),IndexType(0)))>0)>::type * = 0);
+  static meta_no testFunctor(...);
+
+  enum { value = sizeof(testFunctor(static_cast<T*>(0))) == sizeof(meta_yes) };
+};
+
 /** \internal In short, it computes int(sqrt(\a Y)) with \a Y an integer.
   * Usage example: \code meta_sqrt<1023>::ret \endcode
   */
@@ -434,67 +486,6 @@ T div_ceil(const T &a, const T &b)
 }
 
 } // end namespace numext
-
-
-/** \class ScalarBinaryOpTraits
-  * \ingroup Core_Module
-  *
-  * \brief Determines whether the given binary operation of two numeric types is allowed and what the scalar return type is.
-  *
-  * \sa CwiseBinaryOp
-  */
-template<typename ScalarA, typename ScalarB, typename BinaryOp=void>
-struct ScalarBinaryOpTraits
-#ifndef EIGEN_PARSED_BY_DOXYGEN
-  // for backward compatibility, use the hints given by the (deprecated) internal::scalar_product_traits class.
-  : internal::scalar_product_traits<ScalarA,ScalarB>
-#endif // EIGEN_PARSED_BY_DOXYGEN
-{};
-
-template<typename T, typename BinaryOp>
-struct ScalarBinaryOpTraits<T,T,BinaryOp>
-{
-  enum { Defined = 1 };
-  typedef T ReturnType;
-};
-
-// For Matrix * Permutation
-template<typename T, typename BinaryOp>
-struct ScalarBinaryOpTraits<T,void,BinaryOp>
-{
-  enum { Defined = 1 };
-  typedef T ReturnType;
-};
-
-// For Permutation * Matrix
-template<typename T, typename BinaryOp>
-struct ScalarBinaryOpTraits<void,T,BinaryOp>
-{
-  enum { Defined = 1 };
-  typedef T ReturnType;
-};
-
-// for Permutation*Permutation
-template<typename BinaryOp>
-struct ScalarBinaryOpTraits<void,void,BinaryOp>
-{
-  enum { Defined = 1 };
-  typedef void ReturnType;
-};
-
-template<typename T, typename BinaryOp>
-struct ScalarBinaryOpTraits<T,std::complex<T>,BinaryOp>
-{
-  enum { Defined = 1 };
-  typedef std::complex<T> ReturnType;
-};
-
-template<typename T, typename BinaryOp>
-struct ScalarBinaryOpTraits<std::complex<T>, T,BinaryOp>
-{
-  enum { Defined = 1 };
-  typedef std::complex<T> ReturnType;
-};
 
 } // end namespace Eigen
 

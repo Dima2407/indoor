@@ -20,7 +20,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         beaconSearcher = new BeaconSearcher(this);
-        algoManager = new AlgoManager(this);
+        algoManager = new AlgoManager();
         netBridge = NetFacade.instantiate(BuildConfig.SERVER_URL, this);
 
         Picasso.setSingletonInstance(new Picasso.Builder(this)

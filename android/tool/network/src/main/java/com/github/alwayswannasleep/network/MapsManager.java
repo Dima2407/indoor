@@ -93,7 +93,7 @@ final class MapsManager {
 
                     String fPath = loadFile.substring(1, loadFile.length());
 
-                    final File dir = new File(context.getFilesDir() + fPath);
+                    final File dir = new File(context.getFilesDir() + "/" + fPath);
                     dir.mkdirs(); //create folders where write files
                     file = new File(dir, fPath.split("/")[fPath.split("/").length - 1]);
 

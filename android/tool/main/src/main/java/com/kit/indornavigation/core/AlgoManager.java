@@ -1,114 +1,118 @@
 package com.kit.indornavigation.core;
 
-import android.content.Context;
-
 import com.github.alwayswannasleep.models.BeaconModel;
 import com.github.alwayswannasleep.models.FloorModel;
 import com.kit.indornavigation.Native;
 import com.kit.indornavigation.model.BeaconConfigData;
 import com.kit.indornavigation.model.CalibrationData;
-import com.kit.indornavigation.utils.FileUtils;
+import com.kit.indornavigation.model.CalibrationResult;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AlgoManager {
 
-    private final App app;
-
-    AlgoManager(Context context) {
-        app = (App) context.getApplicationContext();
-    }
-
-    private List<BeaconModel> calibrateMap(
-            CalibrationData calibrationData,
-            FloorModel map,
-            float pixelSize
+    private List<CalibrationResult> calibrateMap(
+            List<CalibrationData> calibrationDatas,
+            List<CalibrationResult> previosResults,
+            List<BeaconModel> beacons,
+            FloorModel map
     ) {
-        List<BeaconModel> calibrationResults = new ArrayList<>();
-        List<BeaconConfigData> configDatas = calibrationData.getConfigDatas();
 
-        float[] calibrationPosition = new float[]{calibrationData.getPosition().x * pixelSize, calibrationData
-                .getPosition().y * pixelSize};
-        for (BeaconConfigData configData : configDatas) {
-            BeaconModel beaconModel = configData.getBeaconModel();
+        for (CalibrationData calibrationData : calibrationDatas) {
+            BeaconModel calibratedBeacon = calibrationData.getConfigDatas().get(0).getBeaconModel();
+            if (CalibrationResult.listContainsBeacon(previosResults, calibratedBeacon)) {
+                CalibrationResult result = previosResults.get(CalibrationResult.findIndex(
+                        previosResults,
+                        calibratedBeacon));
 
-            float[] beaconPosition = new float[]{beaconModel.getPosition().x * pixelSize, beaconModel
+                List<CalibrationResult.Data> results = result.getResults();
+
+                float[] rssi = new float[results.size()];
+                float[] distances = new float[results.size()];
+
+                for (int i = 0; i < results.size(); i++) {
+                    rssi[i] = results.get(i).getAvgRssi();
+                    distances[i] = results.get(i).getCalibratedDistance();
+                }
+
+                Native.addPreviousCalibrationData(rssi,
+                                                  distances,
+                                                  calibratedBeacon.getMacAddress(),
+                                                  (int) calibratedBeacon.getMajor(),
+                                                  (int) calibratedBeacon.getMinor());
+            }
+        }
+
+        List<CalibrationResult> calibrationResults = new ArrayList<>(previosResults);
+
+        float pixelSize = (float) map.getPixelSize();
+        for (CalibrationData calibrationData : calibrationDatas) {
+            List<BeaconConfigData> configDatas = calibrationData.getConfigDatas();
+
+            float[] calibrationPosition = new float[]{calibrationData.getPosition().x * pixelSize, calibrationData
                     .getPosition().y * pixelSize};
 
-            Native.addCalibrationData(
-                    beaconPosition,
-                    asDoubleArray(configData.getRssiData()),
-                    asLongArray(configData.getTimestampsData()),
-                    calibrationPosition,
-                    beaconModel.getMacAddress(),
-                    (int) beaconModel.getMajor(),
-                    (int) beaconModel.getMinor()
-            );
+            Native.addCalibrationPosition(calibrationPosition);
+            for (BeaconConfigData configData : configDatas) {
+                BeaconModel beaconModel = configData.getBeaconModel();
+
+                float[] beaconPosition = new float[]{beaconModel.getPosition().x * pixelSize, beaconModel
+                        .getPosition().y * pixelSize};
+
+                Native.addCalibrationData(
+                        beaconPosition,
+                        asDoubleArray(configData.getRssiData()),
+                        asLongArray(configData.getTimestampsData()),
+                        beaconModel.getMacAddress(),
+                        (int) beaconModel.getMajor(),
+                        (int) beaconModel.getMinor()
+                );
+            }
         }
 
         Native.calibrate();
 
-        for (BeaconConfigData configData : configDatas) {
-            BeaconModel beaconModel = configData.getBeaconModel();
-
+        for (BeaconModel beacon : beacons) {
             double[] results = new double[2];
-            if (!Native.getCalibrationResults(
-                    beaconModel.getMacAddress(),
-                    (int) beaconModel.getMajor(),
-                    (int) beaconModel.getMinor(),
-                    results)
-                    ) {
+            double[] calibrationPoints = Native.getCalibrationResults(beacon.getMacAddress(),
+                                                                      (int) beacon.getMajor(),
+                                                                      (int) beacon.getMinor(),
+                                                                      results);
+
+            if (calibrationPoints == null) {
                 continue;
             }
 
-            configData.setTxData(Collections.nCopies(configData.getDistanceData().size(),
-                                                     results[0]
-            ));
-            configData.setDampData(Collections.nCopies(configData.getDistanceData().size(),
-                                                       results[1]
-            ));
+            beacon.setTxPower((float) results[0]);
+            beacon.setDamp((float) results[1]);
 
-            beaconModel.setCalibratedDistance(calculateAverage(configData.getDistanceData()));
-            beaconModel.setDamp((float) results[1]);
-            beaconModel.setTxPower((float) results[0]);
+            CalibrationResult calibrationResult = null;
+            int index = CalibrationResult.findIndex(calibrationResults, beacon);
+            if (!calibrationResults.isEmpty() && index != -1) {
+                calibrationResult = calibrationResults.get(index);
+            }
 
-            calibrationResults.add(beaconModel);
+            if (calibrationResult == null) {
+                calibrationResult = new CalibrationResult();
+                calibrationResult.setCalibratedBeacon(beacon);
+                calibrationResult.setResults(new ArrayList<CalibrationResult.Data>());
+                calibrationResults.add(calibrationResult);
+            }
+
+            List<CalibrationResult.Data> result = calibrationResult.getResults();
+            result.clear();
+
+            for (int i = 0; i < calibrationPoints.length; i += 2) {
+                CalibrationResult.Data data = new CalibrationResult.Data();
+                data.setCalibratedDistance((float) calibrationPoints[i + 1]);
+                data.setAvgRssi((float) calibrationPoints[i]);
+                result.add(data);
+            }
         }
-
-        FileUtils.saveCalibrationData(calibrationData, map, app);
 
         Native.clearCalibrationBeacons();
         return calibrationResults;
-    }
-
-    public List<BeaconModel> calibrateBeacons(
-            CalibrationData calibrationData,
-            List<BeaconModel> beacons,
-            float pixelSize,
-            FloorModel map
-    ) {
-        for (BeaconModel beacon : beacons) {
-            Native.addCalibrationBeacon(
-                    beacon.getMacAddress(),
-                    (int) beacon.getMajor(),
-                    (int) beacon.getMinor(),
-                    new float[]{beacon.getPosition().x * pixelSize, beacon.getPosition().y * pixelSize}
-            );
-        }
-
-        return calibrateMap(calibrationData, map, pixelSize);
-    }
-
-    private float calculateAverage(List<Double> distanceData) {
-        double sum = 0;
-
-        for (double distance : distanceData) {
-            sum += distance;
-        }
-
-        return (float) sum / distanceData.size();
     }
 
     private double[] asDoubleArray(List<Double> data) {
@@ -131,4 +135,21 @@ public class AlgoManager {
         return result;
     }
 
+    public List<CalibrationResult> calibrateBeacons(
+            final List<BeaconModel> beaconModels,
+            final List<CalibrationResult> calibrationResults,
+            final List<CalibrationData> calibrationDatas,
+            final FloorModel floorModel
+    ) {
+        float pixelSize = (float) floorModel.getPixelSize();
+        for (BeaconModel beacon : beaconModels) {
+            Native.addCalibrationBeacon(
+                    beacon.getMacAddress(),
+                    (int) beacon.getMajor(),
+                    (int) beacon.getMinor(),
+                    new float[]{beacon.getPosition().x * pixelSize, beacon.getPosition().y * pixelSize});
+        }
+
+        return calibrateMap(calibrationDatas, calibrationResults, beaconModels, floorModel);
+    }
 }

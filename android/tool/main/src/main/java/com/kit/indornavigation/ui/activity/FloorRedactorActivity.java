@@ -48,6 +48,7 @@ import com.kit.indornavigation.core.service.CalibrationService;
 import com.kit.indornavigation.model.BeaconConfigData;
 import com.kit.indornavigation.model.BeaconLogModel;
 import com.kit.indornavigation.model.CalibrationData;
+import com.kit.indornavigation.model.CalibrationResult;
 import com.kit.indornavigation.model.LogModel;
 import com.kit.indornavigation.ui.detectors.AddBeaconDetector;
 import com.kit.indornavigation.ui.detectors.MoveBeaconDetector;
@@ -64,11 +65,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -100,7 +96,7 @@ public final class FloorRedactorActivity extends BaseActivity {
     private IndoorMap map;
     private FloorModel floorModel;
     private List<CalibrationData> calibrationDatas;
-    private List<BeaconModel> calibrationResults;
+    private List<CalibrationResult> calibrationResults;
     private Toolbar toolbar;
     private MenuItem previousItem;
     private boolean isCalibrating;
@@ -114,7 +110,12 @@ public final class FloorRedactorActivity extends BaseActivity {
     private ServiceConnection serviceConnection;
     private CalibrationService.CalibrationBindService calibrationService;
 
-    public static void start(Activity activity, final IndoorMap map, final FloorModel floorModelv2, int requestCode) {
+    public static void start(
+            Activity activity,
+            final IndoorMap map,
+            final FloorModel floorModelv2,
+            int requestCode
+    ) {
         Intent intent = new Intent(activity, FloorRedactorActivity.class);
         intent.putExtra(EXTRA_FLOOR, (Parcelable) floorModelv2);
         intent.putExtra(PARENT_MAP, map);
@@ -230,14 +231,13 @@ public final class FloorRedactorActivity extends BaseActivity {
         super.onStart();
 
         uiHandler = new Handler(Looper.getMainLooper());
-
     }
 
     private void loadConfigFile() {
         if (floorModel.getCalibrationFilePath() == null) {
             return;
         }
-        Type type = new TypeToken<List<BeaconModel>>() {
+        Type type = new TypeToken<List<CalibrationResult>>() {
         }.getType();
 
         try (FileReader reader = new FileReader(floorModel.getCalibrationFilePath())) {
@@ -252,15 +252,6 @@ public final class FloorRedactorActivity extends BaseActivity {
 
             img.setCalibrationData(calibrationResults);
         }
-    }
-
-    private static StringBuilder testCBConvert(byte[] src) throws CharacterCodingException {
-        Charset charset = Charset.forName("UTF-8");
-        CharsetDecoder decoder = charset.newDecoder();
-        ByteBuffer srcBuffer = ByteBuffer.wrap(src);
-        CharBuffer resBuffer = decoder.decode(srcBuffer);
-        StringBuilder b = new StringBuilder(resBuffer);
-        return b;
     }
 
     @Override
@@ -573,7 +564,9 @@ public final class FloorRedactorActivity extends BaseActivity {
 
     private void startCalibration() {
 
-        bindService(new Intent(this, CalibrationService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, CalibrationService.class),
+                    serviceConnection,
+                    Context.BIND_AUTO_CREATE);
 
         if (!img.hasTapPoint()) {
             if (startPauseBtnWrapper.getVisibility() == View.VISIBLE) {
@@ -744,7 +737,6 @@ public final class FloorRedactorActivity extends BaseActivity {
                 calibrationService.getService().startCalibration(task);
             }
         }).start();
-
     }
 
     private void pauseCalibration() {
@@ -784,29 +776,11 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         stopTimer();
 
-        for (CalibrationData calibrationData : calibrationDatas) {
-            List<BeaconModel> results = app.getAlgoManager()
-                    .calibrateBeacons(calibrationData,
-                                      img.getBeaconModels(),
-                                      (float) floorModel.getPixelSize(),
-                                      floorModel
-                    );
-
-            for (BeaconModel calibrationResult : results) {
-                if (!calibrationResults.contains(calibrationResult)) {
-                    calibrationResults.add(calibrationResult);
-                    continue;
-                }
-
-                float distance = calibrationResults.get(calibrationResults.indexOf(calibrationResult))
-                        .getCalibratedDistance();
-
-                if (distance > calibrationResult.getCalibratedDistance()) {
-                    calibrationResults.remove(calibrationResult);
-                    calibrationResults.add(calibrationResult);
-                }
-            }
-        }
+        calibrationResults = app.getAlgoManager()
+                .calibrateBeacons(img.getBeaconModels(),
+                                  calibrationResults,
+                                  calibrationDatas,
+                                  floorModel);
 
         img.setCalibrationData(calibrationResults);
     }
@@ -814,7 +788,6 @@ public final class FloorRedactorActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
 
         List<BeaconModel> beacons = img.getBeaconModels();
         Log.i(TAG, "onSaveInstanceState: " + beacons);
@@ -852,7 +825,6 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         uiHandler = null;
     }
-
 
     private class CalibrationStartStopListener implements CompoundButton.OnCheckedChangeListener {
 

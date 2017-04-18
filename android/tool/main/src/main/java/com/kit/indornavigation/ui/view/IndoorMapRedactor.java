@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.github.alwayswannasleep.models.BeaconModel;
 import com.kit.indornavigation.R;
+import com.kit.indornavigation.model.CalibrationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
     private Paint calibratedFilter;
     private Paint unCalibratedFilter;
 
-    private List<BeaconModel> calibrationResults;
+    private List<CalibrationResult> calibrationResults;
 
     public IndoorMapRedactor(Context context, AttributeSet attr) {
         super(context, attr);
@@ -239,7 +240,7 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
         invalidate();
     }
 
-    public void setCalibrationData(final List<BeaconModel> calibrationResults) {
+    public void setCalibrationData(final List<CalibrationResult> calibrationResults) {
         this.calibrationResults.clear();
 
         if (calibrationResults != null) {
@@ -250,13 +251,7 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
     }
 
     private boolean isCalibrated(BeaconModel beacon) {
-        for (BeaconModel calibrationResult : calibrationResults) {
-            if (calibrationResult.getMacAddress().equals(beacon.getMacAddress())) {
-                return true;
-            }
-        }
-
-        return false;
+        return CalibrationResult.listContainsBeacon(calibrationResults, beacon);
     }
 
     public List<BeaconModel> getBeaconModelsForSaving(double pixelSize) {
@@ -273,15 +268,17 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
                 continue;
             }
 
-            int calibrationResultsIndex = calibrationResults.lastIndexOf(clone);
+            int calibrationResultsIndex = CalibrationResult.findLastIndex(calibrationResults,
+                                                                          clone);
             if (calibrationResultsIndex == -1) {
                 continue;
             }
 
-            BeaconModel calibrationResult = calibrationResults.get(calibrationResultsIndex);
-            clone.setDamp(calibrationResult.getDamp());
-            clone.setTxPower(calibrationResult.getTxPower());
-            clone.setCalibratedDistance(calibrationResult.getCalibratedDistance());
+            CalibrationResult calibrationResult = calibrationResults.get(calibrationResultsIndex);
+            clone.setDamp(calibrationResult.getCalibratedBeacon().getDamp());
+            clone.setTxPower(calibrationResult.getCalibratedBeacon().getTxPower());
+            clone.setCalibratedDistance(calibrationResult.getCalibratedBeacon()
+                                                .getCalibratedDistance());
         }
 
         return result;

@@ -12,7 +12,6 @@ public final class Native {
             float[] beaconPosition,
             double[] rssi,
             long[] timestamps,
-            float[] calibrationPosition,
             String hash,
             int major,
             int minor
@@ -20,7 +19,22 @@ public final class Native {
 
     public static native void calibrate();
 
-    public static native boolean getCalibrationResults(String hash, int major, int minor, double[] results);
+    public static native double[] getCalibrationResults(
+            String hash,
+            int major,
+            int minor,
+            double[] results
+    );
 
     public static native void clearCalibrationBeacons();
+
+    public native static void addPreviousCalibrationData(
+            final float[] rssi,
+            final float[] distances,
+            final String macAddress,
+            final int major,
+            final int minor
+    );
+
+    public native static void addCalibrationPosition(final float[] calibrationPosition);
 }

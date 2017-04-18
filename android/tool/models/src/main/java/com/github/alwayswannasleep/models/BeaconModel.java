@@ -8,7 +8,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class BeaconModel implements Parcelable, Serializable, Cloneable {
 
@@ -227,7 +226,14 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
         BeaconModel that = (BeaconModel) o;
 
         return macAddress != null ? macAddress.equals(that.macAddress) : that.macAddress == null;
+    }
 
+    @Override
+    public int hashCode() {
+        int result = uuid != null ? uuid.hashCode() : 0;
+        result = 31 * result + (int) (major ^ (major >>> 32));
+        result = 31 * result + (int) (minor ^ (minor >>> 32));
+        return result;
     }
 
     public void setDefaultCalibrationData() {

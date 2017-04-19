@@ -98,17 +98,17 @@ void calibrate(JNIEnv* env, jclass* obj) {
     calibrator.setCalTables(previousCalibrationResults);
 
     result = calibrator.calibrate(*calibrationPoints, {});
-    auto values = calibrator.getCalTables();
-
-    for (auto it = values.begin(); it != values.end(); it++) {
-        auto foundResult = previousCalibrationResults.find(it->first);
-        if (foundResult == previousCalibrationResults.end()) {
-            previousCalibrationResults[it->first] = it->second;
-            continue;
-        }
-
-        foundResult->second.insert(foundResult->second.end(), it->second.begin(), it->second.end());
-    }
+    previousCalibrationResults = calibrator.getCalTables();
+//
+//    for (auto it = values.begin(); it != values.end(); it++) {
+//        auto foundResult = previousCalibrationResults.find(it->first);
+//        if (foundResult == previousCalibrationResults.end()) {
+//            previousCalibrationResults[it->first] = it->second;
+//            continue;
+//        }
+//
+//        foundResult->second.insert(foundResult->second.end(), it->second.begin(), it->second.end());
+//    }
 }
 
 jdoubleArray
@@ -157,6 +157,9 @@ void clearCalibrationBeacons(JNIEnv* _env, jclass* _obj) {
         delete calibrationPoint;
         calibrationPoint = NULL;
     }
+
+    result.clear();
+    previousCalibrationResults.clear();
 
     delete calibrationPoints;
     calibrationPoints = NULL;

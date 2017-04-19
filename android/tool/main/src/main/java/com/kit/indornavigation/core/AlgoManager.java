@@ -19,28 +19,30 @@ public class AlgoManager {
             FloorModel map
     ) {
 
-        for (CalibrationData calibrationData : calibrationDatas) {
-            BeaconModel calibratedBeacon = calibrationData.getConfigDatas().get(0).getBeaconModel();
-            if (CalibrationResult.listContainsBeacon(previosResults, calibratedBeacon)) {
-                CalibrationResult result = previosResults.get(CalibrationResult.findIndex(
-                        previosResults,
-                        calibratedBeacon));
+        if (!calibrationDatas.isEmpty()) {
+            for (BeaconConfigData data : calibrationDatas.get(0).getConfigDatas()) {
+                BeaconModel calibratedBeacon = data.getBeaconModel();
+                if (CalibrationResult.listContainsBeacon(previosResults, calibratedBeacon)) {
+                    CalibrationResult result = previosResults.get(CalibrationResult.findIndex(
+                            previosResults,
+                            calibratedBeacon));
 
-                List<CalibrationResult.Data> results = result.getResults();
+                    List<CalibrationResult.Data> results = result.getResults();
 
-                float[] rssi = new float[results.size()];
-                float[] distances = new float[results.size()];
+                    float[] rssi = new float[results.size()];
+                    float[] distances = new float[results.size()];
 
-                for (int i = 0; i < results.size(); i++) {
-                    rssi[i] = results.get(i).getAvgRssi();
-                    distances[i] = results.get(i).getCalibratedDistance();
+                    for (int i = 0; i < results.size(); i++) {
+                        rssi[i] = results.get(i).getAvgRssi();
+                        distances[i] = results.get(i).getCalibratedDistance();
+                    }
+
+                    Native.addPreviousCalibrationData(rssi,
+                                                      distances,
+                                                      calibratedBeacon.getMacAddress(),
+                                                      (int) calibratedBeacon.getMajor(),
+                                                      (int) calibratedBeacon.getMinor());
                 }
-
-                Native.addPreviousCalibrationData(rssi,
-                                                  distances,
-                                                  calibratedBeacon.getMacAddress(),
-                                                  (int) calibratedBeacon.getMajor(),
-                                                  (int) calibratedBeacon.getMinor());
             }
         }
 
@@ -100,15 +102,16 @@ public class AlgoManager {
                 calibrationResults.add(calibrationResult);
             }
 
-            List<CalibrationResult.Data> result = calibrationResult.getResults();
-            result.clear();
+            List<CalibrationResult.Data> result = new ArrayList<>(calibrationResult.getResults());
 
             for (int i = 0; i < calibrationPoints.length; i += 2) {
                 CalibrationResult.Data data = new CalibrationResult.Data();
-                data.setCalibratedDistance((float) calibrationPoints[i + 1]);
-                data.setAvgRssi((float) calibrationPoints[i]);
+                data.setCalibratedDistance((float) calibrationPoints[i]);
+                data.setAvgRssi((float) calibrationPoints[i + 1]);
                 result.add(data);
             }
+
+            calibrationResult.setResults(result);
         }
 
         Native.clearCalibrationBeacons();

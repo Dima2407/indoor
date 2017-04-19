@@ -4,7 +4,7 @@ import com.github.alwayswannasleep.models.BeaconModel;
 
 import java.util.List;
 
-public class CalibrationResult {
+public class CalibrationResult implements Cloneable {
 
     public static boolean listContainsBeacon(
             List<CalibrationResult> calibrationResults,
@@ -49,6 +49,15 @@ public class CalibrationResult {
     private List<Data> results;
 
     @Override
+    public CalibrationResult clone() {
+        try {
+            return (CalibrationResult) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
@@ -84,10 +93,15 @@ public class CalibrationResult {
         return calibratedBeacon != null ? calibratedBeacon.hashCode() : 0;
     }
 
-    public static class Data {
+    public static class Data implements Cloneable {
 
         private float calibratedDistance;
         private float avgRssi;
+
+        @Override
+        protected Data clone() throws CloneNotSupportedException {
+            return (Data) super.clone();
+        }
 
         public float getCalibratedDistance() {
             return calibratedDistance;

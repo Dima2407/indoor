@@ -109,6 +109,8 @@ public final class FloorRedactorActivity extends BaseActivity {
 
     private ServiceConnection serviceConnection;
     private CalibrationService.CalibrationBindService calibrationService;
+    private boolean isBound;
+
 
     public static void start(
             Activity activity,
@@ -317,6 +319,13 @@ public final class FloorRedactorActivity extends BaseActivity {
                         break;
                     case R.id.calibration_tool:
                         if (!item.isChecked()) {
+                            if (!app.getBeaconSearcher()
+                                    .isBluetoothEnabled(FloorRedactorActivity.this)) {
+                                Toast.makeText(app, "Please turn on bluetooth.", Toast.LENGTH_SHORT)
+                                        .show();
+                                return true;
+                            }
+
                             if (img.getBeaconModels().size() < 3) {
                                 Toast.makeText(FloorRedactorActivity.this,
                                                "Put at least 3 beacons on map.",
@@ -329,8 +338,6 @@ public final class FloorRedactorActivity extends BaseActivity {
                             img.setCurrentPositionDetector();
 
                             calibrationBtn.setVisibility(View.VISIBLE);
-
-                            calibrationDatas.clear();
                             item.setChecked(true);
                             isCalibrating = true;
                         } else {
@@ -570,6 +577,7 @@ public final class FloorRedactorActivity extends BaseActivity {
         bindService(new Intent(this, CalibrationService.class),
                     serviceConnection,
                     Context.BIND_AUTO_CREATE);
+        isBound = true;
 
         if (!img.hasTapPoint()) {
             if (startPauseBtnWrapper.getVisibility() == View.VISIBLE) {
@@ -752,9 +760,14 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         img.setCurrentPositionDetector();
 
+        List<CalibrationResult> copyResults = new ArrayList<>();
+        for (int i = 0; i < calibrationResults.size(); i++) {
+            copyResults.add(calibrationResults.get(i).clone());
+        }
+
         List<CalibrationResult> newCalibrationResults = app.getAlgoManager()
                 .calibrateBeacons(img.getBeaconModels(),
-                                  calibrationResults,
+                                  copyResults,
                                   calibrationDatas,
                                   floorModel);
 
@@ -774,6 +787,7 @@ public final class FloorRedactorActivity extends BaseActivity {
 
         img.setLastSessionCalibrationResults(tmp);
         calibrationResults = newCalibrationResults;
+        calibrationDatas.clear();
 
         Toast.makeText(this, "Please choose your real position on map.", Toast.LENGTH_SHORT).show();
     }
@@ -786,20 +800,22 @@ public final class FloorRedactorActivity extends BaseActivity {
         isCalibrating = false;
         uncheckPreviousItem(previousItem);
 
+        startPauseBtn.setChecked(false);
+
         calibrationBtn.setVisibility(View.INVISIBLE);
         startPauseBtnWrapper.setVisibility(View.INVISIBLE);
 
-        startPauseBtn.setChecked(false);
         img.removeTapPoint();
         img.removeCurrentPositionDetector();
 
         calibrationBtn.setText("Start.");
         calibrationBtn.setChecked(false);
 
-        previousItem = null;
-
-        calibrationService.getService().stopCalibration();
-        unbindService(serviceConnection);
+        if (isBound) {
+            calibrationService.getService().stopCalibration();
+            unbindService(serviceConnection);
+            isBound = false;
+        }
 
         stopTimer();
 
@@ -856,6 +872,7 @@ public final class FloorRedactorActivity extends BaseActivity {
                 startPauseBtn.setChecked(true);
             } else {
                 stopCalibration();
+                previousItem = null;
             }
         }
     }

@@ -22,7 +22,9 @@ set(SOURCE_FILES
         ../include/Navigator/Beacons/Calibrate/CalibrationConfig.h
         ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
         ./Navigator/Beacons/BeaconProcessor.cpp
-        )
+
+        #
+        ./Navigator/Mesh/RectanMesh.cpp ../include/Navigator/Mesh/RectanMesh.h)
 
 include_directories(
         ../include/

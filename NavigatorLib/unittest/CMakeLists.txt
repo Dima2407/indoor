@@ -31,7 +31,8 @@ set(SOURCE_FILES
         Beacons/TrilatBeaconNavigatorTest.cpp Beacons/TrilatBeaconNavigatorTest.h
         Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h
         Beacons/Calibrate/BeaconCalibratorTest.cpp Beacons/Calibrate/BeaconCalibratorTest.h
-        )
+        #
+        Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h)
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

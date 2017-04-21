@@ -2,38 +2,10 @@ package com.kit.indornavigation.core.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.PointF;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.View;
-import android.widget.Toast;
-
-import com.davemorrissey.labs.subscaleview.ImageSource;
-import com.davemorrissey.labs.subscaleview.ImageViewState;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.github.alwayswannasleep.models.BeaconModel;
-import com.github.alwayswannasleep.models.IndoorMap;
-import com.kit.indornavigation.core.BeaconSearcher;
-import com.kit.indornavigation.core.algos.FilteringAlgorithm;
-import com.kit.indornavigation.core.algos.MovingAverage;
-import com.kit.indornavigation.model.BeaconConfigData;
-import com.kit.indornavigation.model.BeaconLogModel;
-import com.kit.indornavigation.model.CalibrationData;
-import com.kit.indornavigation.model.LogModel;
-import com.kit.indornavigation.ui.activity.FloorRedactorActivity;
-import com.kit.indornavigation.ui.view.IndoorMapRedactor;
-import com.kit.indornavigation.utils.FileUtils;
-
-import org.altbeacon.beacon.Beacon;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by user on 04.04.2017.
@@ -73,6 +45,11 @@ public class CalibrationService extends Service {
 
     public void pauseCalibration(){
         calibrationThread.interrupt();
+        try {
+            calibrationThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopCalibration(){

@@ -42,6 +42,7 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
     private Paint calibratedFilter;
     private Paint unCalibratedFilter;
     private Paint lastCalibratedFilter;
+    private Paint textColor;
 
     private List<CalibrationResult> calibrationResults;
     private List<CalibrationResult> lastSessionCalibrationResults;
@@ -87,6 +88,10 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
         lastCalibratedFilter = new Paint(Paint.FILTER_BITMAP_FLAG);
         lastCalibratedFilter.setColorFilter(new PorterDuffColorFilter(Color.BLUE,
                                                                       PorterDuff.Mode.MULTIPLY));
+
+        textColor = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textColor.setColor(Color.WHITE);
+        textColor.setTextSize(getContext().getResources().getDisplayMetrics().scaledDensity * 12);
     }
 
     @Override
@@ -179,6 +184,11 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
                               CalibrationResult.listContainsBeacon(lastSessionCalibrationResults,
                                                                    beaconModel) ? lastCalibratedFilter : isCalibrated(
                                       beaconModel) ? calibratedFilter : unCalibratedFilter);
+            if (CalibrationResult.listContainsBeacon(calibrationResults, beaconModel)) {
+                canvas.drawText(String.valueOf(calibrationResults.get(CalibrationResult.findIndex(
+                        calibrationResults,
+                        beaconModel)).getResults().size()), p.x, p.y, textColor);
+            }
         }
 
         if (tapPointX != DEFAULT_TAP_POINT_POSITION) {

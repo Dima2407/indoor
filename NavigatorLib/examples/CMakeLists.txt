@@ -11,3 +11,5 @@ add_subdirectory(example2)
 
 add_subdirectory(exampleCalibrate)
 
+add_subdirectory(exampleMesh)
+

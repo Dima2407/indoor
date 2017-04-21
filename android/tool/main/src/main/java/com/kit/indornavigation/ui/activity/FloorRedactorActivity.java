@@ -478,6 +478,13 @@ public final class FloorRedactorActivity extends BaseActivity {
     private void saveData() {
         floorModel.setBeacons(img.getBeaconModelsForSaving(floorModel.getPixelSize()));
 
+        for (BeaconModel beaconModel : floorModel.getBeacons()) {
+            if (CalibrationResult.listContainsBeacon(calibrationResults, beaconModel)) {
+                calibrationResults.get(CalibrationResult.findIndex(calibrationResults, beaconModel))
+                        .setCalibratedBeacon(beaconModel);
+            }
+        }
+
         saveCalibrationResults();
         if (floorModel.getBeacons() == null || floorModel.getBeacons().size() == 0) {
             Toast.makeText(FloorRedactorActivity.this, "Calibration data null ", Toast.LENGTH_SHORT)

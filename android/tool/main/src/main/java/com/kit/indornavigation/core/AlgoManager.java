@@ -102,7 +102,8 @@ public class AlgoManager {
                 calibrationResults.add(calibrationResult);
             }
 
-            List<CalibrationResult.Data> result = new ArrayList<>(calibrationResult.getResults());
+            List<CalibrationResult.Data> result = calibrationResult.getResults();
+            result.clear();
 
             for (int i = 0; i < calibrationPoints.length; i += 2) {
                 CalibrationResult.Data data = new CalibrationResult.Data();

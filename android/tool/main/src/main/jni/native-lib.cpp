@@ -97,7 +97,7 @@ void calibrate(JNIEnv* env, jclass* obj) {
     calibrator.addBeacons(*beacons);
     calibrator.setCalTables(previousCalibrationResults);
 
-    result = calibrator.calibrate(*calibrationPoints, {});
+    result = calibrator.calibrate(*calibrationPoints, {}, false);
     previousCalibrationResults = calibrator.getCalTables();
 //
 //    for (auto it = values.begin(); it != values.end(); it++) {

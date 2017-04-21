@@ -277,20 +277,7 @@ public final class IndoorMapRedactor extends SubsamplingScaleImageView {
 
             if (calibrationResults.isEmpty()) {
                 clone.setDefaultCalibrationData();
-                continue;
             }
-
-            int calibrationResultsIndex = CalibrationResult.findLastIndex(calibrationResults,
-                                                                          clone);
-            if (calibrationResultsIndex == -1) {
-                continue;
-            }
-
-            CalibrationResult calibrationResult = calibrationResults.get(calibrationResultsIndex);
-            clone.setDamp(calibrationResult.getCalibratedBeacon().getDamp());
-            clone.setTxPower(calibrationResult.getCalibratedBeacon().getTxPower());
-            clone.setCalibratedDistance(calibrationResult.getCalibratedBeacon()
-                                                .getCalibratedDistance());
         }
 
         return result;

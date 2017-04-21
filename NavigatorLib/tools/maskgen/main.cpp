@@ -39,8 +39,10 @@ int main(){
     for (int ix = 0; ix < mesh.nx; ++ix) {
         for (int iy = 0; iy < mesh.ny; ++iy) {
             out << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
+//            cout << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
         }
         out << endl;
+//        cout << endl;
     }
     out.close();
 

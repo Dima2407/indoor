@@ -5,7 +5,10 @@
 #include <iostream>
 #include <cmath>
 
-#include "computeMaskTbl.h"
+#include "./findNearest.h"
+
+#include "./computeMaskTbl.h"
+
 
 std::vector<int> computeMaskTbl(const MeshData &mesh, const MaskData &mask) {
     using namespace std;
@@ -34,7 +37,8 @@ std::vector<int> computeMaskTbl(const MeshData &mesh, const MaskData &mask) {
         for (int iy = 0; iy < mesh.ny; ++iy) {
             int currInd = mesh.index(ix, iy);
             if (mask.data[currInd]) {
-                cout << "BLACK : " << ix << " " << iy << endl;
+                // he node is black
+                result[currInd] = findNearest(mesh, mask, ix, iy);
             }
         }
     }

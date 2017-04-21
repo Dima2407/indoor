@@ -74,6 +74,8 @@ int findNearest(const MeshData &mesh, const MaskData &mask, int ix0, int iy0) {
                             bestDist = dist;
                             bestInd = currInd;
                         } else {
+                            // Find the enarest white node
+                            // But Ignore if the distance is approximately the same
                             if (dist < bestDist && !approxEq(dist, bestDist)) {
                                 bestDist = dist;
                                 bestInd = currInd;

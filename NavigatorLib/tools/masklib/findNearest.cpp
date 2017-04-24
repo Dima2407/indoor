@@ -28,7 +28,7 @@ int findNearest(const MeshData &mesh, const MaskData &mask, int ix0, int iy0) {
 
     // The algorithm goes like this : first we define scale and search in distance ranges (circles)
     // 0..scale, then scale..2scale etc.
-    double scale = fmax(mesh.dx, mesh.dy) * 1.1; // The scale is somewhat arbitrary
+    double scale = fmax(mesh.dx, mesh.dy) * 10.1; // The scale is somewhat arbitrary
 
     // Now the maximum distance from ix0, iy0 to any site
     double maxDist = sqrt(pow(mesh.dx * max(ix0, mesh.nx - ix0 - 1), 2.0) +
@@ -40,8 +40,9 @@ int findNearest(const MeshData &mesh, const MaskData &mask, int ix0, int iy0) {
     double bestDist = nan("");
     bool found = false;
 
-    // We loop over the rings
-    for (double rad = scale; rad < maxDist + scale; rad += scale) {
+    // We loop over the rings, double the radius every time
+    bool firstRing = true;
+    for (double rad = scale; rad < maxDist + scale; rad *= 2, firstRing=false) {
 
 //        cout << "rad = " << rad << endl;
 
@@ -62,7 +63,7 @@ int findNearest(const MeshData &mesh, const MaskData &mask, int ix0, int iy0) {
                 double dist = mesh.dist(ix, iy, ix0, iy0);
 
                 // Check if the node ix, iy is in the ring
-                if (dist <= rad && dist >= rad-scale) {
+                if (dist <= rad && (dist >= rad/2 || firstRing)) {
                     // Now check if it's white
                     int currInd = mesh.index(ix, iy);
                     if (!mask.data[currInd]) {

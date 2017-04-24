@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
     
     cout << "Calculating the mask table ...\n";
     
+    
     // Calculate the mask table from the mask
     vector<int> maskTbl = computeMaskTbl(mesh, mask);
     
@@ -93,10 +94,20 @@ int main(int argc, char *argv[]) {
     
     cout << "Finished ..." << endl;
     
-
-    CImgDisplay mainWin(image, "Click a point");
-    CImgDisplay procWin(procImage, "Processed image");
     
+    // New image: always RGB
+    CImg<unsigned char> newImage(width, height, 1, 3);
+     for (int ix=0; ix < width; ix++)
+        for (int iy=0; iy < height; iy++) {
+            int ind = ix*height + iy;
+            
+            unsigned char color = (unsigned char) ( (mask.data[ind])==0 ? 0xff : 0);
+            for (int i =0; i<3; i++)
+                newImage(ix, iy, 0, i) = color;
+        }
+    
+    CImgDisplay mainWin(newImage, "Click a point");
+    CImgDisplay procWin(procImage, "Processed image");
     
 
     // The game loop
@@ -107,12 +118,21 @@ int main(int argc, char *argv[]) {
             const int y = mainWin.mouse_y();
 
             if (x>=0 && y>=0) {
-//                image(x, y, 0, 0) ^= 0xff;
-//                mainWin.display(image);
-                cout << "pixel(0) = " << (int)image(x, y, 0, 0) << endl;
+                int ind1 = x*height + y;
+                int ind2 = maskTbl[ind1];
+                int xnew = ind2/height;
+                int ynew = ind2 % height;
+                
+                // cout << "(" << x << "," << y << ") -> ("<< xnew << "," << ynew << ")" << endl;
+                
+                newImage(xnew, ynew, 0, 0) = 0xff;  // Red
+                newImage(xnew, ynew, 0, 1) = 0x00;
+                newImage(xnew, ynew, 0, 2) = 0x00;
+                mainWin.display(newImage);
+                //cout << "pixel(0) = " << (int)image(x, y, 0, 0) << endl;
             }
 
-            cout << "x = " << x << ", y = " << y << endl;
+            // cout << "x = " << x << ", y = " << y << endl;
 
         }
     }

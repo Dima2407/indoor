@@ -3,6 +3,10 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iomanip>
 
 #include <CImg.h>
 
@@ -55,6 +59,17 @@ int main(int argc, char *argv[]) {
     
     // Calculate the mask table from the mask
     vector<int> maskTbl = computeMaskTbl(mesh, mask);
+    
+    // Write the mask table
+    ofstream out("masktable.out");
+    cout << "Writing mask table to file masktable.out \n";
+    for (int ix = 0; ix < mesh.nx; ++ix) {
+        for (int iy = 0; iy < mesh.ny; ++iy) {
+            out << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
+        }
+        out << endl;
+    }
+    out.close();
     
     cout << "Generating the processed image \n";
     

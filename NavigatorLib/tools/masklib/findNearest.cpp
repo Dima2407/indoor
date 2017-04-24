@@ -28,7 +28,7 @@ int findNearest(const MeshData &mesh, const MaskData &mask, int ix0, int iy0) {
 
     // The algorithm goes like this : first we define scale and search in distance ranges (circles)
     // 0..scale, then scale..2scale etc.
-    double scale = fmax(mesh.dx, mesh.dy) * 10.1; // The scale is somewhat arbitrary
+    double scale = fmax(mesh.dx, mesh.dy) * 5.1; // The scale is somewhat arbitrary
 
     // Now the maximum distance from ix0, iy0 to any site
     double maxDist = sqrt(pow(mesh.dx * max(ix0, mesh.nx - ix0 - 1), 2.0) +

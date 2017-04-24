@@ -60,7 +60,7 @@ __Directories__:
 * `include` : The only folder to be included for user
 * `lib` : This directory is for external libraries, e.g. Eigen
 * `examples` : Examples
-* `tools` : Tools, includes `maskgen` at present, which generates mask table from a black/white mask.
+* `tools` : Tools, includes `maskgen`, `maskdemo` at present, which generates mask table from a black/white mask.
 * `unittest` : CppUnit-based unit tests for the library
 * `test-tool` (`tester`, `faker`, `autotester`) : A tool for testing the library with events data
  from external _DAT_ or _JSON_ files.

@@ -43,7 +43,7 @@ namespace Navigator {
 
                 // ===== This is used to set a common z-coordinate to all input points
 
-                bool useCommonZ = false;
+                bool useCommonZ = true;
                 double commonZ = 1.5;
 
                 // ===== This should not be normally used !!!! ====

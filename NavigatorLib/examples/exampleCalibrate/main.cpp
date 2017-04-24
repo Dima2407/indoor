@@ -154,8 +154,10 @@ int main() {
     CalibrationConfig config;  // Default config
 
 
-    // One can specify a common Z-coordiate for all input points
+    // One can specify a common Z-coordiate for all input points THIS IS A DEFAULT NOW !!!!
 //    config.useCommonZ = true;
+    // Do not use common Z
+    config.useCommonZ = false;
 //    config.commonZ = 1.5;
 
     // Run the calibration finally (true = reset calTable)

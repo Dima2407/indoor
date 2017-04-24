@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(maskgen)
+project(maskdemo)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -12,5 +12,5 @@ set(SOURCE_FILES
         main.cpp
         )
 
-add_executable(maskgen ${SOURCE_FILES})
-target_link_libraries(maskgen masklib)
+add_executable(maskdemo ${SOURCE_FILES})
+target_link_libraries(maskdemo masklib)

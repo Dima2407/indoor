@@ -15,6 +15,7 @@
 #include "./Navigator/Beacons/dir.inc"
 
 #include "./Navigator/Math/dir.inc"
+#include "./Navigator/Mesh/dir.inc"
 
 
 namespace Navigator {

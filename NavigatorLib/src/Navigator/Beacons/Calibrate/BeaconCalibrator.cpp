@@ -68,7 +68,13 @@ namespace Navigator {
                         averageRSSI /= val.second.size();
 
                         // Calculate the distance from point to the beacon
-                        double distance = beacon.getPos().distance(point.position);
+                        Math::Position3D pt = point.position;
+
+                        // Set common z instead of original z if specified
+                        if (config.useCommonZ)
+                            pt.z = config.commonZ;
+
+                        double distance = beacon.getPos().distance(pt);
 
                         // Check if the distance is legit
                         if (isLegit(distance, averageRSSI, config)) {

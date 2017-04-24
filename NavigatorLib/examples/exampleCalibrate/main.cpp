@@ -153,6 +153,11 @@ int main() {
 //    CalibrationConfig config(6.0, -2.021, -74.21, -70.0, 2.2);
     CalibrationConfig config;  // Default config
 
+
+    // One can specify a common Z-coordiate for all input points
+//    config.useCommonZ = true;
+//    config.commonZ = 1.5;
+
     // Run the calibration finally (true = reset calTable)
     const auto &result = calibrator.calibrate(calPoints, config, true);
 

@@ -26,6 +26,8 @@ namespace Navigator {
              * @startuml
              * class BeaconCalibrator{
              * // This class is used to calibrate beacons //
+             * // Warning !!! Sets all z-coordinates of input points to 1.5 by default//
+             * // See useCommonZ in CalibrateConfig //
              * --
              * - beaconMap : std::unordered_map<BeaconUID, Beacon>
              * - calTables : std::unordered_map<BeaconUID, Algorithm::CalibrationTable>

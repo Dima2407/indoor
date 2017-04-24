@@ -82,6 +82,7 @@ namespace NaviTest {
                 }
                 // Do the actual calibration
                 CalibrationConfig config;
+                config.useCommonZ = false;
                 const auto & result = calibrator.calibrate(calPoints, config);
 
                 constexpr double accuracy = 1.0e-10;
@@ -136,6 +137,7 @@ namespace NaviTest {
 
                 // Normal 1-point calibration
                 CalibrationConfig config;
+                config.useCommonZ = false;
 
                 /*cout << "dist = " << dist << "\n";
                 double rssi_min = config.kLos*10*log10(dist) + config.bLos;

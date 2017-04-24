@@ -16,6 +16,11 @@ struct MeshData {
 public: // === Constructors
     MeshData() {}
 
+    MeshData(int nx, int ny, double dx, double dy, double x0, double y0) : nx(nx), ny(ny),
+                                                                           dx(dx), dy(dy),
+                                                                           x0(x0), y0(y0) {}
+
+
     MeshData(const std::string &fileName) {
         using namespace std;
 

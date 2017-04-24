@@ -3,48 +3,119 @@
 //
 
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <iomanip>
+
+#include <CImg.h>
 
 #include "MeshData.h"
 #include "MaskData.h"
 #include "computeMaskTbl.h"
 
-int main(){
+int main(int argc, char *argv[]) {
     using namespace std;
+    using namespace cimg_library;
 
-    cout << "Mask Table Generator by Oleksiy Grechnyev \n";
+    if (argc != 2) {
+        cout << "Usage: maskdemo <image file> \n";
+        return 1;
+    }
 
-    // Read the input mesh from file
-    MeshData mesh("mesh.in");
 
-    cout << "Rectangular mesh: \n";
-    cout << "nx = " << mesh.nx << ", ny = " << mesh.ny << "\n";
-    cout << "dx = " << mesh.dx << ", dy = " << mesh.dy << "\n";
-    cout << "x0 = " << mesh.x0 << ", y0 = " << mesh.y0 << "\n";
+    cout << "Reading image file " << argv[1] << endl;
+    CImg<unsigned char> image(argv[1]);
 
-    int size = mesh.nx * mesh.ny; // Mesh size
+    int width = image.width();
+    int height = image.height();
+    int size = width*height;
+    int spectrum = image.spectrum();
 
-    // Read the mask from file
-    MaskData mask(size, "mask.in");
 
+    cout << "width = " << width << endl;
+    cout << "height = " << height << endl;
+    cout << "spectrum = " << spectrum << endl;
+
+
+    cout << "Processing image ..." << endl;
+    
+    // Create mesh and mask
+    MeshData mesh(width, height, 1.0, 1.0, 0.0, 0.0);
+
+    MaskData mask(size);
+    
+    
+    // Fill the mask from the input image
+    for (int ix=0; ix < width; ix++)
+        for (int iy=0; iy < height; iy++) {
+            int ind = ix*height + iy;
+            // Uses red channel for color images, 1 = forbidden in the mask
+            mask.data[ind] = (image(ix, iy, 0, 0) == 0) ? 1 : 0;
+        }
+    
+    cout << "Calculating the mask table ...\n";
+    
     // Calculate the mask table from the mask
     vector<int> maskTbl = computeMaskTbl(mesh, mask);
-
-    // Write the result
-    ofstream out("masktable.out");
-    cout << "Writing mask table to file masktable.out \n";
-    for (int ix = 0; ix < mesh.nx; ++ix) {
-        for (int iy = 0; iy < mesh.ny; ++iy) {
-            out << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
-//            cout << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
+    
+    cout << "Generating the processed image \n";
+    
+    // The hitcount array: count the times each pixel is obtained
+    vector<int> hitcount(size, 0);
+    
+    // Run the prefiltering for every ix, iy and fill the hitcount
+    for (int ix=0; ix < width; ix++)
+        for (int iy=0; iy < height; iy++) {
+            int ind1 = ix*height + iy;
+            int ind2 = maskTbl[ind1];
+            hitcount[ind2]++; // Increase hit count for this index
         }
-        out << endl;
-//        cout << endl;
+    
+    
+    // Generate the processed RGB image from the hitcount
+    
+    CImg<unsigned char> procImage(width, height, 1, 3);
+    for (int ix=0; ix < width; ix++)
+        for (int iy=0; iy < height; iy++) {
+            int count = hitcount[ix*height + iy];
+            
+            if (count > 1) {
+                // Red
+                procImage(ix, iy, 0, 0) = 0xff;
+            } else if (count == 1) {
+                // White
+                procImage(ix, iy, 0, 0) = 0xff;
+                procImage(ix, iy, 0, 1) = 0xff;
+                procImage(ix, iy, 0, 2) = 0xff;
+            }
+        }
+        
+    cout << "Saving processed image to processed.png " << endl;
+    
+    procImage.save_png("processed.png");
+    
+    cout << "Finished ..." << endl;
+    
+
+    CImgDisplay mainWin(image, "Click a point");
+    CImgDisplay procWin(procImage, "Processed image");
+    
+    
+
+    // The game loop
+    while (!mainWin.is_closed() &&  !procWin.is_closed()) {
+        mainWin.wait();
+        if (mainWin.button()) {
+            const int x = mainWin.mouse_x();
+            const int y = mainWin.mouse_y();
+
+            if (x>=0 && y>=0) {
+//                image(x, y, 0, 0) ^= 0xff;
+//                mainWin.display(image);
+                cout << "pixel(0) = " << (int)image(x, y, 0, 0) << endl;
+            }
+
+            cout << "x = " << x << ", y = " << y << endl;
+
+        }
     }
-    out.close();
 
     return 0;
 }

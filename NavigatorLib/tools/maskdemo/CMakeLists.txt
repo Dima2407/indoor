@@ -3,7 +3,10 @@ project(maskdemo)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(../masklib)
+include_directories(
+        ../masklib
+        ../CImg
+)
 
 
 # Does not need Navigator
@@ -13,4 +16,6 @@ set(SOURCE_FILES
         )
 
 add_executable(maskdemo ${SOURCE_FILES})
-target_link_libraries(maskdemo masklib)
+
+# I guess for Linux you'll have to replace gdi32 with something
+target_link_libraries(maskdemo masklib gdi32)

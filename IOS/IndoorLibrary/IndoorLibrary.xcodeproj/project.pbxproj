@@ -23,13 +23,11 @@
 		06650E231E82B51F00E7D811 /* PrefixHeader.pch in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650DF31E814D3600E7D811 /* PrefixHeader.pch */; };
 		06650E241E82BEB500E7D811 /* IndoorLocationListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650DF41E815AEC00E7D811 /* IndoorLocationListener.h */; };
 		06650E2A1E82CC1100E7D811 /* IndoorError.m in Sources */ = {isa = PBXBuildFile; fileRef = 06650E291E82CC1100E7D811 /* IndoorError.m */; };
-		06650E2C1E82EC4A00E7D811 /* ErrorTransfer.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */; };
 		06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E281E82CC1100E7D811 /* IndoorError.h */; };
 		06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E271E82C2CA00E7D811 /* ErrorListener.h */; };
 		06ED897E1E6D79F50011C01C /* IndoorLocationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */; };
 		06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */; };
 		06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6751E66F661003EC3FA /* MeasurementEvent.h */; };
-		06FBD1861E7AEBDE00D8902A /* MeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6801E66F661003EC3FA /* MeasurementProvider.h */; };
 		06FBD1871E7AEBDE00D8902A /* BluetoothMeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B67B1E66F661003EC3FA /* BluetoothMeasurementProvider.h */; };
 		06FBD1881E7AEBDE00D8902A /* GPSMeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B67E1E66F661003EC3FA /* GPSMeasurementProvider.h */; };
 		06FBD1891E7AEBDE00D8902A /* SensorMeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6831E66F661003EC3FA /* SensorMeasurementProvider.h */; };
@@ -40,7 +38,6 @@
 		06FBD4061E7F1F2B00D8902A /* BluetoothBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FBD4041E7F1F2B00D8902A /* BluetoothBridge.cpp */; };
 		06FBD4101E7F34A700D8902A /* BeaconConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FBD40B1E7F34A700D8902A /* BeaconConfig.m */; };
 		06FBD4111E7F34A700D8902A /* BluethoothProviderConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FBD40D1E7F34A700D8902A /* BluethoothProviderConfiguration.m */; };
-		06FBD4121E7FEF2600D8902A /* BluetoothBridge.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06FBD4051E7F1F2B00D8902A /* BluetoothBridge.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,14 +49,11 @@
 			files = (
 				06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */,
 				06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */,
-				06650E2C1E82EC4A00E7D811 /* ErrorTransfer.h in Copy Files */,
 				06650E241E82BEB500E7D811 /* IndoorLocationListener.h in Copy Files */,
 				06650E231E82B51F00E7D811 /* PrefixHeader.pch in Copy Files */,
 				06650E221E828D5D00E7D811 /* TConfig.h in Copy Files */,
 				06650E211E828D1300E7D811 /* BeaconConfig.h in Copy Files */,
-				06FBD4121E7FEF2600D8902A /* BluetoothBridge.h in Copy Files */,
 				06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */,
-				06FBD1861E7AEBDE00D8902A /* MeasurementProvider.h in Copy Files */,
 				06FBD1871E7AEBDE00D8902A /* BluetoothMeasurementProvider.h in Copy Files */,
 				06FBD1881E7AEBDE00D8902A /* GPSMeasurementProvider.h in Copy Files */,
 				06FBD1891E7AEBDE00D8902A /* SensorMeasurementProvider.h in Copy Files */,

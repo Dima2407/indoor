@@ -9,10 +9,10 @@
 #import "PrefixHeader.pch"
 
 
-@interface BluetoothMeasurementProvider : MeasurementProvider<CLLocationManagerDelegate>
+@interface BluetoothMeasurementProvider : MeasurementProvider
 
 
 
--(instancetype)initWithTransfer: (IosMeasurementTransfer*) bleTransfer;
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) bleTransfer andUUIDs:(NSMutableArray*)uuids;
 
 @end

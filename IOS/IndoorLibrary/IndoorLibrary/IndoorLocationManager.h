@@ -11,18 +11,54 @@
 
 @interface IndoorLocationManager : NSObject
 
-@property (nonatomic, strong) NSMutableSet<MeasurementProvider*> *providers;
-@property (nonatomic, strong) IosMeasurementTransfer *transfer;
+
+/*! @brief обьект  реализующий протокол IndoorLocationListener */
 @property (nonatomic, strong) id<IndoorLocationListener> locationListener;
+/*! @brief обьект  реализующий протокол ErrorListener*/
 @property (nonatomic, strong) id<ErrorListener> errorListener;
-@property (nonatomic, assign) BOOL logger;
+/*! @brief флаг отвечающий за запись логов */
+@property (nonatomic, assign) BOOL isStartLog;
+/*! @brief This property устанавливает частоту доставки координат */
 @property (nonatomic, strong) NSTimer *timer;
 
+/*!
+ * @discussion добавляет карту биконов
+ * @warning биконы добавляются по одному
+ * @param config BeaconConfig используется для создания карты биконов 
 
--(void)addProvider: (MeasurementProviderType) type;
--(void)removeProvider: (MeasurementProviderType) type;
--(void)start;
--(void)stop;
+ */
 -(void)setBeaconConfig:(BeaconConfig*) config;
--(NSMutableArray*)logging;
+/*!
+ * @discussion добавляет UUID биконов
+ * @warning вы можете  добавить не больше 3 уникальных UUID
+ * @param uuid строковое значение UUID
+ */
+-(void)addUUID:(NSString*)uuid;
+/*!
+ * @discussion возвращает логи входящих данных от биконов
+ * @warning логи возвращаются только если перед вызовом метода старт параметр isStartLog установлен как YES
+ * @return возвращает NSMutableArray содержащих NSDictionary в качестве значений которому указаны timestamp, minor and rssi
+ */
+-(NSMutableArray*)getLog;
+/*!
+ * @discussion добавляет провайдер к колекции провайдеров.
+ * @param type  MeasurementProviderType  тип провайдера
+ */
+-(void)addProvider: (MeasurementProviderType) type;
+/*!
+ * @discussion удаляет провайдер к колекции провайдеров.
+ * @param type  MeasurementProviderType  тип провайдера
+ */
+-(void)removeProvider: (MeasurementProviderType) type;
+/*!
+ * @discussion стартует обработку данных
+
+ */
+-(void)start;
+/*!
+ * @discussion останавливает обработку данных
+ */
+-(void)stop;
+
+
 @end

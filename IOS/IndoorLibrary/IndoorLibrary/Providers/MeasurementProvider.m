@@ -10,7 +10,7 @@
 
 
 @interface MeasurementProvider()
-
+@property (nonatomic, strong) IosMeasurementTransfer *transfer;
 
 
 

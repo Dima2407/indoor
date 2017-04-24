@@ -40,6 +40,12 @@ namespace Navigator {
                 /// Initial/default damp
                 double initDamp = 2.2;
 
+
+                // ===== This is used to set a common z-coordinate to all input points
+
+                bool useCommonZ = false;
+                double commonZ = 1.5;
+
                 // ===== This should not be normally used !!!! ====
                 // This is for Alexey Roienko so-called "gradient decent" and such
 

@@ -59,11 +59,7 @@ public class AlgoManager {
             for (BeaconConfigData configData : configDatas) {
                 BeaconModel beaconModel = configData.getBeaconModel();
 
-                float[] beaconPosition = new float[]{beaconModel.getPosition().x * pixelSize, beaconModel
-                        .getPosition().y * pixelSize};
-
                 Native.addCalibrationData(
-                        beaconPosition,
                         asDoubleArray(configData.getRssiData()),
                         asLongArray(configData.getTimestampsData()),
                         beaconModel.getMacAddress(),
@@ -151,7 +147,7 @@ public class AlgoManager {
                     beacon.getMacAddress(),
                     (int) beacon.getMajor(),
                     (int) beacon.getMinor(),
-                    new float[]{beacon.getPosition().x * pixelSize, beacon.getPosition().y * pixelSize});
+                    new float[]{beacon.getPosition().x * pixelSize, beacon.getPosition().y * pixelSize, beacon.getPositionZ()});
         }
 
         return calibrateMap(calibrationDatas, calibrationResults, beaconModels, floorModel);

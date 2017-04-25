@@ -185,6 +185,10 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
         this.minor = minor;
     }
 
+    public float getPositionZ() {
+        return positionZ;
+    }
+
     @Override
     public String toString() {
         return "BeaconModel{" +

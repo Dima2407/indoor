@@ -22,7 +22,8 @@ void addCalibrationBeacon(JNIEnv* _env, jclass* _obj, jstring _hash, jint _major
     }
 
     beacons->push_back(
-            {{hash, _major, _minor}, nan(""), nan(""), {beaconPosition[0], beaconPosition[1], 0}});
+            {{hash, _major, _minor}, nan(""), nan(""),
+             {beaconPosition[0], beaconPosition[1], beaconPosition[2]}});
 
     _env->ReleaseFloatArrayElements(_beaconPosition, beaconPosition, 0);
     _env->ReleaseStringUTFChars(_hash, hash);
@@ -61,15 +62,14 @@ void addCalibrationPosition(JNIEnv* _env, jclass* _obj, jfloatArray calibrationP
     }
     delete calibrationPoint;
     calibrationPoint = new CalibrationPoint();
-    calibrationPoint->position = {position[0], position[1], 0};
+    calibrationPoint->position = {position[0], position[1], 1.5};
 
     _env->ReleaseFloatArrayElements(calibrationPosition, position, 0);
 }
 
 void
-addCalibrationData(JNIEnv* _env, jclass* _obj, jfloatArray _beaconPosition, jdoubleArray _rssi,
+addCalibrationData(JNIEnv* _env, jclass* _obj, jdoubleArray _rssi,
                    jlongArray _timestamps, jstring _hash, jint _major, jint _minor) {
-    float* beaconPosition = _env->GetFloatArrayElements(_beaconPosition, NULL);
     double* rssi = _env->GetDoubleArrayElements(_rssi, NULL);
     long long* timestamps = _env->GetLongArrayElements(_timestamps, NULL);
     int rssiElementsCount = _env->GetArrayLength(_rssi);
@@ -80,7 +80,6 @@ addCalibrationData(JNIEnv* _env, jclass* _obj, jfloatArray _beaconPosition, jdou
                 .push_back({(double) timestamps[i], {hash, _major, _minor}, rssi[i]});
     }
 
-    _env->ReleaseFloatArrayElements(_beaconPosition, beaconPosition, 0);
     _env->ReleaseDoubleArrayElements(_rssi, rssi, 0);
     _env->ReleaseLongArrayElements(_timestamps, timestamps, 0);
     _env->ReleaseStringUTFChars(_hash, hash);
@@ -99,16 +98,6 @@ void calibrate(JNIEnv* env, jclass* obj) {
 
     result = calibrator.calibrate(*calibrationPoints, {}, false);
     previousCalibrationResults = calibrator.getCalTables();
-//
-//    for (auto it = values.begin(); it != values.end(); it++) {
-//        auto foundResult = previousCalibrationResults.find(it->first);
-//        if (foundResult == previousCalibrationResults.end()) {
-//            previousCalibrationResults[it->first] = it->second;
-//            continue;
-//        }
-//
-//        foundResult->second.insert(foundResult->second.end(), it->second.begin(), it->second.end());
-//    }
 }
 
 jdoubleArray
@@ -180,13 +169,13 @@ int registerNativeMethods(JNIEnv* env, const char* className, JNINativeMethod* g
 }
 
 static JNINativeMethod gMethods[] = {
-        {"addCalibrationBeacon",       "(Ljava/lang/String;II[F)V",     (void*) addCalibrationBeacon},
-        {"addCalibrationData",         "([F[D[JLjava/lang/String;II)V", (void*) addCalibrationData},
-        {"calibrate",                  "()V",                           (void*) calibrate},
-        {"getCalibrationResults",      "(Ljava/lang/String;II[D)[D",    (void*) getCalibrationResults},
-        {"clearCalibrationBeacons",    "()V",                           (void*) clearCalibrationBeacons},
-        {"addPreviousCalibrationData", "([F[FLjava/lang/String;II)V",   (void*) addPreviousCalibrationData},
-        {"addCalibrationPosition",     "([F)V",                         (void*) addCalibrationPosition}
+        {"addCalibrationBeacon",       "(Ljava/lang/String;II[F)V",   (void*) addCalibrationBeacon},
+        {"addCalibrationData",         "([D[JLjava/lang/String;II)V", (void*) addCalibrationData},
+        {"calibrate",                  "()V",                         (void*) calibrate},
+        {"getCalibrationResults",      "(Ljava/lang/String;II[D)[D",  (void*) getCalibrationResults},
+        {"clearCalibrationBeacons",    "()V",                         (void*) clearCalibrationBeacons},
+        {"addPreviousCalibrationData", "([F[FLjava/lang/String;II)V", (void*) addPreviousCalibrationData},
+        {"addCalibrationPosition",     "([F)V",                       (void*) addCalibrationPosition}
 };
 
 static const char* const kClassPathName = "com/kit/indornavigation/Native";

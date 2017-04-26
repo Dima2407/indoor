@@ -1,12 +1,12 @@
-## `maskdemo` : Generate mesh and mask table from a map image file (like `map.png`)
+## `maskgen2` : Generate mesh and mask table from a map image file (like `map.png`)
 
 # Usage
 
-maskdemo <map_file> <pixel_size> <square_size>
+maskgen2 <map_file> <pixel_size> <square_size>
 
 Where:
 
-`map_file` = Igage file with map, e.g. `map.png`
+`map_file` = Igage PNG file with map, e.g. `map.png`
 Black pixels in the map are treated as obstacles.
 
 `pixel_size` (double) =  map pixels size in meters, e.g. 0.0075
@@ -17,7 +17,6 @@ and `masktable.out` for the new dimension. Watch out for small features disappea
 
 See `maskgen` doc for general info on mesh, mask and mask table.
 
-This program requires libpng, it also
-needs to link gdi32 or X11 library respectively (you'll need to change CMakeLists.txt for Linux).
+This program requires libpng.
 
-This is not final production utility, that will be maskgen2, the truncated version of this.
+This is the final production utility.

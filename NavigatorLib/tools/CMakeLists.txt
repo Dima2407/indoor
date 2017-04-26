@@ -11,3 +11,5 @@ add_subdirectory(maskgen)
 # Note: maskdemo culd be tricky with the CImg library
 # Comment this if you run into errors you cannot fix
 add_subdirectory(maskdemo)
+
+add_subdirectory(maskgen2)

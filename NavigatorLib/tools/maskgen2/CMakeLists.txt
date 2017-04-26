@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(maskdemo)
+project(maskgen2)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -15,8 +15,7 @@ set(SOURCE_FILES
         main.cpp
         )
 
-add_executable(maskdemo ${SOURCE_FILES})
+add_executable(maskgen2 ${SOURCE_FILES})
 
 # Requires libpng at present
-# I guess for Linux you'll have to replace gdi32 with something
-target_link_libraries(maskdemo masklib gdi32 png)
+target_link_libraries(maskgen2 masklib png)

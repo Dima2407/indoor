@@ -32,7 +32,9 @@ set(SOURCE_FILES
         Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h
         Beacons/Calibrate/BeaconCalibratorTest.cpp Beacons/Calibrate/BeaconCalibratorTest.h
         #
-        Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h)
+        Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h
+        Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
+        )
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

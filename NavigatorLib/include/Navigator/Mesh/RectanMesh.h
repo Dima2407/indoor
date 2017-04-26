@@ -7,10 +7,11 @@
 #include <vector>
 
 #include "Navigator/Math/Position3D.h"
+#include "./MeshData.h"
 
 namespace Navigator {
     namespace Mesh {
-        /** @brief A class to operate rectangular mesh
+        /** @brief A class to operate rectangular mesh defined by a MeshData object
          *
          * @startuml
          * class RectanMesh{
@@ -24,11 +25,11 @@ namespace Navigator {
          * @enduml
          */
         class RectanMesh {
-        public: // ======= Constructor
+        public: // ======= Constructors
             RectanMesh(const int nx, const int ny, const double dx, const double dy, const double x0, const double y0)
-                    : nx(nx), ny(ny),
-                      dx(dx), dy(dy),
-                      x0(x0), y0(y0) {}
+                    : mesh(nx, ny, dx, dy, x0, y0) {}
+
+           RectanMesh(const std::string &fileName) : mesh(fileName) {}
 
         public: // ======= Methods
             /** @brief Process position using a discrete mesh and a mask table
@@ -57,20 +58,17 @@ namespace Navigator {
                 RectanMesh::maskTable = maskTable;
             }
 
+            const MeshData &getMesh() const {
+                return mesh;
+            }
+
+            int size() const {
+                return mesh.nx * mesh.ny;
+            }
         private: // ======= Parameters
 
-            /// Mesh size : X
-            const int nx;
-            /// Mesh size : Y
-            const int ny;
-            /// Mesh step : X
-            const double dx;
-            /// Mesh step : Y
-            const double dy;
-            /// Mesh origin: X
-            const double x0;
-            /// Mesh origin: Y
-            const double y0;
+            MeshData mesh; // Mesh parameters
+
 
         private: // ======= Mask table data
 

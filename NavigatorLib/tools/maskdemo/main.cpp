@@ -16,7 +16,6 @@
 #include "MaskData.h"
 #include "computeMaskTbl.h"
 
-#include "Rescaler.h"
 
 static void showUsage(){
                           
@@ -63,17 +62,26 @@ static void readImage(const char *mapFileName,
     cout << "Creating mask from the image ..." << endl;
     
     // Create the rescaler
-    Rescaler res(square/pixel, inWidth, inHeight);
+    // Rescaler res(square/pixel, inWidth, inHeight);
+    
+    // Create mesh for pixels
+    MeshData pixelMesh = MeshData(inWidth, inHeight, pixel, pixel, 0.0, 0.0);
+    
+    // Rescaling is done as (nxNew -1)* square = (inWidth - 1) * pixel
+    const int nxNew = round(1.0 + pixel*(inWidth-1.0)/square);
+    const int nyNew = round(1.0 + pixel*(inHeight-1.0)/square);
+    
     
     // Create mesh and mask for the rescaled size
-    mesh = MeshData(res.nx, res.ny, square, square, 0.0, 0.0);
-    mask = MaskData(res.nx * res.ny); 
+    mesh = MeshData(nxNew, nyNew, square, square, 0.0, 0.0);
+    mask = MaskData(mesh.nx * mesh.ny); 
     
     // Write the mesh
     ofstream mout("mesh.in");
     mout << mesh.nx << " " << mesh.ny << " ";
     mout << mesh.dx << " " << mesh.dy << " ";
-    mout << mesh.x0 << " " << mesh.y0 << "\n";
+    mout << mesh.x0 << " " << mesh.y0 << "    ";
+    mout << "   # nx ny dx dy x0 y0 \n";
     mout.close();
     
     
@@ -82,9 +90,9 @@ static void readImage(const char *mapFileName,
         for (int iy=0; iy < mesh.ny; iy++) {
             int ind = ix*mesh.ny + iy;
             
-            // Rescaled x, y
-            int x1 = res.scaleX(ix);
-            int y1 = res.scaleY(iy);
+            // x, y  rescaled to pixels
+            int x1 = pixelMesh.x2ix(mesh.ix2x(ix));
+            int y1 = pixelMesh.y2iy(mesh.iy2y(iy));
             
             // Check for blackness
             unsigned char tmp = 0;
@@ -140,12 +148,16 @@ int main(int argc, char *argv[]) {
     // Write the mask table
     ofstream out("masktable.out");
     cout << "Writing mask table to file masktable.out \n";
-    for (int ix = 0; ix < width; ++ix) {
+    
+    /* for (int ix = 0; ix < width; ++ix) {
         for (int iy = 0; iy < height; ++iy) {
             out << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
         }
         out << endl;
-    }
+    } */
+    for (int i = 0; i < width*height; ++i)
+        out << setfill(' ') << setw(3) << maskTbl[i] << "\n";
+    
     out.close();
     
     cout << "Generating the processed image \n";

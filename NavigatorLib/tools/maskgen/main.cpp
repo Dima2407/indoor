@@ -36,14 +36,17 @@ int main(){
     // Write the result
     ofstream out("masktable.out");
     cout << "Writing mask table to file masktable.out \n";
-    for (int ix = 0; ix < mesh.nx; ++ix) {
+
+    /*for (int ix = 0; ix < mesh.nx; ++ix) {
         for (int iy = 0; iy < mesh.ny; ++iy) {
             out << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
-//            cout << setfill(' ') << setw(4) << maskTbl[mesh.index(ix, iy)] << " ";
         }
         out << endl;
-//        cout << endl;
-    }
+    }*/
+
+    for (int i = 0; i < size; ++i)
+            out << maskTbl[i] << "\n";
+
     out.close();
 
     return 0;

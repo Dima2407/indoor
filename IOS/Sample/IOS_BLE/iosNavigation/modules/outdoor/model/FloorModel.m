@@ -27,7 +27,7 @@
         self.inpointIdList = [params objectForKey:@"inpointIdList"];
         self.pixelSize = [[params objectForKey:@"pixelSize"] floatValue];
         self.height = [[params objectForKey:@"height"] floatValue];
-        self.wight = [[params objectForKey:@"wight"] floatValue];
+        self.widht = [[params objectForKey:@"width"] floatValue];
         self.number = [[params objectForKey:@"number"] integerValue];
         self.beacons = [self _getBeaconsFromJson:[params objectForKey:@"beaconList"]];
      

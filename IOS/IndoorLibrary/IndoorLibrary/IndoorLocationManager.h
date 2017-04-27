@@ -12,51 +12,50 @@
 @interface IndoorLocationManager : NSObject
 
 
-/*! @brief обьект  реализующий протокол IndoorLocationListener */
+/*! @brief Object that implements the protocol  IndoorLocationListener */
 @property (nonatomic, strong) id<IndoorLocationListener> locationListener;
-/*! @brief обьект  реализующий протокол ErrorListener*/
+/*! @brief object that implements the protocol ErrorListener*/
 @property (nonatomic, strong) id<ErrorListener> errorListener;
-/*! @brief флаг отвечающий за запись логов */
+/*! @brief Flag responsible for logging */
 @property (nonatomic, assign) BOOL isStartLog;
-/*! @brief This property устанавливает частоту доставки координат */
+/*! @brief This property sets frequency getting coordinates */
 @property (nonatomic, strong) NSTimer *timer;
 
 /*!
- * @discussion добавляет карту биконов
- * @warning биконы добавляются по одному
- * @param config BeaconConfig используется для создания карты биконов 
+ * @discussion Adds a card of bicons
+ * @param config Specifies the parameters of one beacon by an object of type BeaconConfig
 
  */
 -(void)setBeaconConfig:(BeaconConfig*) config;
 /*!
- * @discussion добавляет UUID биконов
- * @warning вы можете  добавить не больше 3 уникальных UUID
- * @param uuid строковое значение UUID
+ * @discussion Adds UUID bikons
+ * @warning It is better to use one UUID for 1 building 
+ * @param uuid UUID string value
  */
 -(void)addUUID:(NSString*)uuid;
 /*!
- * @discussion возвращает логи входящих данных от биконов
- * @warning логи возвращаются только если перед вызовом метода старт параметр isStartLog установлен как YES
- * @return возвращает NSMutableArray содержащих NSDictionary в качестве значений которому указаны timestamp, minor and rssi
+ * @discussion Returns incoming data logs from beacons
+ * @warning Work only if before the method is started, the isStartLog parameter is set to YES
+ * @return NSMutableArray containing NSDictionary as the values indicated by timestamp, minor and rssi
  */
 -(NSMutableArray*)getLog;
 /*!
- * @discussion добавляет провайдер к колекции провайдеров.
- * @param type  MeasurementProviderType  тип провайдера
+ * @discussion Adds a provider to provider's collection.
+ * @param type  MeasurementProviderType  type of provider
  */
 -(void)addProvider: (MeasurementProviderType) type;
 /*!
- * @discussion удаляет провайдер к колекции провайдеров.
- * @param type  MeasurementProviderType  тип провайдера
+ * @discussion Removes a provider from provider's collection.
+ * @param type  MeasurementProviderType type of provider
  */
 -(void)removeProvider: (MeasurementProviderType) type;
 /*!
- * @discussion стартует обработку данных
+ * @discussion Start data processing
 
  */
 -(void)start;
 /*!
- * @discussion останавливает обработку данных
+ * @discussion Stops data processing
  */
 -(void)stop;
 

@@ -21,6 +21,9 @@
         float x = [[params objectForKey:@"x"] floatValue];
         float y = [[params objectForKey:@"y"] floatValue];
         self.poiCoordinate = CGPointMake(x, y);
+        float xCenter = [[params objectForKey:@"x"] floatValue] + 12;
+        float yCenter = [[params objectForKey:@"y"] floatValue] + 20;
+        self.poiCenterCoordinate = CGPointMake(xCenter, yCenter);
     }
     return self;
 }

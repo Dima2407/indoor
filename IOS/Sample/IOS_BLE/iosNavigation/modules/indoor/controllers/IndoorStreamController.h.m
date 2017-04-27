@@ -46,18 +46,13 @@
      self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     self.routeInfoView.hidden = YES;
     self.clearRouteButton.enabled = NO;
+    self.routeInfoMenu.hidden = YES;
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
-    [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
+   // [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
     [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
     [self getFloorMapData:self.floor.mapPath fileType:@"map" mapModel:self.floor completionBlock:^(FloorModel *map) {
         [self setMapImage:map.mapImage];
     }];
-//    [self getFloorMapData:self.map.mapID floor:@"5" fileType:@"map" mapModel:self.floor mapModel:self.map completionBlock:^(FloorModel *map) {
-//        [self setMapImage:map.mapImage];
-//    }];
-//    [self getFloorMapData:self.map.mapID floor:@"5" fileType:@"graph" mapModel:self.floor mapModel:self.map completionBlock:^(FloorModel *map) {
-//        [self setMapImage:map.mapImage];
-//    }];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
@@ -150,7 +145,8 @@
     self.isRoute = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        self.routeInfoView.hidden = NO;
+        self.routeInfoView.hidden = YES;
+        self.routeInfoMenu.hidden = YES;
         RoutePoint *point = [self.maneuversArray firstObject];
         self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
                                             distance:point.tempDistance
@@ -198,6 +194,7 @@
     
     self.isRoute = NO;
     self.routeInfoView.hidden = YES;
+    self.routeInfoMenu.hidden = YES;
     self.tapPoint = CGPointMake(-1, -1);
     self.clearRouteButton.enabled = NO;
     self.drawView.pointsArray = nil;
@@ -208,8 +205,8 @@
 -(void)currentLocation:(CGPoint)location{
     
     CGPoint p;
-    p.x = self.mapView.image.size.width / 11 *location.x;
-    p.y = self.mapView.image.size.height / 7 *location.y;
+    p.x = self.mapView.image.size.width / self.floor.widht *location.x;
+    p.y = self.mapView.image.size.height / self.floor.height *location.y;
     
     self.startPoint = p;
     

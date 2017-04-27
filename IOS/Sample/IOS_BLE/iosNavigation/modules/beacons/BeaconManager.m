@@ -85,6 +85,7 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     else{
 
         NSLog(@"%f  %f",x,y);
+      //  [self.delegate currentLocation:CGPointMake(1, 1)];
     [self.delegate currentLocation:CGPointMake(x, y)];
 
    }

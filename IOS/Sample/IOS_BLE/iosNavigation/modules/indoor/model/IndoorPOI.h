@@ -15,6 +15,8 @@
 @property (strong, nonatomic) NSString *poiName;
 @property (strong, nonatomic) NSString *poiDescription;
 @property (assign, nonatomic) CGPoint  poiCoordinate;
+@property (assign, nonatomic) CGPoint  poiCenterCoordinate;
+
 
 - (instancetype)initWithParams:(NSDictionary*)params;
 

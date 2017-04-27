@@ -123,14 +123,8 @@
 
 -(void)addUUID:(NSString*)uuid{
     
-    if (self.beaconsUUIDs.count < 3)
-    {
+    
         [self.beaconsUUIDs addObject:uuid];
-        
-    }
-    else{
-        NSLog(@"You can't add more than 3 uuids");
-    }
     
     
 }

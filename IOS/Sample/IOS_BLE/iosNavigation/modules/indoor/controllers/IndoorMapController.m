@@ -37,6 +37,7 @@
     self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     self.routeInfoView.hidden = YES;
     self.clearRouteButton.enabled = NO;
+    self.routeInfoMenu.hidden = YES;
     self.startPoint = CGPointZero;
     self.viewOfPoiArray = [NSMutableArray array];
     self.poisDictionary = [NSMutableDictionary dictionary];
@@ -54,11 +55,6 @@
        self.graph = [[Graph alloc]initWithData:map.mapGraph];
     }];
 
-  
-    
-//    [self getMapData:self.map.mapID floor:@"1" fileType:@"graph" mapModel:self.map completionBlock:^(MapModel *map) {
-//        self.graph = [[Graph alloc]initWithData:map.mapGraph];
-//    }];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
 }
@@ -110,21 +106,29 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        self.routeInfoView.hidden = NO;
-        
-        RoutePoint *point = [self.maneuversArray firstObject];
-        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
-                                            distance:point.tempDistance
-                                            duration:point.tempDuration
-                                                step:point.stepInstruction
-                                            maneuver:[UIImage maneuverImage:point.maneuver]];
-        [self setAllDistanceAndTime:self.maneuversArray];
-        });
-    
-    NSArray *points = [self convertPoint:pointsList convertType:ConvertTypePoint image:self.mapView.image view:self.drawView];
-    self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:startPoint];
-    self.tapPoint = endPoint;
-    self.clearRouteButton.enabled = YES;
+        self.routeInfoView.hidden = YES;
+        self.routeInfoMenu.hidden = YES;
+            self.clearRouteButton.enabled = YES;
+//        RoutePoint *point = [self.maneuversArray firstObject];
+//        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
+//                                            distance:point.tempDistance
+//                                            duration:point.tempDuration
+//                                                step:point.stepInstruction
+//                                            maneuver:[UIImage maneuverImage:point.maneuver]];
+//        [self setAllDistanceAndTime:self.maneuversArray];
+  });
+//
+//    NSArray *points = [self convertPoint:pointsList convertType:ConvertTypePoint image:self.mapView.image view:self.drawView];
+//    self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:startPoint];
+//    self.tapPoint = endPoint;
+   // CGPoint point = [self tapDetection:gesture onView:self.drawView];
+    CGPoint start = {self.drawView.frame.origin.x,self.drawView.frame.origin.y };
+    CGPoint destination  = endPoint;
+
+    self.drawView.view = self.drawView;
+    self.drawView.img = self.mapView;
+    self.drawView.startPoint = start;
+    self.drawView.destinationPoint = destination;
     [self.drawView setNeedsDisplay];
 }
 #pragma mark - Set Distance and Time -
@@ -151,7 +155,6 @@
         self.mapView.image = [UIImage imageWithData:imgData];
         [self callBeaconManager];
         self.drawView = [self createDrawViewWithStartPoint:CGPointZero withSizeView:self.mapView];
-//        [[SessionManager sharedManager] getIndoorPoiForMapID:self.map.mapID complitionBlock:^(NSDictionary *poiDictionary) {
              [[SessionManager sharedManager] getIndoorPoiForFloorID:[NSString stringWithFormat:@"%zd", self.floor.idFloor] complitionBlock:^(NSDictionary *poiDictionary) {
             self.poisDictionary = poiDictionary;
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -168,18 +171,23 @@
 -(void) didTap:(UITapGestureRecognizer*)gesture{
     
     CGPoint point = [self tapDetection:gesture onView:self.drawView];
+    CGPoint start = {self.drawView.frame.origin.x,self.drawView.frame.origin.y };
+    CGPoint destination  =  [gesture locationInView:self.drawView];
     
     if(point.x > 0 && point.y > 0){
-    CGPoint convertPoint = convertPointToPixel(point, self.mapView.image.size, self.drawView.frame.size);
-    [self drawRouteWithStartPoint:self.startPoint endPoint:convertPoint];
+        self.clearRouteButton.enabled = YES;
+        self.drawView.isDrawRoute = YES;
+        self.drawView.view = self.drawView;
+        self.drawView.img = self.mapView;
+        self.drawView.startPoint = start;
+        self.drawView.destinationPoint = destination;
+        [self.drawView setNeedsDisplay];
+
     }
-//.................Draw graph on map....................//
-    self.drawView.view = self.drawView;
-    self.drawView.img = self.mapView;
-    self.drawView.vertexArray = self.graph.vertexes;
-    self.drawView.edgesArray = self.graph.edges;
-    [self.drawView setNeedsDisplay];
-//.....................................................//
+    else{
+    
+    }
+
 }
 #pragma mark - Actions -
 -(IBAction) streamButtonAction:(id)sender{
@@ -191,6 +199,7 @@
     vc.tapPoint = self.tapPoint;
     }
     self.routeInfoView.hidden = YES;
+    self.routeInfoMenu.hidden = YES;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     self.tapPoint = CGPointZero;
@@ -219,7 +228,7 @@
             IndoorPOI *poi = [self.poisDictionary objectForKey:[NSString stringWithFormat:@"%ld",(long)poiView.tag]];
             
             [self createRouteAlertWithTitle:poi.poiName text:poi.poiDescription complitionBlock:^{
-                [self drawRouteWithStartPoint:self.startPoint endPoint:poi.poiCoordinate];
+                [self drawRouteWithStartPoint:self.startPoint endPoint:poi.poiCenterCoordinate];
             }];
         }
     }
@@ -227,6 +236,7 @@
 
 -(IBAction) clearRouteAction:(id)sender{
     [self clearRouteAlertWithComplitionBlock:^{
+        self.drawView.isDrawRoute = NO;
         [self clearMapInfoContent];
     }];
 }
@@ -234,8 +244,24 @@
 -(void)currentLocation:(CGPoint)location{
     
     CGPoint p;
-    p.x = self.mapView.image.size.width / 11 *location.x;
-    p.y = self.mapView.image.size.height / 7 *location.y;
+    if (self.floor.widht>0)
+    {
+        p.x = self.mapView.image.size.width / self.floor.widht *location.x;
+    }
+    else{
+        NSLog(@"Invalid floor width");
+           p.x = self.mapView.image.size.width *location.x;
+    }
+    if (self.floor.height)
+    {
+        p.y = self.mapView.image.size.height / self.floor.height *location.y;
+    }
+    else{
+        
+         NSLog(@"Invalid floor heigth");
+         p.y = self.mapView.image.size.height *location.y;
+    }
+
 
     self.startPoint = p;
     
@@ -259,7 +285,8 @@
 -(void) clearMapInfoContent{
 
     self.isRoute = NO;
-     self.routeInfoView.hidden = YES;
+    self.routeInfoView.hidden = YES;
+    self.routeInfoMenu.hidden = YES;
     self.tapPoint = CGPointMake(-1, -1);
     self.clearRouteButton.enabled = NO;
     self.drawView.pointsArray = nil;

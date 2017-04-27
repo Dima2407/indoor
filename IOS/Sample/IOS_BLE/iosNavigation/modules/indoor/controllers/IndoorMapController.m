@@ -228,6 +228,7 @@
             IndoorPOI *poi = [self.poisDictionary objectForKey:[NSString stringWithFormat:@"%ld",(long)poiView.tag]];
             
             [self createRouteAlertWithTitle:poi.poiName text:poi.poiDescription complitionBlock:^{
+                self.drawView.isDrawRoute = YES;
                 [self drawRouteWithStartPoint:self.startPoint endPoint:poi.poiCenterCoordinate];
             }];
         }

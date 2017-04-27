@@ -52,17 +52,17 @@ namespace Navigator {
 
         public: //======= Methods
             /// Convert int ix to double x
-            double ix2x(int ix) {
+            double ix2x(int ix) const {
                 return x0 + ix * dx;
             }
 
             /// Convert int iy to double y
-            double iy2y(int iy) {
+            double iy2y(int iy) const {
                 return y0 + iy * dy;
             }
 
             /// Convert double x to int ix approximately. Exactly: x0 + i*dx -> i
-            int x2ix(double x) {
+            int x2ix(double x) const {
                 int i = std::round((x - x0) / dx);
 
                 if (i < 0) i = 0;
@@ -71,7 +71,7 @@ namespace Navigator {
             }
 
             /// Convert double y to int iy approximately. Exactly: y0 + i*dy -> i
-            int y2iy(double y) {
+            int y2iy(double y) const {
                 int i = std::round((y - y0) / dy);
 
                 if (i < 0) i = 0;

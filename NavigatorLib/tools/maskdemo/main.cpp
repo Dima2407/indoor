@@ -8,6 +8,7 @@
 #include <string>
 #include <iomanip>
 #include <cstdio>
+#include <memory>
 
 // Disable it if you don't have libpng
 #define cimg_use_png
@@ -18,12 +19,11 @@
 #include "MaskData.h"
 #include "computeMaskTbl.h"
 
+using namespace std;
+using namespace cimg_library;
 
 static void showUsage(){
                           
-    using namespace std;
-    
-    
     cout << "Usage:\n";
     cout << " maskdemo <map_file> <pixel_size> <square_size> \n";
     cout << "\n";
@@ -38,18 +38,17 @@ static void showUsage(){
 }
 //=============================================================================================
 // Read an image file and create mesh and mask
-static void readImage(const char *mapFileName, 
+static shared_ptr<CImg<unsigned char>> readImage(const char *mapFileName, 
                       double pixel,
                       double square,
                       MeshData & mesh,
-                      MaskData & mask) {
-                          
-    using namespace std;
-    using namespace cimg_library;
-    
+                      MaskData & mask,
+                      MeshData & pixelMesh) {
     
     cout << "Reading image file " << mapFileName << endl;
-    CImg<unsigned char> image(mapFileName);
+    //CImg<unsigned char> image(mapFileName);
+    auto imagePtr = make_shared<CImg<unsigned char>>(mapFileName);
+    auto const & image = *imagePtr;
 
     // Image parameters
     int inWidth = image.width();
@@ -63,11 +62,8 @@ static void readImage(const char *mapFileName,
     
     cout << "Creating mask from the image ..." << endl;
     
-    // Create the rescaler
-    // Rescaler res(square/pixel, inWidth, inHeight);
-    
     // Create mesh for pixels
-    MeshData pixelMesh = MeshData(inWidth, inHeight, pixel, pixel, 0.0, 0.0);
+    pixelMesh = MeshData(inWidth, inHeight, pixel, pixel, 0.0, 0.0);
     
     // Rescaling is done as (nxNew -1)* square = (inWidth - 1) * pixel
     const int nxNew = round(1.0 + pixel*(inWidth-1.0)/square);
@@ -113,13 +109,77 @@ static void readImage(const char *mapFileName,
         maout << mask.data[i] << "\n";
     
     maout.close();
+    
+    return imagePtr;
 }
 
 
 //=============================================================================================
+// Create big map : write only, no display 
+void createBigMap(const MeshData & mesh, const vector<int> & maskTbl, const MeshData & pixelMesh, shared_ptr<CImg<unsigned char>> imagePtr){
+    
+    auto const & image = *imagePtr;
+    
+    // Original image dimensions, same for bigmap and pixelMesh
+    int width = image.width();
+    int height = image.height();
+    int size = width*height;
+    int spectrum = image.spectrum();
+    
+    // Create the big map image
+    CImg<unsigned char> bigMap(width, height, 1, 3, 0);
+    
+    // Copy the image into bigMap, bigMap has RGB. Loop over all PIXELS
+    for (int ix=0; ix < width; ++ix)
+        for (int iy=0; iy < height; ++iy) {
+            
+            // Check for blackness
+            unsigned char tmp = 0;
+            // Loop over color channels
+            for (int c=0; c < spectrum; c++)
+                tmp |= image(ix, iy, 0, c);
+            
+            // tmp == 0  if black
+            tmp = tmp ? 255 : 0;
+            
+            // Create the black or white pixel in the RGB big map
+            for (int c=0; c < spectrum; c++)
+                bigMap(ix, iy, 0, c) = tmp;
+        }
+        
+    // Now run every pixel through the mesh
+    for (int ix=0; ix < width; ++ix)
+        for (int iy=0; iy < height; ++iy) {
+            // First, we make find mesh points
+            int xm = mesh.x2ix( pixelMesh.ix2x(ix) );
+            int ym = mesh.y2iy( pixelMesh.iy2y(iy) );
+            
+            // Then the index  = xm*ny + ym  
+            int ind = mesh.index(xm, ym);
+            
+            // Apply the mask table to the index
+            ind = maskTbl[ind];
+            
+            // Convert the index back to xm, ym
+            xm = ind / mesh.ny;
+            ym = ind % mesh.ny;
+            
+            // Now connvert the updated mesh (xm, ym) back to pixels
+            int ix1 = pixelMesh.x2ix( mesh.ix2x(xm) );
+            int iy1 = pixelMesh.y2iy( mesh.iy2y(ym) );
+            
+            // Make the pixel (ix1, iy1) red
+            bigMap(ix1, iy1, 0, 0) = 255;
+            bigMap(ix1, iy1, 0, 1) = 0;
+            bigMap(ix1, iy1, 0, 2) = 0;
+        }    
+    // Write the result
+    remove("bigmap.png");
+    bigMap.save_png("bigmap.png");
+    
+}
+//=============================================================================================
 int main(int argc, char *argv[]) {
-    using namespace std;
-    using namespace cimg_library;
 
     if (argc != 4) 
         showUsage();
@@ -133,14 +193,16 @@ int main(int argc, char *argv[]) {
         squareSize <= 1.e-4 || squareSize > 100)
          showUsage();
     
-    
     // Create mesh and mask
     MeshData mesh;
 
     MaskData mask;
+    
+    // Pixel mesh
+    MeshData pixelMesh;
 
     // Read image file and create mesh and mask
-    readImage(mapFileName, pixelSize, squareSize, mesh, mask);
+    auto imagePtr = readImage(mapFileName, pixelSize, squareSize, mesh, mask, pixelMesh);
     
     int width = mesh.nx;
     int height = mesh.ny;
@@ -168,6 +230,11 @@ int main(int argc, char *argv[]) {
         out << setfill(' ') << setw(3) << maskTbl[i] << "\n";
     
     out.close();
+    
+    // Create big map : write only, no display 
+    createBigMap(mesh, maskTbl, pixelMesh, imagePtr);
+    
+    // 2 image to display
     
     cout << "Generating the processed image \n";
     

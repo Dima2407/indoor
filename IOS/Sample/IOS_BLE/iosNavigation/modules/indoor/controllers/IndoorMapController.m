@@ -8,6 +8,7 @@
 
 #import "IndoorMapController.h"
 #import "IndoorStreamController.h"
+#import "UIColor+HEX.h"
 
 @interface IndoorMapController () <IndoorStreamControllerDelegate>
 
@@ -18,12 +19,14 @@
 @property (strong, nonatomic) DrawingMapView *drawView;
 @property (strong, nonatomic) NSDictionary *poisDictionary;
 @property (weak, nonatomic) IBOutlet UIView *routeInfoMenu;
+@property (weak, nonatomic) IBOutlet UILabel *duratoinLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *deleteRouteButton;
 @property (strong, nonatomic) NSMutableArray *viewOfPoiArray;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *currentPositionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet RouteInfoView *routeInfoView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearRouteButton;
 @property (strong, nonatomic) NSArray *maneuversArray;
 @property (nonatomic, strong) SessionManager* manager;
 
@@ -36,11 +39,24 @@
  
     self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     self.routeInfoView.hidden = YES;
-    self.clearRouteButton.enabled = NO;
+    [self.routeInfoView.layer setShadowOffset:CGSizeMake(5, 5)];
+    [self.routeInfoView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [self.routeInfoView.layer setShadowOpacity:0.5];
+    self.routeInfoMenu.backgroundColor = [UIColor colorWithHexString:@"#4154B2"];
     self.routeInfoMenu.hidden = YES;
     self.startPoint = CGPointZero;
     self.viewOfPoiArray = [NSMutableArray array];
     self.poisDictionary = [NSMutableDictionary dictionary];
+    _deleteRouteButton.layer.cornerRadius = 22;
+    _deleteRouteButton.backgroundColor = [UIColor colorWithHexString:@"#498DFC"];
+    [_deleteRouteButton.layer setShadowOffset:CGSizeMake(5, 5)];
+    [_deleteRouteButton.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_deleteRouteButton.layer setShadowOpacity:0.5];
+    self.duratoinLabel.text = @"Total duration 0.0 sec";
+    self.duratoinLabel.font = [UIFont systemFontOfSize:20];
+    self.distanceLabel.text = @"Total distance 0.0 m";
+    self.distanceLabel.font = [UIFont systemFontOfSize:14];
+
     [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
     [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
@@ -51,12 +67,10 @@
         else{
         }
     }];
-    [[SessionManager sharedManager] getFloorMap:self.floor.graphPath dataType:@"graph" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
-       self.graph = [[Graph alloc]initWithData:map.mapGraph];
-    }];
+   
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
 }
 #pragma mark - Create POI Markers -
 -(void) createPoiMarkers:(NSDictionary*)poisDic{
@@ -92,7 +106,6 @@
     }
     else{
 
-        self.clearRouteButton.enabled = NO;
         self.drawView.pointsArray = nil;
         [self.drawView setNeedsDisplay];
     }
@@ -108,7 +121,6 @@
         
         self.routeInfoView.hidden = YES;
         self.routeInfoMenu.hidden = YES;
-            self.clearRouteButton.enabled = YES;
 //        RoutePoint *point = [self.maneuversArray firstObject];
 //        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
 //                                            distance:point.tempDistance
@@ -175,7 +187,8 @@
     CGPoint destination  =  [gesture locationInView:self.drawView];
     
     if(point.x > 0 && point.y > 0){
-        self.clearRouteButton.enabled = YES;
+        self.routeInfoView.hidden = NO;
+        self.routeInfoMenu.hidden = NO;
         self.drawView.isDrawRoute = YES;
         self.drawView.view = self.drawView;
         self.drawView.img = self.mapView;
@@ -198,8 +211,6 @@
     if(self.tapPoint.x > 0 && self.tapPoint.y > 0){
     vc.tapPoint = self.tapPoint;
     }
-    self.routeInfoView.hidden = YES;
-    self.routeInfoMenu.hidden = YES;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     self.tapPoint = CGPointZero;
@@ -235,7 +246,7 @@
     }
 }
 
--(IBAction) clearRouteAction:(id)sender{
+- (IBAction)deleteRouteAction:(UIButton *)sender {
     [self clearRouteAlertWithComplitionBlock:^{
         self.drawView.isDrawRoute = NO;
         [self clearMapInfoContent];
@@ -276,12 +287,7 @@
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.mapView;
 }
-#pragma mark - Actions -
--(IBAction) mapList:(id)sender{
-    NSArray *viewControllers = self.navigationController.viewControllers;
-    UIViewController *rootViewController = [viewControllers objectAtIndex:viewControllers.count - 3];
-    [self.navigationController popToViewController:rootViewController animated:YES];
-}
+
 #pragma mark - Clear Map Content -
 -(void) clearMapInfoContent{
 
@@ -289,11 +295,44 @@
     self.routeInfoView.hidden = YES;
     self.routeInfoMenu.hidden = YES;
     self.tapPoint = CGPointMake(-1, -1);
-    self.clearRouteButton.enabled = NO;
     self.drawView.pointsArray = nil;
     self.drawView.startPoint = CGPointZero;
     [self.drawView setNeedsDisplay];
 }
 
+
+#pragma mark - UI
+
+
+- (UILabel*)duratoinLabel
+{
+    if (!_duratoinLabel)
+    {
+        _duratoinLabel = [UILabel new];
+        _duratoinLabel.textAlignment = NSTextAlignmentLeft;
+        _duratoinLabel.textColor = [UIColor blackColor];
+        _duratoinLabel.numberOfLines = 0;
+        _duratoinLabel.font = [UIFont systemFontOfSize:16];
+        [self.routeInfoMenu addSubview:_duratoinLabel];
+        
+        
+    }
+    return _duratoinLabel;
+}
+- (UILabel*)distanceLabel
+{
+    if (!_distanceLabel)
+    {
+        _distanceLabel = [UILabel new];
+        _distanceLabel.textAlignment = NSTextAlignmentLeft;
+        _distanceLabel.textColor = [UIColor blackColor];
+        _distanceLabel.numberOfLines = 0;
+        _distanceLabel.font = [UIFont systemFontOfSize:16];
+        [self.routeInfoMenu addSubview:_distanceLabel];
+        
+        
+    }
+    return _distanceLabel;
+}
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#import "PrefixHeader.pch"
+#import "IndoorPrefixHeader.pch"
 
 
 @interface BluetoothMeasurementProvider : MeasurementProvider

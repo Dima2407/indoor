@@ -1,6 +1,6 @@
 dependencies: \
   /Users/appleface/Documents/sdk/indoor-sdk/NavigatorLib/src/Navigator/Math/Trilat/trilat.cpp \
-  /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/IndoorLibrary/PrefixHeader.pch \
+  /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/IndoorLibrary/IndoorPrefixHeader.pch \
   /usr/local/include/eigen3/Eigen/Dense \
   /usr/local/include/eigen3/Eigen/Core \
   /usr/local/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \

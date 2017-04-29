@@ -14,13 +14,15 @@
 		0610B6901E66F661003EC3FA /* SensorMeasurementProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0610B6841E66F661003EC3FA /* SensorMeasurementProvider.m */; };
 		0610B6911E66F661003EC3FA /* IosMeasurementTransfer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0610B6871E66F661003EC3FA /* IosMeasurementTransfer.mm */; };
 		0610B6921E66F661003EC3FA /* WIFIMeasurementProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0610B68A1E66F661003EC3FA /* WIFIMeasurementProvider.m */; };
+		063A7A361EB34A7D00ABA37F /* MeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6801E66F661003EC3FA /* MeasurementProvider.h */; };
+		063A7A371EB34A9D00ABA37F /* ErrorTransfer.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */; };
 		06650E1A1E81767500E7D811 /* TrilatBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E191E81767500E7D811 /* TrilatBeaconNavigator.cpp */; };
 		06650E1D1E81768600E7D811 /* AlphaBetaFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */; };
 		06650E1E1E81768600E7D811 /* MovingAverageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E1C1E81768600E7D811 /* MovingAverageFilter.cpp */; };
 		06650E201E81769E00E7D811 /* trilat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E1F1E81769E00E7D811 /* trilat.cpp */; };
 		06650E211E828D1300E7D811 /* BeaconConfig.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06FBD40A1E7F34A700D8902A /* BeaconConfig.h */; };
 		06650E221E828D5D00E7D811 /* TConfig.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06FBD40F1E7F34A700D8902A /* TConfig.h */; };
-		06650E231E82B51F00E7D811 /* PrefixHeader.pch in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650DF31E814D3600E7D811 /* PrefixHeader.pch */; };
+		06650E231E82B51F00E7D811 /* IndoorPrefixHeader.pch in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650DF31E814D3600E7D811 /* IndoorPrefixHeader.pch */; };
 		06650E241E82BEB500E7D811 /* IndoorLocationListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650DF41E815AEC00E7D811 /* IndoorLocationListener.h */; };
 		06650E2A1E82CC1100E7D811 /* IndoorError.m in Sources */ = {isa = PBXBuildFile; fileRef = 06650E291E82CC1100E7D811 /* IndoorError.m */; };
 		06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E281E82CC1100E7D811 /* IndoorError.h */; };
@@ -47,10 +49,12 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				063A7A371EB34A9D00ABA37F /* ErrorTransfer.h in Copy Files */,
+				063A7A361EB34A7D00ABA37F /* MeasurementProvider.h in Copy Files */,
 				06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */,
 				06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */,
 				06650E241E82BEB500E7D811 /* IndoorLocationListener.h in Copy Files */,
-				06650E231E82B51F00E7D811 /* PrefixHeader.pch in Copy Files */,
+				06650E231E82B51F00E7D811 /* IndoorPrefixHeader.pch in Copy Files */,
 				06650E221E828D5D00E7D811 /* TConfig.h in Copy Files */,
 				06650E211E828D1300E7D811 /* BeaconConfig.h in Copy Files */,
 				06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */,
@@ -83,9 +87,8 @@
 		0610B6871E66F661003EC3FA /* IosMeasurementTransfer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IosMeasurementTransfer.mm; sourceTree = "<group>"; };
 		0610B6891E66F661003EC3FA /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WIFIMeasurementProvider.h; sourceTree = "<group>"; };
 		0610B68A1E66F661003EC3FA /* WIFIMeasurementProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WIFIMeasurementProvider.m; sourceTree = "<group>"; };
-		06650DF31E814D3600E7D811 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = IndoorLibrary/PrefixHeader.pch; sourceTree = "<group>"; };
+		06650DF31E814D3600E7D811 /* IndoorPrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IndoorPrefixHeader.pch; path = IndoorLibrary/IndoorPrefixHeader.pch; sourceTree = "<group>"; };
 		06650DF41E815AEC00E7D811 /* IndoorLocationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationListener.h; sourceTree = "<group>"; };
-		06650E091E816A9800E7D811 /* libNavigator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNavigator.a; path = ../../NavigatorLib/libNavigator.a; sourceTree = "<group>"; };
 		06650E191E81767500E7D811 /* TrilatBeaconNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TrilatBeaconNavigator.cpp; path = ../../NavigatorLib/src/Navigator/Beacons/TrilatBeaconNavigator.cpp; sourceTree = "<group>"; };
 		06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AlphaBetaFilter.cpp; path = ../../NavigatorLib/src/Navigator/Math/Filter/AlphaBetaFilter.cpp; sourceTree = "<group>"; };
 		06650E1C1E81768600E7D811 /* MovingAverageFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MovingAverageFilter.cpp; path = ../../NavigatorLib/src/Navigator/Math/Filter/MovingAverageFilter.cpp; sourceTree = "<group>"; };
@@ -250,7 +253,6 @@
 		06FBCB591E782CC700D8902A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				06650E091E816A9800E7D811 /* libNavigator.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -258,7 +260,7 @@
 		06FBD4031E7F1EEE00D8902A /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				06650DF31E814D3600E7D811 /* PrefixHeader.pch */,
+				06650DF31E814D3600E7D811 /* IndoorPrefixHeader.pch */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -479,7 +481,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = IndoorLibrary/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = IndoorLibrary/IndoorPrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../NavigatorLib/include/**",
@@ -525,7 +527,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = IndoorLibrary/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = IndoorLibrary/IndoorPrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../NavigatorLib/include/**",

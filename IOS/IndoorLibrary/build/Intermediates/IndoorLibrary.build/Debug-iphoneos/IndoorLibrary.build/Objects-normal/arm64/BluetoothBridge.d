@@ -1,6 +1,6 @@
 dependencies: \
   /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/BluetoothBridge.cpp \
-  /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/IndoorLibrary/PrefixHeader.pch \
+  /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/IndoorLibrary/IndoorPrefixHeader.pch \
   /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/BluetoothBridge.h \
   ../../NavigatorLib/include/Navigator.h \
   ../../NavigatorLib/include/./Navigator/INavigator.h \

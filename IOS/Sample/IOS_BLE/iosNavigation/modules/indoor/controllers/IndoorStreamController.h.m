@@ -8,16 +8,19 @@
 
 #import "IndoorStreamController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "UIColor+HEX.h"
 
 @interface IndoorStreamController() <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *mapView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) DrawingMapView *drawView;
 @property (weak, nonatomic) IBOutlet UIView *routeInfoMenu;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *deleteRouteButton;
 @property (weak, nonatomic) IBOutlet RouteInfoView *routeInfoView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearRouteButton;
 @property (strong, nonatomic) UIImageView *currentPositionView;
 @property (strong, nonatomic) NSArray *maneuversArray;
 
@@ -30,32 +33,36 @@
     
     
     //////////////////////TODO//////////////////////////////
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRadar"])
-//    {
-//        [self createRadarView];
-//    }
-//    else{
-//        self.scrollView.hidden = YES;
-//    }
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
-//    {
-//        self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
-//    }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRadar"])
+    {
+        [self createRadarView];
+    }
+    else{
+        self.scrollView.hidden = YES;
+    }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
+    {
+        self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
+    }
     /////////////////////////////////////////////////////////
     [self createRadarView];
      self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     self.routeInfoView.hidden = YES;
-    self.clearRouteButton.enabled = NO;
+    _deleteRouteButton.layer.cornerRadius = 22;
+    _deleteRouteButton.backgroundColor = [UIColor colorWithHexString:@"#498DFC"];
+    [_deleteRouteButton.layer setShadowOffset:CGSizeMake(5, 5)];
+    [_deleteRouteButton.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_deleteRouteButton.layer setShadowOpacity:0.5];
+    self.routeInfoMenu.backgroundColor = [UIColor colorWithHexString:@"#4154B2"];
     self.routeInfoMenu.hidden = YES;
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
-   // [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
-    [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
+    [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
     [self getFloorMapData:self.floor.mapPath fileType:@"map" mapModel:self.floor completionBlock:^(FloorModel *map) {
         [self setMapImage:map.mapImage];
     }];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
 }
 #pragma mark - Set Map Image -
 -(void) setMapImage:(NSData*)imgData{
@@ -122,7 +129,7 @@
     [self presentViewController:nav animated:YES completion:nil];
 }
 
--(IBAction) clearRouteAction:(id)sender{
+- (IBAction)deleteRouteAction:(UIButton *)sender {
     [self clearRouteAlertWithComplitionBlock:^{
         [self clearMapInfoContent];
     }];
@@ -159,7 +166,6 @@
     self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:convertPixelToPoint(startPoint, self.mapView.image.size,self.drawView.frame.size)];
     self.tapPoint = endPoint;
     [self.drawView setNeedsDisplay];
-    self.clearRouteButton.enabled = YES;
     [self centerScrolViewOnCurrentLocationWithPoint:convertPixelToPoint(startPoint, self.mapView.image.size,self.drawView.frame.size)];
 }
 #pragma mark - Set Distance and Time -
@@ -196,7 +202,6 @@
     self.routeInfoView.hidden = YES;
     self.routeInfoMenu.hidden = YES;
     self.tapPoint = CGPointMake(-1, -1);
-    self.clearRouteButton.enabled = NO;
     self.drawView.pointsArray = nil;
     self.drawView.startPoint = CGPointZero;
     [self.drawView setNeedsDisplay];

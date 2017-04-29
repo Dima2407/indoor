@@ -15,6 +15,8 @@
 		0617DD781E4DE1E6000FE59C /* RouteInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617DD711E4DE1E6000FE59C /* RouteInfoCell.m */; };
 		0617DD791E4DE1E6000FE59C /* RouteInfoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617DD731E4DE1E6000FE59C /* RouteInfoListController.m */; };
 		0617DD7A1E4DE1E6000FE59C /* RouteInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617DD751E4DE1E6000FE59C /* RouteInfoView.m */; };
+		063A7A3B1EB36D8900ABA37F /* UIColor+HEX.h in Headers */ = {isa = PBXBuildFile; fileRef = 063A7A391EB36D8900ABA37F /* UIColor+HEX.h */; };
+		063A7A3C1EB36D8900ABA37F /* UIColor+HEX.m in Sources */ = {isa = PBXBuildFile; fileRef = 063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */; };
 		06FB4D011E8D558F0007DF80 /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FB4D001E8D558F0007DF80 /* libIndoorLibrary.a */; };
 		680C25521D956B32002A2879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23801D956B31002A2879 /* AppDelegate.m */; };
 		680C25531D956B32002A2879 /* BeaconManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23831D956B31002A2879 /* BeaconManager.m */; };
@@ -76,6 +78,8 @@
 		0617DD741E4DE1E6000FE59C /* RouteInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteInfoView.h; sourceTree = "<group>"; };
 		0617DD751E4DE1E6000FE59C /* RouteInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteInfoView.m; sourceTree = "<group>"; };
 		0617DD7C1E4DE256000FE59C /* RoutePoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutePoint.h; sourceTree = "<group>"; };
+		063A7A391EB36D8900ABA37F /* UIColor+HEX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HEX.h"; sourceTree = "<group>"; };
+		063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HEX.m"; sourceTree = "<group>"; };
 		06A5925C1EAE4138007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
 		06A5925D1EAE4138007760A2 /* BluetoothBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
 		06A5925E1EAE4138007760A2 /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
@@ -220,6 +224,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		063A7A381EB36D8900ABA37F /* category */ = {
+			isa = PBXGroup;
+			children = (
+				063A7A391EB36D8900ABA37F /* UIColor+HEX.h */,
+				063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */,
+			);
+			path = category;
+			sourceTree = "<group>";
+		};
 		06A5925B1EAE4138007760A2 /* IndoorLibrary */ = {
 			isa = PBXGroup;
 			children = (
@@ -527,6 +540,7 @@
 		85A55A8F1D880B6B00431C02 /* iosNavigation */ = {
 			isa = PBXGroup;
 			children = (
+				063A7A381EB36D8900ABA37F /* category */,
 				68BDB8B21D9A80F4001C8C61 /* helpers */,
 				680C237E1D956B31002A2879 /* modules */,
 				680C23AA1D956B31002A2879 /* supporting_files */,
@@ -553,6 +567,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				063A7A3B1EB36D8900ABA37F /* UIColor+HEX.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,6 +734,7 @@
 				680C255A1D956B32002A2879 /* SWRevealViewController.m in Sources */,
 				680C25521D956B32002A2879 /* AppDelegate.m in Sources */,
 				0617DD791E4DE1E6000FE59C /* RouteInfoListController.m in Sources */,
+				063A7A3C1EB36D8900ABA37F /* UIColor+HEX.m in Sources */,
 				060FE6071E60A3E9009D159F /* FloorModel.m in Sources */,
 				850DB8AA1D9A7417008AB5C0 /* IndoorMapController.m in Sources */,
 				060FE60A1E60A4DB009D159F /* FloorTableViewController.m in Sources */,

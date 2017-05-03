@@ -196,6 +196,8 @@ int main() {
     // Example of accessing calibration tables
     cout << "\n CALIBRATION TABLES : \n";
 
+    // It is actually std::unordered_map<BeaconUID, CalibrationTable>
+    // And CalibrationTable is a std::vector<std::pair<double, double>>
     const auto &calTables = calibrator.getCalTables();
 
     for (const auto &ct : calTables) {
@@ -220,7 +222,7 @@ int main() {
 
         CalibrationTable ct; // New table for beacon uid
 
-        // Add some dist, rssi pairs
+        // Add some stupid dist, rssi pairs
         ct.push_back(std::make_pair(1.5, -50.6)); // dist, rssi
         ct.push_back(std::make_pair(3.5, -75.1)); // dist, rssi
 
@@ -237,15 +239,14 @@ int main() {
         calTables2[uid1].push_back(std::make_pair(1.5, -50.6));  // dist, rssi
 
 
-    // Clear the cal. table
+    // Clear the cal. table if needed
 //    calibrator.clearCalTables();
 
     // Set the calTables at the calibrator replacing the old one
     calibrator.setCalTables(calTables2);
 
-
-    // Calibrate using the new calTables
-//    const auto &result2 = calibrator.calibrate(calPoints, config);
+    // Calibrate using the new calTables, no calibration points
+    const auto &result2 = calibrator.calibrate(config);
 
     // Calibrate adding new points to existing calTable (reset = false)
 //    const auto &result3 = calibrator.calibrate(calPoints, config, false);

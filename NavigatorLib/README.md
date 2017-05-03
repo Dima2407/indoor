@@ -1,6 +1,6 @@
 Navigator Library
 ======
-in progress...
+in progress... See `example3` for the latest stuff.
 
 __Authors__: Oleksiy Grechnyev & Ivan Kuvaldin
 
@@ -8,7 +8,8 @@ This is a remake/refactoring of `tracking_lib`. At present the library performs 
 navigation (possibly can be used for WiFi also):  it calculates the point position (x, y, z) from 
 a sequence of RSSI signals.
 Various filters can be applied. The complete information about beacons (map data) is required:
-`uid`, position, `txpower` and `damp` of every beacon.
+`uid`, position, `txpower` and `damp` of every beacon. Position post-processing using mesh
+and a mask table is implemented.
 
 Calibration routines are also included.
 
@@ -44,6 +45,9 @@ __Usage__: To use the library you have to add the `indoor-sdk/NavigatorLib/inclu
  to your incluude path. Then include _Navigator.h_ and create an
 instance of the class _TrilatBeaconNavigator_.  See `example1`,  `example2` for more info. 
 See `exampleCalibrate` for info on calibration. 
+
+For the mesh+mask post-processing, see `exampleMesh1`, `exampleMesh2`. See `example3` for 
+StandardBeaconNavigator, which is trialteration + mesh post-processing combined.
 
 __Note__: 
 

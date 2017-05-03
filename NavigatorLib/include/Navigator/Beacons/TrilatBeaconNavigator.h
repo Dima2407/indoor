@@ -37,6 +37,7 @@ namespace Navigator {
          * + addBeacon(beacon: const Beacon &) : void
          * + deleteBeacon(uid: const BeaconUID &) : void
          * + clear() : void
+         * + reset() : void
          * + const getLastPosition() : const Math::Position3D &
          * ..
          * - runTrilat() : void
@@ -74,7 +75,7 @@ namespace Navigator {
             const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
 
             /// Find a BeaconProcessor by uid, nullptr if not found
-            const std::shared_ptr<BeaconProcessor> findProcessorByUid(BeaconUID uid) const;
+            const std::shared_ptr<BeaconProcessor> findProcessorByUid(const BeaconUID & uid) const;
 
             //------ Beacon operations -----
 
@@ -96,6 +97,7 @@ namespace Navigator {
                     this->addBeacon(b);
             }
 
+            /// Get all beacons
             int getBeacons(){
                 return beaconProcessorList.size();
             }

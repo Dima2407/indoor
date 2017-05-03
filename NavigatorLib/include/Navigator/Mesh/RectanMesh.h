@@ -26,10 +26,34 @@ namespace Navigator {
          */
         class RectanMesh {
         public: // ======= Constructors
+            // Create a mesh with given parameters and no masktable
             RectanMesh(const int nx, const int ny, const double dx, const double dy, const double x0, const double y0)
                     : mesh(nx, ny, dx, dy, x0, y0) {}
 
-           RectanMesh(const std::string &fileName) : mesh(fileName) {}
+           RectanMesh(const std::string &meshFileName, const std::string &maskTblFileName) : mesh(meshFileName) {
+               using namespace std;
+
+               int size = this -> size();
+               vector<int> mTable(size);
+
+               cout << "Reading mesh from file " << maskTblFileName << endl;
+               ifstream in2(maskTblFileName);
+               if (!in2) {
+                   cerr << "Error: Cannot open file " << maskTblFileName << endl;
+                   exit(1);
+               }
+               for (int i=0; i< size; i++) {
+                   in2 >> mTable[i];
+                   if (!in2) {
+                       std::cerr << "Error reading data from file " << maskTblFileName << endl;
+                       exit(1);
+                   }
+               }
+               in2.close();
+
+               // Load the table
+               setMaskTable(mTable);
+           }
 
         public: // ======= Methods
             /** @brief Process position using a discrete mesh and a mask table
@@ -42,7 +66,7 @@ namespace Navigator {
              * @param[in]    inPos    Input Position
              * @return                Output position (Nearest white mesh node to inPos)
              */
-            Math::Position3D process(const Math::Position3D & inPos);
+            Math::Position3D process(const Math::Position3D & inPos) const;
 
             /// , must be of size nx*ny to be of any use
 

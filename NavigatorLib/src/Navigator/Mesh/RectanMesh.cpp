@@ -9,7 +9,7 @@
 namespace Navigator {
     namespace Mesh {
 
-        Math::Position3D RectanMesh::process(const Math::Position3D &inPos) {
+        Math::Position3D RectanMesh::process(const Math::Position3D &inPos) const{
 
             // Find the mesh node nearest to inPos (iX = 0 .. nx-1, iY = 0..ny-1)
             int iX = mesh.x2ix(inPos.x);

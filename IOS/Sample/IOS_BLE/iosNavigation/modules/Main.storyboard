@@ -228,7 +228,7 @@
                                             <constraint firstAttribute="height" constant="44" id="VSp-Ny-QGu"/>
                                             <constraint firstAttribute="width" constant="44" id="oiA-fO-S0G"/>
                                         </constraints>
-                                        <state key="normal" image="delete2"/>
+                                        <state key="normal" image="delete"/>
                                         <connections>
                                             <action selector="deleteRouteAction:" destination="yoz-4J-52c" eventType="touchUpInside" id="fX3-FF-b8Y"/>
                                         </connections>
@@ -326,6 +326,7 @@
                                     <constraint firstItem="533-xd-f5E" firstAttribute="leading" secondItem="0aD-Xp-nDB" secondAttribute="leading" constant="16" id="JuU-PR-F9y"/>
                                     <constraint firstAttribute="bottom" secondItem="533-xd-f5E" secondAttribute="bottom" constant="-3" id="bVB-dW-O0Q"/>
                                     <constraint firstItem="533-xd-f5E" firstAttribute="top" secondItem="0aD-Xp-nDB" secondAttribute="top" constant="-3" id="cBj-s7-3FF"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="53" id="ox6-pv-9Cz"/>
                                     <constraint firstItem="9vf-Jf-PL4" firstAttribute="top" secondItem="0aD-Xp-nDB" secondAttribute="top" constant="16" id="xN6-8a-Pw2"/>
                                     <constraint firstAttribute="height" constant="53" id="yVj-tW-GYV"/>
                                 </constraints>
@@ -340,16 +341,18 @@
                             <constraint firstItem="w3b-Ky-JpH" firstAttribute="top" secondItem="P2P-yA-EPQ" secondAttribute="bottom" id="0A3-wt-BU4"/>
                             <constraint firstItem="0aD-Xp-nDB" firstAttribute="width" secondItem="0aD-Xp-nDB" secondAttribute="height" multiplier="25:7" constant="153.71428571428569" id="8bA-XI-SyK"/>
                             <constraint firstItem="7YB-wZ-C0E" firstAttribute="leading" secondItem="BPN-oC-Z6v" secondAttribute="leading" id="DU7-vd-4YW"/>
+                            <constraint firstItem="0aD-Xp-nDB" firstAttribute="top" secondItem="OzF-wz-H6c" secondAttribute="bottom" constant="39" id="FbW-we-ntB"/>
                             <constraint firstItem="4kB-OI-xBe" firstAttribute="leading" secondItem="7YB-wZ-C0E" secondAttribute="leading" id="JTf-V2-oVs"/>
                             <constraint firstAttribute="trailing" secondItem="4kB-OI-xBe" secondAttribute="trailing" id="SBm-hR-Ahk"/>
                             <constraint firstItem="7YB-wZ-C0E" firstAttribute="top" secondItem="OzF-wz-H6c" secondAttribute="bottom" constant="130" id="VZC-Wn-Ipu"/>
                             <constraint firstItem="4kB-OI-xBe" firstAttribute="leading" secondItem="BPN-oC-Z6v" secondAttribute="leading" id="Zdc-KL-mwp"/>
                             <constraint firstItem="4kB-OI-xBe" firstAttribute="bottom" secondItem="w3b-Ky-JpH" secondAttribute="top" id="ZuI-Rx-cmi"/>
                             <constraint firstItem="w3b-Ky-JpH" firstAttribute="top" secondItem="4kB-OI-xBe" secondAttribute="bottom" id="c8S-zQ-zPT"/>
+                            <constraint firstItem="0aD-Xp-nDB" firstAttribute="trailing" secondItem="BPN-oC-Z6v" secondAttribute="trailingMargin" id="cSQ-yR-v2n"/>
                             <constraint firstItem="4kB-OI-xBe" firstAttribute="top" secondItem="Uxh-i0-n7j" secondAttribute="bottom" constant="8" id="dAQ-7R-lRk"/>
                             <constraint firstItem="7YB-wZ-C0E" firstAttribute="top" secondItem="0aD-Xp-nDB" secondAttribute="bottom" constant="38" id="dT5-Aa-WJs"/>
                             <constraint firstItem="w3b-Ky-JpH" firstAttribute="top" secondItem="4kB-OI-xBe" secondAttribute="bottom" id="jtV-21-TjV"/>
-                            <constraint firstItem="0aD-Xp-nDB" firstAttribute="leading" secondItem="Uxh-i0-n7j" secondAttribute="leading" id="pxO-kF-MtI"/>
+                            <constraint firstItem="0aD-Xp-nDB" firstAttribute="leading" secondItem="BPN-oC-Z6v" secondAttribute="leadingMargin" id="kd3-pY-Zgh"/>
                             <constraint firstAttribute="trailing" secondItem="P2P-yA-EPQ" secondAttribute="trailing" id="qtt-Gf-mEc"/>
                             <constraint firstItem="4kB-OI-xBe" firstAttribute="width" secondItem="BPN-oC-Z6v" secondAttribute="width" id="u0x-vt-dec"/>
                             <constraint firstItem="P2P-yA-EPQ" firstAttribute="top" secondItem="OzF-wz-H6c" secondAttribute="bottom" id="ucM-uh-iZ5"/>
@@ -365,6 +368,7 @@
                         <outlet property="durationLabel" destination="m1H-Ch-vnD" id="DLd-zJ-Hcu"/>
                         <outlet property="mapView" destination="2G1-6a-32a" id="vBk-ab-yq7"/>
                         <outlet property="routeInfoMenu" destination="4kB-OI-xBe" id="K09-Oi-Hda"/>
+                        <outlet property="routeInfoView" destination="0aD-Xp-nDB" id="e9b-eg-GeG"/>
                         <outlet property="scrollView" destination="Uxh-i0-n7j" id="iMX-Vy-Obb"/>
                     </connections>
                 </viewController>
@@ -507,7 +511,7 @@
                                             <constraint firstAttribute="height" constant="44" id="xha-t4-zae"/>
                                         </constraints>
                                         <color key="tintColor" red="0.23453232384022238" green="0.49387776892701485" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" image="delete2">
+                                        <state key="normal" image="delete">
                                             <color key="titleShadowColor" red="1" green="0.27176573889925448" blue="0.40339976811031153" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -603,7 +607,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="144.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Draw poi on radar:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opU-EF-dKE">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Draw poi:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opU-EF-dKE">
                                                     <rect key="frame" x="17" y="49" width="195" height="33"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -617,7 +621,7 @@
                                                         <action selector="switchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="9GE-uh-3G1"/>
                                                     </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Draw route on radar:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyp-V0-C9f">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Use binary mask:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyp-V0-C9f">
                                                     <rect key="frame" x="17" y="90" width="195" height="33"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -673,7 +677,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2rD-uj-C1g" userLabel="Indoor Map Nav" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" image="ic_explore.png" id="DSj-e6-qUF"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Ei0-ml-Ehy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ei0-ml-Ehy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -707,7 +711,7 @@
     </scenes>
     <resources>
         <image name="Settings_x" width="24" height="24"/>
-        <image name="delete2" width="256" height="256"/>
+        <image name="delete" width="29" height="29"/>
         <image name="ic_explore" width="50" height="50"/>
         <image name="ic_explore.png" width="24" height="24"/>
         <image name="ic_linked_camera" width="50" height="50"/>

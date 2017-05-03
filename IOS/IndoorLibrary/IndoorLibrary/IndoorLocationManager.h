@@ -18,6 +18,8 @@
 @property (nonatomic, strong) id<ErrorListener> errorListener;
 /*! @brief Flag responsible for logging */
 @property (nonatomic, assign) BOOL isStartLog;
+/*! @brief Flag responsible for using a binary mask */
+@property (nonatomic, assign) BOOL isOnMask;
 /*! @brief This property sets frequency getting coordinates */
 @property (nonatomic, strong) NSTimer *timer;
 

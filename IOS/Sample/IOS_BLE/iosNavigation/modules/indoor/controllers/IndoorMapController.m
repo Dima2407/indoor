@@ -38,15 +38,14 @@
     [super viewDidLoad];
  
     self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"kSettingsShowRout"];
     self.routeInfoView.hidden = YES;
-    [self.routeInfoView.layer setShadowOffset:CGSizeMake(5, 5)];
-    [self.routeInfoView.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [self.routeInfoView.layer setShadowOpacity:0.5];
-    self.routeInfoMenu.backgroundColor = [UIColor colorWithHexString:@"#4154B2"];
+    
     self.routeInfoMenu.hidden = YES;
     self.startPoint = CGPointZero;
     self.viewOfPoiArray = [NSMutableArray array];
     self.poisDictionary = [NSMutableDictionary dictionary];
+    self.routeInfoMenu.backgroundColor = [UIColor colorWithHexString:@"#4154B2"];
     _deleteRouteButton.layer.cornerRadius = 22;
     _deleteRouteButton.backgroundColor = [UIColor colorWithHexString:@"#498DFC"];
     [_deleteRouteButton.layer setShadowOffset:CGSizeMake(5, 5)];
@@ -119,8 +118,8 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        self.routeInfoView.hidden = YES;
-        self.routeInfoMenu.hidden = YES;
+//        self.routeInfoView.hidden = YES;
+//        self.routeInfoMenu.hidden = YES;
 //        RoutePoint *point = [self.maneuversArray firstObject];
 //        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
 //                                            distance:point.tempDistance
@@ -189,6 +188,8 @@
     if(point.x > 0 && point.y > 0){
         self.routeInfoView.hidden = NO;
         self.routeInfoMenu.hidden = NO;
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"kSettingsShowRout"];
+         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"kSettingsShowRout"];
         self.drawView.isDrawRoute = YES;
         self.drawView.view = self.drawView;
         self.drawView.img = self.mapView;
@@ -240,6 +241,10 @@
             
             [self createRouteAlertWithTitle:poi.poiName text:poi.poiDescription complitionBlock:^{
                 self.drawView.isDrawRoute = YES;
+                self.routeInfoView.hidden = NO;
+                self.routeInfoMenu.hidden = NO;
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"kSettingsShowRout"];
+                
                 [self drawRouteWithStartPoint:self.startPoint endPoint:poi.poiCenterCoordinate];
             }];
         }
@@ -294,6 +299,7 @@
     self.isRoute = NO;
     self.routeInfoView.hidden = YES;
     self.routeInfoMenu.hidden = YES;
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"kSettingsShowRout"];
     self.tapPoint = CGPointMake(-1, -1);
     self.drawView.pointsArray = nil;
     self.drawView.startPoint = CGPointZero;

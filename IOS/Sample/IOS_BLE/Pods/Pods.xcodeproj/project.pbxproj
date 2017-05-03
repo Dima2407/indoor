@@ -495,19 +495,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3A789BC911E259EDA954AC777794588F /* Release */ = {
+		0B7B0D7449603814297622E0DDD66F90 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3867D09D526C184EC217932DC66A612 /* Pods-iosNavigation.release.xcconfig */;
+			baseConfigurationReference = E81C02C9700368133758B9C52989CA5D /* Pods-iosNavigation.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -516,7 +517,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 		59B042A655B7C20CBAB90E385BF4E4C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -562,10 +563,11 @@
 			};
 			name = Debug;
 		};
-		72D1B831316303C2E356BBAC53FEF78A /* Release */ = {
+		8A1560C958018ADC5B66F5C0E6689779 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1CC1DCEE585000AD89E44796824F38D /* AFNetworking.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -625,19 +627,20 @@
 			};
 			name = Release;
 		};
-		EFB499DDB073ECB643172A494434E499 /* Debug */ = {
+		B7392ADEA2E5B7E573EBDEDEDE92E948 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E81C02C9700368133758B9C52989CA5D /* Pods-iosNavigation.debug.xcconfig */;
+			baseConfigurationReference = F3867D09D526C184EC217932DC66A612 /* Pods-iosNavigation.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -646,12 +649,13 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
-		FF778088B62C05BE1205DAE628D151DF /* Debug */ = {
+		C99806BA62457758765213E0B4080394 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1CC1DCEE585000AD89E44796824F38D /* AFNetworking.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -686,8 +690,8 @@
 		483FBC4A668BF7F1A8767452E7E188AC /* Build configuration list for PBXNativeTarget "AFNetworking" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FF778088B62C05BE1205DAE628D151DF /* Debug */,
-				72D1B831316303C2E356BBAC53FEF78A /* Release */,
+				C99806BA62457758765213E0B4080394 /* Debug */,
+				8A1560C958018ADC5B66F5C0E6689779 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -695,8 +699,8 @@
 		C2D4B2AD0B94D80A116101E60A8BA58D /* Build configuration list for PBXNativeTarget "Pods-iosNavigation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EFB499DDB073ECB643172A494434E499 /* Debug */,
-				3A789BC911E259EDA954AC777794588F /* Release */,
+				0B7B0D7449603814297622E0DDD66F90 /* Debug */,
+				B7392ADEA2E5B7E573EBDEDEDE92E948 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

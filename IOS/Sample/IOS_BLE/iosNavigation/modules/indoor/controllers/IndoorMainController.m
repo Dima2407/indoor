@@ -239,11 +239,12 @@
 }
 #pragma mark - Create Route Info View -
 -(RouteInfoView*) createCustomRouteInfoView:(RouteInfoView*)routeView{
-    
+
     routeView.backgroundColor = [UIColor whiteColor];
     routeView.alpha = 0.8f;
-    routeView.layer.shadowOffset = CGSizeMake(2.f, 2.f);
-    routeView.layer.shadowColor = [UIColor grayColor].CGColor;
+    routeView.layer.shadowOffset = CGSizeMake(5, 5);
+    routeView.layer.shadowColor = [UIColor blackColor].CGColor;
+    [routeView.layer setShadowOpacity:0.5];
     routeView.imageView.image = [UIImage imageNamed:@"left"];
     return routeView;
 }

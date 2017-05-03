@@ -57,6 +57,7 @@
 		853208C81D9D51FB00476ECA /* UIImage+ManeuverImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 853208C71D9D51FB00476ECA /* UIImage+ManeuverImage.m */; };
 		85500E401D9914680049C387 /* PoiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85500E3F1D9914680049C387 /* PoiModel.m */; };
 		8598A1881DAB92CE00FE1AD2 /* IndoorPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = 8598A1871DAB92CE00FE1AD2 /* IndoorPOI.m */; };
+		D272CCCF8160869A867B2846 /* libPods-iosNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AE7DD5638FD1406E997325 /* libPods-iosNavigation.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,40 +81,6 @@
 		0617DD7C1E4DE256000FE59C /* RoutePoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutePoint.h; sourceTree = "<group>"; };
 		063A7A391EB36D8900ABA37F /* UIColor+HEX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HEX.h"; sourceTree = "<group>"; };
 		063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HEX.m"; sourceTree = "<group>"; };
-		06A5925C1EAE4138007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
-		06A5925D1EAE4138007760A2 /* BluetoothBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
-		06A5925E1EAE4138007760A2 /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
-		06A5925F1EAE4138007760A2 /* ErrorListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorListener.h; sourceTree = "<group>"; };
-		06A592601EAE4138007760A2 /* ErrorTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTransfer.h; sourceTree = "<group>"; };
-		06A592611EAE4138007760A2 /* GPSMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPSMeasurementProvider.h; sourceTree = "<group>"; };
-		06A592621EAE4138007760A2 /* IndoorError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorError.h; sourceTree = "<group>"; };
-		06A592631EAE4138007760A2 /* IndoorLocationListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorLocationListener.h; sourceTree = "<group>"; };
-		06A592641EAE4138007760A2 /* IndoorLocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorLocationManager.h; sourceTree = "<group>"; };
-		06A592651EAE4138007760A2 /* IosMeasurementTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IosMeasurementTransfer.h; sourceTree = "<group>"; };
-		06A592661EAE4138007760A2 /* MeasurementEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementEvent.h; sourceTree = "<group>"; };
-		06A592671EAE4138007760A2 /* MeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementProvider.h; sourceTree = "<group>"; };
-		06A592681EAE4138007760A2 /* MeasurementTranfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementTranfer.h; sourceTree = "<group>"; };
-		06A592691EAE4138007760A2 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		06A5926A1EAE4138007760A2 /* SensorMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorMeasurementProvider.h; sourceTree = "<group>"; };
-		06A5926B1EAE4138007760A2 /* TConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TConfig.h; sourceTree = "<group>"; };
-		06A5926C1EAE4138007760A2 /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WIFIMeasurementProvider.h; sourceTree = "<group>"; };
-		06A5926E1EAE415A007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
-		06A5926F1EAE415A007760A2 /* BluetoothBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
-		06A592701EAE415A007760A2 /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
-		06A592711EAE415A007760A2 /* ErrorListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorListener.h; sourceTree = "<group>"; };
-		06A592721EAE415A007760A2 /* ErrorTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTransfer.h; sourceTree = "<group>"; };
-		06A592731EAE415A007760A2 /* GPSMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPSMeasurementProvider.h; sourceTree = "<group>"; };
-		06A592741EAE415A007760A2 /* IndoorError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorError.h; sourceTree = "<group>"; };
-		06A592751EAE415A007760A2 /* IndoorLocationListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorLocationListener.h; sourceTree = "<group>"; };
-		06A592761EAE415A007760A2 /* IndoorLocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorLocationManager.h; sourceTree = "<group>"; };
-		06A592771EAE415A007760A2 /* IosMeasurementTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IosMeasurementTransfer.h; sourceTree = "<group>"; };
-		06A592781EAE415A007760A2 /* MeasurementEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementEvent.h; sourceTree = "<group>"; };
-		06A592791EAE415A007760A2 /* MeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementProvider.h; sourceTree = "<group>"; };
-		06A5927A1EAE415A007760A2 /* MeasurementTranfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementTranfer.h; sourceTree = "<group>"; };
-		06A5927B1EAE415A007760A2 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		06A5927C1EAE415A007760A2 /* SensorMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorMeasurementProvider.h; sourceTree = "<group>"; };
-		06A5927D1EAE415A007760A2 /* TConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TConfig.h; sourceTree = "<group>"; };
-		06A5927E1EAE415A007760A2 /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WIFIMeasurementProvider.h; sourceTree = "<group>"; };
 		06A592921EAE46F9007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
 		06A592931EAE46F9007760A2 /* BluetoothBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
 		06A592941EAE46F9007760A2 /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
@@ -218,6 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06FB4D011E8D558F0007DF80 /* libIndoorLibrary.a in Frameworks */,
+				D272CCCF8160869A867B2846 /* libPods-iosNavigation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,56 +199,6 @@
 				063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */,
 			);
 			path = category;
-			sourceTree = "<group>";
-		};
-		06A5925B1EAE4138007760A2 /* IndoorLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				06A5925C1EAE4138007760A2 /* BeaconConfig.h */,
-				06A5925D1EAE4138007760A2 /* BluetoothBridge.h */,
-				06A5925E1EAE4138007760A2 /* BluetoothMeasurementProvider.h */,
-				06A5925F1EAE4138007760A2 /* ErrorListener.h */,
-				06A592601EAE4138007760A2 /* ErrorTransfer.h */,
-				06A592611EAE4138007760A2 /* GPSMeasurementProvider.h */,
-				06A592621EAE4138007760A2 /* IndoorError.h */,
-				06A592631EAE4138007760A2 /* IndoorLocationListener.h */,
-				06A592641EAE4138007760A2 /* IndoorLocationManager.h */,
-				06A592651EAE4138007760A2 /* IosMeasurementTransfer.h */,
-				06A592661EAE4138007760A2 /* MeasurementEvent.h */,
-				06A592671EAE4138007760A2 /* MeasurementProvider.h */,
-				06A592681EAE4138007760A2 /* MeasurementTranfer.h */,
-				06A592691EAE4138007760A2 /* PrefixHeader.pch */,
-				06A5926A1EAE4138007760A2 /* SensorMeasurementProvider.h */,
-				06A5926B1EAE4138007760A2 /* TConfig.h */,
-				06A5926C1EAE4138007760A2 /* WIFIMeasurementProvider.h */,
-			);
-			name = IndoorLibrary;
-			path = "../../IndoorLibrary/build/Products/Debug-iphoneos/include/IndoorLibrary";
-			sourceTree = "<group>";
-		};
-		06A5926D1EAE415A007760A2 /* IndoorLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				06A5926E1EAE415A007760A2 /* BeaconConfig.h */,
-				06A5926F1EAE415A007760A2 /* BluetoothBridge.h */,
-				06A592701EAE415A007760A2 /* BluetoothMeasurementProvider.h */,
-				06A592711EAE415A007760A2 /* ErrorListener.h */,
-				06A592721EAE415A007760A2 /* ErrorTransfer.h */,
-				06A592731EAE415A007760A2 /* GPSMeasurementProvider.h */,
-				06A592741EAE415A007760A2 /* IndoorError.h */,
-				06A592751EAE415A007760A2 /* IndoorLocationListener.h */,
-				06A592761EAE415A007760A2 /* IndoorLocationManager.h */,
-				06A592771EAE415A007760A2 /* IosMeasurementTransfer.h */,
-				06A592781EAE415A007760A2 /* MeasurementEvent.h */,
-				06A592791EAE415A007760A2 /* MeasurementProvider.h */,
-				06A5927A1EAE415A007760A2 /* MeasurementTranfer.h */,
-				06A5927B1EAE415A007760A2 /* PrefixHeader.pch */,
-				06A5927C1EAE415A007760A2 /* SensorMeasurementProvider.h */,
-				06A5927D1EAE415A007760A2 /* TConfig.h */,
-				06A5927E1EAE415A007760A2 /* WIFIMeasurementProvider.h */,
-			);
-			name = IndoorLibrary;
-			path = "../../IndoorLibrary/build/Products/Debug-iphoneos/include/IndoorLibrary";
 			sourceTree = "<group>";
 		};
 		06A592911EAE46F9007760A2 /* IndoorLibrary */ = {
@@ -510,8 +428,6 @@
 		818D52B9424C648BDB538492 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				06A5926D1EAE415A007760A2 /* IndoorLibrary */,
-				06A5925B1EAE4138007760A2 /* IndoorLibrary */,
 				06FB4D001E8D558F0007DF80 /* libIndoorLibrary.a */,
 				41AE7DD5638FD1406E997325 /* libPods-iosNavigation.a */,
 			);

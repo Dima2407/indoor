@@ -27,11 +27,11 @@ static void showUsage(){
     cout << "Usage:\n";
     cout << " maskgen2 <map_file> <pixel_size> <square_size> \n";
     cout << "\n";
-    cout << "map_file = Igage file with map, e.g. map1.png \n";
+    cout << "map_file = Igage file with map, e.g. maps/map1.png \n";
     cout << "Black pixels in the map are treated as obstacles. \n";
     cout << "\n";
 
-    cout << "pixel_size (double) =  map pixels size in meters, e.g. 0.0075 \n";
+    cout << "pixel_size (double) =  map pixels size in meters, e.g. 0.007 \n";
     cout << "square_size(double) =  mesh square size in meters, 0.3 \n";
 
     exit(1);

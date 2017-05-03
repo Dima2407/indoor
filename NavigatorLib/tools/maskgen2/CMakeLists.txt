@@ -3,6 +3,8 @@ project(maskgen2)
 
 set(CMAKE_CXX_STANDARD 14)
 
+file(COPY maps DESTINATION .)
+
 include_directories(
         ../masklib
         ../CImg

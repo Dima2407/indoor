@@ -33,6 +33,17 @@ namespace Navigator {
 
             BeaconReceivedData() {}
 
+            bool operator==(const BeaconReceivedData &rhs) const {
+                return timestamp == rhs.timestamp &&
+                       uid == rhs.uid &&
+                       rssi == rhs.rssi /*&&
+                       txPower == rhs.txPower*/;
+            }
+
+            bool operator!=(const BeaconReceivedData &rhs) const {
+                return !(rhs == *this);
+            }
+
             /// Timestamp in seconds
             double timestamp = std::nan("");
 

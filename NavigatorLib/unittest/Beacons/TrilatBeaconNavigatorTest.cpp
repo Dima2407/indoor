@@ -18,14 +18,16 @@ namespace NaviTest {
         // Register this suite !
         CPPUNIT_TEST_SUITE_REGISTRATION(TrilatBeaconNavigatorTest);
 
+//=============================================================================================================
         //Create a fake RSSI
-        double TrilatBeaconNavigatorTest::fakeRSSI(const Navigator::Math::Position3D &p1, const Navigator::Math::Position3D &p2, double txPower, double damp)
-        {
+        double TrilatBeaconNavigatorTest::fakeRSSI(const Navigator::Math::Position3D &p1,
+                                                   const Navigator::Math::Position3D &p2, double txPower, double damp) {
             /*double dist = p1.distance(p2);
             double temp = log10(dist);
             return txPower - 10 * damp * temp;*/
-            return txPower - 10 * damp * log10( p1.distance(p2) );
+            return txPower - 10 * damp * log10(p1.distance(p2));
         }
+//=============================================================================================================
 
         void TrilatBeaconNavigatorTest::testSimple() {
             using namespace std;
@@ -50,7 +52,7 @@ namespace NaviTest {
             beacons[2] = Beacon(BeaconUID("Rat", 13, 2), -5.8, 3.0, Position3D(-0.1, 10.7, 0.0), "");
             navigator1->addBeacon(beacons[2]);
 
-            Position3D pos; // The outut position
+            Position3D pos; // The output position
 
             Position3D inPos(0.39, 0.23, 0.0); // Some input position
 
@@ -87,7 +89,7 @@ namespace NaviTest {
                     Beacon(BeaconUID("Squirrel", 11, 4), -6.7, 2.9, Position3D(0.4, 0.7, 0.0), ""),
             };
 
-            navigator1 -> addBeacons(beacons2);
+            navigator1->addBeacons(beacons2);
 
             inPos = Position3D(0.46, 0.69, 0.0);
 
@@ -116,8 +118,8 @@ namespace NaviTest {
                 }
 
             }
-
         }
+//=============================================================================================================
 
         void TrilatBeaconNavigatorTest::setUp() {
             using namespace Navigator::Beacons;
@@ -129,9 +131,95 @@ namespace NaviTest {
                     std::make_shared<NoFilterFactory>()
             );
         }
+//=============================================================================================================
 
         void TrilatBeaconNavigatorTest::tearDown() {
             delete navigator1;
         }
+//=============================================================================================================
+
+        void TrilatBeaconNavigatorTest::testHistory() {
+            using namespace std;
+            using namespace Navigator::Beacons;
+            using namespace Navigator::Beacons::Factory;
+            using namespace Navigator::Math;
+            using namespace Navigator::Math::Filter;
+
+
+            const Beacon beacons[] = {
+                    Beacon(BeaconUID("Rat", 13, 0), -30.7, 2.0, Position3D(0.1, 0.2, 0.0), ""),
+                    Beacon(BeaconUID("Rat", 13, 1), -40.0, 2.5, Position3D(9.8, 0.3, 0.0), ""),
+                    Beacon(BeaconUID("Rat", 13, 2), -50.8, 3.0, Position3D(-0.1, 10.7, 0.0), "")
+            };
+
+            navigator1->addBeacons(beacons);
+
+            // Let's add some RSSI signals here
+            vector<vector<BeaconReceivedData>> myHist(6);
+
+            double stupidRSSI[][3] = {
+                    {-55.1, -56.2, -57.3},
+                    {-64.1, -66.2, -69.3},
+                    {-75.1, -76.2, -77.3},
+                    {-51.4, -52.0, -53.6},
+                    {-61.4, -62.5, -63.6},
+                    {-71.9, -72.8, -73.7}
+            };
+
+            for (int i=0; i<6; i++) {
+                double timestamp = 0.45*i;
+
+                for (int j=0; j<3; j++) {
+                    myHist[i].push_back(BeaconReceivedData(timestamp, BeaconUID("Rat", 13, j), stupidRSSI[i][j]));
+                }
+            }
+
+            CPPUNIT_ASSERT(navigator1 -> getHistory().empty());
+
+            // Start recording history
+            navigator1 -> startHistory();
+
+            // Send packets to the Navigator
+            for (auto const & brds : myHist)
+                navigator1 -> process(brds);
+
+            // Stop recording history
+            navigator1 -> stopHistory();
+
+            Position3D pos1, pos2;
+
+            pos1 = navigator1 -> getLastPosition();
+//            cout << "X = " << pos1.x << " Y = " << pos1.y << endl;
+
+            // Check the history
+            CPPUNIT_ASSERT(navigator1->getHistory() == myHist);
+
+            // Re-run the history with new filters
+            navigator1 -> rerunHistory(
+                    std::make_shared<MovingAverageFilterFactory>(3),
+                    std::make_shared<AlphaTrimmedFilterFactory>(6, 0.3)
+            );
+
+            pos1 = navigator1 -> getLastPosition(); // Get position after rerun
+
+            // Create another navigator, string with identical funny filters
+            // Run the same packets
+            TrilatBeaconNavigator navi2(
+                    std::make_shared<MovingAverageFilterFactory>(3),
+                    std::make_shared<AlphaTrimmedFilterFactory>(6, 0.3)
+            );
+
+            navi2.addBeacons(beacons);
+
+            for (auto const & brds : myHist)
+                navi2.process(brds);
+
+            pos2 = navi2.getLastPosition();
+
+            // Check that positions coincide
+            CPPUNIT_ASSERT(pos1 == pos2);
+        }
     }
+//=============================================================================================================
+
 }

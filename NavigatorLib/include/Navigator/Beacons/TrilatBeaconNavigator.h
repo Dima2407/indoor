@@ -68,62 +68,57 @@ namespace Navigator {
                     : rssiFilterFactory(rssiFilterFactory),
                       distanceFilterFactory(distanceFilterFactory) {}
 
+            /// Default constructor
+            TrilatBeaconNavigator() : rssiFilterFactory(nullptr),
+                                      distanceFilterFactory(nullptr)  {}
+
             /// Process a single input data
-            const Math::Position3D &process(const BeaconReceivedData &brd) override;
+            virtual const Math::Position3D &process(const BeaconReceivedData &brd) override;
 
             /// Process a vector of input data, assuming identical timestamps
-            const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
+            virtual const Math::Position3D &process(const std::vector<BeaconReceivedData> &brds) override;
 
             /// Find a BeaconProcessor by uid, nullptr if not found
-            const std::shared_ptr<BeaconProcessor> findProcessorByUid(const BeaconUID & uid) const;
+            virtual const std::shared_ptr<BeaconProcessor> findProcessorByUid(const BeaconUID & uid) const override ;
+
+            /// Get ref to last position
+            virtual const Math::Position3D &getLastPosition() const override {
+                return lastPosition;
+            }
 
             //------ Beacon operations -----
 
             /// Add a new beacon
-            void addBeacon(const Beacon &beacon) {
-                /// uid is the map key
-                /// Factories create filter objects
-                beaconProcessorList[beacon.getUid()] = std::make_shared<BeaconProcessor>(
-                        beacon,
-                        rssiFilterFactory->createFilter(),
-                        distanceFilterFactory->createFilter()
-                );
-            }
-    
-            /// Add Beacons
-            template <typename IterableT>
-            void addBeacons(IterableT const& beacons) {
-                for( const auto & b : beacons )
-                    this->addBeacon(b);
-            }
-
-            /// Get all beacons
-            int getBeacons(){
-                return beaconProcessorList.size();
-            }
+            virtual void addBeacon(const Beacon &beacon) override ;
 
             /// Delete a beacon by uid
             void deleteBeacon(const BeaconUID &uid) {
                 beaconProcessorList.erase(uid);
             }
 
-            /// Delete all beacons and reset the position
+            /// Delete all beacons and reset
             void clear() {
                 beaconProcessorList.clear();
-                lastPosition = Math::Position3D();
+                reset();
             }
 	        
-	        /// Reset filters and last calculated position
-	        void reset/*Filters*/(){
-		        lastPosition = Math::Position3D();
-		        for( auto & proc : beaconProcessorList ){
-			        proc.second->reset();
-		        }
-	        }
+	        /// Reset filters etc but don't clear beacons
+	        void reset();
 
-            const Math::Position3D &getLastPosition() const override {
-                return lastPosition;
+            /// Start recording history, works like a stopwatch
+            void startHistory(){
+                history.clear();
+                recordingHistory = true;
             }
+
+            /// Stop recording history
+            void stopHistory(){
+                recordingHistory = false;
+            }
+
+            /// Navigator with new filters and re-run the history if not empty
+            void rerunHistory(const std::shared_ptr<Factory::IFilterFactory> &rssiFactory,
+                              const std::shared_ptr<Factory::IFilterFactory> &distanceFactory);
 
         public: // ========= Config getters + setters =============
             double getBeaconTimeout() const {
@@ -150,6 +145,35 @@ namespace Navigator {
                 TrilatBeaconNavigator::useNearest = useNearest;
             }
 
+            const std::shared_ptr<Factory::IFilterFactory> &getRssiFilterFactory() const {
+                return rssiFilterFactory;
+            }
+
+            void setRssiFilterFactory(const std::shared_ptr<Factory::IFilterFactory> &rssiFilterFactory) {
+                TrilatBeaconNavigator::rssiFilterFactory = rssiFilterFactory;
+            }
+
+            const std::shared_ptr<Factory::IFilterFactory> &getDistanceFilterFactory() const {
+                return distanceFilterFactory;
+            }
+
+            void setDistanceFilterFactory(const std::shared_ptr<Factory::IFilterFactory> &distanceFilterFactory) {
+                TrilatBeaconNavigator::distanceFilterFactory = distanceFilterFactory;
+            }
+
+        public: //============= Other getters + setters ===============
+            const std::vector<std::vector<BeaconReceivedData>> &getHistory() const {
+                return history;
+            }
+
+            double getFirstTimestamp() const {
+                return firstTimestamp;
+            }
+
+            double getLastTimestamp() const {
+                return lastTimestamp;
+            }
+
         private: // ========= Methods =============
             /// Run the trilateration once based on current active beacons
             void runTrilat();
@@ -173,6 +197,18 @@ namespace Navigator {
             /// Last located position
             Math::Position3D lastPosition = Math::Position3D();
 
+        private: // =============== Fields used for the 5-second initialization ======
+            /// Recorded history
+            std::vector <std::vector<BeaconReceivedData>> history;
+
+            /// The first timestamp
+            double firstTimestamp = nan("");
+
+            /// The last timestamp
+            double lastTimestamp = nan("");
+
+            /// true if currently recording history
+            bool recordingHistory = false;
         private: // =========== Configuration fields ==================
 
             /// Time to keep beacon filter history data since the last signal (in seconds)

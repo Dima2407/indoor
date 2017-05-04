@@ -73,8 +73,10 @@ int main() {
 
      Requires shared_ptr to a RectanMesh, you can try
      mesh2 or nullptr for no mesh
+
+     Second parameter : true = iOS, false = Android
      */
-    StandardBeaconNavigator navigator(mesh1);
+    StandardBeaconNavigator navigator(mesh1, false);  // !!! true = iOS, false = Android !!!
 
     /* Create 4 beacons
      * I used array of beacons in the example

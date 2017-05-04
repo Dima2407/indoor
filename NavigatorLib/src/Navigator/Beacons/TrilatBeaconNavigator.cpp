@@ -11,8 +11,14 @@
 namespace Navigator {
     namespace Beacons {
 
+//====================================================
 
         const Math::Position3D &TrilatBeaconNavigator::process(const BeaconReceivedData &brd) {
+
+
+            // Record into history
+            if (recordingHistory)
+                history.push_back({brd});
 
             // Check for timeout
             checkTimeout(brd.timestamp);
@@ -76,7 +82,7 @@ namespace Navigator {
             auto search = beaconProcessorList.find(brd.uid);
 
             if (search != beaconProcessorList.end()) {
-                // Rreset if the timestamp is negative
+                // Reset if the timestamp is negative
                 BeaconProcessor &processor = *(search->second);
 
                 // EXCEPTION if going back in time (timestamp < last timestamp)
@@ -94,6 +100,13 @@ namespace Navigator {
 //====================================================
 
         void TrilatBeaconNavigator::checkTimeout(double timeStamp) {
+
+            // Set firstTimestamp if Nan
+            if (std::isnan(firstTimestamp))
+                firstTimestamp = timeStamp;
+
+            // Set lastTimestamp allways
+            lastTimestamp = timeStamp;
 
             //----------------------------
             // Check the timelines of all active processors, reset it if the beacon is inactive
@@ -118,6 +131,11 @@ namespace Navigator {
 
         const Math::Position3D &TrilatBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds) {
             if (! brds.empty()) {
+
+                // Record into history
+                if (recordingHistory)
+                    history.push_back(brds);
+
                 // Timestamp of the first element is forced as the common one
                 double timeStamp = brds[0].timestamp;
 
@@ -147,6 +165,65 @@ namespace Navigator {
             } else {
                 return (*search).second;
             }
+        }
+//====================================================
+
+        void TrilatBeaconNavigator::reset() {
+            // Reset variables
+            lastPosition = Math::Position3D();
+            firstTimestamp = nan("");
+            history.clear();
+            recordingHistory = false;
+
+            // Reset filters for each beacon
+            for( auto & proc : beaconProcessorList ){
+                proc.second->reset();
+            }
+        }
+//====================================================
+
+        void TrilatBeaconNavigator::addBeacon(const Beacon &beacon) {
+            /// uid is the map key
+
+            if (nullptr==rssiFilterFactory || nullptr==distanceFilterFactory)
+                throw std::runtime_error("TrilatBeaconNavigator: addBeacon : nullptr factory.");
+
+            /// Factories create filter objects
+            beaconProcessorList[beacon.getUid()] = std::make_shared<BeaconProcessor>(
+                    beacon,
+                    rssiFilterFactory->createFilter(),
+                    distanceFilterFactory->createFilter()
+            );
+        }
+//====================================================
+
+        void TrilatBeaconNavigator::rerunHistory(const std::shared_ptr<Factory::IFilterFactory> &rssiFactory,
+                                                 const std::shared_ptr<Factory::IFilterFactory> &distanceFactory) {
+
+            // Set up new filter factories
+            rssiFilterFactory = rssiFactory;
+            distanceFilterFactory = distanceFactory;
+
+            // Stop recording history
+            stopHistory();
+
+            // Set new filters for all beacon processors with the new factories
+            for (auto & bp : beaconProcessorList) {
+                bp.second -> changeFilters(rssiFilterFactory->createFilter(),
+                                           distanceFilterFactory->createFilter());
+            }
+
+            // Re-run the history if not empty
+            if (!history.empty()) {
+                // For loop over timestamps
+                for (const auto & data : history) {
+                    // Process all data packets with new filters
+                    process(data);
+                }
+            }
+
+            // Clear history
+            history.clear();
         }
 
 //====================================================

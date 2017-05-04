@@ -93,6 +93,7 @@ namespace Navigator {
             /// Reset the filters
             void reset()
             {
+
                 active = false; // No more active
 
                 if (rssiFilter != nullptr) // Reset if not null
@@ -109,7 +110,19 @@ namespace Navigator {
                 reset(); // Reset the filters
             }
 
-            // Getters
+            /// Reset processor with new filters
+            void changeFilters(const std::shared_ptr<IFilter> &rssiFilter,
+                               const std::shared_ptr<IFilter> &distanceFilter){
+
+                reset();
+                lastTimeStamp = nan("");
+                lastDistance = nan("");
+
+                this->rssiFilter = rssiFilter;
+                this->distanceFilter = distanceFilter;
+            }
+
+            //==================== Getters
 
             const Beacon &getBeacon() const
             {
@@ -122,6 +135,14 @@ namespace Navigator {
 
             double getLastDistance() const {
                 return lastDistance;
+            }
+
+            const std::shared_ptr<IFilter> &getRssiFilter() const {
+                return rssiFilter;
+            }
+
+            const std::shared_ptr<IFilter> &getDistanceFilter() const {
+                return distanceFilter;
             }
 
             bool isActive() const {

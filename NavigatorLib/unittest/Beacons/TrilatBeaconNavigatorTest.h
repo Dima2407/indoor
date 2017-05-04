@@ -19,11 +19,16 @@ namespace NaviTest {
 
         CPPUNIT_TEST_SUITE(TrilatBeaconNavigatorTest);
                 CPPUNIT_TEST(testSimple);
+                CPPUNIT_TEST(testHistory);
             CPPUNIT_TEST_SUITE_END();
 
         public: //=== Methods ===
 
+            // Simple navigator use
             void testSimple();
+
+            // Test history recording
+            void testHistory();
 
             void setUp() override;
 
@@ -34,7 +39,7 @@ namespace NaviTest {
 
         private: //=== Fields ===
 
-            /// Yes, I know all about shared_ptr, here I use poiners on purpose as a test
+            /// Yes, I know all about shared_ptr, here I use poiners on purpose as a test to try tearDown()
             /// Uses No+No setup
             Navigator::Beacons::TrilatBeaconNavigator * navigator1;
 

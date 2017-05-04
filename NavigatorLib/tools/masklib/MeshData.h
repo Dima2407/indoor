@@ -8,13 +8,26 @@
 #include <iostream>
 #include <fstream>
 
-/** @brief Mesh configuration for maskgen
+/** @brief Mesh configuration
  *
- * Can be read from a file
+ * @startuml
+ * class MeshData{
+ * //Mesh configuration//
+ * //A discrete mesh defined as//
+ * //  //
+ * //Can be read from a file//
+ * --
+ * }
+ * @enduml
  */
 struct MeshData {
 public: // === Constructors
     MeshData() {}
+
+    MeshData(int nx, int ny, double dx, double dy, double x0, double y0) : nx(nx), ny(ny),
+                                                                           dx(dx), dy(dy),
+                                                                           x0(x0), y0(y0) {}
+
 
     MeshData(const std::string &fileName) {
         using namespace std;
@@ -35,6 +48,35 @@ public: // === Constructors
     }
 
 public: //======= Methods
+    /// Convert int ix to double x
+    double ix2x(int ix) const {
+        return x0 + ix*dx;
+    }
+
+    /// Convert int iy to double y
+    double iy2y(int iy) const {
+        return y0 + iy*dy;
+    }
+
+    /// Convert double x to int ix approximately. Exactly: x0 + i*dx -> i
+    int x2ix(double x) const {
+        int i = std::round((x - x0)/dx);
+
+        if (i < 0) i = 0;
+        if (i > nx-1) i = nx-1;
+        return i;
+    }
+
+    /// Convert double y to int iy approximately. Exactly: y0 + i*dy -> i
+    int y2iy(double y) const {
+        int i = std::round((y - y0)/dy);
+
+        if (i < 0) i = 0;
+        if (i > ny-1) i = ny-1;
+        return i;
+    }
+
+
     /// The mesh index 0 .. nx*ny
     int index(int ix, int iy) const {
         return ix * ny + iy;

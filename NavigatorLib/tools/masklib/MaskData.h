@@ -21,6 +21,8 @@
 struct MaskData {
     MaskData() {}
 
+    MaskData(int size) : data(size) {}
+
     /// Read a mask of size size from the file fileName
     MaskData(int size, const std::string &fileName) :
             data(size) {

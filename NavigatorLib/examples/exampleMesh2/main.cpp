@@ -15,48 +15,9 @@ int main(){
     using namespace Navigator::Mesh;
     using namespace Navigator::Math;
 
-    // Read the mesh from mesh.in
-    double nx, ny;
-    double dx, dy;
-    double x0, y0;
 
-    cout << "Reading mesh from mesh.in\n";
-    ifstream in1("mesh.in");
-    if (!in1) {
-        cerr << "Error: Cannot open file mesh.in \n";
-        exit(1);
-    }
-    in1 >> nx >> ny >> dx >> dy >> x0 >> y0;
-    if (!in1) {
-        std::cerr << "Error reading data from file mesh.in \n";
-        exit(1);
-    }
-    in1.close();
-
-    // Create mesh struct
-    RectanMesh mesh(nx, ny, dx, dy, x0, y0);
-
-    //-------------------------------------------
-    // Read the mask table from masktable.out
-    vector<int> mTable(nx*ny);
-
-    cout << "Reading mesh from masktable.out\n";
-    ifstream in2("masktable.out");
-    if (!in2) {
-        cerr << "Error: Cannot open file masktable.out \n";
-        exit(1);
-    }
-    for (int i=0; i< nx*ny; i++) {
-        in2 >> mTable[i];
-        if (!in2) {
-            std::cerr << "Error reading data from file masktable.out \n";
-            exit(1);
-        }
-    }
-    in2.close();
-
-    // Load the table into the mesh
-    mesh.setMaskTable(mTable);
+    // Create the mesh struct (mesh + masktable) from files
+    RectanMesh mesh("in/mesh.in", "in/masktable.out");
 
     //-------------------------------------------
 

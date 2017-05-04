@@ -32,7 +32,8 @@ add_subdirectory(tools)
 add_subdirectory(unittest)
 
 # Build test-tool
-add_subdirectory(test-tool)
+# RRemoved to speed up build, include if needed
+# add_subdirectory(test-tool)
 
 # Build NavigatorJson
 # Uncomment if you have Boost installed

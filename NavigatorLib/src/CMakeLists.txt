@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(arch arm64)
 
 set(SOURCE_FILES
-        ./Navigator/Beacons/TrilatBeaconNavigator.cpp
+        ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
+        ./Navigator/Beacons/StandardBeaconNavigator.cpp ../include/Navigator/Beacons/StandardBeaconNavigator.h
         ../include/Navigator/Beacons/Beacon.h
         ./Navigator/Beacons/BeaconProcessor.cpp ../include/Navigator/Beacons/BeaconProcessor.h
         #
@@ -15,12 +16,15 @@ set(SOURCE_FILES
         ./Navigator/Math/Trilat/trilat.cpp
         ../include/Navigator/Math/Trilat/TrilatRecord.h
         #
+        ../include/Navigator/Beacons/Factory/NoFilterFactory.h
+        ../include/Navigator/Beacons/Factory/MovingAverageFilterFactory.h
         ../include/Navigator/Beacons/Factory/AlphaTrimmedFilterFactory.h
+        ../include/Navigator/Beacons/Factory/AlphaBetaFilterFactory.h
         #
         ./Navigator/Beacons/Calibrate/BeaconCalibrator.cpp ../include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
         ../include/Navigator/Beacons/Calibrate/CalibrationPoint.h
         ../include/Navigator/Beacons/Calibrate/CalibrationConfig.h
-        ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
+        ./Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp ../include/Navigator/Beacons/Calibrate/Algorithm/algorithm.h
         ./Navigator/Beacons/BeaconProcessor.cpp
 
         #

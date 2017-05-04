@@ -7,10 +7,11 @@
 #include <vector>
 
 #include "Navigator/Math/Position3D.h"
+#include "./MeshData.h"
 
 namespace Navigator {
     namespace Mesh {
-        /** @brief A class to operate rectangular mesh
+        /** @brief A class to operate rectangular mesh defined by a MeshData object
          *
          * @startuml
          * class RectanMesh{
@@ -24,11 +25,35 @@ namespace Navigator {
          * @enduml
          */
         class RectanMesh {
-        public: // ======= Constructor
+        public: // ======= Constructors
+            // Create a mesh with given parameters and no masktable
             RectanMesh(const int nx, const int ny, const double dx, const double dy, const double x0, const double y0)
-                    : nx(nx), ny(ny),
-                      dx(dx), dy(dy),
-                      x0(x0), y0(y0) {}
+                    : mesh(nx, ny, dx, dy, x0, y0) {}
+
+           RectanMesh(const std::string &meshFileName, const std::string &maskTblFileName) : mesh(meshFileName) {
+               using namespace std;
+
+               int size = this -> size();
+               vector<int> mTable(size);
+
+               cout << "Reading mesh from file " << maskTblFileName << endl;
+               ifstream in2(maskTblFileName);
+               if (!in2) {
+                   cerr << "Error: Cannot open file " << maskTblFileName << endl;
+                   exit(1);
+               }
+               for (int i=0; i< size; i++) {
+                   in2 >> mTable[i];
+                   if (!in2) {
+                       std::cerr << "Error reading data from file " << maskTblFileName << endl;
+                       exit(1);
+                   }
+               }
+               in2.close();
+
+               // Load the table
+               setMaskTable(mTable);
+           }
 
         public: // ======= Methods
             /** @brief Process position using a discrete mesh and a mask table
@@ -41,7 +66,7 @@ namespace Navigator {
              * @param[in]    inPos    Input Position
              * @return                Output position (Nearest white mesh node to inPos)
              */
-            Math::Position3D process(const Math::Position3D & inPos);
+            Math::Position3D process(const Math::Position3D & inPos) const;
 
             /// , must be of size nx*ny to be of any use
 
@@ -57,20 +82,17 @@ namespace Navigator {
                 RectanMesh::maskTable = maskTable;
             }
 
+            const MeshData &getMesh() const {
+                return mesh;
+            }
+
+            int size() const {
+                return mesh.nx * mesh.ny;
+            }
         private: // ======= Parameters
 
-            /// Mesh size : X
-            const int nx;
-            /// Mesh size : Y
-            const int ny;
-            /// Mesh step : X
-            const double dx;
-            /// Mesh step : Y
-            const double dy;
-            /// Mesh origin: X
-            const double x0;
-            /// Mesh origin: Y
-            const double y0;
+            MeshData mesh; // Mesh parameters
+
 
         private: // ======= Mask table data
 

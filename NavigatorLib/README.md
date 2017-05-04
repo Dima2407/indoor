@@ -1,6 +1,6 @@
 Navigator Library
 ======
-in progress...
+in progress... See `example3` for the latest stuff.
 
 __Authors__: Oleksiy Grechnyev & Ivan Kuvaldin
 
@@ -8,7 +8,8 @@ This is a remake/refactoring of `tracking_lib`. At present the library performs 
 navigation (possibly can be used for WiFi also):  it calculates the point position (x, y, z) from 
 a sequence of RSSI signals.
 Various filters can be applied. The complete information about beacons (map data) is required:
-`uid`, position, `txpower` and `damp` of every beacon.
+`uid`, position, `txpower` and `damp` of every beacon. Position post-processing using mesh
+and a mask table is implemented.
 
 Calibration routines are also included.
 
@@ -45,6 +46,9 @@ __Usage__: To use the library you have to add the `indoor-sdk/NavigatorLib/inclu
 instance of the class _TrilatBeaconNavigator_.  See `example1`,  `example2` for more info. 
 See `exampleCalibrate` for info on calibration. 
 
+For the mesh+mask post-processing, see `exampleMesh1`, `exampleMesh2`. See `example3` for 
+StandardBeaconNavigator, which is trialteration + mesh post-processing combined.
+
 __Note__: 
 
 The new library uses _BeaconUID_ (unique ID) as an arbitrary sequence of bytes, with several different
@@ -60,7 +64,7 @@ __Directories__:
 * `include` : The only folder to be included for user
 * `lib` : This directory is for external libraries, e.g. Eigen
 * `examples` : Examples
-* `tools` : Tools, includes `maskgen` at present, which generates mask table from a black/white mask.
+* `tools` : Tools, includes `maskgen`, `maskgen2`, `maskdemo` at present, which generates mask table from a black/white mask or a PNG file.
 * `unittest` : CppUnit-based unit tests for the library
 * `test-tool` (`tester`, `faker`, `autotester`) : A tool for testing the library with events data
  from external _DAT_ or _JSON_ files.

@@ -34,10 +34,17 @@ std::vector<int> computeMaskTbl(const MeshData &mesh, const MaskData &mask) {
 
     // Now we loop over all nodes of the mesh
     for (int ix = 0; ix < mesh.nx; ++ix) {
+        // if (ix % 20 == 0)
+            // cout << "ix = " << ix << endl;
+        
         for (int iy = 0; iy < mesh.ny; ++iy) {
+            
+            //if (iy % 20 == 0)
+               // cout << "iy = " << iy << endl;
+            
             int currInd = mesh.index(ix, iy);
             if (mask.data[currInd]) {
-                // he node is black
+                // The node is black
                 result[currInd] = findNearest(mesh, mask, ix, iy);
             }
         }

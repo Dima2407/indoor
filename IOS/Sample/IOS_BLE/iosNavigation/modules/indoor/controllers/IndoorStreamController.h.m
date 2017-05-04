@@ -8,16 +8,19 @@
 
 #import "IndoorStreamController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "UIColor+HEX.h"
 
 @interface IndoorStreamController() <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *mapView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) DrawingMapView *drawView;
 @property (weak, nonatomic) IBOutlet UIView *routeInfoMenu;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *deleteRouteButton;
 @property (weak, nonatomic) IBOutlet RouteInfoView *routeInfoView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *clearRouteButton;
 @property (strong, nonatomic) UIImageView *currentPositionView;
 @property (strong, nonatomic) NSArray *maneuversArray;
 
@@ -30,37 +33,44 @@
     
     
     //////////////////////TODO//////////////////////////////
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRadar"])
-//    {
-//        [self createRadarView];
-//    }
-//    else{
-//        self.scrollView.hidden = YES;
-//    }
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
-//    {
-//        self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
-//    }
-    /////////////////////////////////////////////////////////
-    [self createRadarView];
-     self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
-    self.routeInfoView.hidden = YES;
-    self.clearRouteButton.enabled = NO;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRadar"])
+    {
+        [self createRadarView];
+    }
+    else{
+        self.scrollView.hidden = YES;
+    }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
+    {
+        self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
+        self.routeInfoMenu.hidden = NO;
+    }
+    else{
+         self.routeInfoMenu.hidden = YES;
+        self.routeInfoView.hidden = YES;
+    }
+   
+   
+   
+    self.routeInfoMenu.backgroundColor = [UIColor colorWithHexString:@"#4154B2"];
+    self.startPoint = CGPointZero;
+    _deleteRouteButton.layer.cornerRadius = 22;
+    _deleteRouteButton.backgroundColor = [UIColor colorWithHexString:@"#498DFC"];
+    [_deleteRouteButton.layer setShadowOffset:CGSizeMake(5, 5)];
+    [_deleteRouteButton.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_deleteRouteButton.layer setShadowOpacity:0.5];
+    self.durationLabel.text = @"Total duration 0.0 sec";
+    self.durationLabel.font = [UIFont systemFontOfSize:20];
+    self.distanceLabel.text = @"Total distance 0.0 m";
+    self.distanceLabel.font = [UIFont systemFontOfSize:14];
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
     [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
-    [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
     [self getFloorMapData:self.floor.mapPath fileType:@"map" mapModel:self.floor completionBlock:^(FloorModel *map) {
         [self setMapImage:map.mapImage];
     }];
-//    [self getFloorMapData:self.map.mapID floor:@"5" fileType:@"map" mapModel:self.floor mapModel:self.map completionBlock:^(FloorModel *map) {
-//        [self setMapImage:map.mapImage];
-//    }];
-//    [self getFloorMapData:self.map.mapID floor:@"5" fileType:@"graph" mapModel:self.floor mapModel:self.map completionBlock:^(FloorModel *map) {
-//        [self setMapImage:map.mapImage];
-//    }];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
 }
 #pragma mark - Set Map Image -
 -(void) setMapImage:(NSData*)imgData{
@@ -92,15 +102,33 @@
 }
 #pragma mark - Tap Gesture -
 -(void) didTap:(UITapGestureRecognizer*)gesture{
-    
     CGPoint point = [self tapDetection:gesture onView:self.drawView];
+    CGPoint start = {self.drawView.frame.origin.x,self.drawView.frame.origin.y };
+    CGPoint destination  =  [gesture locationInView:self.drawView];
     
     if(point.x > 0 && point.y > 0){
-        CGPoint convertPoint = convertPointToPixel(point, self.mapView.image.size, self.drawView.frame.size);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self drawRouteWithStartPoint:self.startPoint endPoint:convertPoint];
-        });
+        self.routeInfoView.hidden = NO;
+        self.routeInfoMenu.hidden = NO;
+        self.drawView.isDrawRoute = YES;
+        self.drawView.view = self.drawView;
+        self.drawView.img = self.mapView;
+        self.drawView.startPoint = start;
+        self.drawView.destinationPoint = destination;
+        [self.drawView setNeedsDisplay];
+        
     }
+    else{
+        
+    }
+//    
+//    CGPoint point = [self tapDetection:gesture onView:self.drawView];
+//    
+//    if(point.x > 0 && point.y > 0){
+//        CGPoint convertPoint = convertPointToPixel(point, self.mapView.image.size, self.drawView.frame.size);
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self drawRouteWithStartPoint:self.startPoint endPoint:convertPoint];
+//        });
+//    }
 }
 #pragma mark - Create radar view -
 -(void) createRadarView{
@@ -127,17 +155,12 @@
     [self presentViewController:nav animated:YES completion:nil];
 }
 
--(IBAction) clearRouteAction:(id)sender{
+- (IBAction)deleteRouteAction:(UIButton *)sender {
     [self clearRouteAlertWithComplitionBlock:^{
         [self clearMapInfoContent];
     }];
 }
 
--(IBAction) mapList:(id)sender{
-    NSArray *viewControllers = self.navigationController.viewControllers;
-    UIViewController *rootViewController = [viewControllers objectAtIndex:viewControllers.count - 4];
-    [self.navigationController popToViewController:rootViewController animated:YES];
-}
 #pragma mark - UIScrollViewDelegate -
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.mapView;
@@ -146,25 +169,55 @@
 -(void) drawRouteWithStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint{
     
     NSArray *pointsList = [self getPointsFromGraph:self.graph withStartPoint:startPoint endPoint:endPoint];
-    self.maneuversArray = [self getManeuverWithStartPoint:startPoint pointsArray:pointsList pixelSize:self.floor.pixelSize];
+    self.maneuversArray = [self getManeuverWithStartPoint:startPoint pointsArray:pointsList pixelSize:self.floor.mapSizeCof];
     self.isRoute = YES;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        self.routeInfoView.hidden = NO;
-        RoutePoint *point = [self.maneuversArray firstObject];
-        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
-                                            distance:point.tempDistance
-                                            duration:point.tempDuration
-                                                step:point.stepInstruction
-                                            maneuver:[UIImage maneuverImage:point.maneuver]];
-        [self setAllDistanceAndTime:self.maneuversArray];
+        //        self.routeInfoView.hidden = YES;
+        //        self.routeInfoMenu.hidden = YES;
+        //        RoutePoint *point = [self.maneuversArray firstObject];
+        //        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
+        //                                            distance:point.tempDistance
+        //                                            duration:point.tempDuration
+        //                                                step:point.stepInstruction
+        //                                            maneuver:[UIImage maneuverImage:point.maneuver]];
+        //        [self setAllDistanceAndTime:self.maneuversArray];
     });
-    NSArray *points = [self convertPoint:pointsList convertType:ConvertTypePoint image:self.mapView.image view:self.drawView];
-    self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:convertPixelToPoint(startPoint, self.mapView.image.size,self.drawView.frame.size)];
-    self.tapPoint = endPoint;
+    //
+    //    NSArray *points = [self convertPoint:pointsList convertType:ConvertTypePoint image:self.mapView.image view:self.drawView];
+    //    self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:startPoint];
+    //    self.tapPoint = endPoint;
+    // CGPoint point = [self tapDetection:gesture onView:self.drawView];
+    CGPoint start = {self.drawView.frame.origin.x,self.drawView.frame.origin.y };
+    CGPoint destination  = endPoint;
+    
+    self.drawView.view = self.drawView;
+    self.drawView.img = self.mapView;
+    self.drawView.startPoint = start;
+    self.drawView.destinationPoint = destination;
     [self.drawView setNeedsDisplay];
-    self.clearRouteButton.enabled = YES;
-    [self centerScrolViewOnCurrentLocationWithPoint:convertPixelToPoint(startPoint, self.mapView.image.size,self.drawView.frame.size)];
+
+//    NSArray *pointsList = [self getPointsFromGraph:self.graph withStartPoint:startPoint endPoint:endPoint];
+//    self.maneuversArray = [self getManeuverWithStartPoint:startPoint pointsArray:pointsList pixelSize:self.floor.pixelSize];
+//    self.isRoute = YES;
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        
+//        //self.routeInfoView.hidden = YES;
+//        //self.routeInfoMenu.hidden = YES;
+//        RoutePoint *point = [self.maneuversArray firstObject];
+//        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
+//                                            distance:point.tempDistance
+//                                            duration:point.tempDuration
+//                                                step:point.stepInstruction
+//                                            maneuver:[UIImage maneuverImage:point.maneuver]];
+//        [self setAllDistanceAndTime:self.maneuversArray];
+//    });
+//    NSArray *points = [self convertPoint:pointsList convertType:ConvertTypePoint image:self.mapView.image view:self.drawView];
+//    self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:convertPixelToPoint(startPoint, self.mapView.image.size,self.drawView.frame.size)];
+//    self.tapPoint = endPoint;
+//    [self.drawView setNeedsDisplay];
+//    [self centerScrolViewOnCurrentLocationWithPoint:convertPixelToPoint(startPoint, self.mapView.image.size,self.drawView.frame.size)];
 }
 #pragma mark - Set Distance and Time -
 -(void) setAllDistanceAndTime:(NSArray*)array{
@@ -198,8 +251,8 @@
     
     self.isRoute = NO;
     self.routeInfoView.hidden = YES;
+    self.routeInfoMenu.hidden = YES;
     self.tapPoint = CGPointMake(-1, -1);
-    self.clearRouteButton.enabled = NO;
     self.drawView.pointsArray = nil;
     self.drawView.startPoint = CGPointZero;
     [self.drawView setNeedsDisplay];
@@ -208,8 +261,8 @@
 -(void)currentLocation:(CGPoint)location{
     
     CGPoint p;
-    p.x = self.mapView.image.size.width / 11 *location.x;
-    p.y = self.mapView.image.size.height / 7 *location.y;
+    p.x = self.mapView.image.size.width / self.floor.widht *location.x;
+    p.y = self.mapView.image.size.height / self.floor.height *location.y;
     
     self.startPoint = p;
     

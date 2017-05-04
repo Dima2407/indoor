@@ -28,7 +28,7 @@
 @property (assign, nonatomic) NSInteger mapSizeCof;
 @property (nonatomic, assign) CGFloat pixelSize;
 @property (nonatomic, assign) CGFloat height;
-@property (nonatomic, assign) CGFloat wight;
+@property (nonatomic, assign) CGFloat widht;
 
 
 

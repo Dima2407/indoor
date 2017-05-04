@@ -10,6 +10,7 @@
 #import "UIImage+ManeuverImage.h"
 #import "RouteInfoCell.h"
 #import "RoutePoint.h"
+#import "UIColor+HEX.h"
 
 @interface RouteInfoListController ()
 
@@ -20,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
 }
 #pragma mark - UITableViewDataSource -
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

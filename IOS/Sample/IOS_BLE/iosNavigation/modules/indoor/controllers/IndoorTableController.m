@@ -17,6 +17,7 @@
 #import "ApiRoutes.h"
 #import "FloorTableViewController.h"
 #import "BuildingModel.h"
+#import "UIColor+HEX.h"
 
 
 
@@ -56,7 +57,9 @@
     [self createDropdownMenu];
    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.hidesBackButton = YES;
 }
 
 #pragma mark - Get Notification
@@ -102,20 +105,27 @@
     cell.detailTextLabel.text = building.buildingSubtitle;
     return cell;
 }
-//
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    MapModel *map = [self.mapsArray objectAtIndex:indexPath.row];
-//    IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
-//    vc.map = map;
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     BuildingModel *building = [self.mapsArray objectAtIndex:indexPath.row];
-    FloorTableViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"FloorVC"];
-    vc.map = building;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (building.froorsArray.count>1)
+    {
+        FloorTableViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"FloorVC"];
+        vc.map = building;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if (building.froorsArray.count == 1){
+        FloorModel *floor = [building.froorsArray firstObject];
+        IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
+        vc.floor = floor;
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }
+    else{
+        NSLog(@"Floor list is empty");
+    }
+   
 }
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

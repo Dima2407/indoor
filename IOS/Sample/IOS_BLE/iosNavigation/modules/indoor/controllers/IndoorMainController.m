@@ -5,6 +5,8 @@
 //  Created by Ievgen on 05.10.16.
 //  Copyright © 2016 Ievgen. All rights reserved.
 //
+#define kScreenWidth            [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight           [UIScreen mainScreen].bounds.size.height
 
 #import "IndoorMainController.h"
 #import "AOShortestPath.h"
@@ -139,14 +141,33 @@
 }
 #pragma mark - Create Draw View -
 -(DrawingMapView*) createDrawViewWithStartPoint:(CGPoint)startPoint withSizeView:(UIImageView*)imgView{
-    
-    CGRect imageRect = CGRectMake(20, 30, 400, 400);
-    //[self createRectSameImage:imgView];
+    CGRect image = [self calculateClientRectOfImageInUIImageView:imgView];
+    CGRect imageRect = CGRectMake(image.origin.x, image.origin.y, image.size.width, image.size.height);
     DrawingMapView *drawView = [[DrawingMapView alloc]initWithFrame:imageRect];
     drawView.backgroundColor = [UIColor clearColor];
     drawView.startPoint = convertPixelToPoint(startPoint,imgView.image.size, drawView.frame.size);
     [imgView addSubview:drawView];
     return drawView;
+}
+-(CGRect )calculateClientRectOfImageInUIImageView:(UIImageView *)imgView
+{
+    CGSize imgViewSize=imgView.frame.size;
+    CGSize imgSize=imgView.image.size;
+    
+    CGFloat scaleW = imgViewSize.width / imgSize.width;
+    CGFloat scaleH = imgViewSize.height / imgSize.height;
+    CGFloat aspect=fmin(scaleW, scaleH);
+    
+    CGRect imageRect={ {0,0} , { imgSize.width*=aspect, imgSize.height*=aspect } };
+  
+    
+    imageRect.origin.x=(imgViewSize.width-imageRect.size.width)/2;
+    imageRect.origin.y=(imgViewSize.height-imageRect.size.height)/2;
+    
+    imageRect.origin.x+=imgView.frame.origin.x;
+    imageRect.origin.y+=imgView.frame.origin.y;
+    
+    return(imageRect);
 }
 #pragma mark - Drawing route on map -
 -(DrawingMapView*) drawRouteFromPoints:(NSArray *)points onDrawView:(DrawingMapView*)drawView withStartPoint:(CGPoint)startPoint{
@@ -218,11 +239,13 @@
 }
 #pragma mark - Create Route Info View -
 -(RouteInfoView*) createCustomRouteInfoView:(RouteInfoView*)routeView{
-    
+
     routeView.backgroundColor = [UIColor whiteColor];
     routeView.alpha = 0.8f;
-    routeView.layer.shadowOffset = CGSizeMake(2.f, 2.f);
-    routeView.layer.shadowColor = [UIColor grayColor].CGColor;
+    routeView.layer.shadowOffset = CGSizeMake(5, 5);
+    routeView.layer.shadowColor = [UIColor blackColor].CGColor;
+    [routeView.layer setShadowOpacity:0.5];
+    routeView.imageView.image = [UIImage imageNamed:@"left"];
     return routeView;
 }
 

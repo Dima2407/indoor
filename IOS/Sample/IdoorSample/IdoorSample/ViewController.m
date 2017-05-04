@@ -7,11 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "BeaconConfig.h"
 #import "IndoorLocationManager.h"
-#import "PrefixHeader.pch"
 
-//#import "IosMeasurementTransfer.h"
+
 
 @interface ViewController ()<IndoorLocationListener,ErrorListener>
 @property (weak, nonatomic) IBOutlet UISwitch *loggerSwitch;
@@ -33,7 +31,8 @@
 
     self.manager = [[IndoorLocationManager alloc] init];
     self.manager.locationListener = self;
-   self.manager.errorListener = self;
+    self.manager.errorListener = self;
+    [self.manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
     [self.manager addProvider:BLE_PROVIDER];
     [self.manager setBeaconConfig:firstBeacon];
     [self.manager setBeaconConfig:secondBeacon];
@@ -53,6 +52,7 @@
     
     NSLog(@"%@",coordinte);
 }
+#pragma mark - ErrorListenerProtocol
 -(void)getError:(IndoorError *)error{
     NSLog(@"error: %@", error.error.description);
 }
@@ -65,15 +65,15 @@
   [self.manager start];
     if (self.loggerSwitch.on)
     {
-        self.manager.logger = YES;
+        self.manager.isStartLog = YES;
     }
     else{
-        self.manager.logger = NO;
+        self.manager.isStartLog = NO;
     }
 }
 - (IBAction)stop:(UIButton *)sender {
     [self.manager stop ];
-    if (self.manager.logger)
+    if (self.manager.isStartLog)
     {
         [self sendLogs];
     }
@@ -81,10 +81,10 @@
 
 - (IBAction)record:(UISwitch *)sender {
     if (sender.on){
-         self.manager.logger = YES;
+         self.manager.isStartLog = YES;
     }
     else{
-         self.manager.logger = NO;
+         self.manager.isStartLog = NO;
     }
    
 }
@@ -96,7 +96,7 @@
     NSError *error = nil;
    
     
-    NSData *jsonIndoorData = [NSJSONSerialization dataWithJSONObject:[self.manager logging] options:NSJSONReadingAllowFragments error:&error];
+    NSData *jsonIndoorData = [NSJSONSerialization dataWithJSONObject:[self.manager getLog] options:NSJSONReadingAllowFragments error:&error];
     
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     

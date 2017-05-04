@@ -8,8 +8,8 @@
 
 #import "AppDelegate.h"
 #import <GoogleMaps/GoogleMaps.h>
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
+#import <Foundation/Foundation.h>
+
 
 @interface AppDelegate ()
 
@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [GMSServices provideAPIKey:@"AIzaSyCNAO2K42kZYbJ-kOY_3DcX8mTpYD6bxHE"];
-    [Fabric with:@[[Crashlytics class]]];
+    //[Fabric with:@[[Crashlytics class]]];
     return YES;
 }
 

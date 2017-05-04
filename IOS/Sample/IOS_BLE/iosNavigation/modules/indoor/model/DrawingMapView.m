@@ -13,39 +13,36 @@
 @implementation DrawingMapView
 
 - (void)drawRect:(CGRect)rect {
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextClearRect(context, rect);
-
-    if(self.pointsArray){
-    CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, self.startPoint.x, self.startPoint.y);
-    
-    CGContextSetLineWidth(context, 3);
-    
-        for(NSValue *value in self.pointsArray){
+    if (self.isDrawRoute)
+    {
+        NSArray *points = [NSArray arrayWithObjects:
+                           [NSValue valueWithCGPoint:CGPointMake(50.0, 6.0)],
+                           [NSValue valueWithCGPoint:CGPointMake(300.7, 80.8)],
+                           nil];
+        
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextClearRect(context, rect);
+        
+        if(points){
+            CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f].CGColor);
+            CGContextSetLineCap(context, kCGLineCapRound);
+            CGContextMoveToPoint(context, self.startPoint.x, self.startPoint.y);
+            CGContextSetLineWidth(context, 3);
             
-            CGPoint p = [value CGPointValue];
-            CGContextAddLineToPoint(context, p.x, p.y);
-            CGContextMoveToPoint(context, p.x, p.y);
+            
+            for(NSValue *value in points){
+                
+                CGPoint p = [value CGPointValue];
+                
+                CGContextAddLineToPoint(context, p.x, p.y);
+                CGContextMoveToPoint(context, p.x, p.y);
+            }
+            CGContextAddLineToPoint(context, self.destinationPoint.x, self.destinationPoint.y);
+            CGContextStrokePath(context);
         }
-    CGContextStrokePath(context);
     }
+
     
-//.................................Draw graph......................................//
-//    for(AOPathPoint *p in self.vertexArray){
-//        CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-//        CGPoint point;
-//        point.x = p.x;
-//        point.y = p.y;
-//        
-//        point = convertPixelToPoint(point, self.img.image.size, self.view.frame.size);
-//        CGContextMoveToPoint(context, point.x, point.y);
-//        CGContextAddEllipseInRect(context, CGRectMake(point.x, point.y, 3, 3));
-//    }
-//    CGContextStrokePath(context);
-//................................................................................//
 }
 
 @end

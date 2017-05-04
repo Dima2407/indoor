@@ -44,6 +44,7 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
         self.manager = [[IndoorLocationManager alloc] init];
         self.manager.locationListener = self;
         self.manager.errorListener = self;
+        [self.manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
         [self.manager addProvider:BLE_PROVIDER];
 
         
@@ -52,12 +53,12 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 }
 -(NSArray*)getLogs{
    
-    return [self.manager logging];
+    return [self.manager getLog];
 }
 #pragma mark - Action
 -(void) startBeacon{
     BOOL log= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsframeOnLogs];
-    self.manager.logger = log;
+    self.manager.isStartLog = log;
     
      [self.manager start];
 }
@@ -84,6 +85,7 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     else{
 
         NSLog(@"%f  %f",x,y);
+      //  [self.delegate currentLocation:CGPointMake(1, 1)];
     [self.delegate currentLocation:CGPointMake(x, y)];
 
    }

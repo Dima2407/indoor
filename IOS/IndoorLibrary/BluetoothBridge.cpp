@@ -52,5 +52,3 @@ Navigator::Math::Position3D outPos = navigator->getLastPosition();
     output[2] = outPos.z;
 }
 //extern "C"
-
-

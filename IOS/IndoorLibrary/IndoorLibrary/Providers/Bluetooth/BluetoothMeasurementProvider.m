@@ -9,9 +9,10 @@
 #import "BluetoothMeasurementProvider.h"
 #import <CoreLocation/CLLocationManager.h>
 
-@interface BluetoothMeasurementProvider()
-@property (strong, nonatomic) NSMutableArray *beaconsArray;
+@interface BluetoothMeasurementProvider()<CLLocationManagerDelegate>
 @property (nonatomic, assign) BOOL startStatus;
+@property (nonatomic, strong) NSMutableArray* beaconsUUIDs;
+@property (nonatomic, strong) NSMutableArray* beaconsRegion;
 @property (nonatomic, strong) CLLocationManager *manager;
 @property (nonatomic, strong) MeasurementEvent *event;
 @property (nonatomic, strong) IosMeasurementTransfer *transfer;
@@ -20,8 +21,8 @@
 @implementation BluetoothMeasurementProvider
 @synthesize transfer;
 
-static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
--(instancetype)initWithTransfer:(IosMeasurementTransfer *)bleTransfer{
+
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) bleTransfer andUUIDs:(NSMutableArray*)uuids{
     self = [super init];
     
     if(self){
@@ -32,6 +33,8 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
         self.manager.desiredAccuracy = kCLLocationAccuracyBest;
         self.transfer = bleTransfer;
           [self.manager requestWhenInUseAuthorization];
+        self.beaconsRegion = [NSMutableArray new];
+        self.beaconsUUIDs = uuids;
         self.type = BLE_PROVIDER;
     }
     return self;
@@ -49,17 +52,21 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
 
 #pragma mark - Action
 -(void) start{
+    [self.beaconsUUIDs enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+            [self startBeaconWihtUUID:obj locationManager:self.manager];
+    }];
   
-    [self startBeaconWihtUUID:sensoroUUId locationManager:self.manager];
+
   
    
 }
 
 -(void) startBeaconWihtUUID:(NSString*)uuid locationManager:(CLLocationManager*)locationManager{
     NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:uuid];
-    CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:@"IT-JIM"];
+    CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:[NSString stringWithFormat:@"%@",uuid]];
     
-   
+    [self.beaconsRegion addObject:region];
     [locationManager startRangingBeaconsInRegion:region];
     
 }
@@ -67,25 +74,31 @@ static NSString *sensoroUUId = @"23A01AF0-232A-4518-9C0E-323FB773F5EF";
 -(void)stop{
     
   
-        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
-        CLBeaconRegion *region = [[CLBeaconRegion alloc]initWithProximityUUID:beaconUUID identifier:@"IT-JIM"];
+        [self.beaconsRegion enumerateObjectsUsingBlock:^(CLBeaconRegion*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self.manager stopRangingBeaconsInRegion:obj];
+        }];
         
-        [self.manager stopRangingBeaconsInRegion:region];
+    
   
 }
 
 #pragma mark - CLLocationManagerDelegate -
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region{
-
-        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:sensoroUUId];
+    [self.beaconsUUIDs enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:obj];
         for(CLBeacon *beacon in beacons){
             if([beacon.proximityUUID isEqual:beaconUUID]){
                 
                 MeasurementEvent * event =[[MeasurementEvent alloc] initWithBeacon:beacon];
                 [self.transfer deliver:event];
-            
+                
+            }
         }
-    }
+    }];
+
+    
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager

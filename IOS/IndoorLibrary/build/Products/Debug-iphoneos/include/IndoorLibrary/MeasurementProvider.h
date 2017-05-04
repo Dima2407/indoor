@@ -6,10 +6,15 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "MeasurementEvent.h"
-#import "IosMeasurementTransfer.h"
-
+#import "IndoorPrefixHeader.pch"
+/*!
+ * @typedef MeasurementProviderType
+ * @brief A list of providers types.
+ * @constant GPS_PROVIDER gets coordinates by GPS.
+ * @constant SENSOR_PROVIDER  get coordinates by Accelerometer.
+ * @constant WIFI_PROVIDER get coordinates by WIFI beacons.
+ * @constant BLE_PROVIDER get coordinates by beacons.
+ */
 typedef NS_ENUM(NSInteger, MeasurementProviderType)
 {
     GPS_PROVIDER = 1,
@@ -19,7 +24,7 @@ typedef NS_ENUM(NSInteger, MeasurementProviderType)
 };
 
 @interface MeasurementProvider : NSObject
-@property (nonatomic, strong) IosMeasurementTransfer *transfer;
+
 @property (nonatomic, assign) MeasurementProviderType type;
 -(void)start;
 -(void)stop;

@@ -7,7 +7,6 @@
 //
 
 #import "IndoorLocationManager.h"
-#import "MeasurementProvider.h"
 #import "BluetoothMeasurementProvider.h"
 #import "GPSMeasurementProvider.h"
 #import "BluetoothBridge.h"
@@ -15,10 +14,13 @@
 
 
 
-
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
 @property (nonatomic, strong) NSMutableArray *logs;
+@property (nonatomic, strong) NSMutableSet *providers;
+@property (nonatomic, strong) IosMeasurementTransfer* transfer;
+@property (nonatomic, strong) NSMutableArray* beaconsUUIDs;
 @property (nonatomic, assign) NSTimeInterval time;
+@property (nonatomic, assign) BOOL startProviderFlag;
 
 @end
 
@@ -34,6 +36,8 @@
         self.transfer.delegate = self;
         self.logs = [NSMutableArray new];
         self.time = 1;
+        self.startProviderFlag = NO;
+        self.beaconsUUIDs = [[NSMutableArray alloc] init];
         
     }
     return self;
@@ -42,18 +46,27 @@
 #pragma mark - Logic
     
 -(void)addProvider:(MeasurementProviderType)type{
+    if (self.startProviderFlag)
+    {
+        NSLog(@"You can't add provider when IndoorLocationManager started");
+    }
+    else{
     MeasurementProvider * provider = nil;
     switch (type) {
         case GPS_PROVIDER:
             provider = [[GPSMeasurementProvider alloc] initWithTransfer: self.transfer];
             if(provider != nil){
-             
+            
                 [self.providers addObject:provider];
             }
 
             break;
         case BLE_PROVIDER:
-            provider = [[BluetoothMeasurementProvider alloc] initWithTransfer: self.transfer];
+            if (self.beaconsUUIDs.count == 0)
+            {
+                NSLog(@"Add UUID before start BLE_PROVIDER");
+            }
+            provider = [[BluetoothMeasurementProvider alloc] initWithTransfer:self.transfer andUUIDs:self.beaconsUUIDs];
             if(provider != nil){
                    BluetoothBridge_init();
                 [self.providers addObject:provider];
@@ -62,10 +75,17 @@
             break;
         default:
             break;
+                }
     }
    }
 
 -(void)removeProvider: (MeasurementProviderType) type{
+    
+    if (self.startProviderFlag)
+    {
+        NSLog(@"You can't remove provider when IndoorLocationManager started");
+    }
+    else{
     
                 if (type == BLE_PROVIDER)
                 {
@@ -91,15 +111,23 @@
                     }];
                 }
                 else{
-                    NSLog(@"Unrecognized type");
+                    NSLog(@"Unrecognized provider type");
                 }
-    
+        }
     }
 
 
 
 
 #pragma mark - Work with Beacon
+
+-(void)addUUID:(NSString*)uuid{
+    
+    
+        [self.beaconsUUIDs addObject:uuid];
+    
+    
+}
 
 
 -(void)setBeaconConfig:(BeaconConfig*) config{
@@ -111,6 +139,7 @@
 
 #pragma mark - Get Coordinates
 -(void)getCoordinates{
+    
     NSMutableArray *coordinates = [NSMutableArray new];
     double outPosition[] = {0.0, 0.0, 0.0};
     BluetoothBridge_getLastPosition(outPosition);
@@ -131,21 +160,30 @@
 
 
 -(void) start{
-    
-    [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
-        [obj start];
-        if (obj.type == BLE_PROVIDER)
-        {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
-                                         target:self
-                                       selector:@selector(getCoordinates)
-                                       userInfo:nil
-                                        repeats:YES];
-        }}];
+    if(self.providers.count > 0){
+        self.startProviderFlag = YES;
+        [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
+            [obj start];
+            if (obj.type == BLE_PROVIDER)
+            {
+                self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
+                                                              target:self
+                                                            selector:@selector(getCoordinates)
+                                                            userInfo:nil
+                                                             repeats:YES];
+            }}];
+    }
+    else{
+        
+        NSLog(@"Add the provider before calls the start method");
+    }
+   
     
 }
 
 -(void) stop{
+    
+    self.startProviderFlag = NO;
     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
         [obj stop];
         if (obj.type == BLE_PROVIDER)
@@ -169,7 +207,7 @@
         double timestamp = event.timestamp;
         BluetoothBridge_proces(timestamp, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi);
         
-    if (self.logger)
+    if (self.isStartLog)
     {
         NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
                               @(timestamp),@"timestamp",
@@ -194,7 +232,8 @@
 
 #pragma mark - Logger
 
--(NSArray*)logging{
+-(NSArray*)getLog{
+    
     NSArray *indoorLogs = [NSArray arrayWithArray:self.logs];
     [self.logs removeAllObjects];
     

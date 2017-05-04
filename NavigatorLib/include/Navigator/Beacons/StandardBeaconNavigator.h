@@ -67,7 +67,7 @@ namespace Navigator {
              */
             StandardBeaconNavigator(const std::shared_ptr<Mesh::RectanMesh> &mesh, bool ios);
 
-        public: //======== Methods
+        public: //======== Methods from AbstractBeaconNavigator implemented
             /// Process a single input data
             virtual const Math::Position3D &process(const BeaconReceivedData &brd) override;
 
@@ -90,18 +90,18 @@ namespace Navigator {
             }
 
             /// Delete a beacon by uid
-            void deleteBeacon(const BeaconUID &uid) {
+            virtual void deleteBeacon(const BeaconUID &uid) override {
                 triNav.deleteBeacon(uid);
             }
 
             /// Delete all beacons and reset the position
-            void clear() {
+            virtual void clear() override {
                 triNav.clear();
                 lastPosition = Math::Position3D();
             }
 
             /// Reset the Navigator (filters and last calculated position)
-            void reset(){
+            virtual void reset() override {
                 triNav.reset();
                 lastPosition = Math::Position3D();
             }

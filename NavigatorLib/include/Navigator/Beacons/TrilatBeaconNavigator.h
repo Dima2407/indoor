@@ -59,9 +59,8 @@ namespace Navigator {
          *
          */
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {
-        public:
+        public: //======== Methods from AbstractBeaconNavigator implemented
 
-            // -----  Public methods ------
             /// Constructor
             TrilatBeaconNavigator(const std::shared_ptr<Factory::IFilterFactory> &rssiFilterFactory,
                                   const std::shared_ptr<Factory::IFilterFactory> &distanceFilterFactory)
@@ -92,18 +91,20 @@ namespace Navigator {
             virtual void addBeacon(const Beacon &beacon) override ;
 
             /// Delete a beacon by uid
-            void deleteBeacon(const BeaconUID &uid) {
+            virtual void deleteBeacon(const BeaconUID &uid) override {
                 beaconProcessorList.erase(uid);
             }
 
             /// Delete all beacons and reset
-            void clear() {
+            virtual void clear() override {
                 beaconProcessorList.clear();
                 reset();
             }
 	        
 	        /// Reset filters etc but don't clear beacons
-	        void reset();
+            virtual void reset() override;
+
+        public: //========= Other methods
 
             /// Start recording history, works like a stopwatch
             void startHistory(){

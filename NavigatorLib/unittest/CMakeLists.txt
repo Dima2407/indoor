@@ -34,7 +34,7 @@ set(SOURCE_FILES
         #
         Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h
         Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
-        )
+        Beacons/StandardBeaconNavigatorTest.cpp Beacons/StandardBeaconNavigatorTest.h)
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

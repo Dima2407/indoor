@@ -17,10 +17,6 @@ namespace Navigator {
 
             // Configure the Trilat navigator
 
-            // Beacon timeout in seconds (default = 10)
-            // After that time idle the beacon's filters are reset
-            triNav.setBeaconTimeout(1.5);
-
             // Do we use full 3D trilat instead of 2D ? (default = false)
             triNav.setUse3DTrilat(false);
 
@@ -82,6 +78,10 @@ namespace Navigator {
 
                 // Stop recording history
                 triNav.stopHistory();
+
+                // Beacon timeout in seconds (default = 10)
+                // After that time idle the beacon's filters are reset
+                triNav.setBeaconTimeout(1.5);
 
                 // Set up new filters and re-run the history
                 shared_ptr<Factory::IFilterFactory> rssiFactory;

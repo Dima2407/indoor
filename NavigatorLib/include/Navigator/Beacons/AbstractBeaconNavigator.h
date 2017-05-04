@@ -44,6 +44,15 @@ namespace Navigator {
 
             /// Find a BeaconProcessor by uid, nullptr if not found
             virtual const std::shared_ptr<BeaconProcessor> findProcessorByUid(const BeaconUID & uid) const = 0;
+
+            /// Delete a beacon by uid
+            virtual void deleteBeacon(const BeaconUID &uid) = 0;
+
+            /// Delete all beacons and reset
+            virtual void clear() = 0;
+
+            /// Reset filters etc but don't clear beacons
+            virtual void reset() = 0;
         };
     }
 }

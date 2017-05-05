@@ -15,7 +15,7 @@
 @end
 static  NSString *kSettingsShowRadar = @"kSettingsShowRadar";
 static  NSString *kSettingsShowPoi = @"kSettingsShowPoi";
-static  NSString *kSettingsShowRout = @"kSettingsShowRout";
+static  NSString *kSettingsUseMesh = @"kSettingsUseMesh";
 static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 
 @implementation MenuViewController
@@ -26,24 +26,25 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     [super viewWillAppear:animated];
     [[BeaconManager sharedManager] stopBeacon];
     
+    
     BOOL radar= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowRadar];
     [self.showRadar setOn:radar animated:YES];
-    BOOL rout= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowRout];
-    [self.showRout setOn:rout animated:YES];
+    BOOL mesh= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsUseMesh];
+    [self.useMesh setOn:mesh animated:YES];
     BOOL poi= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowPoi];
     [self.showPOI setOn:poi animated:YES];
     BOOL log= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsframeOnLogs];
-    [self.OnLogs setOn:log animated:YES];
+    [self.onLogs setOn:log animated:YES];
     self.sendLogButton.userInteractionEnabled = log;
     
 }
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    if ([[BeaconManager sharedManager] status])
-    {
-         [[BeaconManager sharedManager] startBeacon];
-    }
-}
+//-(void)viewWillDisappear:(BOOL)animated{
+//    [super viewWillDisappear:animated];
+//    if ([[BeaconManager sharedManager] status])
+//    {
+//         [[BeaconManager sharedManager] startBeacon];
+//    }
+//}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -109,18 +110,18 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     [[NSUserDefaults standardUserDefaults] setBool:self.showRadar.on forKey:kSettingsShowRadar];
        
     }
-    if([sender isEqual:self.showRout]){
-        [[NSUserDefaults standardUserDefaults] setBool:self.showRout.on forKey:kSettingsShowRout];
+    if([sender isEqual:self.useMesh]){
+        [[NSUserDefaults standardUserDefaults] setBool:self.useMesh.on forKey:kSettingsUseMesh];
        
     }
     if([sender isEqual:self.showPOI]){
         
         [[NSUserDefaults standardUserDefaults] setBool:self.showPOI.on forKey:kSettingsShowPoi];
     }
-    if([sender isEqual:self.OnLogs]){
+    if([sender isEqual:self.onLogs]){
         
-        [[NSUserDefaults standardUserDefaults] setBool:self.OnLogs.on forKey:kSettingsframeOnLogs];
-        self.sendLogButton.userInteractionEnabled = self.OnLogs.on;
+        [[NSUserDefaults standardUserDefaults] setBool:self.onLogs.on forKey:kSettingsframeOnLogs];
+        self.sendLogButton.userInteractionEnabled = self.onLogs.on;
     }
 
 

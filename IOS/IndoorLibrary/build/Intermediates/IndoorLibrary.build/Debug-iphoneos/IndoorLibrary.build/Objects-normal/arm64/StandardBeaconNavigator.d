@@ -1,0 +1,22 @@
+dependencies: \
+  /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/StandardBeaconNavigator.cpp \
+  /Users/appleface/Documents/sdk/indoor-sdk/IOS/IndoorLibrary/IndoorLibrary/IndoorPrefixHeader.pch \
+  ../../NavigatorLib/include/Navigator/Beacons/StandardBeaconNavigator.h \
+  ../../NavigatorLib/include/Navigator/Beacons/AbstractBeaconNavigator.h \
+  ../../NavigatorLib/include/Navigator/Math/Position3D.h \
+  ../../NavigatorLib/include/Navigator/Beacons/BeaconReceivedData.h \
+  ../../NavigatorLib/include/Navigator/Beacons/./BeaconUID.h \
+  ../../NavigatorLib/include/Navigator/Beacons/TrilatBeaconNavigator.h \
+  ../../NavigatorLib/include/Navigator/Beacons/BeaconProcessor.h \
+  ../../NavigatorLib/include/Navigator/Math/Filter/IFilter.h \
+  ../../NavigatorLib/include/Navigator/Math/Filter/NoFilter.h \
+  ../../NavigatorLib/include/Navigator/Beacons/Beacon.h \
+  ../../NavigatorLib/include/Navigator/Beacons/Factory/IFilterFactory.h \
+  ../../NavigatorLib/include/Navigator/Math/Trilat/trilat.h \
+  ../../NavigatorLib/include/Navigator/Math/Trilat/./TrilatRecord.h \
+  ../../NavigatorLib/include/Navigator/Beacons/Factory/NoFilterFactory.h \
+  ../../NavigatorLib/include/Navigator/Beacons/Factory/MovingAverageFilterFactory.h \
+  ../../NavigatorLib/include/Navigator/Math/Filter/MovingAverageFilter.h \
+  ../../NavigatorLib/include/Navigator/Math/Filter/./RingBuffer.h \
+  ../../NavigatorLib/include/Navigator/Mesh/RectanMesh.h \
+  ../../NavigatorLib/include/Navigator/Mesh/./MeshData.h

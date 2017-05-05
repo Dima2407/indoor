@@ -48,3 +48,17 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
 extern "C"
 #endif
 void BluetoothBridge_getLastPosition(double * output);
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_createMesh(double nx, double ny, double dx, double dy, double x0, double y0);
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_setMaskTable(std::vector<int> mTable);
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_releseNavigator();

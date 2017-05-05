@@ -16,9 +16,6 @@ dependencies: \
   /usr/local/include/eigen3/Eigen/src/Core/MathFunctions.h \
   /usr/local/include/eigen3/Eigen/src/Core/GenericPacketMath.h \
   /usr/local/include/eigen3/Eigen/src/Core/MathFunctionsImpl.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/NEON/PacketMath.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/NEON/MathFunctions.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/NEON/Complex.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/CUDA/Half.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/CUDA/PacketMathHalf.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/CUDA/TypeCasting.h \

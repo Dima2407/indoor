@@ -6,8 +6,19 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 
 #import "IndoorPrefixHeader.pch"
-
-
+/*!
+ * @typedef MeasurementProviderType
+ * @brief A list of providers types.
+ * @constant STANDART_MODE  use BLE_PROVIDER with standart settings.
+ * @constant SENSOR_MODE use SENSOR_PROVIDER.
+ * @constant MESH_MODE use BLE_PROVIDER with mesh for map.
+ */
+typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
+{
+    STANDART_MODE = 1,
+    SENSOR_MODE,
+    MESH_MODE
+};
 
 @interface IndoorLocationManager : NSObject
 
@@ -24,9 +35,21 @@
 @property (nonatomic, strong) NSTimer *timer;
 
 /*!
+ * @discussion Choose IndoorLocationManager working mode
+ * @param mode Specifies the mode of IndoorLocationManager
+ 
+ */
+-(void)setMode:(IndoorLocationManagerMode)mode;
+/*!
+ * @discussion Adds NSDictionary of configs for mesh
+ * @param meshIn Specifies the parameters of config for maps mesh
+ * @param masktableOut Specifies the parameters of config for binary mask
+ */
+-(void)setMeshConfig:(NSArray*)meshIn andOut:(NSArray*) masktableOut;
+/*!
  * @discussion Adds a card of bicons
  * @param config Specifies the parameters of one beacon by an object of type BeaconConfig
-
+ 
  */
 -(void)setBeaconConfig:(BeaconConfig*) config;
 /*!
@@ -51,6 +74,11 @@
  * @param type  MeasurementProviderType type of provider
  */
 -(void)removeProvider: (MeasurementProviderType) type;
+/*!
+ * @discussion Preparing IndoorLocationManager for work with all setted params
+ 
+ */
+-(void)prepare;
 /*!
  * @discussion Start data processing
 

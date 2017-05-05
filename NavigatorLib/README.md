@@ -42,12 +42,13 @@ cmake --build .
 
 
 __Usage__: To use the library you have to add the `indoor-sdk/NavigatorLib/include` directory
- to your incluude path. Then include _Navigator.h_ and create an
-instance of the class _TrilatBeaconNavigator_.  See `example1`,  `example2` for more info. 
-See `exampleCalibrate` for info on calibration. 
+ to your incluude path. Then include _Navigator.h_ and create`` an
+instance of class _StandardBeaconNavigator_, see `example 3`.   _StandardBeaconNavigator_ is 
+trialteration + mesh post-processing + standard settings (Android vs iOS) + 5 second Init Phase combined.
 
-For the mesh+mask post-processing, see `exampleMesh1`, `exampleMesh2`. See `example3` for 
-StandardBeaconNavigator, which is trialteration + mesh post-processing combined.
+See `example1`,  `example2` for info on _TrilatBeaconNavigator_ (trilateratiion only no mesh, custom settings). 
+See `exampleCalibrate` for info on calibration. 
+For the mesh+mask post-processing, see `exampleMesh1`, `exampleMesh2`.
 
 __Note__: 
 

@@ -24,26 +24,33 @@ namespace Navigator {
          * - triNav : TrilatBeaconNavigator
          * - lastPosition : Position3D
          * - mesh : std::shared_ptr<RectanMesh>
+         * - initPosition : Position3D
+         * - initFinished : bool
          * --
          * + StandardBeaconNavigator( mesh : std::shared_ptr<RectanMesh>)
          * ..
          * + process(const BeaconReceivedData &brd) : const Position3D &
          * + process(const std::vector<BeaconReceivedData> &brds) : const Position3D &
          * + findProcessorByUid(uid : BeaconUID) : const std::shared_ptr<BeaconProcessor>
-         * ..
+         * + const getLastPosition() : const Math::Position3D &
          * + addBeacon(beacon: const Beacon &) : void
          * + deleteBeacon(uid: const BeaconUID &) : void
          * + clear() : void
          * + reset() : void
-         * + const getLastPosition() : const Math::Position3D &
+         * ..
+         * + const isInitFinished() : bool
+         * + const getInitPosition() const Math::Position3D &
          * ..
          * - postProcess(pos Position3D) : Position3D
+         * - checkTimes() : void
          * }
          * note bottom
-         * // BeaconNavigator with standard filters, mesh+masktable post-processing //
+         * // BeaconNavigator with standard filters, init phase, mesh+masktable post-processing //
          * // //
          * // It is a wrapper to a TrilatBeaconNavigator  object //
          * // With a RectanMesh object for post-processing //
+         * // Implements standard filters different for Android and iOS //
+         * // Implements the 5 second Init Phase //
          * endnote
          *
          * @enduml
@@ -106,7 +113,7 @@ namespace Navigator {
                 lastPosition = Math::Position3D();
             }
 
-        public: ///========= Getters
+        public: ///========= Other methods
             bool isInitFinished() const {
                 return initFinished;
             }

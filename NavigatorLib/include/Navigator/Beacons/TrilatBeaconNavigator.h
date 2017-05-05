@@ -26,6 +26,11 @@ namespace Navigator {
          * - beaconTimeout : double
          * - use3DTrilat : bool
          * - useNearest : unsigned
+         * ..
+         * - history : std::vector <std::vector<BeaconReceivedData>>
+         * - firstTimestamp : double
+         * - lastTimestamp : double
+         * - recordingHistory : bool
          * --
          * + TrilatBeaconNavigator(rssiFilterFactory : const std::shared_ptr<IFilterFactory> &,
          *                        distanceFilterFactory : const std::shared_ptr<IFilterFactory> &)
@@ -33,12 +38,18 @@ namespace Navigator {
          * + process(const BeaconReceivedData &brd) : const Position3D &
          * + process(const std::vector<BeaconReceivedData> &brds) : const Position3D &
          * + findProcessorByUid(uid : BeaconUID) : const std::shared_ptr<BeaconProcessor>
-         * ..
+         * + const getLastPosition() : const Math::Position3D &
          * + addBeacon(beacon: const Beacon &) : void
          * + deleteBeacon(uid: const BeaconUID &) : void
          * + clear() : void
          * + reset() : void
-         * + const getLastPosition() : const Math::Position3D &
+         * ..
+         * + startHistory() : void
+         * + stopHistory() : void
+         * + rerunHistory(rssiFilterFactory : const std::shared_ptr<IFilterFactory> &,
+         *                        distanceFilterFactory : const std::shared_ptr<IFilterFactory> &) : void
+         * ..
+         * + getters(), setters()
          * ..
          * - runTrilat() : void
          * - processPacket(brd : const BeaconReceivedData &) : void
@@ -51,11 +62,11 @@ namespace Navigator {
          * // To get a nonzero result //
          * // Currently in 2D (z is ignored) //
          * endnote
+         * @enduml
          *
          * class TrilatBeaconNavigator .up.|> abstract AbstractBeaconNavigator
          * interface Factory::IFilterFactory --o TrilatBeaconNavigator : rssiFilterFactory
          * interface Factory::IFilterFactory --o TrilatBeaconNavigator : distanceFilterFactory
-         * @enduml
          *
          */
         class TrilatBeaconNavigator : public AbstractBeaconNavigator {
@@ -84,8 +95,6 @@ namespace Navigator {
             virtual const Math::Position3D &getLastPosition() const override {
                 return lastPosition;
             }
-
-            //------ Beacon operations -----
 
             /// Add a new beacon
             virtual void addBeacon(const Beacon &beacon) override ;

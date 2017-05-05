@@ -69,12 +69,19 @@ int main() {
     /* 2) Create the Beacon Navigator
      Here it is a local variable,
      Of course you can use it as a class field or shared_ptr or anything
-     Unlike TrilatBeaconNavigator, StandardBeaconNavigator uses default filtters
+     Unlike TrilatBeaconNavigator, StandardBeaconNavigator uses default filters
 
-     Requires shared_ptr to a RectanMesh, you can try
+     Requires shared_ptr to a RectanMesh, you can also try
      mesh2 or nullptr for no mesh
 
-     Second parameter : true = iOS, false = Android
+     Second parameter : true = iOS, false = Android, different default filters
+
+     The initialization phase : for the first 5 seconds we are using
+     MovingAverageFilter(20), and after 5 seconds switch to (with re-running all data)
+       MovingAverageFilter(3) (Android)
+       NoFilter (iOS)
+
+      The position just after initialization can be obtained vis getInitPosition()
      */
     StandardBeaconNavigator navigator(mesh1, false);  // !!! true = iOS, false = Android !!!
 
@@ -178,6 +185,13 @@ int main() {
 
     cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
 
+    // We can check if we are initialized
+    if (navigator.isInitFinished()) {
+        cout << "Init Phase is Finished. \n";
+        Position3D initPos = navigator.getInitPosition();
+    } else {
+        cout << "Init Phase is NOT Finished. \n";
+    };
 
     // Try findProcessorByUid, useful for debugging
     auto processor = navigator.findProcessorByUid(BeaconUID("Guinea Pig", 1, 2));

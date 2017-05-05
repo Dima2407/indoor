@@ -83,7 +83,7 @@ namespace Navigator {
                 // After that time idle the beacon's filters are reset
                 triNav.setBeaconTimeout(1.5);
 
-                // Set up new filters and re-run the history
+                // Set up new filters
                 shared_ptr<Factory::IFilterFactory> rssiFactory;
                 shared_ptr<Factory::IFilterFactory> distanceFactory;
 
@@ -97,7 +97,11 @@ namespace Navigator {
                     distanceFactory = make_shared<Factory::NoFilterFactory>();
                 }
 
+                // Re-run the history
                 triNav.rerunHistory(rssiFactory, distanceFactory);
+
+                // Update the last position (and the one about to be returned by process() )
+                lastPosition = triNav.getLastPosition();
             }
         }
 

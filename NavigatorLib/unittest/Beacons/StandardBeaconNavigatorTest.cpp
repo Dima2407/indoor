@@ -2,11 +2,12 @@
 // Created by  Oleksiy Grechnyev on 5/4/2017.
 //
 
-
 #include <random>
 #include <ctime>
 #include <iostream>
 #include <cstdio>
+
+#include "../mydoubleeq.h"
 
 #include "StandardBeaconNavigatorTest.h"
 
@@ -83,6 +84,9 @@ namespace NaviTest {
             // Now process data through 3 navigators
             Position3D pos, pos1, pos2;
 
+            // Set the accuracy
+            constexpr double accuracy = 1.0e-10;
+
 //            puts("");
             for (const auto & brds : data) {
                 pos = stNav.process(brds);
@@ -93,11 +97,13 @@ namespace NaviTest {
 
                 // Before and after init
                 if (stNav.isInitFinished()) {
-                    CPPUNIT_ASSERT(pos == pos2);
+//                    printf(" (pos~pos2) = %d \n" , myDoubleEq(pos.x, pos2.x, accuracy) && myDoubleEq(pos.y, pos2.y, accuracy));
+                    CPPUNIT_ASSERT(myDoubleEq(pos.x, pos2.x, accuracy) && myDoubleEq(pos.y, pos2.y, accuracy));
                 } else {
-                    CPPUNIT_ASSERT(pos == pos1);
+//                    printf(" (pos~pos1) = %d \n" , myDoubleEq(pos.x, pos1.x, accuracy) && myDoubleEq(pos.y, pos1.y, accuracy));
+                    CPPUNIT_ASSERT(myDoubleEq(pos.x, pos1.x, accuracy) && myDoubleEq(pos.y, pos1.y, accuracy));
                 }
-                printf(" %f  :  %f %f  :  %f %f  :  %f %f \n", ts,  pos.x, pos.y,  pos1.x, pos1.y,  pos2.x, pos2.y);
+//                printf(" %f  :  %f %f  :  %f %f  :  %f %f \n", ts,  pos.x, pos.y,  pos1.x, pos1.y,  pos2.x, pos2.y);
             }
         }
     }

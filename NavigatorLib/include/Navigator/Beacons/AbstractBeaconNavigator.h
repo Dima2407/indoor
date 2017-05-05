@@ -17,7 +17,13 @@ namespace Navigator {
          * class  AbstractBeaconNavigator {
          * + {abstract} process(const BeaconReceivedData &brd) : const Position3D &
          * + {abstract} process(const std::vector<BeaconReceivedData> &brd) : const Position3D &
-         * + {abstract} const getLastPosition() : const Math::Position3D &
+         * + {abstract} findProcessorByUid(uid : BeaconUID) : const std::shared_ptr<BeaconProcessor>
+         * + {abstract} onst getLastPosition() : const Math::Position3D &
+         * ..
+         * + {abstract} addBeacon(beacon: const Beacon &) : void
+         * + {abstract} deleteBeacon(uid: const BeaconUID &) : void
+         * + {abstract} clear() : void
+         * + {abstract} reset() : void
          *
          * }
          * @enduml */

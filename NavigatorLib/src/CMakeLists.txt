@@ -33,6 +33,7 @@ set(SOURCE_FILES
         #
         ../include/Navigator/Dijkstra/Edge.h
         ./Navigator/Dijkstra/Graph.cpp ../include/Navigator/Dijkstra/Graph.h
+        ./Navigator/Dijkstra/PointGraph.cpp ../include/Navigator/Dijkstra/PointGraph.h
         )
 
 include_directories(

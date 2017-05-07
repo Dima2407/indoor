@@ -60,7 +60,7 @@ namespace Navigator {
             }
             
         public:  // == OPERATORS ==
-            bool operator==(Position3D const& other){
+            bool operator==(Position3D const& other) const {
                 return x==other.x && y==other.y && z==other.z;
             }
         };

@@ -11,7 +11,7 @@ namespace Navigator {
             /// Constructor
             Edge(int to, double weight) : to(to), weight(weight) {}
 
-            /// Neighbor index
+            /// Neighbor index, starting with 0
             int to;
 
             /// Weight (or distance) of the edge

@@ -7,9 +7,8 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-
 namespace NaviTest {
-    namespace Beacons {
+    namespace Dijkstra {
         class GraphTest  : public CPPUNIT_NS::TestFixture {
 
         CPPUNIT_TEST_SUITE(GraphTest);

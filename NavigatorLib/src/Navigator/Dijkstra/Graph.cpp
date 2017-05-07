@@ -7,6 +7,7 @@
 #include <set>
 #include <cmath>
 #include <cstdio>
+#include <algorithm>
 
 #include "Navigator/Dijkstra/Graph.h"
 
@@ -22,7 +23,7 @@ namespace Navigator {
                 throw runtime_error("Index out of bounds in dijkstra.");
 
 
-            printf("size = %d\n", size);
+//            printf("size = %d\n", size);
             const double INF = numeric_limits<double>::max(); // Our infinity
 
             // The parent vector
@@ -36,23 +37,37 @@ namespace Navigator {
             set<pair<double, int> > active;
             active.insert({0.0, source});
 
+            // Clear the path
+            path.clear();
+
             while (active.size()) {
                 const auto &curPair = active.begin(); // Current location as pair
                 int current = curPair->second; // and as index
 
-                printf("currrent = %d\n", current);
+//                printf("current = %d\n", current);
 
                 if (current == destination) {
-                    puts("Found !");
+//                    puts("Found !");
                     // We reached the destination = success
 
-                    // Backttrack the path trough parents
-                    path.clear();
+                    // Backtrack the path trough parents
+                    // From destination to source INCLUSIVE
 
                     int i = destination;
-                    while (1){
-                        
+                    while (true) {
+                        path.push_back(i);
+                        if (i == source)
+                            break;
+                        i = parent[i]; // Move to the parent
+                        if (-17 == i) {
+//                            puts("Cannot find path !");
+                            path.clear();
+                            break;
+                        }
                     }
+
+                    if (!path.empty())
+                        reverse(path.begin(), path.end()); // Reverse the order
 
                     return curPair->first; // Return the distance
                 }
@@ -63,7 +78,7 @@ namespace Navigator {
                     if (n < 0 || n >= size)
                         throw runtime_error("Index out of bounds in dijkstra !");
 
-                    if (n==current)
+                    if (n == current)
                         throw runtime_error("Self-linked vertex in dijkstra !");
 
                     double oldDist = distances[n];

@@ -7,7 +7,7 @@
 
 #include "Navigator.h"
 
-int main(){
+int main() {
     using namespace std;
     using namespace Navigator::Dijkstra;
 
@@ -18,11 +18,17 @@ int main(){
                      {Edge(2, 2.0), Edge(4, 2.0), Edge(5, 4.0)},                  // 3
                      {Edge(1, 7.0), Edge(2, 5.0), Edge(3, 2.0), Edge(5, 6.0)},    // 4
                      {Edge(3, 4.0), Edge(4, 6.0), Edge(6, 9.0)},                  // 5
-                     {Edge(5, 9.0)}                                               // 6
-                     });
+                     {Edge(5, 9.0)},                                              // 6
+                     vector<Edge>()                                               // 7 (unconnected)
+             });
     vector<int> path;
 
-    cout << "dist = " << g1.dijkstra(4, 0, path) << endl;
+    cout << "dist = " << g1.dijkstra(1, 6, path) << endl;
+
+    cout << "path = ";
+    for (int i : path)
+        cout << i << " ";
+    cout << endl;
 
     return 0;
 }

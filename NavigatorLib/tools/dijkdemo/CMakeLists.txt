@@ -4,6 +4,7 @@ project(dijkdemo)
 set(CMAKE_CXX_STANDARD 14)
 
 file(COPY graph.txt DESTINATION .)
+file(COPY ../maskgen2/maps DESTINATION .)
 
 include_directories(
         ../CImg

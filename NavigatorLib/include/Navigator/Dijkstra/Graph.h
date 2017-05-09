@@ -16,6 +16,16 @@ namespace Navigator {
             // Create from a vector, no checks
             Graph(const std::vector<std::vector<Edge>> &edges) :
                     edges(edges) {}
+                    
+            // Get number of vertices
+            int getSize() const {
+                return edges.size();
+            }
+            
+            // Get edges
+            const std::vector<std::vector<Edge>> & getEdges() const {
+                return edges;
+            }
 
         public: //========= Methods ============
             /** @brief  Find the shortest path between source and destination with Dijkstra

@@ -29,6 +29,11 @@ namespace Navigator {
         public: //========= Methods ======
             /// A version of dijkstra which gives a vector of Position3D points
             double dijkstraP(int source, int destination, std::vector<Math::Position3D> &pointPath);
+            
+            // Get vertices
+            const std::vector<Math::Position3D>  & getVertices() const{
+                return vertices;
+            }
 
         private: //========= Fields
             /// Vertices of the graph

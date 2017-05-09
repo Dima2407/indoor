@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 
 #include "Navigator/Dijkstra/PointGraph.h"
@@ -14,6 +15,7 @@ namespace Navigator {
 
         PointGraph::PointGraph(const std::string &fileName) : Graph({}) {
             using namespace std;
+            using namespace Navigator::Math;
 
             ifstream in(fileName);
 
@@ -24,6 +26,8 @@ namespace Navigator {
 
             // Line 1 = type of file
             getline(in, line);
+//            cout << line << endl;
+
             bool flag;
             if (line == "->GOOD")
                 flag = true;
@@ -33,7 +37,39 @@ namespace Navigator {
                 throw runtime_error("PointGraph: Cannot parse file" + fileName);
 
             // Read point positions
+            double x, y;
 
+            while (true) {
+                getline(in, line);
+                stringstream stin(line);
+
+                // Read x,y until an uncompatible line
+                if (! (stin >> x >> y))
+                    break;
+
+                vertices.push_back(Position3D(x, y, 0.0));
+//                cout << "(x, y) = " << x << " " << y << endl;
+            }
+//            cout << "vertices.size() = " << vertices.size() << endl;
+            if (0 == vertices.size())
+                throw runtime_error("PointGraph: Cannot parse file" + fileName);
+
+//            cout << line << endl;
+
+            if (line != "->EDGES")
+                throw runtime_error("PointGraph: Cannot parse file" + fileName);
+
+            // Read the edges
+            int size = vertices.size();
+            edges = vector<vector<Edge>>(size); // Create the vector of the correct size
+
+            int i, j;
+            double dist;
+
+            while (in >> i >> j >> dist) {
+//                cout << i << " : " << j << " : " << dist << endl;
+                edges[i].push_back(Edge(j, dist));
+            }
 
             in.close();
         }

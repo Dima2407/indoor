@@ -13,6 +13,8 @@ add_subdirectory(example3)
 
 add_subdirectory(exampleCalibrate)
 
+add_subdirectory(exampleDijkstra)
+
 add_subdirectory(exampleMesh)
 
 add_subdirectory(exampleMesh2)

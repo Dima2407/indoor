@@ -29,7 +29,12 @@ set(SOURCE_FILES
         ./Navigator/Beacons/BeaconProcessor.cpp
 
         #
-        ./Navigator/Mesh/RectanMesh.cpp ../include/Navigator/Mesh/RectanMesh.h)
+        ./Navigator/Mesh/RectanMesh.cpp ../include/Navigator/Mesh/RectanMesh.h
+        #
+        ../include/Navigator/Dijkstra/Edge.h
+        ./Navigator/Dijkstra/Graph.cpp ../include/Navigator/Dijkstra/Graph.h
+        ./Navigator/Dijkstra/PointGraph.cpp ../include/Navigator/Dijkstra/PointGraph.h
+        )
 
 include_directories(
         ../include/

@@ -29,12 +29,13 @@ set(SOURCE_FILES
         Beacons/BeaconUIDTest.cpp Beacons/BeaconUIDTest.h
         Beacons/BeaconProcessorTest.cpp Beacons/BeaconProcessorTest.h
         Beacons/TrilatBeaconNavigatorTest.cpp Beacons/TrilatBeaconNavigatorTest.h
+        Beacons/StandardBeaconNavigatorTest.cpp Beacons/StandardBeaconNavigatorTest.h
         Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h
         Beacons/Calibrate/BeaconCalibratorTest.cpp Beacons/Calibrate/BeaconCalibratorTest.h
         #
         Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h
         Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
-        Beacons/StandardBeaconNavigatorTest.cpp Beacons/StandardBeaconNavigatorTest.h)
+        Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h)
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

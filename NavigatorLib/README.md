@@ -49,6 +49,7 @@ trialteration + mesh post-processing + standard settings (Android vs iOS) + 5 se
 See `example1`,  `example2` for info on _TrilatBeaconNavigator_ (trilateratiion only no mesh, custom settings). 
 See `exampleCalibrate` for info on calibration. 
 For the mesh+mask post-processing, see `exampleMesh1`, `exampleMesh2`.
+For the Dijkstra routing, see `exampleDijkstra` and `dijktool`.
 
 __Note__: 
 
@@ -66,6 +67,7 @@ __Directories__:
 * `lib` : This directory is for external libraries, e.g. Eigen
 * `examples` : Examples
 * `tools` : Tools, includes `maskgen`, `maskgen2`, `maskdemo` at present, which generates mask table from a black/white mask or a PNG file.
+        Also `dijkdemo` for visualizing Dijkstra routing.
 * `unittest` : CppUnit-based unit tests for the library
 * `test-tool` (`tester`, `faker`, `autotester`) : A tool for testing the library with events data
  from external _DAT_ or _JSON_ files.

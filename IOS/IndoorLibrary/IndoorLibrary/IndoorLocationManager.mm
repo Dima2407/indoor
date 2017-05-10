@@ -231,7 +231,11 @@
         }}];
 }
 
-
+-(void)deleteMesh{
+    
+    
+    BluetoothBridge_releseMesh();
+}
 
 #pragma mark - IosMeasurementTransferDelegate
 

@@ -86,6 +86,9 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     
     [self.manager stop];
 }
+-(void)deleteMesh{
+    [self.manager deleteMesh];
+}
 
 #pragma mark - IndoorLocationListenerProtocol
 

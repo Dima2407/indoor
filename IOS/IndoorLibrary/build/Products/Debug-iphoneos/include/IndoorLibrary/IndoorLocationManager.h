@@ -88,6 +88,8 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
  * @discussion Stops data processing
  */
 -(void)stop;
-
-
+/*!
+ * @discussion release IndoorLocationManager
+ */
+-(void)deleteMesh;
 @end

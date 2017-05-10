@@ -98,6 +98,11 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
 }
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [[BeaconManager sharedManager] stopBeacon];
+    [[BeaconManager sharedManager] deleteMesh];
+}
 #pragma mark - Create POI Markers -
 -(void) createPoiMarkers:(NSDictionary*)poisDic{
  

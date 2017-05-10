@@ -17,7 +17,6 @@
 		0617DD7A1E4DE1E6000FE59C /* RouteInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617DD751E4DE1E6000FE59C /* RouteInfoView.m */; };
 		063A7A3B1EB36D8900ABA37F /* UIColor+HEX.h in Headers */ = {isa = PBXBuildFile; fileRef = 063A7A391EB36D8900ABA37F /* UIColor+HEX.h */; };
 		063A7A3C1EB36D8900ABA37F /* UIColor+HEX.m in Sources */ = {isa = PBXBuildFile; fileRef = 063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */; };
-		0688CF3D1EBCC211001C3834 /* masktable.out in Resources */ = {isa = PBXBuildFile; fileRef = 0688CF3C1EBCC211001C3834 /* masktable.out */; };
 		06FB4D011E8D558F0007DF80 /* libIndoorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FB4D001E8D558F0007DF80 /* libIndoorLibrary.a */; };
 		680C25521D956B32002A2879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23801D956B31002A2879 /* AppDelegate.m */; };
 		680C25531D956B32002A2879 /* BeaconManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23831D956B31002A2879 /* BeaconManager.m */; };
@@ -82,7 +81,6 @@
 		0617DD7C1E4DE256000FE59C /* RoutePoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutePoint.h; sourceTree = "<group>"; };
 		063A7A391EB36D8900ABA37F /* UIColor+HEX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HEX.h"; sourceTree = "<group>"; };
 		063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HEX.m"; sourceTree = "<group>"; };
-		0688CF3C1EBCC211001C3834 /* masktable.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = masktable.out; sourceTree = "<group>"; };
 		06A592921EAE46F9007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
 		06A592941EAE46F9007760A2 /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
 		06A592951EAE46F9007760A2 /* ErrorListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorListener.h; sourceTree = "<group>"; };
@@ -435,7 +433,6 @@
 		85A55A841D880B6B00431C02 = {
 			isa = PBXGroup;
 			children = (
-				0688CF3C1EBCC211001C3834 /* masktable.out */,
 				06A592911EAE46F9007760A2 /* IndoorLibrary */,
 				85A55A8F1D880B6B00431C02 /* iosNavigation */,
 				85A55A8E1D880B6B00431C02 /* Products */,
@@ -561,7 +558,6 @@
 				680C25B91D956B32002A2879 /* LaunchScreen.storyboard in Resources */,
 				68FCB0561DAE651B0058B6EE /* EKTopsort.png in Resources */,
 				680C25581D956B32002A2879 /* Main.storyboard in Resources */,
-				0688CF3D1EBCC211001C3834 /* masktable.out in Resources */,
 				68FCB0551DAE651B0058B6EE /* EKGraphPicture.png in Resources */,
 				680C25B81D956B32002A2879 /* Assets.xcassets in Resources */,
 			);

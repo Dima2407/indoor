@@ -61,4 +61,4 @@ void BluetoothBridge_setMaskTable(std::vector<int> mTable);
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_releseNavigator();
+void BluetoothBridge_releseMesh();

@@ -73,3 +73,7 @@ void BluetoothBridge_setMaskTable(std::vector<int> mTable){
     
     mesh -> setMaskTable(mTable);
 }
+extern "C"
+void BluetoothBridge_releseMesh(){
+    mesh = NULL;
+}

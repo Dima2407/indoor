@@ -91,5 +91,17 @@ namespace Navigator {
         }
 //============================================================================
 
+        int PointGraph::findVertex(const Math::Position3D &coord) const{
+            using namespace Navigator::Math;
+
+            for (int i = 0; i < vertices.size(); ++i) {
+                if (vertices[i].approx_equals(coord, 1.0e-10))
+                    return i;
+            }
+
+            return -1; // Not found
+        }
+//============================================================================
+
     }
 }

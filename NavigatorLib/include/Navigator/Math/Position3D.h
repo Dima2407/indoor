@@ -51,12 +51,13 @@ namespace Navigator {
                 return isfinite(x) && isfinite(y) && isfinite(z);
             }
             bool isWrong(){ return !isFinite(); };
-            
-            bool approx_equals(Position3D const& other, double presesion){
+
+            /// Approx. equality between 2 points
+            bool approx_equals(Position3D const& other, double precision) const{
             	using std::abs;
-                return  (abs(x-other.x) <= presesion) &&
-                        (abs(y-other.y) <= presesion) &&
-                        (abs(z-other.z) <= presesion);
+                return  (abs(x-other.x) <= precision) &&
+                        (abs(y-other.y) <= precision) &&
+                        (abs(z-other.z) <= precision);
             }
             
         public:  // == OPERATORS ==

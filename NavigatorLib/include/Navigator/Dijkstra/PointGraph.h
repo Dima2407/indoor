@@ -30,10 +30,13 @@ namespace Navigator {
             /// A version of dijkstra which gives a vector of Position3D points
             double dijkstraP(int source, int destination, std::vector<Math::Position3D> &pointPath);
             
-            // Get vertices
+            /// Get vertices
             const std::vector<Math::Position3D>  & getVertices() const{
                 return vertices;
             }
+
+            /// Find a vertex by the Position3D coordinate, or -1 if not found
+            int findVertex(const Math::Position3D & point) const;
 
         private: //========= Fields
             /// Vertices of the graph

@@ -17,12 +17,12 @@ namespace Navigator {
             Graph(const std::vector<std::vector<Edge>> &edges) :
                     edges(edges) {}
                     
-            // Get number of vertices
+            /// Get number of vertices
             int getSize() const {
                 return edges.size();
             }
             
-            // Get edges
+            /// Get edges
             const std::vector<std::vector<Edge>> & getEdges() const {
                 return edges;
             }

@@ -39,7 +39,7 @@ int main() {
     //----------------------------------------------------------
     // Fun with class PointGraph (graph with no vertex coordinates)
 
-    cout << "\n Let's try PointGraph ! \n";
+    cout << "\nLet's try PointGraph ! \n";
 
     // Edges
     const vector<vector<Edge>> edges = {
@@ -54,36 +54,59 @@ int main() {
     };
 
     // Let's give it some vertices
-    const vector<Position3D> v = {
-            {1.0, 0.0, 0.0}, // 0
-            {0.0, 2.0, 0.0}, // 1
-            {3.0, 0.0, 0.0}, // 2
-            {5.0, 0.0, 0.0}, // 3
-            {7.0, 0.0, 0.0}, // 4
-            {8.0, 3.0, 0.0}, // 5
-            {17.0, 3.0, 0.0}, // 6
+    const vector<Position3D> vertices = {
+            {1.0,  0.0,  0.0}, // 0
+            {0.0,  2.0,  0.0}, // 1
+            {3.0,  0.0,  0.0}, // 2
+            {5.0,  0.0,  0.0}, // 3
+            {7.0,  0.0,  0.0}, // 4
+            {8.0,  3.0,  0.0}, // 5
+            {17.0, 3.0,  0.0}, // 6
             {17.0, 10.0, 0.0} // 7
     };
 
-    PointGraph g2(edges, v);
+    PointGraph g2(edges, vertices);
 
-    // Try a point path
+    // A point path
     vector<Position3D> pointPath;
 
     cout << "dist = " << g2.dijkstraP(1, 6, pointPath) << endl;
-    for (const Position3D & p : pointPath)
+    for (const Position3D &p : pointPath)
         cout << p.x << " " << p.y << endl;
+
+    // More things you can do with a PointGraph
+    cout << "\nPointGraph additional operations :\n\n";
+    // Find a vertex index from coordinates
+    cout << "Vertex index from XYZ : g2.findVertex(Position3D(17, 3, 0)) = " << g2.findVertex(Position3D(17, 3, 0))
+         << endl;
+    cout << "Number of vertices    :  g2.getSize() = " << g2.getSize() << endl;
+    cout << "All vertices          :  g2.getVerices() = \n";
+
+    const auto &vert = g2.getVertices();
+    for (int i = 0; i < vert.size(); ++i) {
+        const auto &v = vert[i];
+        cout << i << " : " << v.x << " " << v.y << " " << v.z << "\n";
+    }
+
+    cout << "All edges             :  g2.getVerices() = \n";
+    const auto &ed = g2.getEdges();
+    // Loop over all 'from' vertices
+    for (int i = 0; i < edges.size(); ++i) {
+        // Loop over all 'to' vertices
+        for (const auto &e : ed[i])
+            cout << i << " : " << e.to << " " << e.weight << "\n";
+    }
 
     //----------------------------------------------------------
     // Fun with class PointGraph, Reading PointGraph from a disk file
 
-    cout << "\n Let's try PointGraph from file graph.txt ! \n";
+    cout << "\nLet's try PointGraph from file graph.txt ! \n";
 
     PointGraph g3("graph.txt");
     pointPath.clear();
 
     cout << "dist = " << g2.dijkstraP(1, 6, pointPath) << endl;
-    for (const Position3D & p : pointPath)
+    for (const Position3D &p : pointPath)
         cout << p.x << " " << p.y << endl;
 
     return 0;

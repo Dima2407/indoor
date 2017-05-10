@@ -23,7 +23,7 @@
 		680C25541D956B32002A2879 /* BeaconListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23861D956B31002A2879 /* BeaconListController.m */; };
 		680C25551D956B32002A2879 /* BeaconCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23891D956B31002A2879 /* BeaconCell.m */; };
 		680C25561D956B32002A2879 /* IndoorTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C238D1D956B31002A2879 /* IndoorTableController.m */; };
-		680C25571D956B32002A2879 /* IndoorStreamController.h.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C238F1D956B31002A2879 /* IndoorStreamController.h.m */; };
+		680C25571D956B32002A2879 /* IndoorStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C238F1D956B31002A2879 /* IndoorStreamController.m */; };
 		680C25581D956B32002A2879 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680C23921D956B31002A2879 /* Main.storyboard */; };
 		680C25591D956B32002A2879 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23951D956B31002A2879 /* MenuViewController.m */; };
 		680C255A1D956B32002A2879 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680C23971D956B31002A2879 /* SWRevealViewController.m */; };
@@ -82,7 +82,6 @@
 		063A7A391EB36D8900ABA37F /* UIColor+HEX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HEX.h"; sourceTree = "<group>"; };
 		063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HEX.m"; sourceTree = "<group>"; };
 		06A592921EAE46F9007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
-		06A592931EAE46F9007760A2 /* BluetoothBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
 		06A592941EAE46F9007760A2 /* BluetoothMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothMeasurementProvider.h; sourceTree = "<group>"; };
 		06A592951EAE46F9007760A2 /* ErrorListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorListener.h; sourceTree = "<group>"; };
 		06A592961EAE46F9007760A2 /* ErrorTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorTransfer.h; sourceTree = "<group>"; };
@@ -94,7 +93,6 @@
 		06A5929C1EAE46F9007760A2 /* MeasurementEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementEvent.h; sourceTree = "<group>"; };
 		06A5929D1EAE46F9007760A2 /* MeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementProvider.h; sourceTree = "<group>"; };
 		06A5929E1EAE46F9007760A2 /* MeasurementTranfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeasurementTranfer.h; sourceTree = "<group>"; };
-		06A5929F1EAE46F9007760A2 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		06A592A01EAE46F9007760A2 /* SensorMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorMeasurementProvider.h; sourceTree = "<group>"; };
 		06A592A11EAE46F9007760A2 /* TConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TConfig.h; sourceTree = "<group>"; };
 		06A592A21EAE46F9007760A2 /* WIFIMeasurementProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WIFIMeasurementProvider.h; sourceTree = "<group>"; };
@@ -112,7 +110,7 @@
 		680C238C1D956B31002A2879 /* IndoorTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorTableController.h; sourceTree = "<group>"; };
 		680C238D1D956B31002A2879 /* IndoorTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndoorTableController.m; sourceTree = "<group>"; };
 		680C238E1D956B31002A2879 /* IndoorStreamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorStreamController.h; sourceTree = "<group>"; };
-		680C238F1D956B31002A2879 /* IndoorStreamController.h.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndoorStreamController.h.m; sourceTree = "<group>"; };
+		680C238F1D956B31002A2879 /* IndoorStreamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndoorStreamController.m; sourceTree = "<group>"; };
 		680C23921D956B31002A2879 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		680C23941D956B31002A2879 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		680C23951D956B31002A2879 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				06A592921EAE46F9007760A2 /* BeaconConfig.h */,
-				06A592931EAE46F9007760A2 /* BluetoothBridge.h */,
 				06A592941EAE46F9007760A2 /* BluetoothMeasurementProvider.h */,
 				06A592951EAE46F9007760A2 /* ErrorListener.h */,
 				06A592961EAE46F9007760A2 /* ErrorTransfer.h */,
@@ -217,7 +214,6 @@
 				06A5929C1EAE46F9007760A2 /* MeasurementEvent.h */,
 				06A5929D1EAE46F9007760A2 /* MeasurementProvider.h */,
 				06A5929E1EAE46F9007760A2 /* MeasurementTranfer.h */,
-				06A5929F1EAE46F9007760A2 /* PrefixHeader.pch */,
 				06A592A01EAE46F9007760A2 /* SensorMeasurementProvider.h */,
 				06A592A11EAE46F9007760A2 /* TConfig.h */,
 				06A592A21EAE46F9007760A2 /* WIFIMeasurementProvider.h */,
@@ -297,7 +293,7 @@
 				850DB8A81D9A7417008AB5C0 /* IndoorMapController.h */,
 				850DB8A91D9A7417008AB5C0 /* IndoorMapController.m */,
 				680C238E1D956B31002A2879 /* IndoorStreamController.h */,
-				680C238F1D956B31002A2879 /* IndoorStreamController.h.m */,
+				680C238F1D956B31002A2879 /* IndoorStreamController.m */,
 				060FE6081E60A4DB009D159F /* FloorTableViewController.h */,
 				060FE6091E60A4DB009D159F /* FloorTableViewController.m */,
 				060FE60B1E60A547009D159F /* LoginViewController.h */,
@@ -635,7 +631,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				680C25571D956B32002A2879 /* IndoorStreamController.h.m in Sources */,
+				680C25571D956B32002A2879 /* IndoorStreamController.m in Sources */,
 				0617DD781E4DE1E6000FE59C /* RouteInfoCell.m in Sources */,
 				0617DD7A1E4DE1E6000FE59C /* RouteInfoView.m in Sources */,
 				68FCB06F1DAE68720058B6EE /* NSNumber+EKComparisonForIOS.m in Sources */,

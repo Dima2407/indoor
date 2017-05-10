@@ -11,14 +11,25 @@
 #include "BluetoothBridge.h"
 
 
-std::shared_ptr<Navigator::Beacons::TrilatBeaconNavigator> navigator;
-
+//std::shared_ptr<Navigator::Beacons::TrilatBeaconNavigator> navigator;
+ std::shared_ptr<Navigator::Beacons::StandardBeaconNavigator> navigator;
+std::shared_ptr<Navigator::Mesh::RectanMesh> mesh;
 
 extern "C"
 void BluetoothBridge_init() {
-    auto rssiFact = std::make_shared<Navigator::Beacons::Factory::MovingAverageFilterFactory>(5);
-    auto distFact = std::make_shared<Navigator::Beacons::Factory::NoFilterFactory>();
-     navigator = std::make_shared<Navigator::Beacons::TrilatBeaconNavigator> (rssiFact, distFact);
+   
+    if (mesh == NULL)
+    {
+        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(nullptr);
+        printf("Create simple Navigator");
+    }
+    else{
+        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(mesh);
+        printf("Create Mesh Navigator");
+    }
+        
+    
+    ///<::Beacons::TrilatBeaconNavigator> (rssiFact, distFact);
 
     
 }
@@ -51,4 +62,18 @@ Navigator::Math::Position3D outPos = navigator->getLastPosition();
     output[1] = outPos.y;
     output[2] = outPos.z;
 }
-//extern "C"
+extern "C"
+void BluetoothBridge_createMesh(double nx, double ny, double dx, double dy, double x0, double y0){
+    
+    mesh = std::make_shared<Navigator::Mesh::RectanMesh>(nx, ny, dx, dy, x0, y0);
+}
+
+extern "C"
+void BluetoothBridge_setMaskTable(std::vector<int> mTable){
+    
+    mesh -> setMaskTable(mTable);
+}
+extern "C"
+void BluetoothBridge_releseMesh(){
+    mesh = NULL;
+}

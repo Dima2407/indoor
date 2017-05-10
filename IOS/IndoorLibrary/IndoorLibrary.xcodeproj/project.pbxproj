@@ -27,6 +27,9 @@
 		06650E2A1E82CC1100E7D811 /* IndoorError.m in Sources */ = {isa = PBXBuildFile; fileRef = 06650E291E82CC1100E7D811 /* IndoorError.m */; };
 		06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E281E82CC1100E7D811 /* IndoorError.h */; };
 		06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E271E82C2CA00E7D811 /* ErrorListener.h */; };
+		0688CF351EBC82C3001C3834 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0688CF331EBC82C3001C3834 /* BeaconProcessor.cpp */; };
+		0688CF361EBC82C3001C3834 /* StandardBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0688CF341EBC82C3001C3834 /* StandardBeaconNavigator.cpp */; };
+		0688CF381EBC82D7001C3834 /* RectanMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0688CF371EBC82D7001C3834 /* RectanMesh.cpp */; };
 		06ED897E1E6D79F50011C01C /* IndoorLocationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */; };
 		06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */; };
 		06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6751E66F661003EC3FA /* MeasurementEvent.h */; };
@@ -97,6 +100,9 @@
 		06650E281E82CC1100E7D811 /* IndoorError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorError.h; sourceTree = "<group>"; };
 		06650E291E82CC1100E7D811 /* IndoorError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndoorError.m; sourceTree = "<group>"; };
 		06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorTransfer.h; path = ../../ErrorManager/ErrorTransfer.h; sourceTree = "<group>"; };
+		0688CF331EBC82C3001C3834 /* BeaconProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeaconProcessor.cpp; sourceTree = "<group>"; };
+		0688CF341EBC82C3001C3834 /* StandardBeaconNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StandardBeaconNavigator.cpp; sourceTree = "<group>"; };
+		0688CF371EBC82D7001C3834 /* RectanMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RectanMesh.cpp; sourceTree = "<group>"; };
 		06ED897C1E6D79F50011C01C /* IndoorLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationManager.h; sourceTree = "<group>"; };
 		06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndoorLocationManager.mm; sourceTree = "<group>"; };
 		06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeaconProcessor.cpp; path = ../../NavigatorLib/src/Navigator/Beacons/BeaconProcessor.cpp; sourceTree = "<group>"; };
@@ -125,6 +131,9 @@
 		0610B65F1E66F465003EC3FA = {
 			isa = PBXGroup;
 			children = (
+				0688CF371EBC82D7001C3834 /* RectanMesh.cpp */,
+				0688CF331EBC82C3001C3834 /* BeaconProcessor.cpp */,
+				0688CF341EBC82C3001C3834 /* StandardBeaconNavigator.cpp */,
 				06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */,
 				06650E1F1E81769E00E7D811 /* trilat.cpp */,
 				06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */,
@@ -347,6 +356,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0688CF381EBC82D7001C3834 /* RectanMesh.cpp in Sources */,
+				0688CF351EBC82C3001C3834 /* BeaconProcessor.cpp in Sources */,
+				0688CF361EBC82C3001C3834 /* StandardBeaconNavigator.cpp in Sources */,
 				06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */,
 				06650E201E81769E00E7D811 /* trilat.cpp in Sources */,
 				06650E1D1E81768600E7D811 /* AlphaBetaFilter.cpp in Sources */,

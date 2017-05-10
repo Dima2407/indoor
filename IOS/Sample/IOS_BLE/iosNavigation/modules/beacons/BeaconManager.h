@@ -22,7 +22,10 @@
 -(void) setBeaconMap:(FloorModel*)map withBeaconData:(NSArray*)data;
 -(void) startBeacon;
 -(void) stopBeacon;
--(NSArray*)getLogs;
+-(void)deleteMesh;
+-(NSArray*) getLogs;
+-(void) setMode:(NSString*)mode;
+-(void) setConfigs:(NSArray*)mesh and:(NSArray*)mask;
 
 @end
 

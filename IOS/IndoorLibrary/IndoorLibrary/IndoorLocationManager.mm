@@ -21,7 +21,7 @@
 @property (nonatomic, strong) NSMutableArray* beaconsUUIDs;
 @property (nonatomic, assign) NSTimeInterval time;
 @property (nonatomic, assign) BOOL startProviderFlag;
-
+@property (nonatomic, assign) IndoorLocationManagerMode managerMode;
 @end
 
 
@@ -68,7 +68,7 @@
             }
             provider = [[BluetoothMeasurementProvider alloc] initWithTransfer:self.transfer andUUIDs:self.beaconsUUIDs];
             if(provider != nil){
-                   BluetoothBridge_init();
+                
                 [self.providers addObject:provider];
             }
             
@@ -136,6 +136,39 @@
     
     
 }
+-(void)setMode:(IndoorLocationManagerMode)mode{
+    self.managerMode = mode;
+    
+
+    
+}
+
+-(void)setMeshConfig:(NSArray*)meshIn andOut:(NSArray*) masktableOut{
+    switch (self.managerMode) {
+        case STANDART_MODE:
+            NSLog(@"You can't add config in STANDART_MODE");
+            
+            break;
+        case SENSOR_MODE:
+            break;
+            
+            
+        case MESH_MODE:
+            double nx = [[meshIn objectAtIndex:0] doubleValue], ny = [[meshIn objectAtIndex:1] doubleValue];
+            double dx =[[meshIn objectAtIndex:2] doubleValue], dy = [[meshIn objectAtIndex:3] doubleValue];
+            double x0 = [[meshIn objectAtIndex:4] doubleValue], y0 = [[meshIn objectAtIndex:5] doubleValue];
+            BluetoothBridge_createMesh(nx, ny, dx, dy, x0, y0);
+            
+            std::vector<int> buffer(masktableOut.count);
+            for (int i = 0; i < masktableOut.count; i++) {
+                buffer.push_back([[masktableOut objectAtIndex:i] intValue]);
+            }
+            BluetoothBridge_setMaskTable(buffer);
+            break;
+
+    }
+
+}
 
 #pragma mark - Get Coordinates
 -(void)getCoordinates{
@@ -158,6 +191,10 @@
 
 #pragma mark - Action
 
+-(void) prepare{
+    
+       BluetoothBridge_init();
+}
 
 -(void) start{
     if(self.providers.count > 0){
@@ -194,7 +231,11 @@
         }}];
 }
 
-
+-(void)deleteMesh{
+    
+    
+    BluetoothBridge_releseMesh();
+}
 
 #pragma mark - IosMeasurementTransferDelegate
 

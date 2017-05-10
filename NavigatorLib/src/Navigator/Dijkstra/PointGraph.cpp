@@ -28,6 +28,16 @@ namespace Navigator {
             getline(in, line);
 //            cout << line << endl;
 
+            // Note : ->GOOD file format :
+            //
+            // Vertices start with 0.
+            // Edges can have directions. "1 2 107.0" does not mean "2 1 107.0"
+            //
+            // ->GRAPH file format (Alexey Roienko)
+            //
+            // Vertices start with 1.
+            // Edges don't have directions. "1 2 107.0" automatically gives "2 1 107.0"
+
             bool flag;
             if (line == "->GOOD")
                 flag = true;
@@ -67,8 +77,17 @@ namespace Navigator {
             double dist;
 
             while (in >> i >> j >> dist) {
+                if (!flag) {
+                    // change vertex index 1-based -> 0-based
+                    --i;
+                    --j;
+                }
+
 //                cout << i << " : " << j << " : " << dist << endl;
-                edges[i].push_back(Edge(j, dist));
+                addEdge(i, j, dist);
+                if (!flag) {
+                    addEdge(j, i, dist); // Add the other direction
+                }
             }
 
             in.close();
@@ -100,6 +119,28 @@ namespace Navigator {
             }
 
             return -1; // Not found
+        }
+//============================================================================
+
+        void PointGraph::addEdge(int i, int j, double dist) {
+            using namespace std;
+            int size = edges.size();
+
+            if (i < 0 || i >= size || j < 0 || j >= size)
+                throw runtime_error("PointGraph::addEdge : index out of bounds.");
+
+            vector<Edge> & ve = edges[i];  // Edges of vertex i
+
+            // Check if the j-vertex exists already, I don't like stupid iterators
+            for (Edge & e : ve)
+                if (e.to == j) {
+                    // Found !
+                    e.weight = dist; // Replace the weight aka dist
+                    return;
+                }
+
+            // Not found: add a new element
+            ve.push_back(Edge(j, dist));
         }
 //============================================================================
 

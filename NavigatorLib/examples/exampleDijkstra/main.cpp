@@ -37,7 +37,7 @@ int main() {
     cout << endl;
 
     //----------------------------------------------------------
-    // Fun with class PointGraph (graph with no vertex coordinates)
+    // Fun with class PointGraph (graph with Position3D vertex coordinates)
 
     cout << "\nLet's try PointGraph ! \n";
 

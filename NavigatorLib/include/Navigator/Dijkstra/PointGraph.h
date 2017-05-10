@@ -38,6 +38,9 @@ namespace Navigator {
             /// Find a vertex by the Position3D coordinate, or -1 if not found
             int findVertex(const Math::Position3D & point) const;
 
+        private: //========= Methods ======
+            /// Add edge to the vector edges, which is assumed to be of right size already
+            void addEdge(int i, int j, double dist);
         private: //========= Fields
             /// Vertices of the graph
             std::vector<Math::Position3D> vertices;

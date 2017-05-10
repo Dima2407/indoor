@@ -37,7 +37,7 @@ static void showUsage(){
     cout << "source and destination are vertex numbers (starting from 0) \n\n";
     
     cout << "Example : \n";
-    cout << " dijkdemo graph.txt 1 6 maps\\map1.png" << endl;
+    cout << " dijkdemo graph1.txt 22 54 maps\\map1.png" << endl;
 
     exit(-1);
 }

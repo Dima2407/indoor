@@ -179,6 +179,16 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     public void onResume() {
         super.onResume();
         instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
+
+        if (floor.getGraphPath().contains("/mapData/2/")) {
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
+           // Log.i(TAG, "current map = KAA-OFFICE");
+        }
+        if (floor.getGraphPath().contains("/mapData/8/")) {
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
+           // Log.i(TAG, "current map = IT-JIM");
+        }
+
         instance.start();
         task = new TimerTask() {
             @Override
@@ -272,49 +282,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView.setRoute(new float[0]);
         mapView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-
-        if (floor.getGraphPath().contains("/mapData/2/")) {
-            instance.setCurrentMap(IndoorLocationManager.CurrentMap.KAA_OFFICE);
-            List<Integer> maskList = new ArrayList<>();
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getResources().openRawResource(R.raw.masktable3)))) {
-                String str;
-                while ((str = br.readLine()) != null) {
-                    Log.i(TAG, "read file : " + str);
-                    maskList.add(Integer.valueOf(str.trim()));
-                    Log.i(TAG, "read maskList : " + str);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            int[] maskArray = new int[maskList.size()];
-            for (int i = 0; i < maskArray.length; i++)
-                maskArray[i] = maskList.get(i);
-            instance.setMaskArray(maskArray);
-        }
-
-        if (floor.getGraphPath().contains("/mapData/8/")) {
-            instance.setCurrentMap(IndoorLocationManager.CurrentMap.IT_JIM);
-            List<Integer> maskList = new ArrayList<>();
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(getActivity().getResources().openRawResource(R.raw.masktable1)))) {
-                String str;
-                while ((str = br.readLine()) != null) {
-                    Log.i(TAG, "read file : " + str);
-                    maskList.add(Integer.valueOf(str.trim()));
-                    Log.i(TAG, "read maskList : " + str);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            int[] maskArray = new int[maskList.size()];
-            for (int i = 0; i < maskArray.length; i++)
-                maskArray[i] = maskList.get(i);
-            instance.setMaskArray(maskArray);
-        }
 
             getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
             @Override

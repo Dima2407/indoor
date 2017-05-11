@@ -170,25 +170,22 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     switch (nativeMode){
 
         case TRILAT_BEACON_NAVIGATOR : {
-
             auto rssiFact = make_shared<MovingAverageFilterFactory>(3);
             auto distFact = make_shared<NoFilterFactory>();
             navigator = new TrilatBeaconNavigator(rssiFact, distFact);
-
-            break;
         }
+            break;
 
         case STANDARD_BEACON_NAVIGATOR : {
-
             if (currentMap == IT_JIM) {
                 constexpr double nx = 36, ny = 24;
                 constexpr double dx = 0.3, dy = 0.3;
                 constexpr double x0 = 0, y0 = 0;
                 auto mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
 
-               // vector<int> mTable(nx * ny);
+                // vector<int> mTable(nx * ny);
 
-                mesh -> setMaskTable(mTable);
+                mesh->setMaskTable(mTable);
                 navigator = new StandardBeaconNavigator(mesh, false);
             }
 
@@ -198,14 +195,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
                 constexpr double x0 = 0, y0 = 0;
                 auto mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
 
-               // vector<int> mTable(nx * ny);
+                // vector<int> mTable(nx * ny);
 
-                mesh -> setMaskTable(mTable);
+                mesh->setMaskTable(mTable);
                 navigator = new StandardBeaconNavigator(mesh, false);
             }
-
-            break;
         }
+            break;
     }
 
     jclass listenerClassRef = env->GetObjectClass(savedListenerInstance);
@@ -243,6 +239,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
     navigator = NULL;
     env->DeleteGlobalRef(savedListenerInstance);
     listenerOnLocationChangedId = NULL;
+    mTable.clear();
 }
 
 JNIEXPORT void JNICALL
@@ -316,10 +313,14 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setNativeCurrentMap(JNIEnv *env, job
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMaskArray(JNIEnv *env, jobject instance,
                                                                jintArray mask_) {
+
+    if (mask_ != NULL) {
     jint *mask = env->GetIntArrayElements(mask_, NULL);
 
+    mTable.resize(sizeof(mask_));
     for (int i = 0; i < sizeof(mask_); i++)
         mTable[i] = mask[i];
 
     env->ReleaseIntArrayElements(mask_, mask, 0);
+    }
 }

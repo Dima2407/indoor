@@ -1,5 +1,6 @@
 package pro.i_it.indoor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -10,8 +11,16 @@ import pro.i_it.indoor.region.InMemoryBeaconsLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
 import pro.i_it.indoor.region.SpaceRegion;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static pro.i_it.indoor.DebugConfig.TAG;
 
 public class IndoorLocationManager {
 
@@ -28,6 +37,7 @@ public class IndoorLocationManager {
     private Mode mode;
     private CurrentMap currentMap;
     private int[] maskArray;
+    private Context context;
 
     private OnErrorListener onErrorListener;
 
@@ -54,13 +64,18 @@ public class IndoorLocationManager {
         this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILAT_BEACON_NAVIGATOR;
     }
 
-    public void setCurrentMap(CurrentMap map) {
-        currentMap = map;
+    public Mode getMode() {
+        return mode;
     }
 
-    public void setMaskArray(int[] maskArray){
-        this.maskArray = maskArray;
+    public void setCurrentMap(Context context, CurrentMap map) {
+        currentMap = map;
+        this.context = context;
     }
+
+  /*  public void setMaskArray(int[] maskArray){
+        this.maskArray = maskArray;
+    }*/
 
     public void addProvider(Context context, MeasurementType type, MeasurementTransfer transfer) {
         switch (type) {
@@ -82,12 +97,62 @@ public class IndoorLocationManager {
         this.addProvider(context, type, new AndroidDebuggableMeasurementTransfer());
     }
 
+    private void readFileWithMask() {
+        List<Integer> maskList = new ArrayList<>();
+        int[] maskArray;
+
+        switch (currentMap){
+
+            case KAA_OFFICE:
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.masktable3)))) {
+                    String str;
+                    while ((str = br.readLine()) != null) {
+                        Log.i(TAG, "read file : " + str);
+                        maskList.add(Integer.valueOf(str.trim()));
+                        Log.i(TAG, "read maskList : " + str);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                maskArray = new int[maskList.size()];
+                for (int i = 0; i < maskArray.length; i++)
+                    maskArray[i] = maskList.get(i);
+                this.maskArray = maskArray;
+                break;
+
+            case IT_JIM:
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.masktable1)))) {
+                    String str;
+                    while ((str = br.readLine()) != null) {
+                        Log.i(TAG, "read file : " + str);
+                        maskList.add(Integer.valueOf(str.trim()));
+                        Log.i(TAG, "read maskList : " + str);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                maskArray = new int[maskList.size()];
+                for (int i = 0; i < maskArray.length; i++)
+                    maskArray[i] = maskList.get(i);
+                this.maskArray = maskArray;
+                break;
+        }
+    }
+
     public void start() {
         setNativeMode(mode.code);
-        if (mode == Mode.STANDARD_BEACON_NAVIGATOR)
+        if (mode == Mode.STANDARD_BEACON_NAVIGATOR) {
             setNativeMaskArray(maskArray);
-        if (currentMap != null)
-            setNativeCurrentMap(currentMap.code);
+            if (currentMap != null) {
+                setNativeCurrentMap(currentMap.code);
+                readFileWithMask();
+            }
+        }
         internalLocationUpdateListener = new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {

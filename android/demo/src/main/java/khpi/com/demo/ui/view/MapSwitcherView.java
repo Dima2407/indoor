@@ -12,6 +12,7 @@ import android.widget.TextView;
 import khpi.com.demo.R;
 import khpi.com.demo.model.Floor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +88,11 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
             default:
                 Integer pos = (Integer) view.getTag();
                 Log.d("MapSwitcherView", "pos:" + pos);
-                listener.onMapSelected();
+                try {
+                    listener.onMapSelected();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 open=!open;
                 floors.setVisibility((open) ? View.VISIBLE : View.GONE);
                 break;
@@ -99,7 +104,7 @@ public class MapSwitcherView extends RelativeLayout implements View.OnClickListe
     }
 
     public interface ChangeMapListener{
-        void onMapSelected();
+        void onMapSelected() throws IOException;
     }
 
 }

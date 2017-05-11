@@ -59,6 +59,16 @@ public final class SettingsActivity extends GenericActivity {
             }
         });
 
+        Switch useBinaryMask = (Switch) findViewById(R.id.settings_use_binary_mask);
+        useBinaryMask.setChecked(getProjectApplication().getSharedHelper().useBinaryMask());
+
+        useBinaryMask.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                getProjectApplication().getSharedHelper().setUseBinaryMask(isChecked);
+            }
+        });
+
 
     }
 

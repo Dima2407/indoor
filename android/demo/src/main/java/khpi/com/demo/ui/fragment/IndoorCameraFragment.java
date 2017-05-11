@@ -144,6 +144,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         initCamera();
         cameraPreview.updateCamera(getCamera());
 
+        instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
         instance.start();
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override

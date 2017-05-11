@@ -16,6 +16,8 @@ import java.util.Set;
 public class IndoorLocationManager {
 
 
+    private static final String TAG = IndoorLocationManager.class.getSimpleName();
+
     static {
         System.loadLibrary("native-lib");
     }
@@ -23,6 +25,9 @@ public class IndoorLocationManager {
     private OnLocationUpdateListener internalLocationUpdateListener;
     private OnLocationUpdateListener onLocationUpdateListener;
     private BeaconsInRegionLoader beaconsInRegionLoader;
+    private Mode mode;
+    private CurrentMap currentMap;
+    private int[] maskArray;
 
     private OnErrorListener onErrorListener;
 
@@ -42,6 +47,19 @@ public class IndoorLocationManager {
 
     public void setOnErrorListener(OnErrorListener onErrorListener) {
         this.onErrorListener = onErrorListener;
+    }
+
+
+    public void setMode(boolean useBinaryMask) {
+        this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILAT_BEACON_NAVIGATOR;
+    }
+
+    public void setCurrentMap(CurrentMap map) {
+        currentMap = map;
+    }
+
+    public void setMaskArray(int[] maskArray){
+        this.maskArray = maskArray;
     }
 
     public void addProvider(Context context, MeasurementType type, MeasurementTransfer transfer) {
@@ -65,6 +83,11 @@ public class IndoorLocationManager {
     }
 
     public void start() {
+        setNativeMode(mode.code);
+        if (mode == Mode.STANDARD_BEACON_NAVIGATOR)
+            setNativeMaskArray(maskArray);
+        if (currentMap != null)
+            setNativeCurrentMap(currentMap.code);
         internalLocationUpdateListener = new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
@@ -97,6 +120,35 @@ public class IndoorLocationManager {
         internalLocationUpdateListener = null;
         nativeRelease();
     }
+
+    public enum Mode{
+        TRILAT_BEACON_NAVIGATOR(0),
+        STANDARD_BEACON_NAVIGATOR(1);
+
+        private int code;
+
+        Mode(int code) {
+
+            this.code = code;
+        }
+    }
+
+    public enum CurrentMap{
+        KAA_OFFICE(0),
+        IT_JIM(1);
+
+        private int code;
+
+        CurrentMap(int code) {
+            this.code = code;
+        }
+    }
+
+    private native void setNativeMaskArray(int[] mask);
+
+    private native void setNativeCurrentMap(int map);
+
+    private native void setNativeMode(int mode);
 
     private native void nativeInit(OnLocationUpdateListener onUpdateListener);
 

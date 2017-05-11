@@ -78,5 +78,35 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/circle" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="32dp"
+                android:layout_weight="1"
+                android:text="Use binary mask?"
+                android:textColor="@android:color/black" />
+
+            <Switch
+                android:id="@+id/settings_use_binary_mask"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

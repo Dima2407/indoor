@@ -1,3 +1,9 @@
+#define _USE_MATH_DEFINES
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+
 #include <jni.h>
 #include <string>
 #include <android/log.h>
@@ -9,10 +15,11 @@ using namespace Navigator::Beacons;
 using namespace Navigator::Beacons::Factory;
 using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
+using namespace Navigator::Mesh;
 
 jobject savedListenerInstance;
 jmethodID listenerOnLocationChangedId;
-TrilatBeaconNavigator *navigator;
+AbstractBeaconNavigator *navigator;
 
 jclass beaconClass;
 jmethodID getPositionId;
@@ -29,6 +36,17 @@ double timeS = 0;
 char * pathToDownload = "/storage/emulated/0/Download/loglog.txt";
 FILE *f;
 
+enum Mode {
+    TRILAT_BEACON_NAVIGATOR,
+    STANDARD_BEACON_NAVIGATOR
+} nativeMode;
+
+enum CurrentMap {
+    KAA_OFFICE,
+    IT_JIM
+} currentMap;
+
+vector<int> mTable(2000);
 
 extern "C" {
 
@@ -55,6 +73,17 @@ JNIEXPORT void JNICALL
 JNIEXPORT void JNICALL
         Java_pro_i_1it_indoor_IndoorLocationManager_callEvent(JNIEnv *env, jobject instance);
 
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMode(JNIEnv *env, jobject instance,
+                                                          jint mode);
+
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_setNativeCurrentMap(JNIEnv *env, jobject instance,
+                                                                jint map);
+
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMaskArray(JNIEnv *env, jobject instance,
+                                                               jintArray mask_);
 }
 
 JNIEXPORT jstring JNICALL
@@ -90,9 +119,9 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
     fprintf(f, "timestamp/1000(%f)", (1.0*((timeStamp-timeS)/1000)));
     BeaconReceivedData brd((1.0*((timeStamp-timeS)/1000)), uid, data[3], data[2]);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacons in navigator deliver %d", navigator->getBeacons());
+  /*  __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacons in navigator deliver %d", navigator->getBeacons());
     fprintf(f, "BEACONS IN NAVIGATOR: %d \n", navigator->getBeacons());
-    __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "timestamp = %f, rssi = %f", brd.timestamp, brd.rssi);
+    __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "timestamp = %f, rssi = %f", brd.timestamp, brd.rssi);*/
     // Process it
     Position3D outPos = navigator->process(brd);
     __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "POS x - %f y - %f z - %f", outPos.x, outPos.y, outPos.z);
@@ -110,7 +139,6 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
         __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "LAST_DIST = %f ", processor -> getLastDistance());
         __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "LAST_TIMESTAMP = %f ", processor -> getLastTimeStamp());
     }
-
     env->ReleaseStringUTFChars(uuidString, uuid);
     fclose(f);
 }
@@ -127,6 +155,7 @@ void putToJavaOnLocationChanged(JNIEnv *env){
     fclose(f);
 }
 
+
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jobject onUpdateListener) {
@@ -137,10 +166,43 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     }
 
     savedListenerInstance = env->NewGlobalRef(onUpdateListener);
-    auto rssiFact = make_shared<MovingAverageFilterFactory>(3);
-    auto distFact = make_shared<NoFilterFactory>();
 
-    navigator = new TrilatBeaconNavigator(rssiFact, distFact);
+    switch (nativeMode){
+
+        case TRILAT_BEACON_NAVIGATOR : {
+            auto rssiFact = make_shared<MovingAverageFilterFactory>(3);
+            auto distFact = make_shared<NoFilterFactory>();
+            navigator = new TrilatBeaconNavigator(rssiFact, distFact);
+        }
+            break;
+
+        case STANDARD_BEACON_NAVIGATOR : {
+            if (currentMap == IT_JIM) {
+                constexpr double nx = 36, ny = 24;
+                constexpr double dx = 0.3, dy = 0.3;
+                constexpr double x0 = 0, y0 = 0;
+                auto mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
+
+                // vector<int> mTable(nx * ny);
+
+                mesh->setMaskTable(mTable);
+                navigator = new StandardBeaconNavigator(mesh, false);
+            }
+
+            if (currentMap == KAA_OFFICE) {
+                constexpr double nx = 22, ny = 44;
+                constexpr double dx = 0.3, dy = 0.3;
+                constexpr double x0 = 0, y0 = 0;
+                auto mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
+
+                // vector<int> mTable(nx * ny);
+
+                mesh->setMaskTable(mTable);
+                navigator = new StandardBeaconNavigator(mesh, false);
+            }
+        }
+            break;
+    }
 
     jclass listenerClassRef = env->GetObjectClass(savedListenerInstance);
     listenerOnLocationChangedId = env->GetMethodID(listenerClassRef, "onLocationChanged", "([F)V" );
@@ -208,7 +270,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
 
         fprintf(f, "ADD BEACONS TO NAVIGATOR: uuid: %s, major: %f, minor: %f, txpower: %f, damp: %f, x: %f, y: %f, z: %f \n", uuid, elements[0], elements[1], elements[2], elements[3], elementsPos[0], elementsPos[1], elementsPos[2]);
 
-        __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacons in navigator setBeacons %d", navigator->getBeacons());
+       // __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacons in navigator setBeacons %d", navigator->getBeacons());
 
         env->ReleaseStringUTFChars(id, uuid);
 
@@ -219,4 +281,46 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_callEvent(JNIEnv *env, jobject instance) {
     putToJavaOnLocationChanged(env);
+}
+
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMode(JNIEnv *env, jobject instance,
+                                                          jint mode) {
+   switch (mode){
+       case 0:
+           nativeMode = TRILAT_BEACON_NAVIGATOR;
+           break;
+       case 1:
+           nativeMode = STANDARD_BEACON_NAVIGATOR;
+           break;
+   }
+}
+
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_setNativeCurrentMap(JNIEnv *env, jobject instance,
+                                                                jint map) {
+    switch (map){
+        case 0:
+            currentMap = KAA_OFFICE;
+            break;
+        case 1:
+            currentMap = IT_JIM;
+            break;
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMaskArray(JNIEnv *env, jobject instance,
+                                                               jintArray mask_) {
+
+    if (mask_ != NULL) {
+        jint *mask = env->GetIntArrayElements(mask_, NULL);
+
+        mTable.clear();
+        mTable.resize(sizeof(mask_));
+        for (int i = 0; i < sizeof(mask_); i++)
+            mTable[i] = mask[i];
+
+        env->ReleaseIntArrayElements(mask_, mask, 0);
+    }
 }

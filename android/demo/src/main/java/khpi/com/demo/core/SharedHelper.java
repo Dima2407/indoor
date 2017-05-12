@@ -7,6 +7,7 @@ public final class SharedHelper {
     private static final String SHARED_NAME = "shared";
     private static final String USE_PRODUCTION = "use production";
     private static final String DRAW_IN_RADAR = "in radar";
+    private static final String USE_BINARY_MASK = "use standard beacon navigator";
 
     private final SharedPreferences sharedPreferences;
 
@@ -32,5 +33,13 @@ public final class SharedHelper {
 
     public void setDrawInRadar(boolean b) {
         sharedPreferences.edit().putBoolean(DRAW_IN_RADAR, b).apply();
+    }
+
+    public void setUseBinaryMask(boolean useBinaryMask){
+        sharedPreferences.edit().putBoolean(USE_BINARY_MASK, useBinaryMask).apply();
+    }
+
+    public boolean useBinaryMask(){
+        return sharedPreferences.getBoolean(USE_BINARY_MASK, false);
     }
 }

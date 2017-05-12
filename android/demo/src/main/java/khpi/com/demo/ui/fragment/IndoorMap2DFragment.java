@@ -1,6 +1,7 @@
 package khpi.com.demo.ui.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -42,6 +43,17 @@ import pro.i_it.indoor.region.SpaceBeacon;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -166,6 +178,17 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     @Override
     public void onResume() {
         super.onResume();
+        instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
+
+        if (floor.getGraphPath().contains("/mapData/2/")) {
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
+           // Log.i(TAG, "current map = KAA-OFFICE");
+        }
+        if (floor.getGraphPath().contains("/mapData/8/")) {
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
+           // Log.i(TAG, "current map = IT-JIM");
+        }
+
         instance.start();
         task = new TimerTask() {
             @Override
@@ -251,7 +274,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         timer.cancel();
         timer.purge();
         task.cancel();
-        instance.stop();
     }
 
     @Override
@@ -260,7 +282,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
-        getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
+            getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
             @Override
             public void onMapProcessed() {
                 progressDialog.hide();

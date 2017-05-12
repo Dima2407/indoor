@@ -12,25 +12,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -stdlib=libc++14")
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
-set(SOURCE_FILES
-    ../../NavigatorLib/src/Navigator/Beacons/TrilatBeaconNavigator.cpp
-    ../../NavigatorLib/src/Navigator/Math/Filter/AlphaBetaFilter.cpp
-    ../../NavigatorLib/src/Navigator/Math/Filter/MovingAverageFilter.cpp
-    ../../NavigatorLib/src/Navigator/Math/Trilat/trilat.cpp
-
-    #
-    ../../NavigatorLib/src/Navigator/Beacons/BeaconProcessor.cpp
-    ../../NavigatorLib/src/Navigator/Beacons/Calibrate/BeaconCalibrator.cpp
-    ../../NavigatorLib/src/Navigator/Beacons/Calibrate/Algorithm/algorithm.cpp
-
-    #
-    ../../NavigatorLib/include/Navigator/Beacons/Beacon.h
-    ../../NavigatorLib/include/Navigator/Beacons/BeaconProcessor.h
-    ../../NavigatorLib/include/Navigator/Math/Filter/AlphaBetaFilter.h
-    ../../NavigatorLib/include/Navigator/Math/Trilat/TrilatRecord.h
-    ../../NavigatorLib/include/Navigator/Beacons/Calibrate/BeaconCalibrator.h
-    ../../NavigatorLib/include/Navigator/Math/Trilat/trilat.h
-)
+file(GLOB_RECURSE SOURCE_FILES ../../NavigatorLib/src/Navigator/*.cpp)
 
 include_directories(
         ../../NavigatorLib/include/

@@ -22,6 +22,8 @@ namespace Navigator {
             if (distanceFilter != nullptr) // Apply distance filter if defined
                 distPair = distanceFilter->process(distPair);
 
+            distance = distPair.val;
+
             active = true; // We are now active
             lastTimeStamp = distPair.timeStamp; // Save timestamp
             lastDistance = distance; // Save distance

@@ -20,11 +20,11 @@ void BluetoothBridge_init() {
    
     if (mesh == NULL)
     {
-        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(nullptr);
+        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(nullptr,true);
         printf("Create simple Navigator");
     }
     else{
-        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(mesh);
+        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(mesh,true);
         printf("Create Mesh Navigator");
     }
         

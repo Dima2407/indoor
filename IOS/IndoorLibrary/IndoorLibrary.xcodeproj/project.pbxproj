@@ -16,10 +16,6 @@
 		0610B6921E66F661003EC3FA /* WIFIMeasurementProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0610B68A1E66F661003EC3FA /* WIFIMeasurementProvider.m */; };
 		063A7A361EB34A7D00ABA37F /* MeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6801E66F661003EC3FA /* MeasurementProvider.h */; };
 		063A7A371EB34A9D00ABA37F /* ErrorTransfer.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */; };
-		06650E1A1E81767500E7D811 /* TrilatBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E191E81767500E7D811 /* TrilatBeaconNavigator.cpp */; };
-		06650E1D1E81768600E7D811 /* AlphaBetaFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */; };
-		06650E1E1E81768600E7D811 /* MovingAverageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E1C1E81768600E7D811 /* MovingAverageFilter.cpp */; };
-		06650E201E81769E00E7D811 /* trilat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06650E1F1E81769E00E7D811 /* trilat.cpp */; };
 		06650E211E828D1300E7D811 /* BeaconConfig.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06FBD40A1E7F34A700D8902A /* BeaconConfig.h */; };
 		06650E221E828D5D00E7D811 /* TConfig.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06FBD40F1E7F34A700D8902A /* TConfig.h */; };
 		06650E231E82B51F00E7D811 /* IndoorPrefixHeader.pch in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650DF31E814D3600E7D811 /* IndoorPrefixHeader.pch */; };
@@ -27,11 +23,17 @@
 		06650E2A1E82CC1100E7D811 /* IndoorError.m in Sources */ = {isa = PBXBuildFile; fileRef = 06650E291E82CC1100E7D811 /* IndoorError.m */; };
 		06650E2D1E82EC8400E7D811 /* IndoorError.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E281E82CC1100E7D811 /* IndoorError.h */; };
 		06650E331E83D31600E7D811 /* ErrorListener.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 06650E271E82C2CA00E7D811 /* ErrorListener.h */; };
-		0688CF351EBC82C3001C3834 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0688CF331EBC82C3001C3834 /* BeaconProcessor.cpp */; };
-		0688CF361EBC82C3001C3834 /* StandardBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0688CF341EBC82C3001C3834 /* StandardBeaconNavigator.cpp */; };
-		0688CF381EBC82D7001C3834 /* RectanMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0688CF371EBC82D7001C3834 /* RectanMesh.cpp */; };
+		0684132A1EC5DC9900EA2524 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413271EC5DC9900EA2524 /* BeaconProcessor.cpp */; };
+		0684132B1EC5DC9900EA2524 /* StandardBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413281EC5DC9900EA2524 /* StandardBeaconNavigator.cpp */; };
+		0684132C1EC5DC9900EA2524 /* TrilatBeaconNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413291EC5DC9900EA2524 /* TrilatBeaconNavigator.cpp */; };
+		0684132F1EC5DCB400EA2524 /* Graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0684132D1EC5DCB400EA2524 /* Graph.cpp */; };
+		068413301EC5DCB400EA2524 /* PointGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0684132E1EC5DCB400EA2524 /* PointGraph.cpp */; };
+		068413341EC5DCC900EA2524 /* AlphaBetaFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413311EC5DCC900EA2524 /* AlphaBetaFilter.cpp */; };
+		068413351EC5DCC900EA2524 /* AlphaTrimmedFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413321EC5DCC900EA2524 /* AlphaTrimmedFilter.cpp */; };
+		068413361EC5DCC900EA2524 /* MovingAverageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413331EC5DCC900EA2524 /* MovingAverageFilter.cpp */; };
+		068413381EC5DCDC00EA2524 /* trilat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413371EC5DCDC00EA2524 /* trilat.cpp */; };
+		0684133A1EC5DCEB00EA2524 /* RectanMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 068413391EC5DCEB00EA2524 /* RectanMesh.cpp */; };
 		06ED897E1E6D79F50011C01C /* IndoorLocationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */; };
-		06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */; };
 		06FBD1851E7AEBDE00D8902A /* MeasurementEvent.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B6751E66F661003EC3FA /* MeasurementEvent.h */; };
 		06FBD1871E7AEBDE00D8902A /* BluetoothMeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B67B1E66F661003EC3FA /* BluetoothMeasurementProvider.h */; };
 		06FBD1881E7AEBDE00D8902A /* GPSMeasurementProvider.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 0610B67E1E66F661003EC3FA /* GPSMeasurementProvider.h */; };
@@ -92,20 +94,22 @@
 		0610B68A1E66F661003EC3FA /* WIFIMeasurementProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WIFIMeasurementProvider.m; sourceTree = "<group>"; };
 		06650DF31E814D3600E7D811 /* IndoorPrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IndoorPrefixHeader.pch; path = IndoorLibrary/IndoorPrefixHeader.pch; sourceTree = "<group>"; };
 		06650DF41E815AEC00E7D811 /* IndoorLocationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationListener.h; sourceTree = "<group>"; };
-		06650E191E81767500E7D811 /* TrilatBeaconNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TrilatBeaconNavigator.cpp; path = ../../NavigatorLib/src/Navigator/Beacons/TrilatBeaconNavigator.cpp; sourceTree = "<group>"; };
-		06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AlphaBetaFilter.cpp; path = ../../NavigatorLib/src/Navigator/Math/Filter/AlphaBetaFilter.cpp; sourceTree = "<group>"; };
-		06650E1C1E81768600E7D811 /* MovingAverageFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MovingAverageFilter.cpp; path = ../../NavigatorLib/src/Navigator/Math/Filter/MovingAverageFilter.cpp; sourceTree = "<group>"; };
-		06650E1F1E81769E00E7D811 /* trilat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = trilat.cpp; path = ../../NavigatorLib/src/Navigator/Math/Trilat/trilat.cpp; sourceTree = "<group>"; };
 		06650E271E82C2CA00E7D811 /* ErrorListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorListener.h; sourceTree = "<group>"; };
 		06650E281E82CC1100E7D811 /* IndoorError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorError.h; sourceTree = "<group>"; };
 		06650E291E82CC1100E7D811 /* IndoorError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndoorError.m; sourceTree = "<group>"; };
 		06650E2B1E82D5F800E7D811 /* ErrorTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorTransfer.h; path = ../../ErrorManager/ErrorTransfer.h; sourceTree = "<group>"; };
-		0688CF331EBC82C3001C3834 /* BeaconProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeaconProcessor.cpp; sourceTree = "<group>"; };
-		0688CF341EBC82C3001C3834 /* StandardBeaconNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StandardBeaconNavigator.cpp; sourceTree = "<group>"; };
-		0688CF371EBC82D7001C3834 /* RectanMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RectanMesh.cpp; sourceTree = "<group>"; };
+		068413271EC5DC9900EA2524 /* BeaconProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeaconProcessor.cpp; sourceTree = "<group>"; };
+		068413281EC5DC9900EA2524 /* StandardBeaconNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StandardBeaconNavigator.cpp; sourceTree = "<group>"; };
+		068413291EC5DC9900EA2524 /* TrilatBeaconNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TrilatBeaconNavigator.cpp; sourceTree = "<group>"; };
+		0684132D1EC5DCB400EA2524 /* Graph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graph.cpp; sourceTree = "<group>"; };
+		0684132E1EC5DCB400EA2524 /* PointGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PointGraph.cpp; sourceTree = "<group>"; };
+		068413311EC5DCC900EA2524 /* AlphaBetaFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AlphaBetaFilter.cpp; sourceTree = "<group>"; };
+		068413321EC5DCC900EA2524 /* AlphaTrimmedFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AlphaTrimmedFilter.cpp; sourceTree = "<group>"; };
+		068413331EC5DCC900EA2524 /* MovingAverageFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MovingAverageFilter.cpp; sourceTree = "<group>"; };
+		068413371EC5DCDC00EA2524 /* trilat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = trilat.cpp; sourceTree = "<group>"; };
+		068413391EC5DCEB00EA2524 /* RectanMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RectanMesh.cpp; sourceTree = "<group>"; };
 		06ED897C1E6D79F50011C01C /* IndoorLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndoorLocationManager.h; sourceTree = "<group>"; };
 		06ED897D1E6D79F50011C01C /* IndoorLocationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndoorLocationManager.mm; sourceTree = "<group>"; };
-		06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeaconProcessor.cpp; path = ../../NavigatorLib/src/Navigator/Beacons/BeaconProcessor.cpp; sourceTree = "<group>"; };
 		06FBC9991E76F5E900D8902A /* MeasurementTranfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeasurementTranfer.h; sourceTree = "<group>"; };
 		06FBD4041E7F1F2B00D8902A /* BluetoothBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BluetoothBridge.cpp; sourceTree = "<group>"; };
 		06FBD4051E7F1F2B00D8902A /* BluetoothBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothBridge.h; sourceTree = "<group>"; };
@@ -131,14 +135,16 @@
 		0610B65F1E66F465003EC3FA = {
 			isa = PBXGroup;
 			children = (
-				0688CF371EBC82D7001C3834 /* RectanMesh.cpp */,
-				0688CF331EBC82C3001C3834 /* BeaconProcessor.cpp */,
-				0688CF341EBC82C3001C3834 /* StandardBeaconNavigator.cpp */,
-				06FB4D771E8EDD510007DF80 /* BeaconProcessor.cpp */,
-				06650E1F1E81769E00E7D811 /* trilat.cpp */,
-				06650E1B1E81768600E7D811 /* AlphaBetaFilter.cpp */,
-				06650E1C1E81768600E7D811 /* MovingAverageFilter.cpp */,
-				06650E191E81767500E7D811 /* TrilatBeaconNavigator.cpp */,
+				068413391EC5DCEB00EA2524 /* RectanMesh.cpp */,
+				068413371EC5DCDC00EA2524 /* trilat.cpp */,
+				068413311EC5DCC900EA2524 /* AlphaBetaFilter.cpp */,
+				068413321EC5DCC900EA2524 /* AlphaTrimmedFilter.cpp */,
+				068413331EC5DCC900EA2524 /* MovingAverageFilter.cpp */,
+				0684132D1EC5DCB400EA2524 /* Graph.cpp */,
+				0684132E1EC5DCB400EA2524 /* PointGraph.cpp */,
+				068413271EC5DC9900EA2524 /* BeaconProcessor.cpp */,
+				068413281EC5DC9900EA2524 /* StandardBeaconNavigator.cpp */,
+				068413291EC5DC9900EA2524 /* TrilatBeaconNavigator.cpp */,
 				06650DF21E814CE700E7D811 /* Bridge */,
 				06FBD4031E7F1EEE00D8902A /* Headers */,
 				0610B66A1E66F465003EC3FA /* IndoorLibrary */,
@@ -356,14 +362,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0688CF381EBC82D7001C3834 /* RectanMesh.cpp in Sources */,
-				0688CF351EBC82C3001C3834 /* BeaconProcessor.cpp in Sources */,
-				0688CF361EBC82C3001C3834 /* StandardBeaconNavigator.cpp in Sources */,
-				06FB4D781E8EDD510007DF80 /* BeaconProcessor.cpp in Sources */,
-				06650E201E81769E00E7D811 /* trilat.cpp in Sources */,
-				06650E1D1E81768600E7D811 /* AlphaBetaFilter.cpp in Sources */,
-				06650E1E1E81768600E7D811 /* MovingAverageFilter.cpp in Sources */,
-				06650E1A1E81767500E7D811 /* TrilatBeaconNavigator.cpp in Sources */,
+				0684133A1EC5DCEB00EA2524 /* RectanMesh.cpp in Sources */,
+				068413381EC5DCDC00EA2524 /* trilat.cpp in Sources */,
+				068413341EC5DCC900EA2524 /* AlphaBetaFilter.cpp in Sources */,
+				068413351EC5DCC900EA2524 /* AlphaTrimmedFilter.cpp in Sources */,
+				068413361EC5DCC900EA2524 /* MovingAverageFilter.cpp in Sources */,
+				0684132F1EC5DCB400EA2524 /* Graph.cpp in Sources */,
+				068413301EC5DCB400EA2524 /* PointGraph.cpp in Sources */,
+				0684132A1EC5DC9900EA2524 /* BeaconProcessor.cpp in Sources */,
+				0684132B1EC5DC9900EA2524 /* StandardBeaconNavigator.cpp in Sources */,
+				0684132C1EC5DC9900EA2524 /* TrilatBeaconNavigator.cpp in Sources */,
 				06FBD4111E7F34A700D8902A /* BluethoothProviderConfiguration.m in Sources */,
 				0610B68D1E66F661003EC3FA /* BluetoothMeasurementProvider.m in Sources */,
 				06650E2A1E82CC1100E7D811 /* IndoorError.m in Sources */,

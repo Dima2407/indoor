@@ -52,12 +52,12 @@ void BluetoothBridge_getLastPosition(double * output);
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_createMesh(double nx, double ny, double dx, double dy, double x0, double y0);
+void BluetoothBridge_createMesh(int nx, int ny, double dx, double dy, double x0, double y0);
 
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_setMaskTable(std::vector<int> mTable);
+void BluetoothBridge_setMaskTable(const std::vector<int> &mTable);
 #ifdef __cplusplus
 extern "C"
 #endif

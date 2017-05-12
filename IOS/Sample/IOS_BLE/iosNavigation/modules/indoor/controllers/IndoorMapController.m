@@ -9,8 +9,9 @@
 #import "IndoorMapController.h"
 #import "IndoorStreamController.h"
 #import "UIColor+HEX.h"
+#import <CoreBluetooth/CBCentralManager.h>
 
-@interface IndoorMapController () <IndoorStreamControllerDelegate>
+@interface IndoorMapController () <IndoorStreamControllerDelegate,CBCentralManagerDelegate>
 
 @property (nonatomic, strong) Graph *graph;
 @property (assign, nonatomic) CGPoint tapPoint;
@@ -29,7 +30,7 @@
 @property (weak, nonatomic) IBOutlet RouteInfoView *routeInfoView;
 @property (strong, nonatomic) NSArray *maneuversArray;
 @property (nonatomic, strong) SessionManager* manager;
-
+@property (nonatomic, strong) CBCentralManager* centralManager;
 @end
 
 @implementation IndoorMapController
@@ -64,6 +65,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
  
+    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     self.routeInfoView = [self createCustomRouteInfoView:self.routeInfoView];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"kSettingsShowRout"];
     self.routeInfoView.hidden = YES;
@@ -86,7 +88,7 @@
     [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
     [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
-    [[SessionManager sharedManager] getFloorMap:self.floor.mapPath dataType:@"map" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
+    [[SessionManager sharedManager] getFloorMap:self.floor.maskPath dataType:@"map" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
         if(map.mapImage != nil){
             [self setMapImage:map.mapImage];
         }
@@ -102,6 +104,16 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [[BeaconManager sharedManager] stopBeacon];
     [[BeaconManager sharedManager] deleteMesh];
+}
+
+
+#pragma mark - CBCentralManagerDelegate -
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central {
+    if (central.state == CBCentralManagerStatePoweredOn) {
+        //Bluetooth is on
+    } else if(central.state == CBCentralManagerStatePoweredOff) {
+        //Bluetooth is disabled
+    }
 }
 #pragma mark - Create POI Markers -
 -(void) createPoiMarkers:(NSDictionary*)poisDic{
@@ -320,7 +332,7 @@
     self.startPoint = p;
     
     p = convertPixelToPoint(p, self.mapView.image.size, self.drawView.frame.size);
-    self.currentPositionView.frame = CGRectMake(p.x, p.y, 25, 40);
+    self.currentPositionView.frame = CGRectMake(p.x-25/2, p.y-40, 25, 40);
     
     self.drawView.startPoint = p;
     [self.drawView setNeedsDisplay];

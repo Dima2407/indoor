@@ -154,14 +154,14 @@
             
             
         case MESH_MODE:
-            double nx = [[meshIn objectAtIndex:0] doubleValue], ny = [[meshIn objectAtIndex:1] doubleValue];
+            double nx = [[meshIn objectAtIndex:0] intValue], ny = [[meshIn objectAtIndex:1] intValue];
             double dx =[[meshIn objectAtIndex:2] doubleValue], dy = [[meshIn objectAtIndex:3] doubleValue];
             double x0 = [[meshIn objectAtIndex:4] doubleValue], y0 = [[meshIn objectAtIndex:5] doubleValue];
             BluetoothBridge_createMesh(nx, ny, dx, dy, x0, y0);
             
             std::vector<int> buffer(masktableOut.count);
             for (int i = 0; i < masktableOut.count; i++) {
-                buffer.push_back([[masktableOut objectAtIndex:i] intValue]);
+                buffer[i] = [[masktableOut objectAtIndex:i] intValue];
             }
             BluetoothBridge_setMaskTable(buffer);
             break;

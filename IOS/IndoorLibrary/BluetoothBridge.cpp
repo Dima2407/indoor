@@ -63,15 +63,17 @@ Navigator::Math::Position3D outPos = navigator->getLastPosition();
     output[2] = outPos.z;
 }
 extern "C"
-void BluetoothBridge_createMesh(double nx, double ny, double dx, double dy, double x0, double y0){
+void BluetoothBridge_createMesh(int nx, int ny, double dx, double dy, double x0, double y0){
     
     mesh = std::make_shared<Navigator::Mesh::RectanMesh>(nx, ny, dx, dy, x0, y0);
+    
 }
 
 extern "C"
-void BluetoothBridge_setMaskTable(std::vector<int> mTable){
+void BluetoothBridge_setMaskTable(const std::vector<int> &mTable){
     
     mesh -> setMaskTable(mTable);
+    
 }
 extern "C"
 void BluetoothBridge_releseMesh(){

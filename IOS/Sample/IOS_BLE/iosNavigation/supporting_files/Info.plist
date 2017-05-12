@@ -48,10 +48,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>We need camera to show you where to go</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App needs location servers for stuff</string>
+	<string>App needs your permission for use beacon manager</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

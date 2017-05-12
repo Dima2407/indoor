@@ -239,7 +239,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
     navigator = NULL;
     env->DeleteGlobalRef(savedListenerInstance);
     listenerOnLocationChangedId = NULL;
-    mTable.clear();
 }
 
 JNIEXPORT void JNICALL
@@ -315,12 +314,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMaskArray(JNIEnv *env, jobj
                                                                jintArray mask_) {
 
     if (mask_ != NULL) {
-    jint *mask = env->GetIntArrayElements(mask_, NULL);
+        jint *mask = env->GetIntArrayElements(mask_, NULL);
 
-    mTable.resize(sizeof(mask_));
-    for (int i = 0; i < sizeof(mask_); i++)
-        mTable[i] = mask[i];
+        mTable.clear();
+        mTable.resize(sizeof(mask_));
+        for (int i = 0; i < sizeof(mask_); i++)
+            mTable[i] = mask[i];
 
-    env->ReleaseIntArrayElements(mask_, mask, 0);
+        env->ReleaseIntArrayElements(mask_, mask, 0);
     }
 }

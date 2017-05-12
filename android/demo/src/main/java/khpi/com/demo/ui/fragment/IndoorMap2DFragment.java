@@ -274,7 +274,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         timer.cancel();
         timer.purge();
         task.cancel();
-        instance.stop();
     }
 
     @Override

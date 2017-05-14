@@ -48,6 +48,19 @@ namespace NaviTest {
 
             PointGraph g(edges, v);
 
+            // Test findVertex() :
+            CPPUNIT_ASSERT(g.findVertex(Position3D(5.0, 0.0, 0.0)) == 3 );
+            CPPUNIT_ASSERT(g.findVertex(Position3D(5.01, 0.0, 0.0)) == -1 );
+            CPPUNIT_ASSERT(g.findVertex(Position3D(17.0, 3.0, 0.0)) == 6 );
+            CPPUNIT_ASSERT(g.findVertex(Position3D(17.0, 3.01, 0.0)) == -1 );
+
+            // Test findNearestVertex() :
+            CPPUNIT_ASSERT(g.findNearestVertex(Position3D(5.0, 0.0, 0.0)) == 3 );
+            CPPUNIT_ASSERT(g.findNearestVertex(Position3D(5.99, -1.7, 0.0)) == 3 );
+            CPPUNIT_ASSERT(g.findNearestVertex(Position3D(6.01, -1.7, 0.0)) == 4 );
+            CPPUNIT_ASSERT(g.findNearestVertex(Position3D(15.0, 6.49, 0.0)) == 6 );
+            CPPUNIT_ASSERT(g.findNearestVertex(Position3D(15.0, 6.51, 0.0)) == 7 );
+
             // Test a path
             using vi = vector<int>;
             vector<int> path;

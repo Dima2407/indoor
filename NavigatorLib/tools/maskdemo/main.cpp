@@ -27,12 +27,16 @@ static void showUsage(){
     cout << "Usage:\n";
     cout << " maskdemo <map_file> <pixel_size> <square_size> \n";
     cout << "\n";
-    cout << "map_file = Igage file with map, e.g. map1.png \n";
+    cout << "map_file = Igage file with map, e.g. maps\\map1.png \n";
     cout << "Black pixels in the map are treated as obstacles. \n";
     cout << "\n";
 
-    cout << "pixel_size (double) =  map pixels size in meters, e.g. 0.0075 \n";
+    cout << "pixel_size (double) =  map pixels size in meters, e.g. 0.007 \n";
     cout << "square_size(double) =  mesh square size in meters, 0.3 \n";
+    
+    cout << "Examples : \n";
+    cout << " maskdemo maps\\map1.png 0.007  0.3\n";
+    cout << " maskdemo maps\\map2.png 0.0062 0.3" << endl;
 
     exit(1);
 }
@@ -148,9 +152,10 @@ void createBigMap(const MeshData & mesh, const vector<int> & maskTbl, const Mesh
         }
         
     // Now run every pixel through the mesh
+    const unsigned char cRed[] = {255, 0, 0};
     for (int ix=0; ix < width; ++ix)
         for (int iy=0; iy < height; ++iy) {
-            // First, we make find mesh points
+            // First, we find mesh points
             int xm = mesh.x2ix( pixelMesh.ix2x(ix) );
             int ym = mesh.y2iy( pixelMesh.iy2y(iy) );
             
@@ -164,16 +169,23 @@ void createBigMap(const MeshData & mesh, const vector<int> & maskTbl, const Mesh
             xm = ind / mesh.ny;
             ym = ind % mesh.ny;
             
-            // Now connvert the updated mesh (xm, ym) back to pixels
+            // Now convert the updated mesh (xm, ym) back to pixels
             int ix1 = pixelMesh.x2ix( mesh.ix2x(xm) );
             int iy1 = pixelMesh.y2iy( mesh.iy2y(ym) );
             
+            /*
             // Make the pixel (ix1, iy1) red
             bigMap(ix1, iy1, 0, 0) = 255;
             bigMap(ix1, iy1, 0, 1) = 0;
             bigMap(ix1, iy1, 0, 2) = 0;
+            */
+            
+            // Put a small red circle
+            bigMap.draw_circle(ix1, iy1, 3, cRed);
+            
         }    
     // Write the result
+    cout << "Saving bigmap image to bigmap.png " << endl;
     remove("bigmap.png");
     bigMap.save_png("bigmap.png");
     

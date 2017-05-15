@@ -81,6 +81,10 @@ namespace Navigator {
             void setMaskTable(const std::vector<int> &maskTable) {
                 RectanMesh::maskTable = maskTable;
             }
+            
+            const std::vector<int> & getMaskTable() const {
+                return maskTable;
+            }
 
             const MeshData &getMesh() const {
                 return mesh;

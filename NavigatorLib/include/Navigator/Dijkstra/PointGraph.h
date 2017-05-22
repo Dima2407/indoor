@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 #include "./Graph.h"
 #include "Navigator/Math/Position3D.h"
@@ -26,6 +27,9 @@ namespace Navigator {
             /// Create from file
             PointGraph(const std::string & fileName);
 
+            /// Create from string (like from file, and with rescale/pixel size, e.g. 0.07)
+            PointGraph(const std::string & data, double rescale);
+
         public: //========= Methods ======
             /// A version of dijkstra which gives a vector of Position3D points
             double dijkstraP(int source, int destination, std::vector<Math::Position3D> &pointPath);
@@ -44,6 +48,10 @@ namespace Navigator {
         private: //========= Methods ======
             /// Add edge to the vector edges, which is assumed to be of right size already
             void addEdge(int i, int j, double dist);
+
+            /// Parse data from an input stream, returns true if success
+            bool parseFromStream(std::istream & in);
+
         private: //========= Fields
             /// Vertices of the graph
             std::vector<Math::Position3D> vertices;

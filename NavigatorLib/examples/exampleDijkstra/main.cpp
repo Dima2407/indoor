@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <streambuf>
 
 #include "Navigator.h"
 
@@ -115,6 +117,24 @@ int main() {
     cout << "dist = " << g2.dijkstraP(1, 6, pointPath) << endl;
     for (const Position3D &p : pointPath)
         cout << p.x << " " << p.y << endl;
+
+    //----------------------------------------------------------
+    // Fun with class PointGraph, Reading PointGraph from a disk file via string
+
+    cout << "\nLet's try PointGraph from file graph.txt via string buffer ! \n";
+    ifstream temp("graph.txt");
+    string buffer((std::istreambuf_iterator<char>(temp)),
+                    std::istreambuf_iterator<char>());
+    temp.close();
+
+    // Put rescale = 0.07 or something to convert from pixels to meters
+    PointGraph g4(buffer, 1.0);
+    pointPath.clear();
+
+    cout << "dist = " << g2.dijkstraP(1, 6, pointPath) << endl;
+    for (const Position3D &p : pointPath)
+        cout << p.x << " " << p.y << endl;
+
 
     return 0;
 }

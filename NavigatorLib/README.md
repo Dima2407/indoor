@@ -66,7 +66,7 @@ __Directories__:
 * `include` : The only folder to be included for user
 * `lib` : This directory is for external libraries, e.g. Eigen
 * `examples` : Examples
-* `tools` : Tools, includes `maskgen`, `maskgen2`, `maskdemo` at present, which generates mask table from a black/white mask or a PNG file.
+* `tools` : Tools, includes `maskgen`, `maskgen2`, `maskdemo`, `maskdemo2` at present, which generates mask table from a black/white mask or a PNG file.
         Also `dijkdemo` for visualizing Dijkstra routing.
 * `unittest` : CppUnit-based unit tests for the library
 * `test-tool` (`tester`, `faker`, `autotester`) : A tool for testing the library with events data

@@ -38,6 +38,9 @@ namespace Navigator {
             /// Find a vertex by the Position3D coordinate, or -1 if not found
             int findVertex(const Math::Position3D & point) const;
 
+            /// Find the nearest vertex by the Position3D coordinate, or -1 if not found
+            int findNearestVertex(const Math::Position3D & point) const;
+
         private: //========= Methods ======
             /// Add edge to the vector edges, which is assumed to be of right size already
             void addEdge(int i, int j, double dist);

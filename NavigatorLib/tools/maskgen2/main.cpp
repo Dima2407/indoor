@@ -33,6 +33,10 @@ static void showUsage(){
 
     cout << "pixel_size (double) =  map pixels size in meters, e.g. 0.007 \n";
     cout << "square_size(double) =  mesh square size in meters, 0.3 \n";
+    
+    cout << "Examples : \n";
+    cout << " maskgen2 maps\\map1.png 0.007  0.3\n";
+    cout << " maskgen2 maps\\map2.png 0.0062 0.3" << endl;
 
     exit(1);
 }

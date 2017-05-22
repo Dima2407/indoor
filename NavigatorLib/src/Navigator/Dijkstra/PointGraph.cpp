@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits>
 
 
 #include "Navigator/Dijkstra/PointGraph.h"
@@ -120,6 +121,22 @@ namespace Navigator {
 
             return -1; // Not found
         }
+
+//============================================================================
+        int PointGraph::findNearestVertex(const Math::Position3D &point) const {
+            double bestDist = std::numeric_limits<double>::max(); // Best distance so far
+            int bestInd = -1; // Index of the nearest found so far
+
+            for (int i = 0; i < vertices.size(); ++i) {
+                double dist = vertices[i].distance(point);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestInd = i;
+                }
+            }
+
+            return bestInd;
+        }
 //============================================================================
 
         void PointGraph::addEdge(int i, int j, double dist) {
@@ -142,6 +159,7 @@ namespace Navigator {
             // Not found: add a new element
             ve.push_back(Edge(j, dist));
         }
+
 //============================================================================
 
     }

@@ -76,9 +76,16 @@ int main() {
 
     // More things you can do with a PointGraph
     cout << "\nPointGraph additional operations :\n\n";
+
     // Find a vertex index from coordinates
-    cout << "Vertex index from XYZ : g2.findVertex(Position3D(17, 3, 0)) = " << g2.findVertex(Position3D(17, 3, 0))
+    cout << "Vertex index from XYZ : g2.findVertex(Position3D(17, 3, 0)) = " << g2.findVertex(Position3D(17.0, 3.0, 0))
          << endl;
+
+    // Find nearest vertex index from coordinates
+    cout << "Nearest Vertex index from XYZ : g2.findNearestVertex(Position3D(6.1, 2.1, 0)) = " <<
+         g2.findNearestVertex(Position3D(6.1, 1.9, 0)) << endl;
+
+
     cout << "Number of vertices    :  g2.getSize() = " << g2.getSize() << endl;
     cout << "All vertices          :  g2.getVerices() = \n";
 

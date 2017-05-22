@@ -23,75 +23,29 @@ namespace Navigator {
             if (!in)
                 throw runtime_error("PointGraph: Cannot open file" + fileName);
 
-            string line;
-
-            // Line 1 = type of file
-            getline(in, line);
-//            cout << line << endl;
-
-            // Note : ->GOOD file format :
-            //
-            // Vertices start with 0.
-            // Edges can have directions. "1 2 107.0" does not mean "2 1 107.0"
-            //
-            // ->GRAPH file format (Alexey Roienko)
-            //
-            // Vertices start with 1.
-            // Edges don't have directions. "1 2 107.0" automatically gives "2 1 107.0"
-
-            bool flag;
-            if (line == "->GOOD")
-                flag = true;
-            else if (line == "->GRAPH")
-                flag = false;
-            else
+            if (! parseFromStream(in))
                 throw runtime_error("PointGraph: Cannot parse file" + fileName);
-
-            // Read point positions
-            double x, y;
-
-            while (true) {
-                getline(in, line);
-                stringstream stin(line);
-
-                // Read x,y until an uncompatible line
-                if (! (stin >> x >> y))
-                    break;
-
-                vertices.push_back(Position3D(x, y, 0.0));
-//                cout << "(x, y) = " << x << " " << y << endl;
-            }
-//            cout << "vertices.size() = " << vertices.size() << endl;
-            if (0 == vertices.size())
-                throw runtime_error("PointGraph: Cannot parse file" + fileName);
-
-//            cout << line << endl;
-
-            if (line != "->EDGES")
-                throw runtime_error("PointGraph: Cannot parse file" + fileName);
-
-            // Read the edges
-            int size = vertices.size();
-            edges = vector<vector<Edge>>(size); // Create the vector of the correct size
-
-            int i, j;
-            double dist;
-
-            while (in >> i >> j >> dist) {
-                if (!flag) {
-                    // change vertex index 1-based -> 0-based
-                    --i;
-                    --j;
-                }
-
-//                cout << i << " : " << j << " : " << dist << endl;
-                addEdge(i, j, dist);
-                if (!flag) {
-                    addEdge(j, i, dist); // Add the other direction
-                }
-            }
 
             in.close();
+        }
+//============================================================================
+
+        PointGraph::PointGraph(const std::string &data, double rescale): Graph({}) {
+            using namespace std;
+            using namespace Navigator::Math;
+
+            stringstream in(data);
+
+            // Read from stream
+            if (! parseFromStream(in))
+                throw runtime_error("PointGraph: Cannot parse string !");
+
+            // Rescale
+            for (Position3D & p : vertices) {
+                p.x *= rescale;
+                p.y *= rescale;
+                p.z *= rescale;
+            }
         }
 
 //============================================================================
@@ -158,6 +112,87 @@ namespace Navigator {
 
             // Not found: add a new element
             ve.push_back(Edge(j, dist));
+        }
+//============================================================================
+
+        bool PointGraph::parseFromStream(std::istream &in) {
+            using namespace std;
+            using namespace Navigator::Math;
+
+            if (!in)
+                return false;
+
+            string line;
+
+            // Line 1 = type of file
+            getline(in, line);
+//            cout << line << endl;
+
+            // Note : ->GOOD file format :
+            //
+            // Vertices start with 0.
+            // Edges can have directions. "1 2 107.0" does not mean "2 1 107.0"
+            //
+            // ->GRAPH file format (Alexey Roienko)
+            //
+            // Vertices start with 1.
+            // Edges don't have directions. "1 2 107.0" automatically gives "2 1 107.0"
+
+            bool flag;
+            if (line == "->GOOD")
+                flag = true;
+            else if (line == "->GRAPH")
+                flag = false;
+            else
+                return false;
+
+            // Read point positions
+            double x, y;
+
+            vertices.clear(); // Just in case
+
+            while (true) {
+                getline(in, line);
+                stringstream stin(line);
+
+                // Read x,y until an uncompatible line
+                if (! (stin >> x >> y))
+                    break;
+
+                vertices.push_back(Position3D(x, y, 0.0));
+//                cout << "(x, y) = " << x << " " << y << endl;
+            }
+//            cout << "vertices.size() = " << vertices.size() << endl;
+            if (0 == vertices.size())
+                return false;
+
+//            cout << line << endl;
+
+            if (line != "->EDGES")
+                return false;
+
+            // Read the edges
+            int size = vertices.size();
+            edges = vector<vector<Edge>>(size); // Create the vector of the correct size
+
+            int i, j;
+            double dist;
+
+            while (in >> i >> j >> dist) {
+                if (!flag) {
+                    // change vertex index 1-based -> 0-based
+                    --i;
+                    --j;
+                }
+
+//                cout << i << " : " << j << " : " << dist << endl;
+                addEdge(i, j, dist);
+                if (!flag) {
+                    addEdge(j, i, dist); // Add the other direction
+                }
+            }
+
+            return true;
         }
 
 //============================================================================

@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSString *mapPath;
 @property (strong, nonatomic) NSString *graphPath;
 @property (strong, nonatomic) NSString *maskPath;
+@property (strong, nonatomic) NSString *routingGraph;
 @property (assign, nonatomic) NSInteger buildingId;
 @property (strong, nonatomic) NSString *buildingTitle;
 @property (strong, nonatomic) NSArray *inpointIdList;

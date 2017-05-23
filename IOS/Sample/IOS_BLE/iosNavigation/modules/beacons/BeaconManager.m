@@ -108,9 +108,28 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 
         NSLog(@"%f  %f",x,y);
        //[self.delegate currentLocation:CGPointMake(0, 1)];
+        NSArray* routing = nil;
+        if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
+        {
+            self.manager.isRouting = YES;
+            routing = [[self.manager getRouting] copy];
+        }
+       
+    [self.delegate currentRouting:routing];
     [self.delegate currentLocation:CGPointMake(x, y)];
 
    }
+}
+-(CGFloat)getDistance{
+    if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
+    {
+   return  [self.manager getDistance];
+    }
+    else{
+        NSLog(@"Distance 0");
+        return 0;
+    }
+    
 }
 -(void)getError:(IndoorError *)error{
     NSLog(@"error: %@", error.error.description);
@@ -130,15 +149,34 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 #pragma mark - Set Beacon Data -
 -(void) setBeaconMap:(FloorModel*)floor withBeaconData:(NSArray*)beacons{
 
-  [beacons enumerateObjectsUsingBlock:^(BeaconModel*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-      NSString* uuidUpperCase = [obj.uuid uppercaseString];
-        BeaconConfig *beacon = [[BeaconConfig alloc] initWithUUID:uuidUpperCase major:obj.major minor:obj.minor txPower:obj.txpower damp:obj.damp andX:obj.x andY:obj.y andZ:obj.z];
-   
-
-        [self.manager setBeaconConfig:beacon];
-    }];
-
-
+//  [beacons enumerateObjectsUsingBlock:^(BeaconModel*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//      NSString* uuidUpperCase = [obj.uuid uppercaseString];
+//        BeaconConfig *beacon = [[BeaconConfig alloc] initWithUUID:uuidUpperCase major:obj.major minor:obj.minor txPower:obj.txpower damp:obj.damp andX:obj.x andY:obj.y andZ:obj.z];
+//   
+//
+//        [self.manager setBeaconConfig:beacon];
+//    }];
+    BeaconConfig *firstBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48049 txPower:-71.2 damp:2 andX:4.5 andY:0.0 andZ:2.3];
+    BeaconConfig *forthBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48050 txPower:-71.2 damp:2 andX:0.0 andY:3.7 andZ:2.6];
+    
+    BeaconConfig *thirdBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48051 txPower:-71.2 damp:2 andX:3 andY:12.8 andZ:2.3];
+    BeaconConfig *secondBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48052 txPower:-71.2 damp:2 andX:0.3 andY:9.9 andZ:2.6];
+    [self.manager setBeaconConfig:firstBeacon];
+    [self.manager setBeaconConfig:secondBeacon];
+    [self.manager setBeaconConfig:thirdBeacon];
+    [self.manager setBeaconConfig:forthBeacon];
+}
+#pragma mark - Set Graph -
+-(void) setGraph:(FloorModel*)floor withGraph:(NSString*)gpaphJsonString{
+    
+    NSString* parsedString = [gpaphJsonString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    [self.manager setGraph:parsedString and:floor.pixelSize];
+    self.manager.isRouting = true;
+    
+    
+}
+-(void)setDestination:(CGPoint)destination{
+    [self.manager setDectinationPosition:[NSArray arrayWithObjects:@(destination.x),@(destination.y),0, nil]];
 }
 
 @end

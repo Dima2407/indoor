@@ -11,7 +11,6 @@
 @property (nonatomic, assign) NSInteger x;
 @property (nonatomic, assign) NSInteger y;
 
-
 @property (nonatomic, assign) long distance;
 
 
@@ -35,6 +34,7 @@
 @property (nonatomic, strong) NSMutableArray *ekVertexes;
 @property (nonatomic, strong) NSMutableArray *ekEdges;
 
+@property (nonatomic, strong) NSString* jsonString;
 
 
 - (instancetype)initWithData:(NSData *)data;

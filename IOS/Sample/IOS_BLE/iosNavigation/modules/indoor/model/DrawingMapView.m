@@ -15,29 +15,27 @@
 - (void)drawRect:(CGRect)rect {
     if (self.isDrawRoute)
     {
-        NSArray *points = [NSArray arrayWithObjects:
-                           [NSValue valueWithCGPoint:CGPointMake(50.0, 6.0)],
-                           [NSValue valueWithCGPoint:CGPointMake(300.7, 80.8)],
-                           nil];
         
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextClearRect(context, rect);
         
-        if(points){
+        
+        if(self.pointsArray){
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            CGContextClearRect(context, rect);
+            self.startPoint =[ [self.pointsArray firstObject]CGPointValue];
             CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.376f green:0.325f blue:1.f alpha:0.8f].CGColor);
             CGContextSetLineCap(context, kCGLineCapRound);
             CGContextMoveToPoint(context, self.startPoint.x, self.startPoint.y);
             CGContextSetLineWidth(context, 3);
             
             
-            for(NSValue *value in points){
+            for(NSValue *value in self.pointsArray){
                 
                 CGPoint p = [value CGPointValue];
                 
                 CGContextAddLineToPoint(context, p.x, p.y);
                 CGContextMoveToPoint(context, p.x, p.y);
             }
-            CGContextAddLineToPoint(context, self.destinationPoint.x, self.destinationPoint.y);
+            
             CGContextStrokePath(context);
         }
     }

@@ -95,7 +95,15 @@
         else{
         }
     }];
-   
+    [[SessionManager sharedManager] getFloorMap:self.floor.graphPath dataType:@"graph" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
+        if(map.mapGraph != nil){
+            NSString *stringFromData = [NSString stringWithUTF8String:[self.floor.mapGraph bytes]];
+            [[BeaconManager sharedManager]setGraph:self.floor withGraph:stringFromData];
+        }
+        else{
+            NSLog(@"GraphData is nil");
+        }
+    }];
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
@@ -135,7 +143,7 @@
 -(void) callBeaconManager{
    [[BeaconManager sharedManager] startBeacon];
     [[BeaconManager sharedManager] setBeaconMap:self.floor withBeaconData:self.floor.beacons];
-   
+ 
     [BeaconManager sharedManager].delegate = self;
 }
 #pragma mark - IndoorStreamControllerDelegate -
@@ -161,30 +169,10 @@
    self.maneuversArray = [self getManeuverWithStartPoint:startPoint pointsArray:pointsList pixelSize:self.floor.mapSizeCof];
     self.isRoute = YES;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-//        self.routeInfoView.hidden = YES;
-//        self.routeInfoMenu.hidden = YES;
-//        RoutePoint *point = [self.maneuversArray firstObject];
-//        self.routeInfoView = [self fillRouteInfoView:self.routeInfoView
-//                                            distance:point.tempDistance
-//                                            duration:point.tempDuration
-//                                                step:point.stepInstruction
-//                                            maneuver:[UIImage maneuverImage:point.maneuver]];
-//        [self setAllDistanceAndTime:self.maneuversArray];
-  });
-//
-//    NSArray *points = [self convertPoint:pointsList convertType:ConvertTypePoint image:self.mapView.image view:self.drawView];
-//    self.drawView = [self drawRouteFromPoints:points onDrawView:self.drawView withStartPoint:startPoint];
-//    self.tapPoint = endPoint;
-   // CGPoint point = [self tapDetection:gesture onView:self.drawView];
-    CGPoint start = {self.drawView.frame.origin.x,self.drawView.frame.origin.y };
-    CGPoint destination  = endPoint;
+
 
     self.drawView.view = self.drawView;
     self.drawView.img = self.mapView;
-    self.drawView.startPoint = start;
-    self.drawView.destinationPoint = destination;
     [self.drawView setNeedsDisplay];
 }
 #pragma mark - Set Distance and Time -
@@ -231,9 +219,9 @@
     }
     else{
     CGPoint point = [self tapDetection:gesture onView:self.drawView];
-    CGPoint start = {self.drawView.frame.origin.x,self.drawView.frame.origin.y };
-    CGPoint destination  =  [gesture locationInView:self.drawView];
-    
+
+    CGPoint destination  = {self.mapView.image.size.width /self.mapView.frame.size.width  * point.x * self.floor.pixelSize,self.mapView.image.size.height /self.mapView.frame.size.height  * point.y * self.floor.pixelSize };
+    [[BeaconManager sharedManager] setDestination:destination];
     if(point.x > 0 && point.y > 0){
         self.routeInfoView.hidden = NO;
         self.routeInfoMenu.hidden = NO;
@@ -242,11 +230,9 @@
         self.drawView.isDrawRoute = YES;
         self.drawView.view = self.drawView;
         self.drawView.img = self.mapView;
-        self.drawView.startPoint = start;
-        self.drawView.destinationPoint = destination;
         [self.drawView setNeedsDisplay];
 
-    }
+   }
     else{
     
     }
@@ -336,6 +322,46 @@
     
     self.drawView.startPoint = p;
     [self.drawView setNeedsDisplay];
+}
+-(void)currentRouting:(NSArray *)way{
+    if (way!=nil)
+    {
+      
+    NSMutableArray* points = [NSMutableArray new];
+    [way enumerateObjectsUsingBlock:^(NSDictionary*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGPoint location = CGPointMake([[obj objectForKey:@"x"] floatValue], [[obj objectForKey:@"y"] floatValue]);
+        CGPoint p;
+        if (self.floor.widht>0)
+        {
+            p.x = self.mapView.image.size.width / self.floor.widht *location.x;
+        }
+        else{
+            NSLog(@"Invalid floor width");
+            p.x = self.mapView.image.size.width *location.x;
+        }
+        if (self.floor.height)
+        {
+            p.y = self.mapView.image.size.height / self.floor.height *location.y;
+        }
+        else{
+            
+            NSLog(@"Invalid floor heigth");
+            p.y = self.mapView.image.size.height *location.y;
+        }
+        
+        p = convertPixelToPoint(p, self.mapView.image.size, self.drawView.frame.size);
+
+
+   [points addObject:[NSValue valueWithCGPoint:p]];
+    }];
+        
+    self.drawView.pointsArray = [points copy];
+        CGFloat distance = [[BeaconManager sharedManager] getDistance] * self.floor.pixelSize;
+        self.distanceLabel.text = [NSString stringWithFormat:@"Total distance %.2f m", distance];
+    }
+    else{
+        NSLog(@"Routing array is nil");
+    }
 }
 #pragma mark - UIScrollViewDelegate -
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{

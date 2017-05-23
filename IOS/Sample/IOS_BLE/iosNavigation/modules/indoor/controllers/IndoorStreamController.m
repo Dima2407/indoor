@@ -305,5 +305,14 @@
     [self.drawView setNeedsDisplay];
     [self centerScrolViewOnCurrentLocationWithPoint:p];
 }
+-(void)currentRouting:(NSArray *)way{
+    NSMutableArray* points = nil;
+    [way enumerateObjectsUsingBlock:^(NSDictionary*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGPoint p = CGPointMake([[obj objectForKey:@"x"] floatValue], [[obj objectForKey:@"y"] floatValue]);
+        p = convertPointToPixel(p, self.mapView.image.size, self.drawView.frame.size);
+        [points addObject:[NSValue valueWithCGPoint:p]];
+    }];
+    self.drawView.pointsArray = [points copy];
+}
 
 @end

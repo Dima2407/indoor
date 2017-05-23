@@ -97,13 +97,7 @@ public class RouteHelper {
 
     @WorkerThread
     private void processFile(File file, IndoorLocationManager instance) throws IOException {
-     //   nodes = new ArrayList<Vertex>();
         edges = new ArrayList<Edge>();
-
-        List<Integer> graphList = new ArrayList<>();
-        List<Double> edgesList = new ArrayList<>();
-
-       // Set<Vertex> realPoints = new HashSet<>();
 
         InputStream ins = new FileInputStream(file);
         BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
@@ -112,12 +106,7 @@ public class RouteHelper {
         StringBuilder sb = new StringBuilder();
       //  sb.append(file.getName()).append("\n");
         boolean e = false;
-        while (true) {
-            s = reader.readLine();
-            if (s == null) {
-                break;
-            }
-          //  Log.i("RouteHelper", " s = " + s);
+        while ((s = reader.readLine()) != null) {
             sb.append(s).append("\n");
             if (s.contains("->GRAPH")) {
                 e = false;
@@ -127,18 +116,11 @@ public class RouteHelper {
                 e = true;
                 continue;
             }
-            if (!e) {
-                String[] split = s.split(" ");
-                int x = Integer.parseInt(split[0]);
-                int y = Integer.parseInt(split[1]);
-               // Vertex location = new Vertex(formatNode(x, y), formatNode(x, y), x, y);
-              //  nodes.add(location);
-                graphList.add(x);
-                graphList.add(y);
-                continue;
-            }
             if (e) {
                 String[] split = s.split(" ");
+                if(split.length < 5){
+                    continue;
+                }
                 double x1 = Double.parseDouble(split[0]);
                 double y1 = Double.parseDouble(split[1]);
                 double x2 = Double.parseDouble(split[2]);
@@ -146,25 +128,16 @@ public class RouteHelper {
                 double v = Double.parseDouble(split[4]);
                 Vertex v1 = new Vertex(formatNode((int)x1, (int)y1), formatNode((int)x1, (int)y1), (int)x1, (int)y1);
                 Vertex v2 = new Vertex(formatNode((int)x2, (int)y2), formatNode((int)x2, (int)y2), (int)x2, (int)y2);
-                /*realPoints.add(v1);
-                realPoints.add(v2);*/
+
                 edges.add(new Edge(getEdgeName((int)x1, (int)y1, (int)x2, (int)y2), v1, v2, (int) v));
                 edges.add(new Edge(getEdgeName((int)x2, (int)y2, (int)x1, (int)y1), v2, v1, (int) v));
-                edgesList.add(x1);
-                edgesList.add(y1);
-                edgesList.add(x2);
-                edgesList.add(y2);
-                edgesList.add(v);
             }
         }
-
-     /*   Graph graph = new Graph(nodes, edges);
-        algorithm = new DijkstraAlgorithm(graph);*/
-        /*instance.setNodes(graphList);
-        instance.setEdges(edgesList);*/
-        Log.i("locationManager", "string from file = " + sb.toString());
+        sb.deleteCharAt(sb.length() -1);
+        String str = sb.toString();
+        Log.i("locationManager", "string from file = " + str);
         Log.i("locationManager", "setGraphArraysFromFile started");
-        instance.setGraphArraysFromFile(sb.toString(), 0.07);
+        instance.setGraphArraysFromFile(str, 0.07);
     }
 
     public void findPath(final PointF start, final PointF end, final IndoorLocationManager instance, final RouteListener listener) {

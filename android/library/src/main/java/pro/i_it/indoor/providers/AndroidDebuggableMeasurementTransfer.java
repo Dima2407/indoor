@@ -15,9 +15,6 @@ public class AndroidDebuggableMeasurementTransfer implements MeasurementTransfer
     @Override
     public void deliver(MeasurementEvent event) {
         Log.d(DebugConfig.TAG, "deliver: " + event);
-        Log.d(DebugConfig.TAG, "deliver: " + stringFromJNI());
         transfer.deliver(event);
     }
-
-    public native String stringFromJNI();
 }

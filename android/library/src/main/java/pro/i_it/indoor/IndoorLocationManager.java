@@ -1,28 +1,21 @@
 package pro.i_it.indoor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.providers.*;
 import pro.i_it.indoor.region.BeaconsInRegionLoader;
-import pro.i_it.indoor.region.InMemoryBeaconsLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
 import pro.i_it.indoor.region.SpaceRegion;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static pro.i_it.indoor.DebugConfig.TAG;
 
 public class IndoorLocationManager {
 
@@ -36,8 +29,8 @@ public class IndoorLocationManager {
     private OnLocationUpdateListener internalLocationUpdateListener;
     private OnLocationUpdateListener onLocationUpdateListener;
     private BeaconsInRegionLoader beaconsInRegionLoader;
-    private Mode mode;
-    private CurrentMap currentMap;
+    private Mode mode = Mode.TRILATERATION_BEACON_NAVIGATOR;
+    private CurrentMap currentMap = CurrentMap.KAA_OFFICE;
     private int[] maskArray;
     private Context context;
     private int[] graphArray;
@@ -55,7 +48,7 @@ public class IndoorLocationManager {
         this.onLocationUpdateListener = listener;
     }
 
-    public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader){
+    public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader) {
         this.beaconsInRegionLoader = beaconsInRegionLoader;
     }
 
@@ -63,17 +56,16 @@ public class IndoorLocationManager {
         this.onErrorListener = onErrorListener;
     }
 
-
-    public void setMode(boolean useBinaryMask) {
-        this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILAT_BEACON_NAVIGATOR;
-    }
-
     public Mode getMode() {
         return mode;
     }
 
+    public void setMode(boolean useBinaryMask) {
+        this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILATERATION_BEACON_NAVIGATOR;
+    }
+
     public void setCurrentMap(Context context, CurrentMap map) {
-        currentMap = map;
+        this.currentMap = map;
         this.context = context;
     }
 
@@ -105,7 +97,7 @@ public class IndoorLocationManager {
         List<Integer> maskList = new ArrayList<>();
         int[] maskArray;
 
-        switch (currentMap){
+        switch (currentMap) {
 
             case KAA_OFFICE:
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources()
@@ -132,9 +124,9 @@ public class IndoorLocationManager {
                         .openRawResource(R.raw.masktable1)))) {
                     String str;
                     while ((str = br.readLine()) != null) {
-                       // Log.i(TAG, "read file : " + str);
+                        // Log.i(TAG, "read file : " + str);
                         maskList.add(Integer.valueOf(str.trim()));
-                       // Log.i(TAG, "read maskList : " + str);
+                        // Log.i(TAG, "read maskList : " + str);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -150,86 +142,41 @@ public class IndoorLocationManager {
         }
     }
 
-    public void setNodes(List<Integer> graphList){
+    public void setNodes(List<Integer> graphList) {
         Log.i("locationManager", "setNodes started");
         graphArray = new int[graphList.size()];
-        for (int i = 0; i < graphList.size(); i++){
+        for (int i = 0; i < graphList.size(); i++) {
             graphArray[i] = graphList.get(i);
             //  Log.i(TAG, "graphArray = " + graphArray[i]);
         }
         setNativeGraphArray(graphArray);
     }
 
-    public void setEdges(List<Double> edgesList){
+    public void setEdges(List<Double> edgesList) {
         Log.i("locationManager", "setEdges started");
         edgesArray = new double[edgesList.size()];
-        for (int i = 0; i < edgesList.size(); i++){
+        for (int i = 0; i < edgesList.size(); i++) {
             edgesArray[i] = edgesList.get(i);
             //  Log.i(TAG, "edgesArray = " + edgesArray[i]);
         }
         setNativeEdgesArray(edgesArray);
     }
 
-    /*private void readFileWithGraph() {
-        List<Integer> graphList = new ArrayList<>();
-        List<Double> edgesList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources()
-                .openRawResource(R.raw.graph1)))) {
-            String str = br.readLine(); // пропускаем первую строку
-            while (!(str = br.readLine()).equals("->EDGES")) {
-                String[] s = str.trim().split(" ");
-                graphList.add(Integer.valueOf(s[0]));
-                graphList.add(Integer.valueOf(s[1]));
-
-            }
-            while ((str = br.readLine()) != null){
-                String[] s = str.trim().split(" ");
-                edgesList.add(Double.valueOf(s[0]));
-                edgesList.add(Double.valueOf(s[1]));
-                edgesList.add(Double.valueOf(s[2]));
-            }
-            graphArray = new int[graphList.size()];
-            edgesArray = new double[edgesList.size()];
-            for (int i = 0; i < graphList.size(); i++){
-                graphArray[i] = graphList.get(i);
-              //  Log.i(TAG, "graphArray = " + graphArray[i]);
-            }
-            for (int i = 0; i < edgesList.size(); i++){
-                edgesArray[i] = edgesList.get(i);
-              //  Log.i(TAG, "edgesArray = " + edgesArray[i]);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    public double[] getRoute(double x1, double y1, double x2, double y2){
-       // Log.i("locationManager", "instance.getRoute started");
+    public double[] getRoute(double x1, double y1, double x2, double y2) {
+        // Log.i("locationManager", "instance.getRoute started");
         Log.i("locationManager", "x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2);
         return getNativeRoute(x1, y1, x2, y2);
     }
 
     public void start() {
-        setNativeMode(mode.code);
         setNativeCurrentMap(currentMap.code);
         readFileWithMask();
         setNativeMaskArray(maskArray);
-      //  readFileWithGraph();
-       /* for (int b:graphArray) {
-            Log.i("locationManager", "graphArray = " + b);
-        }*/
-    /*    Log.i("locationManager", "setNativeGraphArray started");
-        setNativeGraphArray(graphArray);
-        Log.i("locationManager", "setNativeEdgesArray started");
-        setNativeEdgesArray(edgesArray);
-        Log.i("locationManager", "setNativeEdgesArray end");*/
         internalLocationUpdateListener = new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
                 if (onLocationUpdateListener != null) {
-                      position = new float[]{1f, 1.0f, 0, 0};
+                    position = new float[]{1f, 1.0f, 0, 0};
                     onLocationUpdateListener.onLocationChanged(position);
                 }
                 if (beaconsInRegionLoader != null) {
@@ -248,7 +195,7 @@ public class IndoorLocationManager {
             provider.start();
         }
         Log.i("locationManager", "nativeInit started");
-        nativeInit(internalLocationUpdateListener);
+        nativeInit(mode.getCode(), internalLocationUpdateListener);
         Log.i("locationManager", "nativeInit end");
     }
 
@@ -259,29 +206,6 @@ public class IndoorLocationManager {
         onLocationUpdateListener = null;
         internalLocationUpdateListener = null;
         nativeRelease();
-    }
-
-    public enum Mode{
-        TRILAT_BEACON_NAVIGATOR(0),
-        STANDARD_BEACON_NAVIGATOR(1);
-
-        private int code;
-
-        Mode(int code) {
-
-            this.code = code;
-        }
-    }
-
-    public enum CurrentMap{
-        KAA_OFFICE(0),
-        IT_JIM(1);
-
-        private int code;
-
-        CurrentMap(int code) {
-            this.code = code;
-        }
     }
 
     private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
@@ -296,13 +220,38 @@ public class IndoorLocationManager {
 
     private native void setNativeCurrentMap(int map);
 
-    private native void setNativeMode(int mode);
-
-    private native void nativeInit(OnLocationUpdateListener onUpdateListener);
+    private native void nativeInit(int modeType, OnLocationUpdateListener onUpdateListener);
 
     private native void nativeRelease();
 
     private native void nativeSetBeacons(SpaceBeacon[] beacons);
 
     public native void callEvent();
+
+    public enum Mode {
+        @Deprecated
+        TRILATERATION_BEACON_NAVIGATOR(0),
+        STANDARD_BEACON_NAVIGATOR(1);
+
+        private int code;
+
+        Mode(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
+
+    public enum CurrentMap {
+        KAA_OFFICE(0),
+        IT_JIM(1);
+
+        private int code;
+
+        CurrentMap(int code) {
+            this.code = code;
+        }
+    }
 }

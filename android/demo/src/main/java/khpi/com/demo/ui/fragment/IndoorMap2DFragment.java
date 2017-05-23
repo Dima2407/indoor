@@ -3,9 +3,14 @@ package khpi.com.demo.ui.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -26,6 +32,7 @@ import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Route;
 import khpi.com.demo.model.Step;
+import khpi.com.demo.net.model.LoginModel;
 import khpi.com.demo.routing.IndoorMapView;
 import khpi.com.demo.routing.RouteHelper;
 import khpi.com.demo.ui.BottomSheet;
@@ -34,6 +41,7 @@ import khpi.com.demo.ui.adapter.RouteDataAdapter;
 import khpi.com.demo.ui.view.MapSwitcherView;
 import khpi.com.demo.utils.FileUtil;
 import khpi.com.demo.utils.ManeuverHelper;
+import khpi.com.demo.utils.NetUtil;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
@@ -52,14 +60,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static pro.i_it.indoor.DebugConfig.TAG;
 import static pro.i_it.indoor.config.DebugConfig.IS_DEBUG;
@@ -180,14 +196,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         super.onResume();
         instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
 
-        if (floor.getGraphPath().contains("/mapData/2/")) {
-            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
-           // Log.i(TAG, "current map = KAA-OFFICE");
-        }
-        if (floor.getGraphPath().contains("/mapData/8/")) {
+        if (floor.getGraphPath().contains("/mapData/8/"))
             instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
-           // Log.i(TAG, "current map = IT-JIM");
-        }
+        else
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
 
         instance.start();
         task = new TimerTask() {
@@ -274,15 +286,20 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         timer.cancel();
         timer.purge();
         task.cancel();
+       // instance.stop();
+
     }
 
     @Override
     public void onMapSelected() {
         mapView.setRoute(new float[0]);
-        mapView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
+        final String absolutePath = FileUtil.getLocacPath(getActivity(), floor.getMaskPath()).getAbsolutePath();
+        Log.i(TAG, "onMapSelected: " + floor.getMaskPath() + "   " + absolutePath);
+        mapView.initMapImage(absolutePath, floor.getPixelSize());
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
-            getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
+        Log.i("IndMap", "floor.getGraphPath() = " + FileUtil.getLocacPath(getActivity(), floor.getGraphPath()));
+        getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), instance, new RouteHelper.MapProcessingListener() {
             @Override
             public void onMapProcessed() {
                 progressDialog.hide();
@@ -299,11 +316,21 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         mapView.setBeacons(floor.getBeacons());
         List<Integer> inpointIdList = floor.getInpointIdList();
         List<Inpoint> inpoints = new ArrayList<>();
-        for(int i : inpointIdList){
+        for (int i : inpointIdList) {
             inpoints.add(getActivityBridge().getDbBridge().getInpointById(i));
         }
         mapView.setInpoints(inpoints);
 
+/*        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    loadFileFromServer(floor.getGraphPath(), "fileFromServer_" + floor.getMaskPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();*/
     }
 
     @Override
@@ -313,6 +340,49 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         dest.x = x;
         dest.y = y;
     }
+
+   /* private void loadFileFromServer(String pathOnServer, String pathOnDevice) throws IOException{
+        File externalFilesDir = getContext().getExternalFilesDir("MapData");
+        final String baseFolder = externalFilesDir.getAbsolutePath();
+        File destination = FileUtil.getLocacPath(baseFolder, pathOnDevice);
+
+        final Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Cache-Control", "no-cache");
+        headers.put("Authorization", LoginModel.getLoginModel().getToken());
+
+        //URL url = new URL("http://185.86.76.206:8081/mob" + pathOnServer);
+        URL url = FileUtil.getServerPath("http://185.86.76.206:8081/mob", pathOnServer);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        if (headers != null) {
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                urlConnection.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
+        int responseCode = urlConnection.getResponseCode();
+        Log.i("loadFileFromServer2", "responseCode = " + responseCode);
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            Log.i("loadFileFromServer2", "response status = OK");
+            InputStream stream = urlConnection.getInputStream();
+            if (!FileUtil.createIfNotExist(destination)) {
+                Log.i("loadFileFromServer2", "file was not create!");
+                return;
+            } else
+                Log.i("loadFileFromServer2", "file was succesful create!");
+            OutputStream out = new FileOutputStream(destination);
+            byte[] data = new byte[1024];
+            int count = 0;
+            while ((count = stream.read(data)) != -1) {
+                out.write(data, 0, count);
+            }
+
+            out.flush();
+            out.close();
+            stream.close();
+        } else
+            Log.i("loadFileFromServer2", "response status is not OK");
+    }*/
+
 
     private void onNewRoute(float[] route) {
         if (getContext() == null) {
@@ -385,8 +455,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             mapView.setRoute(new float[0]);
             return;
         }
-
-        getActivityBridge().getRouteHelper().findPath(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())), dest, new RouteHelper.RouteListener() {
+        Log.i("locationManager", "apply new coords : dest.x = " + dest.x + " dest.y = " + dest.y);
+        getActivityBridge().getRouteHelper().findPath(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())), dest, instance, new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
                 onNewRoute(route);
@@ -413,7 +483,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onInpoictClicked(final Inpoint inpoint) {
-        getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), new RouteHelper.RouteListener() {
+        Log.i("locationManager", "onInpoictClicked : dest.x = " + dest.x + " dest.y = " + dest.y);
+        getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), instance, new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
                 Route r = getActivityBridge().getRouteHelper().buildRoute(getActivityBridge().getRouteHelper().getMoutions(route), floor);

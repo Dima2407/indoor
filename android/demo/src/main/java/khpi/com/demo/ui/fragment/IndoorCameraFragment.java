@@ -232,9 +232,9 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         PointF currentPosition = new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize()));
 
         if (destinationPoint != null) {
-            getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), routeListener);
+            getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), instance, routeListener);
         } else {
-            getActivityBridge().getRouteHelper().updateRoute(currentPosition, routeListener);
+            getActivityBridge().getRouteHelper().updateRoute(currentPosition, instance, routeListener);
         }
     }
 

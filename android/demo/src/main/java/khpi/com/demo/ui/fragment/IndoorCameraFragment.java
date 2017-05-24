@@ -145,6 +145,12 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         cameraPreview.updateCamera(getCamera());
 
         instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
+
+        if (floor.getGraphPath().contains("/mapData/8/"))
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
+        else
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
+
         instance.start();
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override

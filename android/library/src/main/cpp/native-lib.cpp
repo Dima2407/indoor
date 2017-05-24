@@ -275,8 +275,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     jclass measurementTypeEnum = env->FindClass("pro/i_it/indoor/events/MeasurementType");
     mtCodeMethod = env->GetMethodID(measurementTypeEnum, "getCode", "()I");
     fclose(f);
-
-    //  initTracking();
 }
 
 JNIEXPORT void JNICALL
@@ -369,32 +367,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setNativeMaskArray(JNIEnv *env, jobj
 
 }
 
-/*JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArrays(JNIEnv *env, jobject instance,
-                                                                 jintArray graphs_,
-                                                                 jdoubleArray edges_) {
-    jint *graphs = env->GetIntArrayElements(graphs_, NULL);
-    jdouble *edges = env->GetDoubleArrayElements(edges_, NULL);
-
-    const jsize graphsLenght = env->GetArrayLength(graphs_);
-    const jsize edgesLenght = env->GetArrayLength(edges_);
-
-    mGraphs.clear();
-    mEdges.clear();
-    mGraphs.resize(graphsLenght);
-    mEdges.resize(edgesLenght);
-
-    for (int i = 0; i < graphsLenght; i++) {
-        mGraphs[i] = graphs[i];
-    }
-    for (int i = 0; i < edgesLenght; i++) {
-        mEdges[i] = edges[i];
-    }
-
-    env->ReleaseIntArrayElements(graphs_, graphs, 0);
-    env->ReleaseDoubleArrayElements(edges_, edges, 0);
-}*/
-
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArray(JNIEnv *env, jobject instance,
                                                                 jintArray graphs_) {
@@ -432,24 +404,20 @@ Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject 
                                                            jdouble x1, jdouble y1, jdouble x2,
                                                            jdouble y2) {
 
-    // initTracking();
-    /*Position3D pos1(x1, y1, 0.0);
+    Position3D pos1(x1, y1, 0.0);
     Position3D pos2(x2, y2, 0.0);
     int startNode = pointGraph->findNearestVertex(pos1);
     int endNode = pointGraph->findNearestVertex(pos2);
     vector<Position3D> route;
-    pointGraph->dijkstraP(startNode, endNode, route);*/
-    int j = 0;
-    jdoubleArray output = env->NewDoubleArray(/*route.size() * 2*/4);
+    double distance = pointGraph->dijkstraP(startNode, endNode, route);
+    jdoubleArray output = env->NewDoubleArray(route.size() * 2 + 1);  // first element = distance
     jdouble *destArrayElems = env->GetDoubleArrayElements(output, NULL);
-    /*for (int i = 0; i < route.size(); i++){
+    destArrayElems[0] = distance;
+    int j = 1;
+    for (int i = 0; i < route.size(); i++){
         destArrayElems[j++] = route[i].x;
         destArrayElems[j++] = route[i].y;
-    }*/
-    destArrayElems[0] = 1.2;
-    destArrayElems[1] = 2.3;
-    destArrayElems[2] = 3.9;
-    destArrayElems[3] = 8.2;
+    }
 
     env->ReleaseDoubleArrayElements(output, destArrayElems, NULL);
 
@@ -461,13 +429,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setGraphArraysFromFile(JNIEnv *env, 
                                                                    jstring file_, jdouble scale) {
     const char *file = env->GetStringUTFChars(file_, 0);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "file content = %s", file);
-
     std::string data(file);
 
     pointGraph = new PointGraph(data, scale);
-
-    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "pointGraph created!\n");
 
     env->ReleaseStringUTFChars(file_, file);
 }

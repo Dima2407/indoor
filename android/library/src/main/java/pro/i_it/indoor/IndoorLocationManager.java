@@ -33,8 +33,6 @@ public class IndoorLocationManager {
     private CurrentMap currentMap = CurrentMap.KAA_OFFICE;
     private int[] maskArray;
     private Context context;
-    private int[] graphArray;
-    private double[] edgesArray;
 
     private OnErrorListener onErrorListener;
 
@@ -69,10 +67,6 @@ public class IndoorLocationManager {
         this.context = context;
     }
 
-  /*  public void setMaskArray(int[] maskArray){
-        this.maskArray = maskArray;
-    }*/
-
     public void addProvider(Context context, MeasurementType type, MeasurementTransfer transfer) {
         switch (type) {
             case GEO_VALUE:
@@ -104,9 +98,7 @@ public class IndoorLocationManager {
                         .openRawResource(R.raw.masktable2)))) {
                     String str;
                     while ((str = br.readLine()) != null) {
-                        //Log.i(TAG, "read file : " + str);
                         maskList.add(Integer.valueOf(str.trim()));
-                        //Log.i(TAG, "read maskList : " + str);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -124,16 +116,13 @@ public class IndoorLocationManager {
                         .openRawResource(R.raw.masktable1)))) {
                     String str;
                     while ((str = br.readLine()) != null) {
-                        // Log.i(TAG, "read file : " + str);
                         maskList.add(Integer.valueOf(str.trim()));
-                        // Log.i(TAG, "read maskList : " + str);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 maskArray = new int[maskList.size()];
                 for (int i = 0; i < maskArray.length; i++)
                     maskArray[i] = maskList.get(i);
@@ -142,29 +131,8 @@ public class IndoorLocationManager {
         }
     }
 
-    public void setNodes(List<Integer> graphList) {
-        Log.i("locationManager", "setNodes started");
-        graphArray = new int[graphList.size()];
-        for (int i = 0; i < graphList.size(); i++) {
-            graphArray[i] = graphList.get(i);
-            //  Log.i(TAG, "graphArray = " + graphArray[i]);
-        }
-        setNativeGraphArray(graphArray);
-    }
-
-    public void setEdges(List<Double> edgesList) {
-        Log.i("locationManager", "setEdges started");
-        edgesArray = new double[edgesList.size()];
-        for (int i = 0; i < edgesList.size(); i++) {
-            edgesArray[i] = edgesList.get(i);
-            //  Log.i(TAG, "edgesArray = " + edgesArray[i]);
-        }
-        setNativeEdgesArray(edgesArray);
-    }
-
     public double[] getRoute(double x1, double y1, double x2, double y2) {
-        // Log.i("locationManager", "instance.getRoute started");
-        Log.i("locationManager", "x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2);
+
         return getNativeRoute(x1, y1, x2, y2);
     }
 
@@ -176,7 +144,7 @@ public class IndoorLocationManager {
             @Override
             public void onLocationChanged(float[] position) {
                 if (onLocationUpdateListener != null) {
-                    position = new float[]{1f, 1.0f, 0, 0};
+                  //  position = new float[]{1f, 1.0f, 0, 0};
                     onLocationUpdateListener.onLocationChanged(position);
                 }
                 if (beaconsInRegionLoader != null) {
@@ -194,27 +162,21 @@ public class IndoorLocationManager {
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
-        Log.i("locationManager", "nativeInit started");
         nativeInit(mode.getCode(), internalLocationUpdateListener);
-        Log.i("locationManager", "nativeInit end");
     }
 
     public void stop() {
-        for (MeasurementProvider provider : providers) {
+       /* for (MeasurementProvider provider : providers) {
             provider.stop();
-        }
+        }*/
         onLocationUpdateListener = null;
         internalLocationUpdateListener = null;
-        nativeRelease();
+       // nativeRelease();
     }
 
     private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
 
     public native void setGraphArraysFromFile(String fileContent, double scale);
-
-    private native void setNativeGraphArray(int[] graphs);
-
-    private native void setNativeEdgesArray(double[] edges);
 
     private native void setNativeMaskArray(int[] mask);
 

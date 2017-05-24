@@ -44,22 +44,22 @@ import static java.lang.Math.sqrt;
 public class RouteHelper {
 
 
+    private final double IT_JIM_SCALE = 0.007;
     private static final String N_PATERN = "N_%d:%d";
     private final ExecutorService routeExecutor;
-   // private List<Vertex> nodes;
     private List<Edge> edges;
-    private DijkstraAlgorithm algorithm;
     private float[] route;
     private PointF destinationPoint;
     private final double WALK_SPEED = 1.38;
+    private float distance = 0;
 
     public List<Edge> getEdges() {
         return edges;
     }
 
-   /* public void setEdges(List<Edge> edges) {
+    public void setEdges(List<Edge> edges) {
         this.edges = edges;
-    }*/
+    }
 
     DecimalFormat df = new DecimalFormat("0.0");
 
@@ -80,7 +80,7 @@ public class RouteHelper {
                             listener.onMapProcessed();
                         }
                     });
-                } catch (final IOException e) {
+                } catch (final IOException e) {;
                     e.printStackTrace();
                     handler.post(new Runnable() {
                         @Override
@@ -104,7 +104,6 @@ public class RouteHelper {
 
         String s;
         StringBuilder sb = new StringBuilder();
-      //  sb.append(file.getName()).append("\n");
         boolean e = false;
         while ((s = reader.readLine()) != null) {
             sb.append(s).append("\n");
@@ -133,11 +132,10 @@ public class RouteHelper {
                 edges.add(new Edge(getEdgeName((int)x2, (int)y2, (int)x1, (int)y1), v2, v1, (int) v));
             }
         }
-        sb.deleteCharAt(sb.length() -1);
+        sb.deleteCharAt(sb.length() - 1);
         String str = sb.toString();
-        Log.i("locationManager", "string from file = " + str);
-        Log.i("locationManager", "setGraphArraysFromFile started");
-        instance.setGraphArraysFromFile(str, 0.07);
+
+        instance.setGraphArraysFromFile(str, 1);
     }
 
     public void findPath(final PointF start, final PointF end, final IndoorLocationManager instance, final RouteListener listener) {
@@ -155,7 +153,6 @@ public class RouteHelper {
                     return;
                 }
 
-               // float[] temp = findPath(findClosest(nodes, start), findClosest(nodes, end));
                 float[] temp = findPath(start, end, instance);
 
                 final float[] path = new float[temp.length + 4];
@@ -181,26 +178,6 @@ public class RouteHelper {
         });
     }
 
-/*    @WorkerThread
-    private float[] findPath(PointF start, PointF end){
-        if(start==null){
-            Log.d("RouteHelper", "wrong start point");
-            return new float[0];
-        }
-        Vertex startPoint = getDestNodeByName(formatNode(start));
-
-        if (startPoint == null) {
-            Log.d("RouteHelper", "wrong start point");
-            Log.d("RouteHelper", "pressed point: " + end);
-            return new float[0];
-        }
-        Vertex endPoint = getDestNodeByName(formatNode(end));
-        if (endPoint == null) {
-            Log.d("RouteHelper", "wrong end point: x" + end);
-            return new float[0];
-        }
-    }*/
-
     @WorkerThread
     private float[] findPath(PointF start, PointF end, IndoorLocationManager instance) {
         long s = System.currentTimeMillis();
@@ -208,44 +185,14 @@ public class RouteHelper {
             Log.d("RouteHelper", "wrong start point");
             return new float[0];
         }
-        /*Vertex startPoint = getDestNodeByName(formatNode(start));
 
-        if (startPoint == null) {
-            Log.d("RouteHelper", "wrong start point");
-            Log.d("RouteHelper", "pressed point: " + end);
-            return new float[0];
-        }
-        Vertex endPoint = getDestNodeByName(formatNode(end));
-        if (endPoint == null) {
-            Log.d("RouteHelper", "wrong end point: x" + end);
-            return new float[0];
-        }*/
-         //algorithm.execute(startPoint);
-        //  LinkedList<Vertex> points = algorithm.getPath(endPoint);
+        double[] arrayRoute = instance.getRoute(start.x, start.y, end.x, end.y);
 
-   /*     if (points != null && points.size() > 0) {
-            Log.d("RouteHelper", "end point: x" + end);
-            route = new float[points.size() * 2];
-            for (int i = 0; i < points.size(); i++) {
-                Vertex vertex = points.get(i);
-                route[i * 2] = vertex.getX();
-                route[i * 2 + 1] = vertex.getY();
-            }
-            return route;
-        } else {
-            Log.d("RouteHelper", "route not found");
-            route = new float[0];
-            return route;
-        }*/
-        double[] routeDouble = instance.getRoute(start.x, start.y, end.x, end.y);
-        Log.i("locationManager", "instance.getRoute end");
-        for (double d : routeDouble) {
-            Log.i("locationManager", "routeDouble = " + d);
-        }
-        if (routeDouble != null && routeDouble.length > 0) {
-            route = new float[routeDouble.length];
-            for (int i = 0; i < routeDouble.length; i++)
-                route[i] = (float) routeDouble[i];
+        if (arrayRoute != null && arrayRoute.length > 0) {
+            distance = (float) (arrayRoute[0] * IT_JIM_SCALE);
+            route = new float[arrayRoute.length - 1];
+            for (int i = 1; i < arrayRoute.length; i++)
+                route[i - 1] = (float) arrayRoute[i];
             return route;
         }
         else
@@ -265,46 +212,8 @@ public class RouteHelper {
         return formatNode(p.x, p.y);
     }
 
-    /*private static PointF findClosest(List<Vertex> points, PointF dest) {
-        double result = Integer.MAX_VALUE;
-        PointF closest = null;
-        for (Vertex point : points) {
-            double distance = GeometryUtils.calcDistance(point.toPoint(), dest);
-            if (distance < result) {
-                closest = point.toPoint();
-                result = (int) distance;
-            }
-        }
-        return closest;
-    }*/
-
     private String getEdgeName(int i, int j, int x, int y) {
         return "E_" + i + ":" + j + "/" + x + ":" + y;
-    }
-
-    /*private Vertex getDestNodeByName(String dest) {
-        for (Vertex node : nodes) {
-            if (node.getName().endsWith(dest)) {
-                return node;
-            }
-        }
-
-        return null;
-    }*/
-
-    public static double routeLenght(float[] route, float pixelsize) {
-
-        double l = 0;
-        PointF p1 = new PointF(route[0], route[1]);
-        PointF p2;
-        for (int i = 2; i < route.length / 2; i++) {
-            float x = route[i * 2];
-            float y = route[i * 2 + 1];
-            p2 = new PointF(route[i * 2], route[i * 2 + 1]);
-            l += GeometryUtils.calcDistance(p1, p2, pixelsize);
-            p1 = p2;
-        }
-        return l;
     }
 
     String[] speeds = new String[]{"sec", "min", "hour"};
@@ -352,11 +261,6 @@ public class RouteHelper {
             steps.add(step);
         }
 
-        float distance = 0;
-
-        for (Step step : steps) {
-            distance += step.getDistanceF();
-        }
         double v = (distance) / WALK_SPEED;
         int i = 0;
         while (v > 60) {

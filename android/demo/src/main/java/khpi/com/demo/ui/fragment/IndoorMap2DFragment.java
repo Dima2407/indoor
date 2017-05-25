@@ -297,7 +297,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     public void onMapSelected() {
         mapView.setRoute(new float[0]);
         final String absolutePath = FileUtil.getLocacPath(getActivity(), floor.getMaskPath()).getAbsolutePath();
-        //  Log.i(TAG, "onMapSelected: " + floor.getMaskPath() + "   " + absolutePath);
         double pixelSize = floor.getPixelSize();
         if (pixelSize == 0.0073)
             pixelSize = 0.007;
@@ -408,10 +407,12 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             mapView.setRoute(new float[0]);
             return;
         }
+        if (Float.isNaN(x) && Float.isNaN(x)){
+            mapView.setRoute(new float[0]);
+            return;
+        }
         Log.i("locationManager", "apply new coords : dest.x = " + dest.x + " dest.y = " + dest.y);
-        //PointF pointF = mapView.sourceToViewCoord(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())));
 
-       // Log.i("coords", "coords = " + pointF.x + " " + pointF.y);
         getActivityBridge().getRouteHelper().findPath(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())), dest, instance, new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
@@ -439,7 +440,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onInpoictClicked(final Inpoint inpoint) {
-       // Log.i("locationManager", "onInpoictClicked : dest.x = " + dest.x + " dest.y = " + dest.y);
         getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), instance, new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
@@ -483,26 +483,5 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         bottomSheet.getCancelButton().setVisibility(View.GONE);
         bottomSheet.getCancelButton().callOnClick();
         bottomSheet.getHintContainer().setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onDetach() {
-        Log.i("onLocationChanged", "IndoorMap : onDetach");
-        super.onDetach();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        Log.i("onLocationChanged", "IndoorMap : onAttach");
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDestroyView() {
-        Log.i("onLocationChanged", "IndoorMap : onDestroyView");
-      /*  bottomSheet = null;
-        mapView = null;
-        listener = null;*/
-        super.onDestroyView();
     }
 }

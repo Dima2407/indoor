@@ -481,6 +481,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         Log.i("onLocationChanged", "IndoorMap : onStop");
         bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
         bottomSheet.getCancelButton().setVisibility(View.GONE);
+        bottomSheet.getCancelButton().callOnClick();
         bottomSheet.getHintContainer().setVisibility(View.GONE);
     }
 

@@ -1,10 +1,12 @@
 package khpi.com.demo.core;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;
 
+import java.io.File;
 import java.util.Arrays;
 
 import khpi.com.demo.BuildConfig;
@@ -16,6 +18,7 @@ import khpi.com.demo.net.NetFacade;
 import khpi.com.demo.orientation.OrientationFacade;
 import khpi.com.demo.routing.RouteHelper;
 
+import khpi.com.demo.utils.FileUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.dependency.LocaleManager;
@@ -38,6 +41,10 @@ public final class GRApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        clearApplicationData();
+
+
+
         routeHelper = new RouteHelper();
         sharedHelper = new SharedHelper(this);
 
@@ -58,6 +65,23 @@ public final class GRApplication extends Application {
             localManager.addProvider(context, MeasurementType.BLUETOOTH_VALUE);
         }
     }
+
+    private void clearApplicationData() {
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory = new File(cacheDirectory.getParent());
+        if (applicationDirectory.exists()) {
+            String[] fileNames = applicationDirectory.list();
+            for (String fileName : fileNames) {
+                if (!fileName.equals("lib")) {
+                    if (fileName.contains("shared_prefs"))
+                        continue;
+                    Log.i("AppliocGRA", "filename = " + fileName);
+                    FileUtil.deleteFile(new File(applicationDirectory, fileName));
+                }
+            }
+        }
+    }
+
 
     public IndoorLocationManager getLocalManager(){
         return this.localManager;

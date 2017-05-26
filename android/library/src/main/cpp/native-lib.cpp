@@ -280,9 +280,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
-    navigator = NULL;
+    //navigator = NULL;
     env->DeleteGlobalRef(savedListenerInstance);
     listenerOnLocationChangedId = NULL;
+    pointGraph = NULL;
 }
 
 JNIEXPORT void JNICALL

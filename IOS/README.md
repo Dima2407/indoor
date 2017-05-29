@@ -81,7 +81,7 @@ Implements IndoorLocationListenerProtocol
 
 
     //IndoorLocationListenerProtocol
-   -(void)onLocation:(NSArray *)coordinte{
+    -(void)onLocation:(NSArray *)coordinte{
     NSLog(@"%@",coordinte);
     }
 

@@ -1,13 +1,10 @@
 package pro.i_it.indoor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.providers.*;
 import pro.i_it.indoor.region.BeaconsInRegionLoader;
-import pro.i_it.indoor.region.InMemoryBeaconsLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
 import pro.i_it.indoor.region.SpaceRegion;
 
@@ -19,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static pro.i_it.indoor.DebugConfig.TAG;
 
 public class IndoorLocationManager {
 
@@ -34,8 +29,8 @@ public class IndoorLocationManager {
     private OnLocationUpdateListener internalLocationUpdateListener;
     private OnLocationUpdateListener onLocationUpdateListener;
     private BeaconsInRegionLoader beaconsInRegionLoader;
-    private Mode mode;
-    private CurrentMap currentMap;
+    private Mode mode = Mode.TRILATERATION_BEACON_NAVIGATOR;
+    private CurrentMap currentMap = CurrentMap.KAA_OFFICE;
     private int[] maskArray;
     private Context context;
 
@@ -51,7 +46,7 @@ public class IndoorLocationManager {
         this.onLocationUpdateListener = listener;
     }
 
-    public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader){
+    public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader) {
         this.beaconsInRegionLoader = beaconsInRegionLoader;
     }
 
@@ -59,23 +54,18 @@ public class IndoorLocationManager {
         this.onErrorListener = onErrorListener;
     }
 
-
-    public void setMode(boolean useBinaryMask) {
-        this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILAT_BEACON_NAVIGATOR;
-    }
-
     public Mode getMode() {
         return mode;
     }
 
-    public void setCurrentMap(Context context, CurrentMap map) {
-        currentMap = map;
-        this.context = context;
+    public void setMode(boolean useBinaryMask) {
+        this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILATERATION_BEACON_NAVIGATOR;
     }
 
-  /*  public void setMaskArray(int[] maskArray){
-        this.maskArray = maskArray;
-    }*/
+    public void setCurrentMap(Context context, CurrentMap map) {
+        this.currentMap = map;
+        this.context = context;
+    }
 
     public void addProvider(Context context, MeasurementType type, MeasurementTransfer transfer) {
         switch (type) {
@@ -101,15 +91,14 @@ public class IndoorLocationManager {
         List<Integer> maskList = new ArrayList<>();
         int[] maskArray;
 
-        switch (currentMap){
+        switch (currentMap) {
 
             case KAA_OFFICE:
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.masktable3)))) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources()
+                        .openRawResource(R.raw.masktable2)))) {
                     String str;
                     while ((str = br.readLine()) != null) {
-                        Log.i(TAG, "read file : " + str);
                         maskList.add(Integer.valueOf(str.trim()));
-                        Log.i(TAG, "read maskList : " + str);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -123,19 +112,17 @@ public class IndoorLocationManager {
                 break;
 
             case IT_JIM:
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.masktable1)))) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources()
+                        .openRawResource(R.raw.masktable1)))) {
                     String str;
                     while ((str = br.readLine()) != null) {
-                        Log.i(TAG, "read file : " + str);
                         maskList.add(Integer.valueOf(str.trim()));
-                        Log.i(TAG, "read maskList : " + str);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 maskArray = new int[maskList.size()];
                 for (int i = 0; i < maskArray.length; i++)
                     maskArray[i] = maskList.get(i);
@@ -144,26 +131,27 @@ public class IndoorLocationManager {
         }
     }
 
+    public double[] getRoute(double x1, double y1, double x2, double y2) {
+
+        return getNativeRoute(x1, y1, x2, y2);
+    }
+
     public void start() {
-        setNativeMode(mode.code);
-        if (mode == Mode.STANDARD_BEACON_NAVIGATOR) {
-            setNativeMaskArray(maskArray);
-            if (currentMap != null) {
-                setNativeCurrentMap(currentMap.code);
-                readFileWithMask();
-            }
-        }
+        setNativeCurrentMap(currentMap.code);
+        readFileWithMask();
+        setNativeMaskArray(maskArray);
         internalLocationUpdateListener = new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
                 if (onLocationUpdateListener != null) {
+                  //  position = new float[]{1f, 1.0f, 0, 0};
                     onLocationUpdateListener.onLocationChanged(position);
                 }
                 if (beaconsInRegionLoader != null) {
                     SpaceRegion region = beaconsInRegionLoader.onLocationChanged(position[0], position[1], position[2]);
-                    if(region.isChanged()){
+                    if (region.isChanged()) {
                         Set<SpaceBeacon> beacons = region.getBeacons();
-                        SpaceBeacon [] data = new SpaceBeacon[beacons.size()];
+                        SpaceBeacon[] data = new SpaceBeacon[beacons.size()];
                         beacons.toArray(data);
                         Log.d("TAGBEACON", "setBeacons, region.getBeacons.SIZE + " + region.getBeacons().size());
                         nativeSetBeacons(data);
@@ -174,31 +162,51 @@ public class IndoorLocationManager {
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
-        nativeInit(internalLocationUpdateListener);
+        nativeInit(mode.getCode(), internalLocationUpdateListener);
     }
 
     public void stop() {
-        for (MeasurementProvider provider : providers) {
+       /* for (MeasurementProvider provider : providers) {
             provider.stop();
-        }
+        }*/
         onLocationUpdateListener = null;
         internalLocationUpdateListener = null;
         nativeRelease();
     }
 
-    public enum Mode{
-        TRILAT_BEACON_NAVIGATOR(0),
+    private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
+
+    public native void setGraphArraysFromFile(String fileContent, double scale);
+
+    private native void setNativeMaskArray(int[] mask);
+
+    private native void setNativeCurrentMap(int map);
+
+    private native void nativeInit(int modeType, OnLocationUpdateListener onUpdateListener);
+
+    private native void nativeRelease();
+
+    private native void nativeSetBeacons(SpaceBeacon[] beacons);
+
+    public native void callEvent();
+
+    public enum Mode {
+        @Deprecated
+        TRILATERATION_BEACON_NAVIGATOR(0),
         STANDARD_BEACON_NAVIGATOR(1);
 
         private int code;
 
         Mode(int code) {
-
             this.code = code;
+        }
+
+        public int getCode() {
+            return code;
         }
     }
 
-    public enum CurrentMap{
+    public enum CurrentMap {
         KAA_OFFICE(0),
         IT_JIM(1);
 
@@ -208,18 +216,4 @@ public class IndoorLocationManager {
             this.code = code;
         }
     }
-
-    private native void setNativeMaskArray(int[] mask);
-
-    private native void setNativeCurrentMap(int map);
-
-    private native void setNativeMode(int mode);
-
-    private native void nativeInit(OnLocationUpdateListener onUpdateListener);
-
-    private native void nativeRelease();
-
-    private native void nativeSetBeacons(SpaceBeacon[] beacons);
-
-    public native void callEvent();
 }

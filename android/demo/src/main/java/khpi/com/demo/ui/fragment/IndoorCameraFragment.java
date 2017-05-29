@@ -145,6 +145,12 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         cameraPreview.updateCamera(getCamera());
 
         instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
+
+        if (floor.getGraphPath().contains("/mapData/8/"))
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
+        else
+            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
+
         instance.start();
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
@@ -232,9 +238,9 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         PointF currentPosition = new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize()));
 
         if (destinationPoint != null) {
-            getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), routeListener);
+            getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), instance, routeListener);
         } else {
-            getActivityBridge().getRouteHelper().updateRoute(currentPosition, routeListener);
+            getActivityBridge().getRouteHelper().updateRoute(currentPosition, instance, routeListener);
         }
     }
 

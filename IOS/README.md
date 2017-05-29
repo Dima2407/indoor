@@ -50,15 +50,13 @@ Import IndoorLocationManager
  
  
 Create IndoorLocationManager object
-
-
-IndoorLocationManager *manager = [[IndoorLocationManager alloc] init];
+    IndoorLocationManager *manager = [[IndoorLocationManager alloc] init];
  
 //Add UUID your beacons
-  [manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
+    [manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
  
 //Add BLE Provider
-[manager addProvider:BLE_PROVIDER];
+    [manager addProvider:BLE_PROVIDER];
  
 Create BeaconConfig to all beacons and add its to the IndoorLocationManager
  

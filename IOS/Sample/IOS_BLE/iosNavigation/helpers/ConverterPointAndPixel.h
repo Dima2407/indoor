@@ -13,3 +13,4 @@
 CGPoint convertPixelToPoint(CGPoint pixel,CGSize imageSz,CGSize screenSz);
 CGPoint convertPointToPixel(CGPoint pixel,CGSize imageSz,CGSize screenSz);
 NSArray* calculateManeuverWithStartPoint(CGPoint start, NSArray *points, CGFloat pixelSize);
+NSString* calculateTimeDuration(double distance);

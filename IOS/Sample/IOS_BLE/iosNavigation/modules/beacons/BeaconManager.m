@@ -102,7 +102,7 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 
     {
         
-        NSLog(@"Get NAN");
+        [self.delegate currentLocation:CGPointZero];
     }
     else{
 
@@ -170,10 +170,15 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 -(void) setGraph:(FloorModel*)floor withGraph:(NSString*)gpaphJsonString{
     
     NSString* parsedString = [gpaphJsonString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    if (parsedString == nil)
+    {
+        NSLog(@"Graph is nil");
+    }
+    else{
     [self.manager setGraph:parsedString and:floor.pixelSize];
     self.manager.isRouting = true;
     
-    
+    }
 }
 -(void)setDestination:(CGPoint)destination{
     [self.manager setDectinationPosition:[NSArray arrayWithObjects:@(destination.x),@(destination.y),0, nil]];

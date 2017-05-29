@@ -58,10 +58,17 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
 }
 extern "C"
 void BluetoothBridge_getLastPosition(double * output){
+    if (BluetoothBridge_isInitialise())
+    {
+     
 Navigator::Math::Position3D outPos = navigator->getLastPosition();
     output[0] = outPos.x;
     output[1] = outPos.y;
     output[2] = outPos.z;
+    }
+    else{
+         printf("Navigator is initializing");
+    }
 }
 extern "C"
 void BluetoothBridge_createMesh(int nx, int ny, double dx, double dy, double x0, double y0){
@@ -100,6 +107,9 @@ void BluetoothBridge_setDestination(struct position p ){
 
 extern "C"
 void BluetoothBridge_getPositionFromGraph(std::vector<position> &way){
+    if (BluetoothBridge_isInitialise())
+    {
+     
     if (destinationPosition == 0)
     {
         printf("Set destination first ");
@@ -126,10 +136,28 @@ void BluetoothBridge_getPositionFromGraph(std::vector<position> &way){
     pointPath.swap(pointPath);
     
     }
+    }
+    else{
+        printf("Navigator is initializing");
+    }
 }
 extern "C"
 double BluetoothBridge_getDistance(){
     
  
     return dictance;
+}
+extern "C"
+bool BluetoothBridge_isInitialise(){
+    return navigator->isInitFinished();
+}
+
+extern "C"
+void BluetoothBridge_getInitialisePosition(double * output){
+    Navigator::Math::Position3D outPos =  navigator->getInitPosition();
+    output[0] = outPos.x;
+    output[1] = outPos.y;
+    output[2] = outPos.z;
+   
+    
 }

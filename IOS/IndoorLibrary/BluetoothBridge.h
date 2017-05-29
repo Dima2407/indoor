@@ -89,3 +89,13 @@ void BluetoothBridge_getPositionFromGraph(std::vector<position> &position);
 extern "C"
 #endif
 double BluetoothBridge_getDistance();
+//return flag is  initialise
+#ifdef __cplusplus
+extern "C"
+#endif
+bool BluetoothBridge_isInitialise();
+//get initialise position
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_getInitialisePosition(double * output);

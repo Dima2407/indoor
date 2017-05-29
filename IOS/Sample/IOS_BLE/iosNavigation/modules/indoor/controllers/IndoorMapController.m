@@ -10,6 +10,7 @@
 #import "IndoorStreamController.h"
 #import "UIColor+HEX.h"
 #import <CoreBluetooth/CBCentralManager.h>
+#import "UIImage+ManeuverImage.h"
 
 @interface IndoorMapController () <IndoorStreamControllerDelegate,CBCentralManagerDelegate>
 
@@ -107,11 +108,12 @@
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
+   [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
-    [[BeaconManager sharedManager] stopBeacon];
-    [[BeaconManager sharedManager] deleteMesh];
+//    [[BeaconManager sharedManager] stopBeacon];
+//    [[BeaconManager sharedManager] deleteMesh];
 }
 
 
@@ -219,7 +221,7 @@
     }
     else{
     CGPoint point = [self tapDetection:gesture onView:self.drawView];
-
+        self.tapPoint = point;
     CGPoint destination  = {self.mapView.image.size.width /self.mapView.frame.size.width  * point.x * self.floor.pixelSize,self.mapView.image.size.height /self.mapView.frame.size.height  * point.y * self.floor.pixelSize };
     [[BeaconManager sharedManager] setDestination:destination];
     if(point.x > 0 && point.y > 0){
@@ -256,7 +258,7 @@
     
     RouteInfoListController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"RouteInfoListController"];
     
-    if(self.isRoute){
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"]){
         vc.routePoints = self.maneuversArray;
     }
 
@@ -294,7 +296,16 @@
 }
 #pragma mark - BeaconManagerDelegate -
 -(void)currentLocation:(CGPoint)location{
-    
+  
+    if (CGPointEqualToPoint(location, CGPointZero))
+    {
+       
+        self.navigationController.navigationBar.topItem.title = @"Initialization...";
+        
+    }
+    else{
+       self.navigationController.navigationBar.topItem.title = @"";
+    }
     CGPoint p;
     if (self.floor.widht>0)
     {
@@ -358,9 +369,15 @@
     self.drawView.pointsArray = [points copy];
         CGFloat distance = [[BeaconManager sharedManager] getDistance] * self.floor.pixelSize;
         self.distanceLabel.text = [NSString stringWithFormat:@"Total distance %.2f m", distance];
+        self.duratoinLabel.text =  calculateTimeDuration(distance);
+      self.maneuversArray =   calculateManeuverWithStartPoint(CGPointZero, points, self.floor.pixelSize);
+        //NSLog(@"%@",temp);
+        RoutePoint* firstPoint = [self.maneuversArray firstObject];
+        self.routeInfoView.imageView.image = [UIImage maneuverImage: firstPoint.maneuver ];
+        self.routeInfoView.distance.text = firstPoint.maneuver;
     }
     else{
-        NSLog(@"Routing array is nil");
+        //NSLog(@"Routing array is nil");
     }
 }
 #pragma mark - UIScrollViewDelegate -

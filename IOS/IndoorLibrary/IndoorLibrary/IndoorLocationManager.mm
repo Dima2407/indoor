@@ -170,10 +170,24 @@
 
 }
 -(void)setGraph:(NSString*)graph and:(CGFloat) scale;{
+    if (graph == nil)
+    {
+        NSLog(@" Graph is nil");
+    }
+    else{
     std::string graphConfig = std::string([graph UTF8String]);
-    BluetoothBridge_readGraph(graphConfig, (double)scale);
-    
+        try {
+            BluetoothBridge_readGraph(graphConfig, (double)scale);
+        } catch (const std::runtime_error& error) {
+             NSLog(@"Exception: invalid  Graph");
+        }
+    }
 }
+
+#pragma mark - Exaption 
+
+
+
 
 #pragma mark - Get Coordinates
 -(void)getCoordinates{
@@ -256,12 +270,14 @@
             if (obj.type == BLE_PROVIDER)
             {
                 
+                 
+                
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
                                                               target:self
                                                             selector:@selector(getCoordinates)
                                                             userInfo:nil
                                                              repeats:YES];
-            }}];
+                }}];
     }
     else{
         

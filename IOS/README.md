@@ -3,7 +3,7 @@ IndoorLibrary
 Follow this step by step guide to build IndoorLibrary for iOS.
 Open IndoorLibrary  XCode project.
  
-Download the library of mathematical calculations Eigen. (For detailed instructions, see the official documentation http://eigen.tuxfamily.org/index.php?title=Main_Page#Download) Currently Eigen version 3.3.3 is used. The Eigen library files should be located on the path/usr/local/include/eigen3/, if they are in another directory, you need to specify the path to it in the project settings: â€œHeader search paths" and "Other c ++ flags"
+Download the library of mathematical calculations Eigen. (For detailed instructions, see the official documentation http://eigen.tuxfamily.org/index.php?title=Main_Page#Download) Currently Eigen version 3.3.3 is used. The Eigen library files should be located on the path/usr/local/include/eigen3/, if they are in another directory, you need to specify the path to it in the project settings: “Header search paths" and "Other c ++ flags"
  
 
  
@@ -29,7 +29,7 @@ Open project
 	2.	Under the TARGETS click on Build Phases. Expand Link Binary With Libraries option.
 	3.	Click on Add others and go to directory where libIndoorLibrary.a is located and click open. 
  
-Now we need to link header files to your project. You can do it two ways: drag and drop folder IndoorLibrary to project structure or open Build settings and add path to that folder to Â«Header search pathsÂ».
+Now we need to link header files to your project. You can do it two ways: drag and drop folder IndoorLibrary to project structure or open Build settings and add path to that folder to «Header search paths».
  
 
 
@@ -75,23 +75,21 @@ Create BeaconConfig to all beacons and add its to the IndoorLocationManager
  
 Implements IndoorLocationListenerProtocol
  
-@interface ViewController ()<IndoorLocationListener,ErrorListener>
- manager.locationListener = self;
- manager.errorListener = self;
+    @interface ViewController ()<IndoorLocationListener,ErrorListener>
+    manager.locationListener = self;
+    manager.errorListener = self;
 
 
-//IndoorLocationListenerProtocol
--(void)onLocation:(NSArray *)coordinte{
- NSLog(@"%@",coordinte);
-}
+    //IndoorLocationListenerProtocol
+   -(void)onLocation:(NSArray *)coordinte{
+    NSLog(@"%@",coordinte);
+    }
 
 
-//ErrorListenerProtocol
-
-
--(void)getError:(IndoorError *)error{
-   NSLog(@"error: %@", error.error.description);
-}
+    //ErrorListenerProtocol
+    -(void)getError:(IndoorError *)error{
+    NSLog(@"error: %@", error.error.description);
+    }
  
  
 Credits

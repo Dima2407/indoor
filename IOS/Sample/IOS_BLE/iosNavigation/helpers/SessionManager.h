@@ -24,4 +24,5 @@
 -(void) getIndoorPoiForMapID:(NSString*)mapID complitionBlock:(void(^)(NSDictionary *poiDictionary))complitionBlock;
 -(void) getFloorMap:(NSString*)path dataType:(NSString*)typefile floorModel:(FloorModel*)floor withCoplitionBlock:(void(^)(FloorModel *map))complitionBlock;
 -(void) getIndoorPoiForFloorID:(NSString*)floorID complitionBlock:(void(^)(NSDictionary *poiDictionary))complitionBlock;
+
 @end

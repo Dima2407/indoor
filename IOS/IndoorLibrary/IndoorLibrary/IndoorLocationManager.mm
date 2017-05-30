@@ -169,6 +169,25 @@
     }
 
 }
+-(void)setGraph:(NSString*)graph and:(CGFloat) scale;{
+    if (graph == nil)
+    {
+        NSLog(@" Graph is nil");
+    }
+    else{
+    std::string graphConfig = std::string([graph UTF8String]);
+        try {
+            BluetoothBridge_readGraph(graphConfig, (double)scale);
+        } catch (const std::runtime_error& error) {
+             NSLog(@"Exception: invalid  Graph");
+        }
+    }
+}
+
+#pragma mark - Exaption 
+
+
+
 
 #pragma mark - Get Coordinates
 -(void)getCoordinates{
@@ -188,7 +207,54 @@
 }
 
 
+#pragma mark - Get Routing
+-(void)setDectinationPosition:(NSArray*)destination
+{
+    if (_isRouting)
+    {
+        position p;
+        p.x = [[destination objectAtIndex:0] doubleValue];
+        p.y = [[destination objectAtIndex:1] doubleValue];
+        //p.z = [[destination objectAtIndex:2] doubleValue];
+        BluetoothBridge_setDestination(p);
+          }
+    
+    else{
+        NSLog(@"Set isRouting first");
+    }
+}
+-(NSMutableArray*)getRouting{
+    if (_isRouting)
+    {
+    NSMutableArray *routCoordinates = [NSMutableArray new];
+   
+    std::vector<position> way;
+    
+    
+    BluetoothBridge_getPositionFromGraph(way);
+    for (int i = 0; i < way.size(); i++) {
+        position p = way[i];
+        NSDictionary* coordinate = [NSDictionary dictionaryWithObjectsAndKeys:
+                              @(p.x),@"x",
+                              @(p.y),@"y",
+                              @(p.z),@"z",nil];
 
+        [routCoordinates addObject:coordinate];
+    }
+
+    return routCoordinates;
+    }
+    
+    else{
+        NSLog(@"Set isRouting first");
+ 
+    return nil;
+    }
+}
+-(CGFloat)getDistance{
+    double dist = BluetoothBridge_getDistance();
+    return dist;
+}
 #pragma mark - Action
 
 -(void) prepare{
@@ -203,12 +269,15 @@
             [obj start];
             if (obj.type == BLE_PROVIDER)
             {
+                
+                 
+                
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
                                                               target:self
                                                             selector:@selector(getCoordinates)
                                                             userInfo:nil
                                                              repeats:YES];
-            }}];
+                }}];
     }
     else{
         
@@ -234,7 +303,7 @@
 -(void)deleteMesh{
     
     
-    BluetoothBridge_releseMesh();
+    BluetoothBridge_realeseMesh();
 }
 
 #pragma mark - IosMeasurementTransferDelegate

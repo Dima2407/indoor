@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
 @property (nonatomic, assign) BOOL isStartLog;
 /*! @brief Flag responsible for using a binary mask */
 @property (nonatomic, assign) BOOL isOnMask;
+/*! @brief Flag responsible for getting routing array  */
+@property (nonatomic, assign) BOOL isRouting;
 /*! @brief This property sets frequency getting coordinates */
 @property (nonatomic, strong) NSTimer *timer;
 
@@ -41,16 +43,27 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
  */
 -(void)setMode:(IndoorLocationManagerMode)mode;
 /*!
- * @discussion Adds NSDictionary of configs for mesh
+ * @discussion Adds NSArray of configs for mesh
  * @param meshIn Specifies the parameters of config for maps mesh
  * @param masktableOut Specifies the parameters of config for binary mask
  */
 -(void)setMeshConfig:(NSArray*)meshIn andOut:(NSArray*) masktableOut;
 /*!
+ * @discussion Adds NSString of configs for graph
+ * @param graph Specifies edges for routing
+  */
+-(void)setGraph:(NSString*)graph and:(CGFloat)scale;
+/*!
+ * @discussion Adds NSArray destination coordinates
+ * @param destination Specifies destination coordinate
+ */
+-(void)setDectinationPosition:(NSArray*)destination;
+/*!
  * @discussion Adds a card of bicons
  * @param config Specifies the parameters of one beacon by an object of type BeaconConfig
  
  */
+
 -(void)setBeaconConfig:(BeaconConfig*) config;
 /*!
  * @discussion Adds UUID bikons
@@ -59,10 +72,19 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
  */
 -(void)addUUID:(NSString*)uuid;
 /*!
+ * @discussion Return NSMutableArray of NSDictionarys where value by key "x" - return x coordinate, "y" - y coordinate, "z" - z coordinate.
+  */
+-(NSMutableArray*)getRouting;
+/*!
+ * @discussion Return CGFloat value distance to destination in meters
+ */
+-(CGFloat)getDistance;
+/*!
  * @discussion Returns incoming data logs from beacons
  * @warning Work only if before the method is started, the isStartLog parameter is set to YES
  * @return NSMutableArray containing NSDictionary as the values indicated by timestamp, minor and rssi
  */
+
 -(NSMutableArray*)getLog;
 /*!
  * @discussion Adds a provider to provider's collection.

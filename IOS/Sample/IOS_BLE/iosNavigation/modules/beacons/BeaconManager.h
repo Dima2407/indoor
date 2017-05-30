@@ -26,11 +26,14 @@
 -(NSArray*) getLogs;
 -(void) setMode:(NSString*)mode;
 -(void) setConfigs:(NSArray*)mesh and:(NSArray*)mask;
+-(void)setDestination:(CGPoint)destination;
+-(void) setGraph:(FloorModel*)floor withGraph:(NSString*)gpaphJsonString;
+-(CGFloat)getDistance;
 
 @end
 
 @protocol BeaconManagerDelegate 
 
 -(void) currentLocation:(CGPoint)location;
-
+-(void) currentRouting:(NSArray*)way;
 @end

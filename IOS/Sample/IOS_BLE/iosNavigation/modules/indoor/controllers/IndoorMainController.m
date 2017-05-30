@@ -245,7 +245,7 @@
     routeView.layer.shadowOffset = CGSizeMake(5, 5);
     routeView.layer.shadowColor = [UIColor blackColor].CGColor;
     [routeView.layer setShadowOpacity:0.5];
-    routeView.imageView.image = [UIImage imageNamed:@"left"];
+    //routeView.imageView.image = [UIImage imageNamed:@"left"];
     return routeView;
 }
 

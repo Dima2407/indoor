@@ -63,14 +63,14 @@ NSArray* calculateManeuverWithStartPoint(CGPoint start, NSArray *points, CGFloat
     NSMutableArray *array = [NSMutableArray array];
     
     int xTH = 40;
-    CGPoint pointA = start;
+    CGPoint pointA = [[points firstObject] CGPointValue];
     CGPoint vectorA = CGPointMake(0, 1);
     double absoluteA = absVec(vectorA);
     
     double distance = 0.0;
 
     
-    for(int i = 0; i < points.count; i++){
+    for(int i = 1; i < points.count; i++){
         
          CGPoint p = [[points objectAtIndex:i] CGPointValue];
         
@@ -92,33 +92,68 @@ NSArray* calculateManeuverWithStartPoint(CGPoint start, NSArray *points, CGFloat
                 
                 distance = distance * pixelSize;
                 NSString *time = calculateTimeDuration(distance);
-                NSString *dist = [NSString stringWithFormat:@"%1.2fm",distance];
+                NSString *dist = [NSString stringWithFormat:@"%.2fm",distance];
                 [array addObject:fillRoutePoint(@"turn-right", @"Turn right", dist,time)];
                 distance = 0.0;
             }
-//            else{
-//                double dist12 =  0.0f;
-//                NSString *time = calculateTimeDuration(dist12);
-//                NSString *dist = [NSString stringWithFormat:@"%1.2fm",distance];
-//                [array addObject:fillRoutePoint(@"move-forward", @"Move forward", dist,time)];
-//            }
+            else  if(fabs(deltaX) < xTH){
+                
+                distance = distance * pixelSize;
+                NSString *time = calculateTimeDuration(distance);
+                NSString *dist = [NSString stringWithFormat:@"%.2fm",distance];
+                [array addObject:fillRoutePoint(@"turn-left", @"Turn Left", dist,time)];
+                distance = 0.0;
+            }
+            else{
+                double dist12 = distance * pixelSize;
+                NSString *time = calculateTimeDuration(dist12);
+                NSString *dist = [NSString stringWithFormat:@"%1.2fm",distance * 0.01];
+                [array addObject:fillRoutePoint(@"move-forward", @"Move forward", dist,time)];
+                distance = 0.0;
+            }
         }
-        else if(deltaX <= 0){
+        else if(deltaX < 0){
             
             if (fabs(deltaX) > xTH) {
                 
                 distance = distance * pixelSize;
                 NSString *time = calculateTimeDuration(distance);
-                NSString *dist = [NSString stringWithFormat:@"%1.2fm",distance];
+                NSString *dist = [NSString stringWithFormat:@"%.2fm",distance];
                 [array addObject:fillRoutePoint(@"turn-left", @"Turn Left", dist,time)];
                 distance = 0.0;
             }
-//            else{
-//                double dist13 = distance * 0.01f;
-//                NSString *time = calculateTimeDuration(dist13);
-//                NSString *dist = [NSString stringWithFormat:@"%1.2fm",distance];
-//                [array addObject:fillRoutePoint(@"move-forward", @"Move forward", dist,time)];
-//            }
+            else if (fabs(deltaX) < xTH) {
+                
+                distance = distance * pixelSize;
+                NSString *time = calculateTimeDuration(distance);
+                NSString *dist = [NSString stringWithFormat:@"%.2fm",distance];
+                [array addObject:fillRoutePoint(@"turn-right", @"Turn right", dist,time)];
+                distance = 0.0;
+            }
+            else{
+                double dist13 = distance * pixelSize;
+                NSString *time = calculateTimeDuration(dist13);
+                NSString *dist = [NSString stringWithFormat:@"%.2fm",distance * 0.01];
+                [array addObject:fillRoutePoint(@"move-forward", @"Move forward", dist,time)];
+                distance = 0.0;
+            }
+        }
+        else if (deltaX == 0){
+            if (fabs(deltaX) > xTH) {
+                
+                distance = distance * pixelSize;
+                NSString *time = calculateTimeDuration(distance);
+                NSString *dist = [NSString stringWithFormat:@"%.2fm",distance];
+                [array addObject:fillRoutePoint(@"turn-left", @"Turn Left", dist,time)];
+                distance = 0.0;
+            }
+            else{
+            double dist13 = distance * pixelSize ;
+            NSString *time = calculateTimeDuration(dist13);
+            NSString *dist = [NSString stringWithFormat:@"%.2fm",distance * 0.01];
+            [array addObject:fillRoutePoint(@"move-forward", @"Move forward", dist,time)];
+                distance = 0.0;
+        }
         }
         pointA = pointB;
         vectorA = vectorB;

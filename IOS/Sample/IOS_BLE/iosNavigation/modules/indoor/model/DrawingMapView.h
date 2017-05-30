@@ -19,6 +19,4 @@
 @property (strong, nonatomic) UIImageView *img;
 @property (strong, nonatomic) DrawingMapView *view;
 @property (nonatomic, assign) BOOL isDrawRoute;
-@property (strong, nonatomic) NSArray *vertexArray;
-@property (strong, nonatomic) NSArray *edgesArray;
 @end

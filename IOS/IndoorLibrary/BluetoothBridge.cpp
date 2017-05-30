@@ -14,6 +14,10 @@
 //std::shared_ptr<Navigator::Beacons::TrilatBeaconNavigator> navigator;
  std::shared_ptr<Navigator::Beacons::StandardBeaconNavigator> navigator;
 std::shared_ptr<Navigator::Mesh::RectanMesh> mesh;
+std::shared_ptr<Navigator::Dijkstra::PointGraph> gr;
+int destinationPosition;
+double mapScale;
+double dictance;
 
 extern "C"
 void BluetoothBridge_init() {
@@ -41,10 +45,7 @@ void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, doubl
    navigator->addBeacon(beacon);
     
 }
-extern "C"
-void BluetoothBridge_setPosition(){
-Navigator::Math::Position3D inPos(0.75, 0.38, 0.0);
-}
+
 extern "C"
 void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi) {
     Navigator::Beacons::BeaconUID uuid(uuidStr,major,minor);
@@ -57,10 +58,17 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
 }
 extern "C"
 void BluetoothBridge_getLastPosition(double * output){
+    if (BluetoothBridge_isInitialise())
+    {
+     
 Navigator::Math::Position3D outPos = navigator->getLastPosition();
     output[0] = outPos.x;
     output[1] = outPos.y;
     output[2] = outPos.z;
+    }
+    else{
+         printf("Navigator is initializing");
+    }
 }
 extern "C"
 void BluetoothBridge_createMesh(int nx, int ny, double dx, double dy, double x0, double y0){
@@ -76,6 +84,80 @@ void BluetoothBridge_setMaskTable(const std::vector<int> &mTable){
     
 }
 extern "C"
-void BluetoothBridge_releseMesh(){
+void BluetoothBridge_realeseMesh(){
     mesh = NULL;
+}
+extern "C"
+void BluetoothBridge_readGraph(std::string graph, double scale ){
+    mapScale = scale;
+    gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+}
+extern "C"
+void BluetoothBridge_setDestination(struct position p ){
+     printf("Set destination  x-%f, y-%f,",p.x, p.y);
+    if (gr==NULL)
+    {
+        printf("Set graph first");
+    }
+    else{
+     destinationPosition = gr->findNearestVertex(Navigator::Math::Position3D(p.x, p.y,0));
+       
+    }
+}
+
+extern "C"
+void BluetoothBridge_getPositionFromGraph(std::vector<position> &way){
+    if (BluetoothBridge_isInitialise())
+    {
+     
+    if (destinationPosition == 0)
+    {
+        printf("Set destination first ");
+    }
+    else{
+    std::vector<Navigator::Math::Position3D> pointPath;
+        Navigator::Math::Position3D lastPosition = navigator->getLastPosition();
+        lastPosition.x = lastPosition.x / mapScale;
+        lastPosition.y = lastPosition.y / mapScale;
+        
+    int startVertext = gr->findNearestVertex(Navigator::Math::Position3D(navigator->getLastPosition()));
+    dictance =  gr->dijkstraP(startVertext, destinationPosition, pointPath);
+        
+    for (int i = 0; i < pointPath.size(); i++) {
+        Navigator::Math::Position3D coordinates = pointPath[i];
+
+         position p = {
+            .x = static_cast<double>(coordinates.x),
+            .y = static_cast<double>(coordinates.y)
+        };
+        way.push_back(p);
+    }
+
+    pointPath.swap(pointPath);
+    
+    }
+    }
+    else{
+        printf("Navigator is initializing");
+    }
+}
+extern "C"
+double BluetoothBridge_getDistance(){
+    
+ 
+    return dictance;
+}
+extern "C"
+bool BluetoothBridge_isInitialise(){
+    return navigator->isInitFinished();
+}
+
+extern "C"
+void BluetoothBridge_getInitialisePosition(double * output){
+    Navigator::Math::Position3D outPos =  navigator->getInitPosition();
+    output[0] = outPos.x;
+    output[1] = outPos.y;
+    output[2] = outPos.z;
+   
+    
 }

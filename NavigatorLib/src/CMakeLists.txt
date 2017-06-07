@@ -34,6 +34,10 @@ set(SOURCE_FILES
         ../include/Navigator/Dijkstra/Edge.h
         ./Navigator/Dijkstra/Graph.cpp ../include/Navigator/Dijkstra/Graph.h
         ./Navigator/Dijkstra/PointGraph.cpp ../include/Navigator/Dijkstra/PointGraph.h
+        #
+        ../include/Navigator/Accel/AccelReceivedData.h
+        ../include/Navigator/Accel/AbstractAccelNavigator.h
+        ./Navigator/Accel/StandardAccelNavigator.cpp  ../include/Navigator/Accel/StandardAccelNavigator.h
         )
 
 include_directories(

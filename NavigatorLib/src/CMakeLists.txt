@@ -36,6 +36,7 @@ set(SOURCE_FILES
         ./Navigator/Dijkstra/PointGraph.cpp ../include/Navigator/Dijkstra/PointGraph.h
         #
         ../include/Navigator/Accel/AccelReceivedData.h
+        ../include/Navigator/Accel/AccelOutputData.h
         ../include/Navigator/Accel/AbstractAccelNavigator.h
         ./Navigator/Accel/StandardAccelNavigator.cpp  ../include/Navigator/Accel/StandardAccelNavigator.h
         )

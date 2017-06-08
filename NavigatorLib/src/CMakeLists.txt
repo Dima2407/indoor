@@ -37,6 +37,7 @@ set(SOURCE_FILES
         #
         ../include/Navigator/Accel/AccelReceivedData.h
         ../include/Navigator/Accel/AccelOutputData.h
+        ./Navigator/Accel/ToGlobal.cpp ../include/Navigator/Accel/ToGlobal.h
         ../include/Navigator/Accel/AbstractAccelNavigator.h
         ./Navigator/Accel/StandardAccelNavigator.cpp  ../include/Navigator/Accel/StandardAccelNavigator.h
         )

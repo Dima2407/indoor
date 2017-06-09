@@ -198,6 +198,10 @@ public class BeaconModel implements Parcelable, Serializable, Cloneable {
                 '}';
     }
 
+    public void setPositionZ(float positionZ) {
+        this.positionZ = positionZ;
+    }
+
     public float getDamp() {
         return damp;
     }

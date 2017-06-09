@@ -12,12 +12,11 @@ namespace Accel {
 class TrajectoryDetection
 {
 public:
-    //     process(const Position3D &data);
+    Math::Position3D process(const AlgorithmZUPT &velocity);
 
     const float X_init = 3.5;
     const float Y_init = 3.5;
     const float adjCoef = 3;
-
 
 };
 }

@@ -10,19 +10,24 @@
 namespace Navigator {
 namespace Accel {
 
-bool AlgorithmZUPT::isStationary(){
-    int a = 1;
-    if(a == 0)
-        return true;
-    else
-        return false;
-}
+//bool AlgorithmZUPT::isStationary(){
+//    int a = 1;
+//    if(a == 0)
+//        return true;
+//    else
+//        return false;
+//}
 
 Math::Position3D AlgorithmZUPT::process(const AccelOutputData &data)
 {
     using namespace Math;
+    /*     must add Victor algoritm
+        double ax_glob=5, ay_glob=5, az_glob=2;
+        double ax_glob=0.111,ay_glob=0.2333,az_glob=0.1;
+        bool isStationary=true;*/
 
-    if (isStationary() == false){
+    //    if (&data.isStationary() == false){
+    if (isStationary == false){
         Vx = Vx + consG * ax_glob * samplePeriod;
         Vy = Vy + consG * ay_glob * samplePeriod;
         Vz = Vz + consG * az_glob * samplePeriod;
@@ -39,12 +44,9 @@ Math::Position3D AlgorithmZUPT::process(const AccelOutputData &data)
     if (Vz > maxV){
         Vz = maxV;
     }
-    Position3D position3d(Vx, Vy, Vz);
-    return position3d;
+    Position3D velocity(Vx, Vy, Vz);
+    return velocity;
 }
 
-//void AlgorithmZUPT::processTemp(float ax_glob,float ay_glob,float az_glob, bool as, float samplePeriod){
-//    using namespace std;
-//}
 }
 }

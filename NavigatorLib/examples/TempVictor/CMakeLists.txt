@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(example1)
+project(TempVictor)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -12,5 +12,5 @@ set(SOURCE_FILES
         main.cpp
         )
 
-add_executable(example1 ${SOURCE_FILES})
-target_link_libraries(example1 Navigator)
+add_executable(tempvictor ${SOURCE_FILES})
+target_link_libraries(tempvictor Navigator)

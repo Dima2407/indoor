@@ -1,71 +1,82 @@
 //
 // Created by  Victor Draban on 6/7/2017.
 //
-#pragma once
 
 #include "Navigator/Accel/ToGlobal.h"
-#include <Eigen/Geometry>
-
 
 namespace Navigator {
 namespace Accel {
 
-        AccelOutputData Navigator::Accel::ToGlobal::process(AccelReceivedData data)
+        AccelOutputData ToGlobal::process(AccelReceivedData data)
         {
             using namespace Eigen;
-            AccelReceivedData result = data;
-            filteringAccelerations(result);
-            angleCorrection(result);
-            recognazeState(result);
+            TempData tempData;
+            AccelOutputData result;
 
-            Quaternion<double> quat = initQuaternion(result.pitch, result.roll, result.yaw);
+            filteringAccelerations(data, tempData);
+            angleCorrection(data, tempData);
+            recognazeState(data, tempData);
+
+            Quaternion<double> quat = initQuaternion(tempData.pitch, tempData.roll, tempData.yaw);
             Quaternion<double> invertQuat = quat.conjugate();
-            Quaternion<double> r(0, result.ax, result.ay, result.az);
+            Quaternion<double> r(0, tempData.ax, tempData.ay, tempData.az);
+
+            Quaternion<double> resultQ = quat * r * invertQuat;
+
+            result.ax = resultQ.x();
+            result.ay = resultQ.y();
+            result.az = resultQ.z();
+            result.isStationary = tempData.isStationary;
+            result.timestamp = data.timestamp;
+            result.timeDiff = 0.3;
 
             return result;
         }
 
 // =================================================================================
 
-        void recognazeState(const AccelOutputData &data) {
+        void ToGlobal::recognazeState(const AccelReceivedData &in, TempData &out) {
             double accTH = 1.035;
-            auto a_norm = sqrt(data.ax*data.ax + data.ay*data.ay + data.az*data.az);
+            auto a_norm = sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
             if (a_norm < accTH) {
-                data.isStationary = false;
+                out.isStationary = true;
             } else {
-                data.isStationary = true;
+                out.isStationary = false;
             }
         }
 
 // =================================================================================
 
-        void angleCorrection(const AccelReceivedData &data) {
-            doubel mapOrientationAngle = 0;
-            data.pitch = data.pitch*(pi/180);
-            data.roll = data.roll*(pi/180);
-            data.yaw = (-data.yaw - 180 + mapOrientationAngle)*(pi/180);
+        void ToGlobal::angleCorrection(const AccelReceivedData &in, TempData &out) {
+            double mapOrientationAngle = 0;
+            out.pitch = in.pitch*(M_PI/180);
+            out.roll = in.roll*(M_PI/180);
+            out.yaw = (-in.yaw - 180 + mapOrientationAngle)*(M_PI/180);
         }
 
 // =================================================================================
 
-        void filteringAccelerations(const AccelReceivedData &data) {
-            return data;
-        }
+        void ToGlobal::filteringAccelerations(const AccelReceivedData &in, TempData &out) {
 
-    }
+        }
 
 // =================================================================================
 
-         Quaternion<double> initQuaternion(double pitch, double roll, double yaw) {
-             doubl w = cos(pitch/2)*cos(roll/2)*cos(roll/2) -
+/*
+ *
+ *
+ * */
+         Eigen::Quaternion<double> ToGlobal::initQuaternion(double pitch, double roll, double yaw) {
+             double w = cos(pitch/2)*cos(roll/2)*cos(roll/2) -
                      sin(pitch/2)*sin(roll/2)*sin(yaw/2);
-             doubl x = cos(pitch/2)*sin(roll/2)*sin(yaw/2) +
+             double x = cos(pitch/2)*sin(roll/2)*sin(yaw/2) +
                      sin(pitch/2)*cos(roll/2)*sin(yaw/2);
-             doubl y = cos(pitch/2)*sin(roll/2)*cos(yaw/2) -
+             double y = cos(pitch/2)*sin(roll/2)*cos(yaw/2) -
                      sin(pitch/2)*cos(roll/2)*sin(yaw/2);
-             doubl z = cos(pitch/2)*cos(roll/2)*sin(yaw/2) +
+             double z = cos(pitch/2)*cos(roll/2)*sin(yaw/2) +
                      sin(pitch/2)*sin(roll/2)*cos(yaw/2);
-             Quaternion<double> result(w, x, y, z);
+             Eigen::Quaternion<double> result(w, x, y, z);
              return result;
          }
+    }
 }

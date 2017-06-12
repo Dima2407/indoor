@@ -18,6 +18,7 @@ namespace Navigator {
             bool isStationary = true;
 
             double ax = std::nan(""), ay = std::nan(""), az = std::nan("");
+
         };
     }
 }

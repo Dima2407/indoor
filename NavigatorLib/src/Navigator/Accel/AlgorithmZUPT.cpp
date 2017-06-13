@@ -2,7 +2,6 @@
 // Created by Igor Maschikevich on 6/7/2017.
 //
 
-#pragma once
 
 #include "Navigator/Accel/AlgorithmZUPT.h"
 

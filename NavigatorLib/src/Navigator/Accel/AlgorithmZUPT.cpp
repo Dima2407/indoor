@@ -10,21 +10,13 @@
 namespace Navigator {
 namespace Accel {
 
-//bool AlgorithmZUPT::isStationary(){
-//    int a = 1;
-//    if(a == 0)
-//        return true;
-//    else
-//        return false;
-//}
-
 Math::Position3D AlgorithmZUPT::process(const AccelOutputData &data)
 {
     using namespace Math;
-    /*     must add Victor algoritm
-        double ax_glob=5, ay_glob=5, az_glob=2;
+    //     must add Victor algoritm
+//        double ax_glob=5, ay_glob=5, az_glob=2;
         double ax_glob=0.111,ay_glob=0.2333,az_glob=0.1;
-        bool isStationary=true;*/
+        bool isStationary=true;
 
     //    if (&data.isStationary() == false){
     if (isStationary == false){

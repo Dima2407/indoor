@@ -21,9 +21,9 @@ public:
     const float samplePeriod = 0.033;
 
     // Default data
-    const float Vx = 0.0;
-    const float Vy = 0.0;
-    const float Vz = 0.0;
+    float Vx = 0.0;
+    float Vy = 0.0;
+    float Vz = 0.0;
 
 };
 }

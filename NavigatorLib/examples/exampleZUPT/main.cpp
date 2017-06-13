@@ -11,6 +11,7 @@
 
 using namespace std;
 using Navigator::Accel::AlgorithmZUPT;
+using Navigator::Accel::TrajectoryDetection;
 using Navigator::Accel::AccelOutputData;
 using Navigator::Math::Position3D;
 
@@ -21,9 +22,12 @@ int main() {
     // All enter data in AlgorithmZUPT.h and AlgorithmZUPT.cpp
     AlgorithmZUPT algoritm;
     algoritm.process(victor);
-    cout<<"Vx "<<algoritm.Vx<<endl;
-    cout<<"Vy "<<algoritm.Vy<<endl;
-    cout<<"Vz "<<algoritm.Vz<<endl;
-    //    cout<<"gfsfdbdmsdbs"<<endl;
+    algoritm.Vx=2;
+    algoritm.Vy=2;
+        cout<<"Vx "<<algoritm.Vx<<endl;
+        cout<<"Vy "<<algoritm.Vy<<endl;
+        cout<<"Vz "<<algoritm.Vz<<endl;
+    TrajectoryDetection se;
+    se.process( algoritm.process(victor));
     return 0;
 }

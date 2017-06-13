@@ -39,6 +39,10 @@ set(SOURCE_FILES
         #
         TrajectoryDetection/TrajectoryDetection.cpp TrajectoryDetection/TrajectoryDetection.h
         ZUPT/AlgorithmZUPT.cpp ZUPT/AlgorithmZUPT.h
+        Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h
+        Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h
+        #
+        Accel/QuaternionTest.h
         )
 
 add_executable(unittest ${SOURCE_FILES})

@@ -41,6 +41,8 @@ set(SOURCE_FILES
     ./Navigator/Accel/StandardAccelNavigator.cpp  ../include/Navigator/Accel/StandardAccelNavigator.h
     ./Navigator/Accel/AlgorithmZUPT.cpp ../include/Navigator/Accel/AlgorithmZUPT.h
     ./Navigator/Accel/TrajectoryDetection.cpp ../include/Navigator/Accel/TrajectoryDetection.h
+    ./Navigator/Accel/ToGlobal.cpp ../include/Navigator/Accel/ToGlobal.h
+    ../include/Navigator/Accel/TempData.h
     )
 
 include_directories(

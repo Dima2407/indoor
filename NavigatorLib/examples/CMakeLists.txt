@@ -21,3 +21,6 @@ add_subdirectory(exampleMesh2)
 
 add_subdirectory(exampleZUPT)
 
+add_subdirectory(TempVictor)
+
+

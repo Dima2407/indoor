@@ -3,8 +3,12 @@
 //
 
 #pragma once
+
 namespace NaviTest {
+    namespace Accel {
 
 
 
+
+    }
 }

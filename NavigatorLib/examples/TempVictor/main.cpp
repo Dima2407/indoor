@@ -15,8 +15,8 @@ int main(){
         double roll = 0.3;
         double yaw = 0.4;
         ToGlobal global;
-//        Quaternion<double> q1 = global.initQuaternion(pitch, roll, yaw);
-//        cout << "it's normalize = " << q1.norm() << endl;
+        Quaternion<double> q1 = global.initQuaternion(pitch, roll, yaw);
+        cout << "it's normalize = " << q1.norm() << endl;
         cout << "test" << endl;
 
         return 0;

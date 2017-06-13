@@ -28,7 +28,7 @@ namespace Accel {
             result.az = resultQ.z();
             result.isStationary = tempData.isStationary;
             result.timestamp = data.timestamp;
-            result.timeDiff = 0.3;
+            result.timeDiff = 0.033;
 
             return result;
         }

@@ -2,6 +2,7 @@
 // Created by Igor Maschikevich on 6/8/2017.
 //
 #include "Navigator/Math/Position3D.h"
+#include "Navigator/Mesh/MeshData.h"
 #include "AccelOutputData.h"
 #include "AlgorithmZUPT.h"
 #pragma once
@@ -13,12 +14,13 @@ class TrajectoryDetection
 {
 public:
     TrajectoryDetection(){}
+//    Math::Position3D process(const Math::Position3D &velocity, Mesh::RectanMesh &mesh);
     Math::Position3D process(const Math::Position3D &velocity);
 
     float posX = 0;
     float posY = 0;
     const float adjCoef = 3;
-    float samplePeriod=0.33;
+    float samplePeriod = 0.33;
 
     //The function checks whether a given point within the map
     int  ChechX(int posX,int Xmax, int Xmin){

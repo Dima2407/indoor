@@ -9,7 +9,7 @@
 namespace Navigator {
     namespace Accel {
         /// Data from accelerometer and sensors (angles)
-        struct AccelOutputData {
+        struct TempData {
 
             double timestamp = std::nan("");
 
@@ -19,6 +19,7 @@ namespace Navigator {
 
             double ax = std::nan(""), ay = std::nan(""), az = std::nan("");
 
+            double pitch = std::nan(""), yaw = std::nan(""), roll = std::nan("");
         };
     }
 }

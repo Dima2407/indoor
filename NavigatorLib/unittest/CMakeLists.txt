@@ -38,7 +38,7 @@ set(SOURCE_FILES
         Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h
         #
         #
-        Accel/QuaternionTest.h
+        Accel/ToGlobalTest.cpp Accel/ToGlobalTest.h
         )
 
 add_executable(unittest ${SOURCE_FILES})

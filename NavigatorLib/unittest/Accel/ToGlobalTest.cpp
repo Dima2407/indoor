@@ -25,6 +25,10 @@ namespace NaviTest {
             CPPUNIT_ASSERT(initQuaternion() < accuracy);
             CPPUNIT_ASSERT(initQuaternion() < accuracy);
             CPPUNIT_ASSERT(initQuaternion() < accuracy);
+        }
+
+        void ToGlobalTest::testAngleCorrection() {
+            constexpr double accuracy = 1.0e-10;
 
             CPPUNIT_ASSERT(testAngleCorrectionPitch175() < accuracy);
             CPPUNIT_ASSERT(testAngleCorrectionRoll175() < accuracy);

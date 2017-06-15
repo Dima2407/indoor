@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+﻿cmake_minimum_required(VERSION 3.0)
 project(Navigator)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -11,11 +11,13 @@ set(SOURCE_FILES
     ../include/Navigator/Beacons/BeaconReceivedData.h
     ./Navigator/Beacons/BeaconProcessor.cpp ../include/Navigator/Beacons/BeaconProcessor.h
     #
-    ./Navigator/Math/Filter/AlphaBetaFilter.cpp ../include/Navigator/Math/Filter/AlphaBetaFilter.h
-    ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h
-    ./Navigator/Math/Filter/MovingAverageFilter.cpp
-    ./Navigator/Math/Trilat/trilat.cpp
-    ../include/Navigator/Math/Trilat/TrilatRecord.h
+    ./Navigator/Math/Filter/AlphaBetaFilter.cpp  ../include/Navigator/Math/Filter/AlphaBetaFilter.h
+    ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp  ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h
+    ./Navigator/Math/Filter/MovingAverageFilter.cpp  ../include/Navigator/Math/Filter/MovingAverageFilter.h
+    ./Navigator/Math/Trilat/trilat.cpp  ../include/Navigator/Math/Trilat/TrilatRecord.h
+    ../include/Navigator/Math/Filter/IFilter.h
+    ../include/Navigator/Math/Filter/NoFilter.h
+    ../include/Navigator/Math/Filter/RingBuffer.h
     #
     ../include/Navigator/Beacons/Factory/NoFilterFactory.h
     ../include/Navigator/Beacons/Factory/MovingAverageFilterFactory.h

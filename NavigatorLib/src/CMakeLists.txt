@@ -45,6 +45,7 @@ set(SOURCE_FILES
     ./Navigator/Accel/TrajectoryDetection.cpp ../include/Navigator/Accel/TrajectoryDetection.h
     ./Navigator/Accel/ToGlobal.cpp ../include/Navigator/Accel/ToGlobal.h
     ../include/Navigator/Accel/TempData.h
+    ./Navigator/Accel/FilterImpl.cpp ../include/Navigator/Accel/FilterImpl.h
     )
 
 include_directories(

@@ -39,6 +39,7 @@ set(SOURCE_FILES
         #
         #
         Accel/ToGlobalTest.cpp Accel/ToGlobalTest.h
+        Accel/FilterImplTest.cpp Accel/FilterImplTest.h
         )
 
 add_executable(unittest ${SOURCE_FILES})

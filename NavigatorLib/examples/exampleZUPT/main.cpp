@@ -27,7 +27,6 @@ int main() {
         cout<<"Vx "<<algoritm.Vx<<endl;
         cout<<"Vy "<<algoritm.Vy<<endl;
         cout<<"Vz "<<algoritm.Vz<<endl;
-    TrajectoryDetection se;
-    se.process( algoritm.process(victor));
+
     return 0;
 }

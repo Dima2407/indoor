@@ -2,40 +2,82 @@
 // Created by Igor Maschikevich on 6/8/2017.
 //
 
-//#pragma once
-
+#include <cmath>
 #include "Navigator/Accel/TrajectoryDetection.h"
-#include "Navigator/Mesh/RectanMesh.h"
 
 namespace Navigator {
 namespace Accel {
-Math::Position3D TrajectoryDetection::process(const Math::Position3D &velocity )
-//Math::Position3D TrajectoryDetection::process(const Math::Position3D &velocity, Mesh::RectanMesh &mesh)
+Math::Position3D TrajectoryDetection::process(const Math::Position3D &velocity, const Accel::AccelOutputData &data )
 {
-    
-    
-    
     using namespace Math;
-    posX = posX + adjCoef * velocity.x * samplePeriod;
-    posY = posY + adjCoef * velocity.y * samplePeriod;
+    using namespace Mesh;
+    double dt = data.timeDiff;
 
-    constexpr double nx = 5, ny = 4;
-    constexpr double dx = 2.0, dy = 3.0;
-    constexpr double x0 = 1, y0 = 1;
+    double posX0 = posX;
+    double posY0 = posY;
 
+    posX += adjCoef * velocity.x * dt;
+    posY += adjCoef * velocity.y * dt;
 
-    Mesh::RectanMesh mesh(nx, ny, dx, dy, x0, y0);
-    mesh.getMesh();
-    int Xmin = mesh.getMesh().x0;
-    int Ymin = mesh.getMesh().y0;
-    int Xmax = mesh.getMesh().x0 + (mesh.getMesh().nx - 1) * mesh.getMesh().dx;
-    int Ymax = mesh.getMesh().y0 + (mesh.getMesh().ny - 1) * mesh.getMesh().dy;
+    posX = checkXY(posX, maxX, minX);
+    posY = checkXY(posY, maxY, minY);
 
+    if (checkWall(posX0, posY0, posX, posY)) {
 
+        if (!checkWall(posX0, posY0, posX0, posY))
+            posX = posX0;
+        else if (!checkWall(posX0, posY0, posX, posY0))
+            posY = posY0;
+    }
 
-    Position3D positionAfter(ChechX(posX, Xmax, Xmin), ChechY(posY, Ymax, Ymin), 0.0);
-    return mesh.process(positionAfter);
+    Position3D positionAfter(posX, posY, 0.0);
+    return rMesh->process(positionAfter);
 }
 
+double TrajectoryDetection::checkXY( double pos, double max,  double min){
+    if (pos < min)
+        pos = min;
+    else if (pos > max)
+        pos = max;
+    return pos;
+}
+
+bool TrajectoryDetection::checkBlack(double x, double y)
+{
+    bool res;
+    const Mesh::MeshData & mesh = rMesh->getMesh();
+    // Find the mesh node nearest to inPos (iX = 0 .. nx-1, iY = 0..ny-1)
+    int iX = mesh.x2ix(x);
+    int iY = mesh.y2iy(y);
+    // Calculate the single value index (ind == 0 .. size-1)
+    int ind = iX * mesh.ny + iY;
+
+    if(ind == rMesh->getMaskTable()[ind])
+        res = false;
+    else
+        res = true;
+    return res;
+}
+
+bool TrajectoryDetection::checkWall(double x1, double y1, double x2, double y2)
+{
+    double length = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
+
+    double t = 0;
+    double ksi = 1;
+    double inPosX, inPosY;
+
+    for (int ksiP = 0; ; ++ksiP) {
+        t = (ksiP * ksi) / length;
+        inPosX = x1 + (x2 - x1) * t;
+        inPosY = y1 + (y2 - y1) * t;
+
+        if (t >= 1.0)
+            return checkBlack(x2, y2);
+
+        else if(checkBlack(inPosX, inPosY))
+            return true;
+    }
+}
 }
 }

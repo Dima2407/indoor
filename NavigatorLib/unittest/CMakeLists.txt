@@ -37,6 +37,8 @@ set(SOURCE_FILES
         Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
         Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h
         #
+        Accel/AlgorithmZUPT/AlgorithmZUPTTest.cpp Accel/AlgorithmZUPT/AlgorithmZUPTTest.h
+        Accel/TrajectoryDetection/TrajectoryDetectionTest.cpp Accel/TrajectoryDetection/TrajectoryDetectionTest.h
         #
         Accel/QuaternionTest.h
         )

@@ -19,17 +19,13 @@ void TrajectoryDetectionTest::test1() {
     using namespace Navigator::Accel;
     using namespace Navigator::Mesh;
 
-    double posX= 5.2, posY = 2.8;
+    double posX= 2.0, posY = 2.0;
     // Create a simple 5x4 rect mesh
     constexpr double nx = 5, ny = 4;
     constexpr double dx = 1.0, dy = 1.0;
     constexpr double x0 = 2, y0 = 2;
 
-
     std::shared_ptr<RectanMesh> ptrMesh = std::make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
-    //    ptrMesh->mesh;
-    //    RectanMesh mesh(nx, ny, dx, dy, x0, y0);
-
     // Create a mask table : 20 = nx*ny = 5*4
     vector<int> mTable(nx * ny);
     for (int i = 0; i < nx*ny; i++)
@@ -43,26 +39,21 @@ void TrajectoryDetectionTest::test1() {
 
     Navigator::Accel::TrajectoryDetection t( ptrMesh, posX, posY);
     // if point black
-    //    CPPUNIT_ASSERT(true == t.checkBlack(3, 4));
-    //    CPPUNIT_ASSERT(true == t.checkBlack(4, 4));
-    //    CPPUNIT_ASSERT(true == t.checkBlack(5, 4));
+    CPPUNIT_ASSERT(true == t.checkBlack(3, 4));
+    CPPUNIT_ASSERT(true == t.checkBlack(4, 4));
+    CPPUNIT_ASSERT(true == t.checkBlack(5, 4));
     //    // if point black (double)
-    //    CPPUNIT_ASSERT(true == t.checkBlack(3.4, 4.4));
-    //    CPPUNIT_ASSERT(true == t.checkBlack(4.4, 4.4));
-    //    CPPUNIT_ASSERT(true == t.checkBlack(5.4, 4.4));
+    CPPUNIT_ASSERT(true == t.checkBlack(3.4, 4.4));
+    CPPUNIT_ASSERT(true == t.checkBlack(4.4, 4.4));
+    CPPUNIT_ASSERT(true == t.checkBlack(5.4, 4.4));
     //    // if point white
-    //    CPPUNIT_ASSERT(false == t.checkBlack(3, 3));
-    //    CPPUNIT_ASSERT(false == t.checkBlack(4, 3));
-    //    CPPUNIT_ASSERT(false == t.checkBlack(5, 3));
+    CPPUNIT_ASSERT(false == t.checkBlack(3, 3));
+    CPPUNIT_ASSERT(false == t.checkBlack(4, 3));
+    CPPUNIT_ASSERT(false == t.checkBlack(5, 3));
     //    // if point white (double)
-    //    CPPUNIT_ASSERT(false == t.checkBlack(3.4, 3.4));
-    //    CPPUNIT_ASSERT(false == t.checkBlack(4.4, 3.4));
-    //    CPPUNIT_ASSERT(false == t.checkBlack(5.4, 3.4));
-
-    //    CPPUNIT_ASSERT(true== t.checkWall(3, 3, 3, 5));
-    CPPUNIT_ASSERT(true== t.checkWall(3, 3, 3, 5));
-    CPPUNIT_ASSERT(false == t.checkWall(5, 2, 3, 3));
-
+    CPPUNIT_ASSERT(false == t.checkBlack(3.4, 3.4));
+    CPPUNIT_ASSERT(false == t.checkBlack(4.4, 3.4));
+    CPPUNIT_ASSERT(false == t.checkBlack(5.4, 3.4));
 
 }
 }

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <memory>
+#include <cmath>
 
 #include "Navigator/Math/Position3D.h"
 #include "Navigator/Mesh/MeshData.h"
@@ -23,7 +24,7 @@ private:
     double minY;
     double maxX;
     double maxY;
-
+    double ksi;
 
 public:
 
@@ -33,6 +34,7 @@ public:
         posY(posY){
 
         const Mesh::MeshData & mesh = rMesh->getMesh();
+        ksi =  std::fmin( mesh.nx/2, mesh.ny/2);
         minX = mesh.x0;
         minY = mesh.y0;
         maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;

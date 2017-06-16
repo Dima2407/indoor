@@ -52,10 +52,12 @@ bool TrajectoryDetection::checkBlack(double x, double y)
     // Calculate the single value index (ind == 0 .. size-1)
     int ind = iX * mesh.ny + iY;
 
-    if(ind == rMesh->getMaskTable()[ind])
+    if(ind == rMesh->getMaskTable()[ind]){
         res = false;
-    else
+    }
+    else if(ind != rMesh->getMaskTable()[ind]){
         res = true;
+    }
     return res;
 }
 
@@ -64,7 +66,6 @@ bool TrajectoryDetection::checkWall(double x1, double y1, double x2, double y2)
     double length = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
 
     double t = 0;
-    double ksi = 1;
     double inPosX, inPosY;
 
     for (int ksiP = 0; ; ++ksiP) {

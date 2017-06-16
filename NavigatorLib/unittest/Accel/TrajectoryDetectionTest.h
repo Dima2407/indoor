@@ -12,11 +12,15 @@ namespace NaviTest {
 namespace Accel{
 class TrajectoryDetectionTest  : public CPPUNIT_NS::TestFixture {
     CPPUNIT_TEST_SUITE(TrajectoryDetectionTest);
-    CPPUNIT_TEST(test1);
+    CPPUNIT_TEST(testCheckBlack);
+    CPPUNIT_TEST(testCheckXY);
+    CPPUNIT_TEST(testCheckWall);
     CPPUNIT_TEST_SUITE_END();
 public:
     /// Test a simple mesh
-    void test1();
+    void testCheckBlack();
+    void testCheckXY();
+    void testCheckWall();
 };
 
 }

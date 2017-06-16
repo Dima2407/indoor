@@ -34,7 +34,7 @@ public:
         posY(posY){
 
         const Mesh::MeshData & mesh = rMesh->getMesh();
-        ksi =  std::fmin( mesh.nx/2, mesh.ny/2);
+        ksi =  std::fmin( mesh.dx/2, mesh.dy/2);
         minX = mesh.x0;
         minY = mesh.y0;
         maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;
@@ -43,11 +43,12 @@ public:
     }
 
     Math::Position3D process(const Math::Position3D &velocity, const Accel::AccelOutputData &data);
-    double checkXY( double pos, double max,  double min);
 
     double posX;
     double posY;
     static constexpr double adjCoef = 3;
+    /// Correct posX or posY if (maxX < posX < minX) or (maxY < posY < minY)
+    double checkXY( double pos, double max,  double min);
 
     /// True if the line (x0,y0) -> (x,y) crosses a wall (obstacle)
     bool checkWall(double x1, double y1, double x2, double y2);

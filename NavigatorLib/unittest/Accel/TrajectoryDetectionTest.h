@@ -6,6 +6,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
+#include "Navigator/Accel/TrajectoryDetection.h"
 
 
 namespace NaviTest {
@@ -21,6 +22,9 @@ public:
     void testCheckBlack();
     void testCheckXY();
     void testCheckWall();
+    void setUp() override;
+private:
+    std::shared_ptr<Navigator::Accel::TrajectoryDetection> spTD;
 };
 
 }

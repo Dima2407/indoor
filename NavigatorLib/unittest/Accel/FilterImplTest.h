@@ -9,12 +9,17 @@
 
 namespace NaviTest {
     namespace Accel {
-        class FilterImplTest:CPPUNIT_NS::TestFixture {
+        class FilterImplTest: public CPPUNIT_NS::TestFixture {
             CPPUNIT_TEST_SUITE(FilterImplTest);
-                CPPUNIT_TEST(testClass());
+                CPPUNIT_TEST(testClass);
             CPPUNIT_TEST_SUITE_END();
             public:
                 void testClass();
+
+            private:
+                bool workClass();
+                bool doesNotWorkClass();
+                bool testValues();
         };
     }
 }

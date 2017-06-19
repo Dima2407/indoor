@@ -3,6 +3,8 @@
 //
 
 #include <cmath>
+#include <stdexcept>
+
 #include "Navigator/Accel/FilterImpl.h"
 
 namespace Navigator {
@@ -12,26 +14,23 @@ namespace Navigator {
 
             Math::Filter::IFilter::Value result = in;
 
-            if (bufferIn.size() == winSize) {
-                IFilter::Value temp;
-
-                bool status = bufferIn.pop(temp);
-                if (!status)
-                    throw runtime_error("filterimpl:: ringbuffer error");
-            }
+            checkBuff(bufferIn);
             bufferIn.push(in);
 
-
-            if (bufferOut.size() == winSize) {
-                IFilter::Value temp;
-
-                bool status = bufferOut.pop(temp);
-                if (!status)
-                    throw runtime_error("filterimpl:: ringbuffer error");
-            }
+            checkBuff(bufferOut);
             bufferOut.push(result);
 
             return result;
+        }
+
+        void FilterImpl::checkBuff(Math::Filter::RingBuffer<Math::Filter::IFilter::Value> &buffer) {
+            if (buffer.size() == winSize) {
+                IFilter::Value temp;
+
+                bool status = buffer.pop(temp);
+                if (!status)
+                    throw std::runtime_error("filterimpl:: ringbuffer error");
+            }
         }
 
     }

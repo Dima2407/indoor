@@ -11,10 +11,12 @@ namespace Navigator {
     namespace Accel {
         class FilterImpl:public Math::Filter::IFilter {
         public:
-            FilterImpl(int winSize) :
+            FilterImpl(int winSize=8, double a=0, double b=0) :
                   bufferIn(winSize),
                   bufferOut(winSize),
-                  winSize(winSize)
+                  winSize(winSize),
+                  a(a),
+                  b(b)
             {}
 
             virtual Value process(Value in) override;
@@ -22,6 +24,9 @@ namespace Navigator {
             Math::Filter::RingBuffer<Value> bufferIn;
             Math::Filter::RingBuffer<Value> bufferOut;
             int winSize;
+            double a, b;
+
+            void checkBuff(Math::Filter::RingBuffer<Value> & buffer);
         };
     }
 }

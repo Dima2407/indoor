@@ -19,8 +19,8 @@ namespace NaviTest {
 
         bool FilterImplTest::workClass() {
             Navigator::Math::Filter::IFilter::Value val(2,1);
-            Navigator::Accel::FilterImpl myClass;
-            return myClass.process(val) == val;
+            Navigator::Accel::FilterImpl myObj;
+            return myObj.process(val) == val;
         }
 
         bool FilterImplTest::doesNotWorkClass() {
@@ -28,18 +28,18 @@ namespace NaviTest {
             using namespace Navigator::Accel;
             IFilter::Value val(2,1);
             IFilter::Value val2(1,2);
-            FilterImpl myClass;
-            return myClass.process(val) != val2;
+            FilterImpl myObj;
+            return myObj.process(val) != val2;
         }
 
         bool FilterImplTest::testValues() {
             using namespace Navigator::Math::Filter;
             using namespace Navigator::Accel;
             bool result = true;
-            FilterImpl myClass;
+            FilterImpl myObj;
             IFilter::Value arr[] = {{1,1}, {2,3}, {3,7}, {4,19}, {5,31}, {6,118}};
             for (const auto & item : arr) {
-                if (myClass.process(item) != item) {
+                if (myObj.process(item) != item) {
                     result = false;
                     break;
                 }

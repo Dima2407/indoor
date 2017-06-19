@@ -12,7 +12,7 @@ namespace Navigator {
         class AbstractAccelNavigator {
         public:
             /// Process a single input data
-            virtual const Math::Position3D &process(const AccelReceivedData & brd) = 0;
+            virtual Math::Position3D process(const AccelReceivedData & brd) = 0;
         };
 
     }

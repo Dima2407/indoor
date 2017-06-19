@@ -1,7 +1,6 @@
 //
 // Created by  Oleksiy Grechnyev on 4/21/2017.
 //
-
 #include <iostream>
 #include <fstream>
 #include <vector>

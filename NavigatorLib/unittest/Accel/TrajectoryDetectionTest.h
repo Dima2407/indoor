@@ -25,6 +25,7 @@ public:
     void testCheckWall();
     void testAlgorithmZUPT();
     void setUp() override;
+    bool myDouble(double x, double y, double accuracy);
 private:
     std::shared_ptr<Navigator::Accel::TrajectoryDetection> spTD;
 };

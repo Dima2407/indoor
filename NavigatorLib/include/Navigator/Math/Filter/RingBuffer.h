@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cassert>
+#include <stdexcept>
 
 namespace Navigator {
     namespace Math {
@@ -56,7 +57,8 @@ namespace Navigator {
 
                 /// Constructor
                 RingBuffer(unsigned capacity) : capacity(capacity) {
-                    assert(capacity > 0);
+                    if (capacity <= 0)
+                        throw std::runtime_error("RingBuffer: capacity must be > 0");
 
                     // The good old dynamic array
                     data = new T[capacity];

@@ -7,7 +7,7 @@
 namespace Navigator {
 namespace Accel {
 
-        AccelOutputData ToGlobal::process(AccelReceivedData data)
+        AccelOutputData ToGlobal::process(const AccelReceivedData & data)
         {
             using namespace Eigen;
             TempData tempData;

@@ -22,7 +22,7 @@ namespace Navigator {
 
             ToGlobal(double mapOrientationAngle = 0.0) : mapOrientationAngle(mapOrientationAngle) {}
 
-            AccelOutputData process(AccelReceivedData data);
+            AccelOutputData process(const AccelReceivedData & data);
 
             Eigen::Quaternion<double> initQuaternion(double pitch, double roll, double yaw);
 

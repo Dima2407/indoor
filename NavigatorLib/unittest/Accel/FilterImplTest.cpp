@@ -3,7 +3,7 @@
 //
 
 #include "Navigator/Accel/FilterImpl.h"
-
+#include <vector>
 #include "FilterImplTest.h"
 
 
@@ -19,7 +19,9 @@ namespace NaviTest {
 
         bool FilterImplTest::workClass() {
             Navigator::Math::Filter::IFilter::Value val(2,1);
-            Navigator::Accel::FilterImpl myObj;
+            std::vector<double> a{1};
+            std::vector<double> b{1};
+            Navigator::Accel::FilterImpl myObj(10, a, b);
             return myObj.process(val) == val;
         }
 
@@ -28,7 +30,9 @@ namespace NaviTest {
             using namespace Navigator::Accel;
             IFilter::Value val(2,1);
             IFilter::Value val2(1,2);
-            FilterImpl myObj;
+            std::vector<double> a{1};
+            std::vector<double> b{1};
+            FilterImpl myObj(10, a, b);
             return myObj.process(val) != val2;
         }
 
@@ -36,7 +40,9 @@ namespace NaviTest {
             using namespace Navigator::Math::Filter;
             using namespace Navigator::Accel;
             bool result = true;
-            FilterImpl myObj;
+            std::vector<double> a{1};
+            std::vector<double> b{1};
+            FilterImpl myObj(10, a, b);
             IFilter::Value arr[] = {{1,1}, {2,3}, {3,7}, {4,19}, {5,31}, {6,118}};
             for (const auto & item : arr) {
                 if (myObj.process(item) != item) {

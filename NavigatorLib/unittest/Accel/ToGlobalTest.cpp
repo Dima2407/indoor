@@ -3,7 +3,6 @@
 //
 
 #include "ToGlobalTest.h"
-#include "Navigator/Accel/ToGlobal.h"
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
@@ -27,6 +26,14 @@ namespace NaviTest {
             CPPUNIT_ASSERT(initQuaternion() < accuracy);
         }
 
+        void ToGlobalTest::testIsStationary() {
+            CPPUNIT_ASSERT(testHelpStationary(1, 1, 1) == false);
+            CPPUNIT_ASSERT(testHelpStationary(2, 2, 2) == false);
+            CPPUNIT_ASSERT(testHelpStationary(15, 15, 9) == false);
+            CPPUNIT_ASSERT(testHelpStationary(0, 0, 0) == true);
+            CPPUNIT_ASSERT(testHelpStationary(-0.1, 0, 0) == true);
+        }
+
         void ToGlobalTest::testAngleCorrection() {
             constexpr double accuracy = 1.0e-10;
 
@@ -36,6 +43,32 @@ namespace NaviTest {
             CPPUNIT_ASSERT(testAngleCorrectionPitch38() < accuracy);
             CPPUNIT_ASSERT(testAngleCorrectionRoll38() < accuracy);
             CPPUNIT_ASSERT(testAngleCorrectionYaw38() < accuracy);
+        }
+
+        void ToGlobalTest::testToGlobalProcess() {
+            Navigator::Accel::ToGlobal global;
+            Navigator::Accel::AccelReceivedData in;
+            Navigator::Accel::AccelOutputData out;
+            in.ax = -0.1;
+            in.ay = 0;
+            in.az = 0;
+            in.pitch = 0;
+            in.roll = 0;
+            in.yaw = 0;
+            in.timestamp = 1.1;
+            out = global.process(in);
+            CPPUNIT_ASSERT(out.isStationary == true);
+            CPPUNIT_ASSERT_EQUAL(0.0 , out.ax);
+            CPPUNIT_ASSERT_EQUAL(0.0 , out.ay);
+            CPPUNIT_ASSERT_EQUAL(0.0 , out.az);
+            CPPUNIT_ASSERT(out.timestamp == 1.1);
+        }
+
+        // ------------ private methods ------------------
+
+        Navigator::Accel::AccelOutputData testHelpProcess(Navigator::Accel::AccelReceivedData in) {
+            Navigator::Accel::AccelOutputData out;
+            return out;
         }
 
         double ToGlobalTest::testAngleCorrectionPitch175() {
@@ -60,6 +93,12 @@ namespace NaviTest {
 
         double ToGlobalTest::testAngleCorrectionYaw38() {
             return fabs((-38-180)*(M_PI/180) - (-3.8048177693476));
+        }
+
+        bool ToGlobalTest::testHelpStationary(double x, double y, double z) {
+            double ACC_TH = 1.035;
+            auto a_norm = sqrt(x*x + y*y + z*z);
+            return a_norm < ACC_TH ? true : false;
         }
 
         double ToGlobalTest::random() {

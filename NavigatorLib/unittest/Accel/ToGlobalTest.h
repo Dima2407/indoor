@@ -6,6 +6,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
+#include "Navigator/Accel/ToGlobal.h"
 
 namespace NaviTest {
     namespace Accel {
@@ -13,10 +14,14 @@ namespace NaviTest {
             CPPUNIT_TEST_SUITE(ToGlobalTest);
                 CPPUNIT_TEST(testQuaternion);
                 CPPUNIT_TEST(testAngleCorrection);
+                CPPUNIT_TEST(testIsStationary);
+                CPPUNIT_TEST(testToGlobalProcess);
             CPPUNIT_TEST_SUITE_END();
         public:
             void testQuaternion();
             void testAngleCorrection();
+            void testIsStationary();
+            void testToGlobalProcess();
         private:
             double random();
             double initQuaternion();
@@ -26,6 +31,8 @@ namespace NaviTest {
             double testAngleCorrectionPitch38();
             double testAngleCorrectionRoll38();
             double testAngleCorrectionYaw38();
+            bool testHelpStationary(double x, double y, double z);
+            Navigator::Accel::AccelOutputData testHelpProcess(Navigator::Accel::AccelReceivedData in);
         };
     }
 }

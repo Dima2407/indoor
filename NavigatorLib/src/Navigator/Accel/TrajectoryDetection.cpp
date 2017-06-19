@@ -7,17 +7,19 @@
 
 namespace Navigator {
 namespace Accel {
-Math::Position3D TrajectoryDetection::process(const Math::Position3D &velocity, const Accel::AccelOutputData &data )
+Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data )
 {
     using namespace Math;
     using namespace Mesh;
     double dt = data.timeDiff;
+    vX = algorithmZUPT(data.ax, vX, data.isStationary, dt);
+    vY = algorithmZUPT(data.ay, vY, data.isStationary, dt);
 
     double posX0 = posX;
     double posY0 = posY;
 
-    posX += adjCoef * velocity.x * dt;
-    posY += adjCoef * velocity.y * dt;
+    posX += adjCoef * vX * dt;
+    posY += adjCoef * vY * dt;
 
     posX = checkXY(posX, maxX, minX);
     posY = checkXY(posY, maxY, minY);
@@ -31,7 +33,22 @@ Math::Position3D TrajectoryDetection::process(const Math::Position3D &velocity, 
     }
 
     Position3D positionAfter(posX, posY, 0.0);
+
     return rMesh->process(positionAfter);
+}
+
+double TrajectoryDetection::algorithmZUPT (double axAy, double satrtVelocity, bool isStationary, double timeDiff){
+    double velocity;
+    if (isStationary == false){
+        velocity = satrtVelocity + globG * axAy * timeDiff;
+    }
+    else{
+        velocity = 0;
+    }
+    if ( velocity > maxV){
+        velocity = maxV;
+    }
+    return velocity;
 }
 
 double TrajectoryDetection::checkXY( double pos, double max,  double min){

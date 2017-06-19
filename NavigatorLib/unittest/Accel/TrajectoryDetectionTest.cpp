@@ -62,7 +62,12 @@ void TrajectoryDetectionTest::testCheckWall(){
     CPPUNIT_ASSERT(false == spTD->checkWall(3.1, 3.2, 6.4, 3.6));
     CPPUNIT_ASSERT(true == spTD->checkWall(3.4, 3.3, 3.2, 5.4));
 }
+void TrajectoryDetectionTest::testAlgorithmZUPT(){
+        const double acc = 1.0e-10;
 
+     CPPUNIT_ASSERT(0 == spTD->algorithmZUPT(0.5, 1.0, true, 0.3));
+}
+//===================================================
 void TrajectoryDetectionTest::setUp()
 {
     using namespace std;

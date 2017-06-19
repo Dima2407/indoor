@@ -16,12 +16,14 @@ class TrajectoryDetectionTest  : public CPPUNIT_NS::TestFixture {
     CPPUNIT_TEST(testCheckBlack);
     CPPUNIT_TEST(testCheckXY);
     CPPUNIT_TEST(testCheckWall);
+    CPPUNIT_TEST(testAlgorithmZUPT);
     CPPUNIT_TEST_SUITE_END();
 public:
     /// Test a simple mesh
     void testCheckBlack();
     void testCheckXY();
     void testCheckWall();
+    void testAlgorithmZUPT();
     void setUp() override;
 private:
     std::shared_ptr<Navigator::Accel::TrajectoryDetection> spTD;

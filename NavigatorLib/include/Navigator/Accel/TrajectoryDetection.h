@@ -42,11 +42,11 @@ public:
 
     }
 
-    Math::Position3D process(const Math::Position3D &velocity, const Accel::AccelOutputData &data);
+    Math::Position3D process(const Accel::AccelOutputData &data);
 
-    double posX;
-    double posY;
-    static constexpr double adjCoef = 3;
+    /// The algorithm calculates the speed taking into account the static and dynamic stages of the user's movement.
+    double algorithmZUPT (double axAy, double velocityXY0, bool isStationary, double timeDiff);
+
     /// Correct posX or posY if (maxX < posX < minX) or (maxY < posY < minY)
     double checkXY( double pos, double max,  double min);
 
@@ -55,6 +55,21 @@ public:
 
     /// True if black nearest mesh node
     bool checkBlack(double x, double y);
+
+private: //============Fields
+    double posX;
+    double posY;
+    double vX = 0.0;
+    double vY = 0.0;
+    static constexpr double adjCoef = 3;
+
+    static constexpr double maxV = 3.5;
+    static constexpr double globG = 9.8066;
+
+    // Default data
+
+
+
 
 };
 

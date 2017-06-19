@@ -6,8 +6,10 @@
 
 namespace Navigator {
     namespace Accel {
-        const Math::Position3D &StandardAccelNavigator::process(const AccelReceivedData &brd) {
-            return Math::Position3D();
+        Math::Position3D StandardAccelNavigator::process(const AccelReceivedData &ard) {
+            return trajectoryDetection.process(
+                    toGlobal.process(ard)
+            );
         }
     }
 }

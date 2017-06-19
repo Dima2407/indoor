@@ -23,4 +23,6 @@ add_subdirectory(exampleZUPT)
 
 add_subdirectory(TempVictor)
 
+add_subdirectory(exampleAccel)
+
 

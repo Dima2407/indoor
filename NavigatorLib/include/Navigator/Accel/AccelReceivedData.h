@@ -18,7 +18,7 @@ namespace Navigator {
             /// Acceleration in g units, g ~= 9.8 m/s^2, relative to the Phone's XYZ axes
             double ax = std::nan(""), ay = std::nan(""), az = std::nan("");
 
-            /// Euler Angles in RADIANS
+            /// Euler Angles in DEGREES
             double pitch = std::nan(""), yaw = std::nan(""), roll = std::nan("");
         };
     }

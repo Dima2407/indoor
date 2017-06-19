@@ -32,7 +32,8 @@ namespace NaviTest {
             double testAngleCorrectionRoll38();
             double testAngleCorrectionYaw38();
             bool testHelpStationary(double x, double y, double z);
-            Navigator::Accel::AccelOutputData testHelpProcess(Navigator::Accel::AccelReceivedData in);
+            Navigator::Accel::AccelOutputData testHelpProcess1();
+            Navigator::Accel::AccelOutputData testHelpProcess2();
         };
     }
 }

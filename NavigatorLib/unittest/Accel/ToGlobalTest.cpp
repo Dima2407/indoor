@@ -46,6 +46,22 @@ namespace NaviTest {
         }
 
         void ToGlobalTest::testToGlobalProcess() {
+            CPPUNIT_ASSERT(testHelpProcess1().isStationary == true);
+            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().ax);
+            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().ay);
+            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().az);
+            CPPUNIT_ASSERT(testHelpProcess1().timestamp == 1.1);
+
+            CPPUNIT_ASSERT(testHelpProcess2().isStationary == true);
+            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ax);
+            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ay);
+            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().az);
+            CPPUNIT_ASSERT(testHelpProcess2().timestamp == 1.8);
+        }
+
+        // ------------ private methods ------------------
+
+        Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess1() {
             Navigator::Accel::ToGlobal global;
             Navigator::Accel::AccelReceivedData in;
             Navigator::Accel::AccelOutputData out;
@@ -57,17 +73,21 @@ namespace NaviTest {
             in.yaw = 0;
             in.timestamp = 1.1;
             out = global.process(in);
-            CPPUNIT_ASSERT(out.isStationary == true);
-            CPPUNIT_ASSERT_EQUAL(0.0 , out.ax);
-            CPPUNIT_ASSERT_EQUAL(0.0 , out.ay);
-            CPPUNIT_ASSERT_EQUAL(0.0 , out.az);
-            CPPUNIT_ASSERT(out.timestamp == 1.1);
+            return out;
         }
 
-        // ------------ private methods ------------------
-
-        Navigator::Accel::AccelOutputData testHelpProcess(Navigator::Accel::AccelReceivedData in) {
+        Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess2() {
+            Navigator::Accel::ToGlobal global;
+            Navigator::Accel::AccelReceivedData in;
             Navigator::Accel::AccelOutputData out;
+            in.ax = 0;
+            in.ay = 0;
+            in.az = 0;
+            in.pitch = 10;
+            in.roll = 20;
+            in.yaw = 70;
+            in.timestamp = 1.8;
+            out = global.process(in);
             return out;
         }
 

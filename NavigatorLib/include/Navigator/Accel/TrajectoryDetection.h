@@ -10,7 +10,6 @@
 #include "Navigator/Mesh/MeshData.h"
 #include "Navigator/Mesh/RectanMesh.h"
 #include "AccelOutputData.h"
-#include "AlgorithmZUPT.h"
 namespace Navigator {
 namespace Accel {
 
@@ -29,11 +28,19 @@ private: //============Fields
     double posY;
     double vX = 0.0;
     double vY = 0.0;
+
     static constexpr double adjCoef = 3;
     static constexpr double maxV = 3.5;
     static constexpr double globG = 9.8066;
 
 public:
+
+    double getVX(){
+        return vX;
+    }
+    double getVY(){
+        return vY;
+    }
 
     TrajectoryDetection(const std::shared_ptr<Mesh::RectanMesh> &rMesh,  double posX,  double posY):
         rMesh(rMesh),
@@ -46,7 +53,6 @@ public:
         minY = mesh.y0;
         maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;
         maxY = mesh.y0 + (mesh.ny - 1) * mesh.dy;
-
     }
 
     Math::Position3D process(const Accel::AccelOutputData &data);

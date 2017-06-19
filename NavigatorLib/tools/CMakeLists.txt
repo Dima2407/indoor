@@ -16,3 +16,6 @@ add_subdirectory(dijkdemo)
 
 add_subdirectory(maskgen2)
 
+add_subdirectory(acceltester)
+
+

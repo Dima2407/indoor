@@ -48,6 +48,9 @@ double TrajectoryDetection::algorithmZUPT (double aXaY, double satrtVelocity, bo
     }
     if ( velocity > maxV){
         velocity = maxV;
+
+    }else if(velocity <- maxV){
+         velocity = - maxV;
     }
     return velocity;
 }

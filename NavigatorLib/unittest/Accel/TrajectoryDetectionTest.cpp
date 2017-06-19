@@ -65,7 +65,8 @@ void TrajectoryDetectionTest::testCheckWall(){
 void TrajectoryDetectionTest::testAlgorithmZUPT(){
     constexpr double accuracy = 1.0e-10; // Accuracy
     CPPUNIT_ASSERT(0 == spTD->algorithmZUPT(0.5, 1.0, true, 0.3));
-    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(3.5, 0.0, false, 0.3), 3.5, accuracy));
+     CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(3.5, 0.0, false, 0.3), 3.5, accuracy));
+    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(-3.5, 0.0, false, 0.3), -3.5, accuracy));
     CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.5, 0.0, false, 0.3), 1.47099, accuracy));
     CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.5, 1.0, false, 0.3), 2.47099, accuracy));
     CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.6, 1.0, false, 0.3), 2.765188, accuracy));

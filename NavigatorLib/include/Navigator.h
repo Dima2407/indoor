@@ -13,7 +13,6 @@
 #include "./Navigator/OutputNavigationData.h"
 
 //add by by Igor Maschikevich on 6/9/2017.
-#include "./Navigator/Accel/AlgorithmZUPT.h"
 #include "./Navigator/Accel/TrajectoryDetection.h"
 
 #include "./Navigator/Beacons/dir.inc"

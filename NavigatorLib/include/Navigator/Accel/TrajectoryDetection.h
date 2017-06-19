@@ -17,14 +17,21 @@ namespace Accel {
 
 class TrajectoryDetection
 {
-private:
+private: //============Fields
     std::shared_ptr<Mesh::RectanMesh> rMesh;
-
     double minX;
     double minY;
     double maxX;
     double maxY;
     double ksi;
+
+    double posX;
+    double posY;
+    double vX = 0.0;
+    double vY = 0.0;
+    static constexpr double adjCoef = 3;
+    static constexpr double maxV = 3.5;
+    static constexpr double globG = 9.8066;
 
 public:
 
@@ -34,7 +41,7 @@ public:
         posY(posY){
 
         const Mesh::MeshData & mesh = rMesh->getMesh();
-        ksi =  std::fmin( mesh.dx/2, mesh.dy/2);
+        ksi = std::fmin( mesh.dx/2, mesh.dy/2);
         minX = mesh.x0;
         minY = mesh.y0;
         maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;
@@ -55,21 +62,6 @@ public:
 
     /// True if black nearest mesh node
     bool checkBlack(double x, double y);
-
-private: //============Fields
-    double posX;
-    double posY;
-    double vX = 0.0;
-    double vY = 0.0;
-    static constexpr double adjCoef = 3;
-
-    static constexpr double maxV = 3.5;
-    static constexpr double globG = 9.8066;
-
-    // Default data
-
-
-
 
 };
 

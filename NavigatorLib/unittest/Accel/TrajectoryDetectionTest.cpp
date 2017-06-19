@@ -63,9 +63,13 @@ void TrajectoryDetectionTest::testCheckWall(){
     CPPUNIT_ASSERT(true == spTD->checkWall(3.4, 3.3, 3.2, 5.4));
 }
 void TrajectoryDetectionTest::testAlgorithmZUPT(){
-        const double acc = 1.0e-10;
-
-     CPPUNIT_ASSERT(0 == spTD->algorithmZUPT(0.5, 1.0, true, 0.3));
+    constexpr double accuracy = 1.0e-10; // Accuracy
+    CPPUNIT_ASSERT(0 == spTD->algorithmZUPT(0.5, 1.0, true, 0.3));
+    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(3.5, 0.0, false, 0.3), 3.5, accuracy));
+    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.5, 0.0, false, 0.3), 1.47099, accuracy));
+    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.5, 1.0, false, 0.3), 2.47099, accuracy));
+    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.6, 1.0, false, 0.3), 2.765188, accuracy));
+    CPPUNIT_ASSERT(myDouble(spTD->algorithmZUPT(0.6, 2.0, false, 0.3), 3.5, accuracy));
 }
 //===================================================
 void TrajectoryDetectionTest::setUp()
@@ -94,7 +98,13 @@ void TrajectoryDetectionTest::setUp()
 
     spTD = std::make_shared<TrajectoryDetection>(ptrMesh, posX, posY);
 }
-//==============================================
+//===================================================
+bool TrajectoryDetectionTest::myDouble(double x, double y, double accuracy)
+{
+    return fabs(x - y) < accuracy;
+}
+
+//===================================================
 }
 }
 

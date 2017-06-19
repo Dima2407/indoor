@@ -7,12 +7,14 @@
 
 namespace Navigator {
 namespace Accel {
-Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data )
+Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data)
 {
     using namespace Math;
     using namespace Mesh;
     double dt = data.timeDiff;
+    //    calculation velocity for aX
     vX = algorithmZUPT(data.ax, vX, data.isStationary, dt);
+    //    calculation velocity for aY
     vY = algorithmZUPT(data.ay, vY, data.isStationary, dt);
 
     double posX0 = posX;
@@ -25,22 +27,21 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
     posY = checkXY(posY, maxY, minY);
 
     if (checkWall(posX0, posY0, posX, posY)) {
-
         if (!checkWall(posX0, posY0, posX0, posY))
             posX = posX0;
         else if (!checkWall(posX0, posY0, posX, posY0))
             posY = posY0;
     }
 
-    Position3D positionAfter(posX, posY, 0.0);
+    Position3D position(posX, posY, 0.0);
 
-    return rMesh->process(positionAfter);
+    return rMesh->process(position);
 }
 
-double TrajectoryDetection::algorithmZUPT (double axAy, double satrtVelocity, bool isStationary, double timeDiff){
+double TrajectoryDetection::algorithmZUPT (double aXaY, double satrtVelocity, bool isStationary, double timeDiff){
     double velocity;
     if (isStationary == false){
-        velocity = satrtVelocity + globG * axAy * timeDiff;
+        velocity = satrtVelocity + globG * aXaY * timeDiff;
     }
     else{
         velocity = 0;
@@ -68,7 +69,6 @@ bool TrajectoryDetection::checkBlack(double x, double y)
     int iY = mesh.y2iy(y);
     // Calculate the single value index (ind == 0 .. size-1)
     int ind = iX * mesh.ny + iY;
-
     if(ind == rMesh->getMaskTable()[ind]){
         res = false;
     }
@@ -81,7 +81,6 @@ bool TrajectoryDetection::checkBlack(double x, double y)
 bool TrajectoryDetection::checkWall(double x1, double y1, double x2, double y2)
 {
     double length = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
-
     double t = 0;
     double inPosX, inPosY;
 

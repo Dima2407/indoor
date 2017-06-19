@@ -12,16 +12,12 @@ namespace Accel {
 Math::Position3D AlgorithmZUPT::process(const AccelOutputData &data)
 {
     using namespace Math;
-    //     must add Victor algoritm
-//        double ax_glob=5, ay_glob=5, az_glob=2;
-        double ax_glob=0.111,ay_glob=0.2333,az_glob=0.1;
-        bool isStationary=true;
 
-    //    if (&data.isStationary() == false){
-    if (isStationary == false){
-        Vx = Vx + consG * ax_glob * samplePeriod;
-        Vy = Vy + consG * ay_glob * samplePeriod;
-        Vz = Vz + consG * az_glob * samplePeriod;
+    if (data.isStationary == false){
+        double dt = data.timeDiff;
+        Vx = Vx + globG * data.ax * dt;
+        Vy = Vy + globG * data.ay * dt;
+        Vz = Vz + globG * data.az * dt;
     }
     else{
         Vx = Vy = Vz = 0;

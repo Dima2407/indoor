@@ -158,6 +158,18 @@ namespace Navigator {
                     }
                 }
 
+                /// Peek the element pos < size (0 = latest, 1 = next latest etc.) w/o removing
+                bool peekLatest(unsigned pos, T &t) const {
+                    if (pos >= size())
+                        return false;
+                    else {
+                        unsigned ind = (writeIndex - pos - 1 + capacity) % capacity; // Set index
+                        t = data[ind]; // Get the data
+
+                        return true;
+                    }
+                }
+
                 //------------------------------------
                 // Private methods
                 //------------------------------------

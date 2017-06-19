@@ -40,6 +40,14 @@ namespace Navigator {
 
                     Value() {}
 
+                    bool operator== (const Value & rhs) const {
+                        return val == rhs.val && timeStamp == rhs.timeStamp;
+                    }
+
+                    bool operator!= (const Value & rhs) const {
+                        return val != rhs.val || timeStamp != rhs.timeStamp;
+                    }
+
                     double val = std::nan("");
                     double timeStamp  = std::nan("");
                 };

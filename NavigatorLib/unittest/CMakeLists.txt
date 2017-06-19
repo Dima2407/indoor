@@ -14,33 +14,33 @@ set(TEAMCITY_SRC
     )
 
 set(SOURCE_FILES
-    ${TEAMCITY_SRC}
-    main.cpp
-    mydoubleeq.h
-    #
-    DummyTest.cpp DummyTest.h
-    #
-    Math/Filter/RingBufferTest.cpp Math/Filter/RingBufferTest.h
-    Math/Filter/MovingAverageFilterTest.cpp Math/Filter/MovingAverageFilterTest.h
-    Math/Filter/AlphaTrimmedFilterTest.cpp Math/Filter/AlphaTrimmedFilterTest.h
-    #
-    Math/Trilat/TrilatTest.cpp Math/Trilat/TrilatTest.h
-    #
-    Beacons/BeaconUIDTest.cpp Beacons/BeaconUIDTest.h
-    Beacons/BeaconProcessorTest.cpp Beacons/BeaconProcessorTest.h
-    Beacons/TrilatBeaconNavigatorTest.cpp Beacons/TrilatBeaconNavigatorTest.h
-    Beacons/StandardBeaconNavigatorTest.cpp Beacons/StandardBeaconNavigatorTest.h
-    Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h
-    Beacons/Calibrate/BeaconCalibratorTest.cpp Beacons/Calibrate/BeaconCalibratorTest.h
-    #
-    Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h
-    Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
-    Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h
-    #
-    Accel/TrajectoryDetectionTest.cpp Accel/TrajectoryDetectionTest.h
-    #
-    Accel/QuaternionTest.h
-    )
+        ${TEAMCITY_SRC}
+        main.cpp
+        mydoubleeq.h
+        #
+        DummyTest.cpp DummyTest.h
+        #
+        Math/Filter/RingBufferTest.cpp Math/Filter/RingBufferTest.h
+        Math/Filter/MovingAverageFilterTest.cpp Math/Filter/MovingAverageFilterTest.h
+        Math/Filter/AlphaTrimmedFilterTest.cpp Math/Filter/AlphaTrimmedFilterTest.h
+        #
+        Math/Trilat/TrilatTest.cpp Math/Trilat/TrilatTest.h
+        #
+        Beacons/BeaconUIDTest.cpp Beacons/BeaconUIDTest.h
+        Beacons/BeaconProcessorTest.cpp Beacons/BeaconProcessorTest.h
+        Beacons/TrilatBeaconNavigatorTest.cpp Beacons/TrilatBeaconNavigatorTest.h
+        Beacons/StandardBeaconNavigatorTest.cpp Beacons/StandardBeaconNavigatorTest.h
+        Beacons/Calibrate/AlgorithmTest.cpp Beacons/Calibrate/AlgorithmTest.h
+        Beacons/Calibrate/BeaconCalibratorTest.cpp Beacons/Calibrate/BeaconCalibratorTest.h
+        #
+        Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h
+        Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
+        Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h
+        #
+        Accel/ToGlobalTest.cpp Accel/ToGlobalTest.h
+        Accel/FilterImplTest.cpp Accel/FilterImplTest.h
+        Accel/TrajectoryDetectionTest.cpp Accel/TrajectoryDetectionTest.h
+        )
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

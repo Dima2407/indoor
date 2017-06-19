@@ -13,10 +13,9 @@
 #include "./Navigator/OutputNavigationData.h"
 
 //add by by Igor Maschikevich on 6/9/2017.
-#include "./Navigator/Accel/TrajectoryDetection.h"
 
+#include "./Navigator/Accel/dir.inc"
 #include "./Navigator/Beacons/dir.inc"
-
 #include "./Navigator/Math/dir.inc"
 #include "./Navigator/Mesh/dir.inc"
 #include "./Navigator/Dijkstra/dir.inc"

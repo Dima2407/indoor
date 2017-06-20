@@ -15,6 +15,7 @@ namespace NaviTest {
         void ToGlobalTest::testQuaternion() {
             constexpr double accuracy = 1.0e-10;
             srand(time(0));
+            Eigen::Quaternion<double> quaternion = createQuaternion();
 
             CPPUNIT_ASSERT(initQuaternion() < accuracy);
             CPPUNIT_ASSERT(initQuaternion() < accuracy);
@@ -57,38 +58,80 @@ namespace NaviTest {
             CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ay);
             CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().az);
             CPPUNIT_ASSERT(testHelpProcess2().timestamp == 1.8);
+
+            CPPUNIT_ASSERT(testHelpProcess3().isStationary == false);
+            CPPUNIT_ASSERT(testHelpProcess3().ax != 0 || testHelpProcess3().ay != 0 || testHelpProcess3().az != 0);
+            CPPUNIT_ASSERT(testHelpProcess3().timestamp == 1.3);
+
+            CPPUNIT_ASSERT(testHelpProcess4().isStationary == false);
+            CPPUNIT_ASSERT(testHelpProcess3().ax != 0 || testHelpProcess3().ay != 0 || testHelpProcess3().az != 0);
+            CPPUNIT_ASSERT(testHelpProcess4().timestamp == 2.2);
+        }
+
+        void ToGlobalTest::testLengthVectors() {
+            constexpr double accuracy = 1.0e-10;
+            Navigator::Accel::ToGlobal global;
+            Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(3, 4, 5, 17, 85, 129, 0.5);
+            Navigator::Accel::AccelOutputData out = global.process(in);
+            double lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
+            double lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            CPPUNIT_ASSERT(std::fabs(lengthIn) - std::fabs(lengthOut) < accuracy);
+
+            in = testHelpCreateReceivedData(7, 12, 1, 41, 16, 7, 2.9);
+            out = global.process(in);
+            lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
+            lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            CPPUNIT_ASSERT(std::fabs(lengthIn) - std::fabs(lengthOut) < accuracy);
+
+            in = testHelpCreateReceivedData(15, 15, 9, 2, 2, 1, 1.9);
+            out = global.process(in);
+            lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
+            lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            CPPUNIT_ASSERT(std::fabs(lengthIn) - std::fabs(lengthOut) < accuracy);
         }
 
         // ------------ private methods ------------------
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess1() {
             Navigator::Accel::ToGlobal global;
-            Navigator::Accel::AccelReceivedData in;
-            Navigator::Accel::AccelOutputData out;
-            in.ax = -0.1;
-            in.ay = 0;
-            in.az = 0;
-            in.pitch = 0;
-            in.roll = 0;
-            in.yaw = 0;
-            in.timestamp = 1.1;
-            out = global.process(in);
+            Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(-0.1, 0, 0, 0, 0, 0, 1.1);
+            Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess2() {
             Navigator::Accel::ToGlobal global;
-            Navigator::Accel::AccelReceivedData in;
-            Navigator::Accel::AccelOutputData out;
-            in.ax = 0;
-            in.ay = 0;
-            in.az = 0;
-            in.pitch = 10;
-            in.roll = 20;
-            in.yaw = 70;
-            in.timestamp = 1.8;
-            out = global.process(in);
+            Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(0, 0, 0, 10, 20, 70, 1.8);
+            Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
+        }
+
+        Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess3() {
+            Navigator::Accel::ToGlobal global;
+            Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(2, 2, 2, 10, 20, 70, 1.3);
+            Navigator::Accel::AccelOutputData out = global.process(in);
+            return out;
+        }
+
+        Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess4() {
+            Navigator::Accel::ToGlobal global;
+            Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(15, 15, 9, 10, 20, 70, 2.2);
+            Navigator::Accel::AccelOutputData out = global.process(in);
+            return out;
+        }
+
+        Navigator::Accel::AccelReceivedData ToGlobalTest::testHelpCreateReceivedData(double x, double y, double z,
+                                                                                     double pitch, double roll, double yaw,
+                                                                                     double timestamp) {
+            Navigator::Accel::AccelReceivedData result;
+            result.ax = x;
+            result.ay = y;
+            result.az = z;
+            result.pitch = pitch;
+            result.roll = roll;
+            result.yaw = yaw;
+            result.timestamp = timestamp;
+            return result;
         }
 
         double ToGlobalTest::testAngleCorrectionPitch175() {
@@ -121,14 +164,20 @@ namespace NaviTest {
             return a_norm < ACC_TH ? true : false;
         }
 
-        double ToGlobalTest::random() {
+        double ToGlobalTest::myRandom() {
             return (1.0*(rand()%1000)/1000)*2*M_PI;
         }
 
         double ToGlobalTest::initQuaternion() {
             Navigator::Accel::ToGlobal global;
-            Eigen::Quaternion<double> result = global.initQuaternion(random(), random(), random());
+            Eigen::Quaternion<double> result = global.initQuaternion(myRandom(), myRandom(), myRandom());
             return fabs(result.norm() - 1);
+        }
+
+        Eigen::Quaternion<double> ToGlobalTest::createQuaternion() {
+            Navigator::Accel::ToGlobal global;
+            Eigen::Quaternion<double> result = global.initQuaternion(myRandom(), myRandom(), myRandom());
+            return result;
         }
     }
 }

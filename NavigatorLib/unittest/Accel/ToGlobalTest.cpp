@@ -75,19 +75,19 @@ namespace NaviTest {
             Navigator::Accel::AccelOutputData out = global.process(in);
             double lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
             double lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
-            CPPUNIT_ASSERT(std::fabs(lengthIn) - std::fabs(lengthOut) < accuracy);
+            CPPUNIT_ASSERT(std::fabs(lengthIn - lengthOut) < accuracy);
 
             in = testHelpCreateReceivedData(7, 12, 1, 41, 16, 7, 2.9);
             out = global.process(in);
             lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
             lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
-            CPPUNIT_ASSERT(std::fabs(lengthIn) - std::fabs(lengthOut) < accuracy);
+            CPPUNIT_ASSERT(std::fabs(lengthIn - lengthOut) < accuracy);
 
             in = testHelpCreateReceivedData(15, 15, 9, 2, 2, 1, 1.9);
             out = global.process(in);
             lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
             lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
-            CPPUNIT_ASSERT(std::fabs(lengthIn) - std::fabs(lengthOut) < accuracy);
+            CPPUNIT_ASSERT(std::fabs(lengthIn - lengthOut) < accuracy);
         }
 
         // ------------ private methods ------------------

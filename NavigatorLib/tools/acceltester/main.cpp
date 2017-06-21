@@ -1,12 +1,21 @@
-//
-// Created by Igor Maschikevich on 6/19/2017.
-//
-
 #include <iostream>
-int main(int argc, char *argv[]) {
+#include <cassert>
+#include "Engine.h"
+
+
+int main() {
     using namespace std;
 
-    cout << "Hello world" << endl;
+    // Create tester engine
+//        Engine engine;
+
+    //    if (! device.readData(true)) return 1; // Read data (verbose = true)
+    //   engine.runLocation();   // Run location
+    //    engine.runDelta();   // Run delta
+    //    engine.writeData();  // Write results
+
+
+    cout <<"Hello World"<< endl;
 
     return 0;
 }

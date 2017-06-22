@@ -22,6 +22,7 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
 
     posX += adjCoef * vX * dt;
     posY += adjCoef * vY * dt;
+
     if (rMesh !=nullptr){
         posX = checkXY(posX, maxX, minX);
         posY = checkXY(posY, maxY, minY);

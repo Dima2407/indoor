@@ -6,12 +6,15 @@ set(CMAKE_CXX_STANDARD 14)
 
 file(COPY in_data.json DESTINATION .)
 
+
+include_directories(
+    ../../include
+    )
+
 set(SOURCE_FILES
 
     main.cpp
-    in_data.json
-    iOS_angles.json
-    iOS_accelerometer.json
+    Acceltester.cpp Acceltester.h
     )
 
 add_executable(acceltester ${SOURCE_FILES})

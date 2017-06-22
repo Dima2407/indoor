@@ -22,20 +22,22 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
 
     posX += adjCoef * vX * dt;
     posY += adjCoef * vY * dt;
+    if (rMesh !=nullptr){
+        posX = checkXY(posX, maxX, minX);
+        posY = checkXY(posY, maxY, minY);
 
-    posX = checkXY(posX, maxX, minX);
-    posY = checkXY(posY, maxY, minY);
-
-    if (checkWall(posX0, posY0, posX, posY)) {
-        if (!checkWall(posX0, posY0, posX0, posY))
-            posX = posX0;
-        else if (!checkWall(posX0, posY0, posX, posY0))
-            posY = posY0;
+        if (checkWall(posX0, posY0, posX, posY)) {
+            if (!checkWall(posX0, posY0, posX0, posY))
+                posX = posX0;
+            else if (!checkWall(posX0, posY0, posX, posY0))
+                posY = posY0;
+        }
     }
-
     Position3D position(posX, posY, 0.0);
-
-    return rMesh->process(position);
+    if(rMesh != nullptr)
+        return rMesh->process(position);
+    else
+        return position;
 }
 
 double TrajectoryDetection::algorithmZUPT (double aXaY, double satrtVelocity, bool isStationary, double timeDiff){
@@ -50,11 +52,11 @@ double TrajectoryDetection::algorithmZUPT (double aXaY, double satrtVelocity, bo
         velocity = maxV;
 
     }else if(velocity <- maxV){
-         velocity = - maxV;
+        velocity = - maxV;
     }
     return velocity;
 }
-
+//The function checks whether a given point is within the map
 double TrajectoryDetection::checkXY( double pos, double max,  double min){
     if (pos < min)
         pos = min;

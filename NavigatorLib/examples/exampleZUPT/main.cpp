@@ -19,20 +19,23 @@ using namespace std;
 using Navigator::Accel::TrajectoryDetection;
 using Navigator::Accel::AccelOutputData;
 using Navigator::Math::Position3D;
+
 double microsecondInSecon(int timestamp);
-Document strim (string inFile);
+Document strimJson (string inFile);
 int main() {
 
-    const Value& temp = strim("D:\\t.json");
+    ofstream tempOut;
+    tempOut.open("D:\\out_data.txt");
+    const Value& temp = strimJson("D:\\t.json");
 
-    const Value& d_angles = strim(temp["angles"].GetString());
-    const Value& d_accelerometer = strim(temp["accelerometer"].GetString());
+    const Value& d_angles = strimJson(temp["angles"].GetString());
+    const Value& d_accelerometer = strimJson(temp["accelerometer"].GetString());
 
     d_angles.IsArray();
     d_accelerometer.IsArray();
 
-    //    for(int i  =0; i < d2.Size(); i++){
-    for(int i = 0; i < 10; i++){
+        for(int i  =0; i < d_angles.Size(); i++){
+//    for(int i = 0; i < 10; i++){
         const Value& for_angles = d_angles[i];
         const Value& for_accelerometer = d_accelerometer[i];
 
@@ -45,25 +48,30 @@ int main() {
         for_accelerometer["y"].IsDouble();
         for_accelerometer["z"].IsDouble();
 
-        cout<<"timestamp = "<<microsecondInSecon(for_angles["timestamp"].GetInt())<<", s"<<endl;
-        cout<<"azimuth = "<<for_angles["azimuth"].GetDouble()<< endl;
-        cout<<"pitch = "<<for_angles["pitch"].GetDouble()<< endl;
-        cout<<"roll = "<<for_angles["roll"].GetDouble()<< endl;
 
-        cout<<"x = "<<for_accelerometer["x"].GetDouble()<< endl;
-        cout<<"y = "<<for_accelerometer["y"].GetDouble()<< endl;
-        cout<<"z = "<<for_accelerometer["z"].GetDouble()<< endl;
-        cout <<endl;
+//        tempOut <<"i = "<< i<<endl;
+         tempOut <<"{"<<endl;
+        tempOut <<"timestamp = "<<microsecondInSecon(for_angles["timestamp"].GetInt())<<endl;
+        tempOut <<"azimuth = "<<for_angles["azimuth"].GetDouble()<< endl;
+        tempOut <<"pitch = "<<for_angles["pitch"].GetDouble()<< endl;
+        tempOut <<"roll = "<<for_angles["roll"].GetDouble()<< endl;
+
+        tempOut <<"x = "<<for_accelerometer["x"].GetDouble()<< endl;
+        tempOut <<"y = "<<for_accelerometer["y"].GetDouble()<< endl;
+        tempOut <<"z = "<<for_accelerometer["z"].GetDouble()<< endl;
+        tempOut <<"},"<<endl;
+//        tempOut <<endl;
     }
     return 0;
 }
 
+//converter microsecond in secon
 double microsecondInSecon(int timestamp){
     return (double) timestamp / 1000000;
 }
 
 // This method makes a miracle
-Document strim (string inFile){
+Document strimJson (string inFile){
     ifstream in(inFile);
     IStreamWrapper isw(in);
     Document document;

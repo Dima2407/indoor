@@ -47,14 +47,16 @@ public:
         posX(posX),
         posY(posY){
 
-        const Mesh::MeshData & mesh = rMesh->getMesh();
-        ksi = std::fmin( mesh.dx/2, mesh.dy/2);
-        minX = mesh.x0;
-        minY = mesh.y0;
-        maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;
-        maxY = mesh.y0 + (mesh.ny - 1) * mesh.dy;
-    }
+        if( rMesh != nullptr){
+            const Mesh::MeshData & mesh = rMesh->getMesh();
 
+            ksi = std::fmin( mesh.dx/2, mesh.dy/2);
+            minX = mesh.x0;
+            minY = mesh.y0;
+            maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;
+            maxY = mesh.y0 + (mesh.ny - 1) * mesh.dy;
+        }
+    }
     Math::Position3D process(const Accel::AccelOutputData &data);
 
     /// The algorithm calculates the speed taking into account the static and dynamic stages of the user's movement.

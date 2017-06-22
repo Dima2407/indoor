@@ -4,20 +4,18 @@ project(acceltester)
 set(CMAKE_CXX_STANDARD 14)
 
 
+file(COPY in_data.json DESTINATION .)
+
 set(SOURCE_FILES
 
-    Config.cpp Config.h
-    Myjson.cpp Myjson.h
-    Vec3.cpp Vec3.h
-    Engine.cpp Engine.h
-
-
-
-
     main.cpp
-
+    in_data.json
+    iOS_angles.json
+    iOS_accelerometer.json
     )
 
 add_executable(acceltester ${SOURCE_FILES})
+include_directories(../lib/rapidjson_min/include)
+target_link_libraries(acceltester Navigator)
 
 

@@ -16,15 +16,18 @@ namespace NaviTest {
                 CPPUNIT_TEST(testAngleCorrection);
                 CPPUNIT_TEST(testIsStationary);
                 CPPUNIT_TEST(testToGlobalProcess);
+                CPPUNIT_TEST(testLengthVectors);
             CPPUNIT_TEST_SUITE_END();
         public:
             void testQuaternion();
             void testAngleCorrection();
             void testIsStationary();
             void testToGlobalProcess();
+            void testLengthVectors();
         private:
-            double random();
+            double myRandom();
             double initQuaternion();
+            Eigen::Quaternion<double> createQuaternion();
             double testAngleCorrectionPitch175();
             double testAngleCorrectionRoll175();
             double testAngleCorrectionYaw175();
@@ -32,7 +35,13 @@ namespace NaviTest {
             double testAngleCorrectionRoll38();
             double testAngleCorrectionYaw38();
             bool testHelpStationary(double x, double y, double z);
-            Navigator::Accel::AccelOutputData testHelpProcess(Navigator::Accel::AccelReceivedData in);
+            Navigator::Accel::AccelOutputData testHelpProcess1();
+            Navigator::Accel::AccelOutputData testHelpProcess2();
+            Navigator::Accel::AccelOutputData testHelpProcess3();
+            Navigator::Accel::AccelOutputData testHelpProcess4();
+            Navigator::Accel::AccelReceivedData testHelpCreateReceivedData(double x, double y, double z,
+                                                                                     double pitch, double roll, double yaw,
+                                                                                     double timestamp);
         };
     }
 }

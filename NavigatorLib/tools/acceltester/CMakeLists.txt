@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 file(COPY in_data.json DESTINATION .)
+file(COPY iOS_accelerometer.json DESTINATION .)
+file(COPY iOS_angles.json DESTINATION .)
 
 
 include_directories(

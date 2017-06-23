@@ -5,7 +5,7 @@
 #include "Navigator.h"
 #include "rapidjson_min/include/rapidjson/document.h"
 #include "rapidjson_min/include/rapidjson/istreamwrapper.h"
-
+#include "myjson.h"
 using namespace std;
 using Navigator::Math::Position3D;
 using Navigator::Accel::StandardAccelNavigator;
@@ -14,25 +14,27 @@ using Navigator::Accel::AccelReceivedData;
 using namespace rapidjson;
 using namespace std;
 
-double microsecondInSecon(int timestamp);
-Document strimJson (string inFile);
+//double microsecondInSecon(int timestamp);
+//Document strimJson (string inFile);
 
 int main() {
+    using namespace acceltester;
+
+    myjson myj;
 
     ofstream tempOut;
-    tempOut.open("out_data.json");
-    const Value& temp = strimJson("in_data.json");
+    tempOut.open("out_data.dt");
+    const Value& temp = myj.strimJson("in_data.json");
 
 
-    const Value& d_angles = strimJson(temp["angles"].GetString());
-    const Value& d_accelerometer = strimJson(temp["accelerometer"].GetString());
+    const Value& d_angles = myj.strimJson(temp["angles"].GetString());
+    const Value& d_accelerometer = myj.strimJson(temp["accelerometer"].GetString());
 
     d_angles.IsArray();
     d_accelerometer.IsArray();
 
     StandardAccelNavigator standardAccelNavigator(nullptr, 0.0, 0.0, 180.0);
-    //    //    tempOut <<"["<<endl;
-    //
+
     tempOut << "p.x" << "      "  << "p.y" << "     "  << "p.z" << " "  << endl;
     for(int i = 0; i < d_angles.Size(); i++){
 
@@ -48,7 +50,7 @@ int main() {
         for_accelerometer["y"].IsDouble();
         for_accelerometer["z"].IsDouble();
 
-        double timestamp = microsecondInSecon(for_angles["timestamp"].GetInt());
+        double timestamp = myj.microsecondInSecon(for_angles["timestamp"].GetInt());
         double azimuth = for_angles["azimuth"].GetDouble();
         double pitch = for_angles["pitch"].GetDouble();
         double roll = for_angles["roll"].GetDouble();
@@ -66,18 +68,4 @@ int main() {
     }
 
     return 0;
-}
-double microsecondInSecon(int timestamp)
-{
-    return (double) timestamp / 1000000;
-}
-
-// This method makes a miracle
-Document strimJson (string inFile){
-    ifstream in(inFile);
-    IStreamWrapper isw(in);
-    Document document;
-    document.ParseStream(isw);
-    in.close();
-    return document;
 }

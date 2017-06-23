@@ -14,7 +14,7 @@ include_directories(
 set(SOURCE_FILES
 
     main.cpp
-    Acceltester.cpp Acceltester.h
+    myjson.cpp myjson.h
     )
 
 add_executable(acceltester ${SOURCE_FILES})

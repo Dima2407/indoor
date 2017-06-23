@@ -29,6 +29,8 @@ int main()
     constexpr double x0 = -10.0, y0 = -10.0;
     shared_ptr<RectanMesh> rMesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
 
+//   if( rMesh == nullptr){
+//      } else if (rMesh != nullptr){};
     // Create a mask table
     vector<int> mTable(nx*ny);
 

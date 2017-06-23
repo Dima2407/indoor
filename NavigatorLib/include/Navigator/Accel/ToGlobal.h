@@ -22,7 +22,10 @@ namespace Navigator {
         public:
             static constexpr double ACC_TH = 1.035;
 
-            ToGlobal(double mapOrientationAngle = 0.0) : mapOrientationAngle(mapOrientationAngle) {}
+            ToGlobal(double mapOrientationAngle, bool useFilter = true) :
+                mapOrientationAngle(mapOrientationAngle),
+                useFilter(useFilter)
+            {}
 
             AccelOutputData process(const AccelReceivedData & data);
 
@@ -43,12 +46,15 @@ namespace Navigator {
                                         19.142583364228241, -11.472236200051777, 4.344994383668622,
                                         -0.94986943840591642, 0.0916890050488007};
 
+
             std::vector<double> const b{2.7733888284864122E-6, 2.2187110627891297E-5, 7.7654887197619541E-5,
                                         0.00015530977439523908, 0.00019413721799404885, 0.00015530977439523908,
                                         7.7654887197619541E-5, 2.2187110627891297E-5, 2.7733888284864122E-6};
+
             FilterImpl filterAX{8, a, b};
             FilterImpl filterAY{8, a, b};
             FilterImpl filterAZ{8, a, b};
+            bool useFilter;
         };
     }
 }

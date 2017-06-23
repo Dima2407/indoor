@@ -2,6 +2,7 @@
 // Created by  Victor Draban on 6/7/2017.
 //
 
+#include <iostream>
 #include "Navigator/Accel/ToGlobal.h"
 
 namespace Navigator {
@@ -67,9 +68,15 @@ namespace Accel {
 // =================================================================================
 
         void ToGlobal::filteringAccelerations(const AccelReceivedData &in, TempData &out) {
-            out.ax = in.ax;
-            out.ay = in.ay;
-            out.az = in.az;
+            if (useFilter) {
+                out.ax = filterAX.process({in.ax, in.timestamp}).val;
+                out.ay = filterAY.process({in.ay, in.timestamp}).val;
+                out.az = filterAZ.process({in.az, in.timestamp}).val;
+            } else {
+                out.ax = in.ax;
+                out.ay = in.ay;
+                out.az = in.az;
+            }
         }
 
 // =================================================================================

@@ -60,7 +60,7 @@ public:
     Math::Position3D process(const Accel::AccelOutputData &data);
 
     /// The algorithm calculates the speed taking into account the static and dynamic stages of the user's movement.
-    double algorithmZUPT (double axAy, double velocityXY0, bool isStationary, double timeDiff);
+    double algorithmZUPT (double axAy, double startVelocity, bool isStationary, double timeDiff);
 
     /// Correct posX or posY if (maxX < posX < minX) or (maxY < posY < minY)
     double checkXY( double pos, double max,  double min);

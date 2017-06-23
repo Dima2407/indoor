@@ -41,10 +41,10 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
         return position;
 }
 
-double TrajectoryDetection::algorithmZUPT (double aXaY, double satrtVelocity, bool isStationary, double timeDiff){
+double TrajectoryDetection::algorithmZUPT (double aXaY, double startVelocity, bool isStationary, double timeDiff){
     double velocity;
     if (isStationary == false){
-        velocity = satrtVelocity + globG * aXaY * timeDiff;
+        velocity = startVelocity + globG * aXaY * timeDiff;
     }
     else{
         velocity = 0;

@@ -49,7 +49,7 @@ namespace Accel {
 // =================================================================================
 
         void ToGlobal::recognizeState(const AccelReceivedData &in, TempData &out) {
-            auto a_norm = sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
+            auto a_norm = sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az);
             if (a_norm < ACC_TH) {
                 out.isStationary = true;
             } else {

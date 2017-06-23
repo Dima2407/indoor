@@ -19,7 +19,7 @@ namespace Navigator {
                                    double posY,
                                    double mapOrientationAngle):
                     trajectoryDetection(rMesh, posX, posY),
-                    toGlobal(mapOrientationAngle)
+                    toGlobal(mapOrientationAngle, true)  // angle, useFilter
             {}
 
             virtual Math::Position3D process(const AccelReceivedData &ard) override;

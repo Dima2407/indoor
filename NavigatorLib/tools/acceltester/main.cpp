@@ -33,7 +33,7 @@ int main() {
     d_angles.IsArray();
     d_accelerometer.IsArray();
 
-    StandardAccelNavigator standardAccelNavigator(nullptr, 0.0, 0.0, 180.0);
+    StandardAccelNavigator standardAccelNavigator(nullptr, 0.5, 1.2, 50.0);
 
     tempOut << "p.x" << "      "  << "p.y" << "     "  << "p.z" << " "  << endl;
     for(int i = 0; i < d_angles.Size(); i++){
@@ -41,6 +41,7 @@ int main() {
         const Value& for_angles = d_angles[i];
         const Value& for_accelerometer = d_accelerometer[i];
 
+        /*
         for_angles["timestamp"].IsInt();
         for_angles["azimuth"].IsDouble();
         for_angles["pitch"].IsDouble();
@@ -49,6 +50,7 @@ int main() {
         for_accelerometer["x"].IsDouble();
         for_accelerometer["y"].IsDouble();
         for_accelerometer["z"].IsDouble();
+         */
 
         double timestamp = myj.microsecondInSecon(for_angles["timestamp"].GetInt());
         double azimuth = for_angles["azimuth"].GetDouble();
@@ -56,11 +58,9 @@ int main() {
         double roll = for_angles["roll"].GetDouble();
         double aX = for_accelerometer["x"].GetDouble();
         double aY = for_accelerometer["y"].GetDouble();
-        double aZ =for_accelerometer["z"].GetDouble();
+        double aZ = for_accelerometer["z"].GetDouble();
 
-
-
-        AccelReceivedData ard{timestamp, azimuth, pitch, roll, aX, aY, aZ};
+        AccelReceivedData ard{timestamp, aX, aY, aZ, pitch, azimuth, roll};
 
         Position3D p = standardAccelNavigator.process(ard);
 

@@ -3,10 +3,21 @@
 //
 
 #include <iostream>
+#include <vector>
 #include "Navigator/Accel/ToGlobal.h"
 
 namespace Navigator {
 namespace Accel {
+    
+        // Quaternion product using std::vector, temporary test, not a member of the ToGlobal class
+        /*std::vector<double> myQuatProduct(const std::vector<double> & a, const std::vector<double> & b){
+            return std::vector<double>{
+                a[0]*b[0] - a[1]*b[1] - a[2]*b[2] - a[3]*b[3],
+                a[0]*b[1] + a[1]*b[0] + a[2]*b[3] - a[3]*b[2],
+                a[0]*b[2] - a[1]*b[3] + a[2]*b[0] + a[3]*b[1],
+                a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + a[3]*b[0]
+            };
+        }*/
 
         AccelOutputData ToGlobal::process(const AccelReceivedData & data)
         {
@@ -20,7 +31,8 @@ namespace Accel {
 
             result.isStationary = tempData.isStationary;
 
-            if (!result.isStationary) {
+            // Always rotate for now : test
+            if (true || !result.isStationary) {
                 Quaternion<double> quat = initQuaternion(tempData.pitch, tempData.roll, tempData.yaw);
                 Quaternion<double> invertQuat = quat.conjugate();
                 Quaternion<double> r(0, tempData.ax, tempData.ay, tempData.az);
@@ -29,7 +41,38 @@ namespace Accel {
 
                 result.ax = resultQ.x();
                 result.ay = resultQ.y();
-                result.az = resultQ.z()-1;
+                
+                // We remove az for now
+                // result.az = resultQ.z()-1;
+                result.az = resultQ.z();
+                
+                // Check alt quaternion operation without eigen : test. Remove later if OK.
+                /*if (true){
+                    using namespace std;
+                    
+                    double p2 = tempData.pitch/2;
+                    double r2 = tempData.roll/2;
+                    double y2 = tempData.yaw/2;
+                    //Quaternion
+                    vector<double> q = {
+                        cos(p2)*cos(r2)*cos(y2) - sin(p2)*sin(r2)*sin(y2),
+                        cos(p2)*sin(r2)*sin(y2) + sin(p2)*cos(r2)*cos(y2),
+                        cos(p2)*sin(r2)*cos(y2) - sin(p2)*cos(r2)*sin(y2),
+                        cos(p2)*cos(r2)*sin(y2) + sin(p2)*sin(r2)*cos(y2)
+                    };
+                    // Conjugate quaternion
+                    vector<double> qc = {q[0], -q[1], -q[2], -q[3]};
+                    // Quaternion made of a
+                    vector<double> qa = {0, tempData.ax, tempData.ay, tempData.az};
+                    
+                    vector<double> qres = myQuatProduct(myQuatProduct(q, qa), qc);
+                    
+                    result.ax = qres[1];
+                    result.ay = qres[2];
+                    result.az = qres[3];
+                }*/
+                
+                
             } else {
                 result.ax = 0;
                 result.ay = 0;
@@ -79,6 +122,8 @@ namespace Accel {
             }
         }
 
+// =================================================================================
+        
 // =================================================================================
 
 /*

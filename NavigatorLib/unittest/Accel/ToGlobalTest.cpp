@@ -48,15 +48,15 @@ namespace NaviTest {
 
         void ToGlobalTest::testToGlobalProcess() {
             CPPUNIT_ASSERT(testHelpProcess1().isStationary == true);
-            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().ax);
-            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().ay);
-            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().az);
+            // CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().ax);
+            // CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().ay);
+            // CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess1().az);
             CPPUNIT_ASSERT(testHelpProcess1().timestamp == 1.1);
 
             CPPUNIT_ASSERT(testHelpProcess2().isStationary == true);
-            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ax);
-            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ay);
-            CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().az);
+            // CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ax);
+            // CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().ay);
+            // CPPUNIT_ASSERT_EQUAL(0.0 , testHelpProcess2().az);
             CPPUNIT_ASSERT(testHelpProcess2().timestamp == 1.8);
 
             CPPUNIT_ASSERT(testHelpProcess3().isStationary == false);
@@ -74,47 +74,50 @@ namespace NaviTest {
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(3, 4, 5, 17, 85, 129, 0.5);
             Navigator::Accel::AccelOutputData out = global.process(in);
             double lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
-            double lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            // double lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            double lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az);
             CPPUNIT_ASSERT(std::fabs(lengthIn - lengthOut) < accuracy);
 
             in = testHelpCreateReceivedData(7, 12, 1, 41, 16, 7, 2.9);
             out = global.process(in);
             lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
-            lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            // lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az);
             CPPUNIT_ASSERT(std::fabs(lengthIn - lengthOut) < accuracy);
 
             in = testHelpCreateReceivedData(15, 15, 9, 2, 2, 1, 1.9);
             out = global.process(in);
             lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
-            lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            // lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + (out.az+1)*(out.az+1));
+            lengthOut = std::sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az);
             CPPUNIT_ASSERT(std::fabs(lengthIn - lengthOut) < accuracy);
         }
 
         // ------------ private methods ------------------
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess1() {
-            Navigator::Accel::ToGlobal global(0.0);
+            Navigator::Accel::ToGlobal global(0.0, false);
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(-0.1, 0, 0, 0, 0, 0, 1.1);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess2() {
-            Navigator::Accel::ToGlobal global(0.0);
+            Navigator::Accel::ToGlobal global(0.0, false);
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(0, 0, 0, 10, 20, 70, 1.8);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess3() {
-            Navigator::Accel::ToGlobal global(0.0);
+            Navigator::Accel::ToGlobal global(0.0, false);
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(2, 2, 2, 10, 20, 70, 1.3);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess4() {
-            Navigator::Accel::ToGlobal global(0.0);
+            Navigator::Accel::ToGlobal global(0.0, false);
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(15, 15, 9, 10, 20, 70, 2.2);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;

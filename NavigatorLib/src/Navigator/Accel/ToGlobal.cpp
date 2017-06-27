@@ -31,13 +31,16 @@ namespace Accel {
 
             result.isStationary = tempData.isStationary;
 
+            // I think this would be corect
+            // tempData.pitch = - tempData.pitch;
+            
             // Always rotate for now : test
             if (true || !result.isStationary) {
                 Quaternion<double> quat = initQuaternion(tempData.pitch, tempData.roll, tempData.yaw);
                 Quaternion<double> invertQuat = quat.conjugate();
                 Quaternion<double> r(0, tempData.ax, tempData.ay, tempData.az);
 
-                Quaternion<double> resultQ = quat * r * invertQuat;
+                Quaternion<double> resultQ = invertQuat * r * quat;
 
                 result.ax = resultQ.x();
                 result.ay = resultQ.y();
@@ -65,7 +68,7 @@ namespace Accel {
                     // Quaternion made of a
                     vector<double> qa = {0, tempData.ax, tempData.ay, tempData.az};
                     
-                    vector<double> qres = myQuatProduct(myQuatProduct(q, qa), qc);
+                    vector<double> qres = myQuatProduct(myQuatProduct(qc, qa), q);
                     
                     result.ax = qres[1];
                     result.ay = qres[2];

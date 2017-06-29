@@ -40,6 +40,7 @@ set(SOURCE_FILES
     ../include/Navigator/Accel/AccelReceivedData.h
     ../include/Navigator/Accel/AccelOutputData.h
     ../include/Navigator/Accel/AbstractAccelNavigator.h
+    ../include/Navigator/Accel/AccelConfig.h
     ./Navigator/Accel/StandardAccelNavigator.cpp  ../include/Navigator/Accel/StandardAccelNavigator.h
 
     ./Navigator/Accel/TrajectoryDetection.cpp ../include/Navigator/Accel/TrajectoryDetection.h

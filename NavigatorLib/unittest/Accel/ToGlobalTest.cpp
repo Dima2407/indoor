@@ -70,7 +70,7 @@ namespace NaviTest {
 
         void ToGlobalTest::testLengthVectors() {
             constexpr double accuracy = 1.0e-10;
-            Navigator::Accel::ToGlobal global(0.0, false);
+            Navigator::Accel::ToGlobal global;
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(3, 4, 5, 17, 85, 129, 0.5);
             Navigator::Accel::AccelOutputData out = global.process(in);
             double lengthIn = std::sqrt(in.ax*in.ax + in.ay*in.ay + in.az*in.az);
@@ -96,28 +96,28 @@ namespace NaviTest {
         // ------------ private methods ------------------
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess1() {
-            Navigator::Accel::ToGlobal global(0.0, false);
+            Navigator::Accel::ToGlobal global;
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(-0.1, 0, 0, 0, 0, 0, 1.1);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess2() {
-            Navigator::Accel::ToGlobal global(0.0, false);
+            Navigator::Accel::ToGlobal global;
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(0, 0, 0, 10, 20, 70, 1.8);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess3() {
-            Navigator::Accel::ToGlobal global(0.0, false);
+            Navigator::Accel::ToGlobal global;
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(2, 2, 2, 10, 20, 70, 1.3);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
         }
 
         Navigator::Accel::AccelOutputData ToGlobalTest::testHelpProcess4() {
-            Navigator::Accel::ToGlobal global(0.0, false);
+            Navigator::Accel::ToGlobal global;
             Navigator::Accel::AccelReceivedData in = testHelpCreateReceivedData(15, 15, 9, 10, 20, 70, 2.2);
             Navigator::Accel::AccelOutputData out = global.process(in);
             return out;
@@ -172,13 +172,13 @@ namespace NaviTest {
         }
 
         double ToGlobalTest::initQuaternion() {
-            Navigator::Accel::ToGlobal global(0.0);
+            Navigator::Accel::ToGlobal global;
             Eigen::Quaternion<double> result = global.initQuaternion(myRandom(), myRandom(), myRandom());
             return fabs(result.norm() - 1);
         }
 
         Eigen::Quaternion<double> ToGlobalTest::createQuaternion() {
-            Navigator::Accel::ToGlobal global(0.0);
+            Navigator::Accel::ToGlobal global;
             Eigen::Quaternion<double> result = global.initQuaternion(myRandom(), myRandom(), myRandom());
             return result;
         }

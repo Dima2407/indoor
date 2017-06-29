@@ -48,11 +48,17 @@ int main()
     // Load the table into the mesh
     rMesh->setMaskTable(mTable);
 
-    StandardAccelNavigator standardAccelNavigator(rMesh, 0.0, 0.0, 180.0);
+    // Configuration
+    AccelConfig config;
+    config.useFilter = false;
+
+    double startX = 0, startY = 0; // Start coordinates
+
+    StandardAccelNavigator standardAccelNavigator(rMesh, startX, startY, config);
 
     for (int i=0; i < 10; ++i){
-        // Uniform acceleration in the -y direction
-        AccelReceivedData ard{i*0.1, 0.0, -1.0, 1.0, 0.0, 0.0, 0.0};
+        // Uniform acceleration in the -x direction
+        AccelReceivedData ard{i*0.1, -1.0, 0.0, -1.0, 0.0, 0.0, 0.0};
 
         Position3D p = standardAccelNavigator.process(ard);
 

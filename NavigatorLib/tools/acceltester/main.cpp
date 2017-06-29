@@ -38,9 +38,15 @@ int main() {
     d_angles.IsArray();
     d_accelerometer.IsArray();
 
-    //StandardAccelNavigator standardAccelNavigator(nullptr, 0.5, 1.2, 20.0);
-    TrajectoryDetection traj(nullptr, 0.5, 1.2);
-    ToGlobal toGlob(20, false);
+    double startX = 0.5, startY = 1.2;
+
+    AccelConfig config;
+
+    //StandardAccelNavigator standardAccelNavigator(nullptr, startX, startY, config);
+
+
+    TrajectoryDetection traj(nullptr, startX, startY, config);
+    ToGlobal toGlob(config);
 
     tempOut << "p.x" << "      "  << "p.y" << "     "  << "p.z" << " "  << endl;
     
@@ -79,8 +85,6 @@ int main() {
         
         // Process by hand for debugging purpose
         AccelOutputData aod = toGlob.process(ard);
-        aod.ay = -aod.ay;
-
         Position3D p = traj.process(aod);
                 
         // Normal way of processing
@@ -96,7 +100,7 @@ int main() {
         fprintf(fileLog2, "%5d : %10.6f %1d: ", i + 1, timestamp, aod.isStationary);
         aa = std::sqrt(aod.ax*aod.ax + aod.ay*aod.ay + aod.az*aod.az);
         fprintf(fileLog2, "%10.6f %10.6f %10.6f %10.6f : ", aod.ax, aod.ay, aod.az, aa);
-        fprintf(fileLog2, "%10.6f %10.6f %10.6f\n", pitch, roll, -azimuth - 180 + 20);
+        fprintf(fileLog2, "%10.6f %10.6f %10.6f\n", pitch, roll, azimuth);
         
         
 

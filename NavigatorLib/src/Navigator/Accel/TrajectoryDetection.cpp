@@ -20,8 +20,8 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
     double posX0 = posX;
     double posY0 = posY;
 
-    posX += adjCoef * vX * dt;
-    posY += adjCoef * vY * dt;
+    posX += config.adjCoef * vX * dt;
+    posY += config.adjCoef * vY * dt;
 
     if (rMesh !=nullptr){
         posX = checkXY(posX, maxX, minX);
@@ -44,16 +44,16 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
 double TrajectoryDetection::algorithmZUPT (double aXaY, double startVelocity, bool isStationary, double timeDiff){
     double velocity;
     if (isStationary == false){
-        velocity = startVelocity + globG * aXaY * timeDiff;
+        velocity = startVelocity + config.globG * aXaY * timeDiff;
     }
     else{
         velocity = 0;
     }
-    if ( velocity > maxV){
-        velocity = maxV;
+    if ( velocity > config.maxV){
+        velocity = config.maxV;
 
-    }else if(velocity <- maxV){
-        velocity = - maxV;
+    }else if(velocity <- config.maxV){
+        velocity = - config.maxV;
     }
     return velocity;
 }
@@ -91,7 +91,7 @@ bool TrajectoryDetection::checkWall(double x1, double y1, double x2, double y2)
     double inPosX, inPosY;
 
     for (int ksiP = 0; ; ++ksiP) {
-        t = (ksiP * ksi) / length;
+        t = (ksiP * xi) / length;
         inPosX = x1 + (x2 - x1) * t;
         inPosY = y1 + (y2 - y1) * t;
 

@@ -10,6 +10,9 @@
 #include "Navigator/Mesh/MeshData.h"
 #include "Navigator/Mesh/RectanMesh.h"
 #include "AccelOutputData.h"
+#include "AccelConfig.h"
+
+
 namespace Navigator {
 namespace Accel {
 
@@ -17,21 +20,23 @@ namespace Accel {
 class TrajectoryDetection
 {
 private: //============Fields
+    AccelConfig config;
+
     std::shared_ptr<Mesh::RectanMesh> rMesh;
     double minX;
     double minY;
     double maxX;
     double maxY;
-    double ksi;
+    double xi;
 
     double posX;
     double posY;
     double vX = 0.0;
     double vY = 0.0;
 
-    static constexpr double adjCoef = 3;
-    static constexpr double maxV = 3.5;
-    static constexpr double globG = 9.8066;
+//    static constexpr double adjCoef = 3;
+//    static constexpr double maxV = 3.5;
+//    static constexpr double globG = 9.8066;
 
 public:
 
@@ -42,15 +47,19 @@ public:
         return vY;
     }
 
-    TrajectoryDetection(const std::shared_ptr<Mesh::RectanMesh> &rMesh,  double posX,  double posY):
+    TrajectoryDetection(const std::shared_ptr<Mesh::RectanMesh> &rMesh,  double posX,  double posY,
+                        const AccelConfig & config = AccelConfig()):
         rMesh(rMesh),
         posX(posX),
-        posY(posY){
+        posY(posY),
+        config(config)
+    {
 
         if( rMesh != nullptr){
+            // Calculate mesh boundaries and xi
             const Mesh::MeshData & mesh = rMesh->getMesh();
 
-            ksi = std::fmin( mesh.dx/2, mesh.dy/2);
+            xi = std::fmin( mesh.dx/2, mesh.dy/2);
             minX = mesh.x0;
             minY = mesh.y0;
             maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;

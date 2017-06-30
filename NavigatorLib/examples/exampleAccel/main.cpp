@@ -16,12 +16,10 @@
 
 int main()
 {
-
     using namespace std;
     using Navigator::Math::Position3D;
     using namespace Navigator::Mesh;
     using namespace Navigator::Accel;
-
 
     // Some mesh, no walls at present
     constexpr double nx = 201, ny = 201;
@@ -50,13 +48,14 @@ int main()
 
     // Configuration
     AccelConfig config;
-    config.useFilter = false;
+    config.mapOrientationAngle = 0; // Map orientation angle in degrees from the server
+    config.useFilter = false; // Should be true for real cases
 
     double startX = 0, startY = 0; // Start coordinates
 
     StandardAccelNavigator standardAccelNavigator(rMesh, startX, startY, config);
 
-    for (int i=0; i < 10; ++i){
+    for (int i = 0; i < 10; ++i){
         // Uniform acceleration in the -x direction
         AccelReceivedData ard{i*0.1, -1.0, 0.0, -1.0, 0.0, 0.0, 0.0};
 

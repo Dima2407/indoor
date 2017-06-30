@@ -63,7 +63,7 @@ void ToGlobal::angleCorrection(const AccelReceivedData &in, TempData &out) {
     out.roll = in.roll*(M_PI/180);
     out.yaw = (in.yaw + config.mapOrientationAngle)*(M_PI/180);
 
-    // Don't forget to copy accelerations and timestamp
+    // Don't forget to copy accelerations and timestamp also
     out.ax = in.ax;
     out.ay = in.ay;
     out.az = in.az;
@@ -76,11 +76,11 @@ void ToGlobal::filterAccelerations(TempData &out) {
     if (config.useFilter) {
         out.az += 1.0; // Exclude gravity
 
-        out.ax = filterAX -> process({out.ax, out.timestamp}).val;
-        out.ay = filterAY -> process({out.ay, out.timestamp}).val;
-        out.az = filterAZ -> process({out.az, out.timestamp}).val;
+        out.ax = filterAX->process({out.ax, out.timestamp}).val;
+        out.ay = filterAY->process({out.ay, out.timestamp}).val;
+        out.az = filterAZ->process({out.az, out.timestamp}).val;
 
-        out.az -= 1.0; // Put gravity back again
+        out.az -= 1.0; // Put the gravity back again
     }
 }
 

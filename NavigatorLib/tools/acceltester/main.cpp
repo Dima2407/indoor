@@ -28,7 +28,7 @@ int main() {
     myjson myj;
 
     ofstream tempOut;
-    tempOut.open("out_data.dt");
+    tempOut.open("out_route.dat");
     const Value& temp = myj.strimJson("in_data.json");
 
 
@@ -41,9 +41,9 @@ int main() {
     double startX = 0.5, startY = 1.2;
 
     AccelConfig config;
+    config.useFilter = true;
 
     //StandardAccelNavigator standardAccelNavigator(nullptr, startX, startY, config);
-
 
     TrajectoryDetection traj(nullptr, startX, startY, config);
     ToGlobal toGlob(config);
@@ -81,9 +81,7 @@ int main() {
         
         AccelReceivedData ard{timestamp, aX, aY, aZ, pitch, azimuth, roll};
 
-        
-        
-        // Process by hand for debugging purpose
+        // Process by hand for debugging purposes
         AccelOutputData aod = toGlob.process(ard);
         Position3D p = traj.process(aod);
                 
@@ -102,8 +100,6 @@ int main() {
         fprintf(fileLog2, "%10.6f %10.6f %10.6f %10.6f : ", aod.ax, aod.ay, aod.az, aa);
         fprintf(fileLog2, "%10.6f %10.6f %10.6f\n", pitch, roll, azimuth);
         
-        
-
         tempOut << p.x << " "  << p.y << " "  << p.z << " "  << endl;
     }
     fclose(fileLog1);

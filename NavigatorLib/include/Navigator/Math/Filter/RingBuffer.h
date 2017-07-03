@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cassert>
+#include <stdexcept>
 
 namespace Navigator {
     namespace Math {
@@ -56,7 +57,8 @@ namespace Navigator {
 
                 /// Constructor
                 RingBuffer(unsigned capacity) : capacity(capacity) {
-                    assert(capacity > 0);
+                    if (capacity <= 0)
+                        throw std::runtime_error("RingBuffer: capacity must be > 0");
 
                     // The good old dynamic array
                     data = new T[capacity];
@@ -152,6 +154,18 @@ namespace Navigator {
                         return false;
                     else {
                         unsigned ind = (readIndex + pos) % capacity; // Set index
+                        t = data[ind]; // Get the data
+
+                        return true;
+                    }
+                }
+
+                /// Peek the element pos < size (0 = latest, 1 = next latest etc.) w/o removing
+                bool peekLatest(unsigned pos, T &t) const {
+                    if (pos >= size())
+                        return false;
+                    else {
+                        unsigned ind = (writeIndex - pos - 1 + capacity) % capacity; // Set index
                         t = data[ind]; // Get the data
 
                         return true;

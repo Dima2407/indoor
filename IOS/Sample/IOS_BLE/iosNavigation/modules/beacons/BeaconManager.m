@@ -149,22 +149,22 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 #pragma mark - Set Beacon Data -
 -(void) setBeaconMap:(FloorModel*)floor withBeaconData:(NSArray*)beacons{
 
-//  [beacons enumerateObjectsUsingBlock:^(BeaconModel*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//      NSString* uuidUpperCase = [obj.uuid uppercaseString];
-//        BeaconConfig *beacon = [[BeaconConfig alloc] initWithUUID:uuidUpperCase major:obj.major minor:obj.minor txPower:obj.txpower damp:obj.damp andX:obj.x andY:obj.y andZ:obj.z];
-//   
-//
-//        [self.manager setBeaconConfig:beacon];
-//    }];
-    BeaconConfig *firstBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48049 txPower:-71.2 damp:2 andX:4.5 andY:0.0 andZ:2.3];
-    BeaconConfig *forthBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48050 txPower:-71.2 damp:2 andX:0.0 andY:3.7 andZ:2.6];
-    
-    BeaconConfig *thirdBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48051 txPower:-71.2 damp:2 andX:3 andY:12.8 andZ:2.3];
-    BeaconConfig *secondBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48052 txPower:-71.2 damp:2 andX:0.3 andY:9.9 andZ:2.6];
-    [self.manager setBeaconConfig:firstBeacon];
-    [self.manager setBeaconConfig:secondBeacon];
-    [self.manager setBeaconConfig:thirdBeacon];
-    [self.manager setBeaconConfig:forthBeacon];
+  [beacons enumerateObjectsUsingBlock:^(BeaconModel*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+      NSString* uuidUpperCase = [obj.uuid uppercaseString];
+        BeaconConfig *beacon = [[BeaconConfig alloc] initWithUUID:uuidUpperCase major:obj.major minor:obj.minor txPower:obj.txpower damp:obj.damp andX:obj.x andY:obj.y andZ:obj.z];
+   
+
+        [self.manager setBeaconConfig:beacon];
+    }];
+//    BeaconConfig *firstBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48049 txPower:-71.2 damp:2 andX:4.5 andY:0.0 andZ:2.3];
+//    BeaconConfig *forthBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48050 txPower:-71.2 damp:2 andX:0.0 andY:3.7 andZ:2.6];
+//    
+//    BeaconConfig *thirdBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48051 txPower:-71.2 damp:2 andX:3 andY:12.8 andZ:2.3];
+//    BeaconConfig *secondBeacon = [[BeaconConfig alloc] initWithUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF" major:61902 minor:48052 txPower:-71.2 damp:2 andX:0.3 andY:9.9 andZ:2.6];
+//    [self.manager setBeaconConfig:firstBeacon];
+//    [self.manager setBeaconConfig:secondBeacon];
+//    [self.manager setBeaconConfig:thirdBeacon];
+//    [self.manager setBeaconConfig:forthBeacon];
 }
 #pragma mark - Set Graph -
 -(void) setGraph:(FloorModel*)floor withGraph:(NSString*)gpaphJsonString{

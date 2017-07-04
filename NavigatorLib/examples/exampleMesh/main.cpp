@@ -38,10 +38,10 @@ int main(){
     mesh.setMaskTable(mTable);
 
     cout << "Guess the mesh ! Enter x, y :\n";
-    double x,y;
+    double x = 5 ,y = 4;
 
 
-    cin >> x >> y;
+    //    cin >> x >> y;
 
     Position3D result = mesh.process(Position3D(x, y, 0));
 

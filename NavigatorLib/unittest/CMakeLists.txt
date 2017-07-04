@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 14)
 
 # Include path to navigator_lib for *.h files
 include_directories(
-        ../include/
-)
+    ../include/
+    )
 
 set(TEAMCITY_SRC
-        teamcity/teamcity_cppunit.cpp teamcity/teamcity_cppunit.h
-        teamcity/teamcity_messages.cpp teamcity/teamcity_messages.h
-        )
+    teamcity/teamcity_cppunit.cpp teamcity/teamcity_cppunit.h
+    teamcity/teamcity_messages.cpp teamcity/teamcity_messages.h
+    )
 
 set(SOURCE_FILES
         ${TEAMCITY_SRC}
@@ -35,7 +35,12 @@ set(SOURCE_FILES
         #
         Mesh/RectanMeshTest.cpp Mesh/RectanMeshTest.h
         Mesh/MeshDataTest.cpp Mesh/MeshDataTest.h
-        Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h)
+        Dijkstra/GraphTest.cpp Dijkstra/GraphTest.h Dijkstra/PointGraphTest.cpp Dijkstra/PointGraphTest.h
+        #
+        Accel/ToGlobalTest.cpp Accel/ToGlobalTest.h
+        Accel/FilterImplTest.cpp Accel/FilterImplTest.h
+        Accel/TrajectoryDetectionTest.cpp Accel/TrajectoryDetectionTest.h
+        )
 
 add_executable(unittest ${SOURCE_FILES})
 target_link_libraries(unittest Navigator cppunit)

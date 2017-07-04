@@ -17,7 +17,7 @@ namespace ItJim {
 	namespace JsonDataContract {
 		
 		
-		/*void BeaconReceivedDataJson::CheckDOM(rapidjson::Document const& doc)
+                void BeaconReceivedDataJson::CheckDOM(rapidjson::Document const& doc)
 		{
 			CPPUNIT_ASSERT( doc.IsArray() );
 			CPPUNIT_ASSERT( doc[0].IsArray() );
@@ -35,7 +35,7 @@ namespace ItJim {
 			CPPUNIT_ASSERT( obj.HasMember("serviceUUID") );
 			CPPUNIT_ASSERT( obj.HasMember("TXpower") );
 			CPPUNIT_ASSERT( obj.HasMember("TimeStamp") );
-		}*/
+                }
 		
 		void BeaconReceivedDataJson::ParseDOM(rapidjson::Value const& val, BeaconReceivedDataJson &to)
 		{

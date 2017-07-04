@@ -24,18 +24,23 @@ Math::Position3D TrajectoryDetection::process(const Accel::AccelOutputData &data
     posY += config.adjCoef * vY * dt;
 
     if (rMesh !=nullptr){
-        posX = checkXY(posX, maxX, minX);
-        posY = checkXY(posY, maxY, minY);
 
-        if (checkWall(posX0, posY0, posX, posY)) {
-            if (!checkWall(posX0, posY0, posX0, posY))
-                posX = posX0;
-            else if (!checkWall(posX0, posY0, posX, posY0))
-                posY = posY0;
+        if (config.useMapEdges) {
+            posX = checkXY(posX, maxX, minX);
+            posY = checkXY(posY, maxY, minY);
+        }
+
+        if (config.useWalls) {
+            if (checkWall(posX0, posY0, posX, posY)) {
+                if (!checkWall(posX0, posY0, posX0, posY))
+                    posX = posX0;
+                else if (!checkWall(posX0, posY0, posX, posY0))
+                    posY = posY0;
+            }
         }
     }
     Position3D position(posX, posY, 0.0);
-    if(rMesh != nullptr)
+    if(rMesh != nullptr && config.useMeshMask)
         return rMesh->process(position);
     else
         return position;

@@ -11,6 +11,7 @@
 #include <Navigator.h>
 
 
+
 using namespace std;
 using namespace Navigator::Beacons;
 using namespace Navigator::Beacons::Factory;
@@ -18,6 +19,7 @@ using namespace Navigator::Dijkstra;
 using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
+using namespace Navigator::Accel;
 
 jobject savedListenerInstance;
 jmethodID listenerOnLocationChangedId;
@@ -107,53 +109,51 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setGraphArraysFromFile(JNIEnv *env, 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
         JNIEnv *env, jobject, jobject obj) {
-    f = fopen(pathToDownload, "a");
-    fprintf(f, "METHOD: DELIVER \n\n");
+
     jobject typeObj = env->GetObjectField(obj, meTypeField);
-    jint eventTypeCode = env->CallIntMethod(typeObj, mtCodeMethod); //value of enum MeasurementType
-    long timeStamp = (long) env->GetLongField(obj, meTimestampField);// value timestamp
-    __android_log_print(ANDROID_LOG_DEBUG, "TIMESTAMP", "TIMESTAMP %ld", timeStamp);
+    long timeStamp = (long) env->GetLongField(obj, meTimestampField);
     jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj, meDataField);
     double *data = env->GetDoubleArrayElements(dataArray, NULL);
-    jstring uuidString = (jstring) env->GetObjectField(obj, meUUIDField);
 
-    const char *uuid = env->GetStringUTFChars(uuidString, 0);
-    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "x - %f y - %f z - %f", data[0], data[1],
-                        data[2]);
-    __android_log_print(ANDROID_LOG_DEBUG, "UUID", "uuid- %s", uuid);
+    jint eventTypeCode = env->CallIntMethod(typeObj, mtCodeMethod);
+    double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
+    if (eventTypeCode == 2)
+    {
+        jstring uuidString = (jstring) env->GetObjectField(obj, meUUIDField);
 
-    fprintf(f, "BeaconUID uid(%s, %f, %f)\n", uuid, data[0], data[1]);
-    BeaconUID uid(uuid, (int) data[0], (int) data[1]);
-    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "beacon mv %s, %f, %f", uuid, data[0], data[1]);
-    __android_log_print(ANDROID_LOG_DEBUG, "TAG", "data to lib %s, %ld, %f", uuid, timeStamp,
-                        data[3]);
+        const char *uuid = env->GetStringUTFChars(uuidString, 0);
 
-    fprintf(f, "BeaconReceivedData brd(%s, %f, %f)\n", uuid, (1.0 * ((timeStamp - timeS) / 1000)),
-            data[3]);
-    fprintf(f, "timestamp/1000(%f)", (1.0 * ((timeStamp - timeS) / 1000)));
-    BeaconReceivedData brd((1.0 * ((timeStamp - timeS) / 1000)), uid, data[3], data[2]);
+        BeaconUID uid(uuid, (int) data[0], (int) data[1]);
 
-    Position3D outPos = navigator->process(brd);
-    __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "POS x - %f y - %f z - %f", outPos.x, outPos.y,
-                        outPos.z);
-    fprintf(f, "POSITION x - %f y - %f z - %f \n\n", outPos.x, outPos.y, outPos.z);
+        BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
 
-    auto processor = navigator->findProcessorByUid(uid);
-    if (processor == nullptr) {
-        __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "NULPOINTER");
-    } else {
-        if (processor->isActive()) {
-            __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "IS_ACTIVE = true");
-        } else {
-            __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "IS_ACTIVE = false");
-        }
-        __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "LAST_DIST = %f ",
-                            processor->getLastDistance());
-        __android_log_print(ANDROID_LOG_DEBUG, "onLocationChanged", "LAST_TIMESTAMP = %f ",
-                            processor->getLastTimeStamp());
+        Position3D outPos = navigator->process(brd);
+
+        env->ReleaseStringUTFChars(uuidString, uuid);
     }
-    env->ReleaseStringUTFChars(uuidString, uuid);
-    fclose(f);
+    else if (eventTypeCode == 1)
+    {
+        AccelReceivedData ard{eventTime, data[0], data[1], data[2], data[3], data[4], data[5]};
+
+        constexpr double nx = 22, ny = 44;
+        constexpr double dx = 0.3, dy = 0.3;
+        constexpr double x0 = 0, y0 = 0;
+        auto mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
+
+        mesh->setMaskTable(mTable);
+
+        AccelConfig config;
+        config.mapOrientationAngle = 0;
+        config.useFilter = true;
+
+        double startX = 0, startY = 0;
+
+        StandardAccelNavigator standardAccelNavigator(mesh, startX, startY, config);
+
+        Position3D p = standardAccelNavigator.process(ard);
+        // TODO
+    }
+
 }
 
 void putToJavaOnLocationChanged(JNIEnv *env) {
@@ -247,6 +247,23 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         }
             break;
     }
+
+
+
+   /* constexpr double nx = 36, ny = 24;
+    constexpr double dx = 0.3, dy = 0.3;
+    constexpr double x0 = 0, y0 = 0;
+    auto mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
+    mesh->setMaskTable(mTable);
+    StandardAccelNavigator standardAccelNavigator(mesh, 0.0, 0.0, 180);
+
+    for (int i=0; i < 10; ++i){
+        // Uniform acceleration in the -y direction
+        AccelReceivedData ard{i*0.1, 0.0, -1.0, 1.0, 0.0, 0.0, 0.0};
+
+        Position3D p = standardAccelNavigator.process(ard);*/
+
+
 
     jclass listenerClassRef = env->GetObjectClass(savedListenerInstance);
     listenerOnLocationChangedId = env->GetMethodID(listenerClassRef, "onLocationChanged", "([F)V");

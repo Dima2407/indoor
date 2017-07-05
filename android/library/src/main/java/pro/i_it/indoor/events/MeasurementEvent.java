@@ -38,6 +38,10 @@ public class MeasurementEvent {
                 wifi.level);
     }
 
+    public static MeasurementEvent createFromSensor(float x, float y, float z, float azimut, float pitch, float roll) {
+        return new MeasurementEvent(MeasurementType.SENSOR_VALUE, null, x, y, z, azimut, pitch, roll);
+    }
+
     @Override
     public String toString() {
         return type + " event at " + timestamp + " - " + Arrays.toString(data);

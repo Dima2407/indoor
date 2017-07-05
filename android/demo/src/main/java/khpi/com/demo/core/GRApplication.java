@@ -63,6 +63,7 @@ public final class GRApplication extends Application {
         if(localManager == null) {
             localManager = new IndoorLocationManager();
             localManager.addProvider(context, MeasurementType.BLUETOOTH_VALUE);
+            localManager.addProvider(context, MeasurementType.SENSOR_VALUE);
         }
     }
 

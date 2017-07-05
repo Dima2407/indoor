@@ -73,6 +73,7 @@ public class IndoorLocationManager {
                 providers.add(new GPSMeasurementProvider(context, transfer));
                 break;
             case SENSOR_VALUE:
+                providers.add(new SensorMeasurementProvider(context,transfer));
                 break;
             case BLUETOOTH_VALUE:
                 providers.add(new BluetoothMeasurementProvider(context, transfer));

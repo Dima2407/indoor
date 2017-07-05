@@ -21,7 +21,7 @@ android {
         }
         debug{
             buildConfigField "String", "DEVELOPER_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
-            buildConfigField "String", "PRODUCTION_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8080/\""
+            buildConfigField "String", "PRODUCTION_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
             buildConfigField "String", "DIRECTIONS_API_KEY", "\"AIzaSyASl2rXRVHQgnlXIDswpZrZWX8OHLg2fAs\""
             buildConfigField "String", "USERNAME", "\"xxx\""
             buildConfigField "String", "PASSWORD", "\"12345678\""

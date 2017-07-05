@@ -14,6 +14,7 @@ import khpi.com.demo.core.bridge.DbBridge;
 import khpi.com.demo.core.bridge.NetBridge;
 import khpi.com.demo.core.bridge.OrientationBridge;
 import khpi.com.demo.db.DbFacade;
+import khpi.com.demo.net.MapCacheHelper;
 import khpi.com.demo.net.NetFacade;
 import khpi.com.demo.orientation.OrientationFacade;
 import khpi.com.demo.routing.RouteHelper;
@@ -35,6 +36,7 @@ public final class GRApplication extends Application {
     private OrientationBridge orientationBridge;
     private SharedHelper sharedHelper;
     private RouteHelper routeHelper;
+    private MapCacheHelper mapCacheHelper;
     private IndoorLocationManager localManager;
 
     @Override
@@ -57,6 +59,7 @@ public final class GRApplication extends Application {
         netBridge = new NetFacade(dbBridge, sharedHelper.useProduction() ? BuildConfig.PRODUCTION_SERVER_URL : BuildConfig.DEVELOPER_SERVER_URL);
         orientationBridge = new OrientationFacade(this);
         getNetBridge().logIn(BuildConfig.USERNAME, BuildConfig.PASSWORD);
+        mapCacheHelper = new MapCacheHelper(this,sharedHelper.useProduction() ? BuildConfig.PRODUCTION_SERVER_URL : BuildConfig.DEVELOPER_SERVER_URL);
     }
 
     public void init(Context context){
@@ -106,5 +109,9 @@ public final class GRApplication extends Application {
 
     public RouteHelper getRouteHelper() {
         return routeHelper;
+    }
+
+    public MapCacheHelper getMapCacheHelper() {
+        return mapCacheHelper;
     }
 }

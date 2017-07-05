@@ -77,7 +77,8 @@ public class BuildingsFragment extends GenericFragment
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("Wait...");
             progressDialog.show();
-            MapCacheHelper.cacheMapData(getContext(), floor, this);
+            getActivityBridge().getProjectApplication().getMapCacheHelper()
+                    .cacheMapData(floor, this);
             getActivityBridge().getNetBridge().loadInpointsByBuildingId(item.getId());
             return;
         }

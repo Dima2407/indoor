@@ -62,7 +62,7 @@
             break;
         case SENSOR_VALUE:
             
-            NSLog(@"SENSOR_VALUE");
+            //NSLog(@"SENSOR_VALUE");
             
             break;
             

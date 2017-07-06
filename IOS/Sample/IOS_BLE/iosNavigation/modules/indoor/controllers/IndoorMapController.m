@@ -146,7 +146,7 @@
    [[BeaconManager sharedManager] startBeacon];
     [[BeaconManager sharedManager] setBeaconMap:self.floor withBeaconData:self.floor.beacons];
  
-    //[BeaconManager sharedManager].delegate = self;
+    [BeaconManager sharedManager].delegate = self;
 }
 #pragma mark - IndoorStreamControllerDelegate -
 -(void) refreshRouteWihtStartPoint:(CGPoint)startPoint tapPint:(CGPoint)tapPoint{

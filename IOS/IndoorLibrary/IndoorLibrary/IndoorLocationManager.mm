@@ -5,7 +5,7 @@
 //  Created by AppleFace on 06.03.17.
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
-
+#define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
 #import "IndoorLocationManager.h"
 #import "BluetoothMeasurementProvider.h"
 #import "GPSMeasurementProvider.h"
@@ -236,16 +236,17 @@
         BOOL initialise = BluetoothBridge_isInitialise();
         if (initialise)
         {
-            SensorBridge_setAccelConfig(0, false);
-            double output[] = {0.0, 0.0};
+            SensorBridge_setAccelConfig(0, true);
+            double output[] = {-1.0, -1.0};
             BluetoothBridge_getInitialisePosition(output);
-            SensorBridge_init(output[0], output[1]);
-            self.initSensorNavigator = YES;
+            if(output[0] != -1.0 && output[1] != -1.0){
+                SensorBridge_init(output[0], output[1]);
+                self.initSensorNavigator = YES;
+            }
         }
         }
         else{
         SensorBridge_getLastPosition(outPosition);
-           // NSLog(@"-------SensorBridge_getLastPosition------");
         }
     }
     else if (self.managerMode == MESH_MODE){
@@ -257,7 +258,6 @@
     for (int i = 0; i < 3; i++)
     {
         [coordinates addObject:@(outPosition[i])];
-        //NSLog(@"-------Position------%f",outPosition[i]);
         
         
     }
@@ -398,9 +398,7 @@
   }
     if (event.type == SENSOR_VALUE)
     {
-        SensorBridge_proces(event.timestamp, event.accelerometerData.acceleration.x, event.accelerometerData.acceleration.y, event.accelerometerData.acceleration.z, event.motion.attitude.pitch,  event.motion.attitude.yaw,  event.motion.attitude.roll);
-        NSLog(@"-------------------------%f",event.motion.attitude.roll);
-
+        SensorBridge_proces(event.timestamp, event.accelerometerData.acceleration.x, event.accelerometerData.acceleration.y, event.accelerometerData.acceleration.z, RADIANS_TO_DEGREES(event.motion.attitude.pitch),  RADIANS_TO_DEGREES(event.motion.attitude.yaw),  RADIANS_TO_DEGREES(event.motion.attitude.roll));
     }
 }
 

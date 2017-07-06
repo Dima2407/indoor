@@ -84,7 +84,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         JNIEnv *env, jobject instance, jobjectArray beacons);
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *, jobject , jfloatArray);
+Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *, jobject, jfloatArray);
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArray(JNIEnv *env, jobject instance,
@@ -106,8 +106,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setGraphArraysFromFile(JNIEnv *env, 
 
 //endregion
 
-void prepare_sdk(JNIEnv *env)
-{
+void prepare_sdk(JNIEnv *env) {
     api.kSpaceBeaconClass = env->FindClass("pro/i_it/indoor/region/SpaceBeacon");
     api.kSpaceBeaconGetPositionMethod = env->GetMethodID(api.kSpaceBeaconClass, "getPosition",
                                                          "()[F");
@@ -150,6 +149,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
+    LOGD("event %d at %f ", eventTypeCode, eventTime);
     if (eventTypeCode == 2) {
         jstring uuidString = (jstring) env->GetObjectField(obj, api.kMeasurementEventUUIDField);
 
@@ -157,15 +157,35 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
 
         BeaconUID uid(uuid, (int) data[0], (int) data[1]);
 
+        LOGD("beacon %s, major ( %d ), minor ( %d ), rssi ( %f ), tx ( %f ) ", uuid, (int) data[0],
+             (int) data[1], data[3], data[2]);
+
         BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
 
         Position3D outPos = navigator->process(brd);
-        LOGD("position from beacons (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
+        LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
 
         env->ReleaseStringUTFChars(uuidString, uuid);
-    } else if (eventTypeCode == 1 && currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator != NULL) {
+    } else if (eventTypeCode == 1 && currentMode == SENSOR_BEACON_NAVIGATOR &&
+               sensorNavigator != NULL) {
 
-        AccelReceivedData ard{eventTime, data[0], data[1], data[2], data[3], data[4], data[5]};
+        double ax = data[0];
+        double ay = data[1];
+        double az = data[2];
+        double azimut = data[3];
+        double pitch = data[4];
+        double roll = data[5];
+        LOGD("sensor ax ( %f ), ay ( %f ), az ( %f ), azimut ( %f ) , pitch ( %f ) , roll ( %f ) ",
+             ax, ay, az, azimut, pitch, roll);
+
+        AccelReceivedData ard{
+                .timestamp = eventTime,
+                .ax = ax,
+                .ay = ay,
+                .az = az,
+                .pitch = pitch,
+                .roll = roll,
+                .yaw = azimut};
 
         Position3D outPos = sensorNavigator->process(ard);
         LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
@@ -250,9 +270,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
-    delete [] navigator;
+    delete[] navigator;
     navigator = NULL;
-    delete [] pointGraph;
+    delete[] pointGraph;
     pointGraph = NULL;
 }
 
@@ -289,10 +309,11 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
 }
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance, jfloatArray positionArray) {
+Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance,
+                                                                   jfloatArray positionArray) {
     Position3D outPos = navigator->getLastPosition();
 
-    if(currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL){
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL) {
         AccelConfig config;
         config.mapOrientationAngle = 0;
         config.useFilter = true;
@@ -302,9 +323,11 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
         sensorNavigator = new StandardAccelNavigator(mesh, startX, startY, config);
     }
 
-    if(currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator != NULL){
-        //TODO: outPos = sensorNavigator->getLastPosition();
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator != NULL) {
+        outPos = sensorNavigator->getLastPositon();
     }
+
+    LOGD("last position (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
 
     float *data = env->GetFloatArrayElements(positionArray, NULL);
     data[0] = (float) outPos.x;

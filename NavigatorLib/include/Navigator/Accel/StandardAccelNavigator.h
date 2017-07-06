@@ -41,13 +41,21 @@ public: //==== Methods
      * @param[in] ard Accelerometer data packet
      * @return        Position
      */
-    virtual Math::Position3D process(const AccelReceivedData &ard) override;
+    virtual const Math::Position3D  & process(const AccelReceivedData &ard) override;
+
+    /// Get last position
+    virtual const Math::Position3D  & getLastPositon() const override {
+        return lastPosition;
+    }
 
 private: //===== Data
     /// ZUPT algorithm, walls, mesh
     TrajectoryDetection trajectoryDetection;
     /// Rotation to global coordinates, filter step detection
     ToGlobal toGlobal;
+
+    /// Last position
+    Math::Position3D lastPosition;
 };
 }
 }

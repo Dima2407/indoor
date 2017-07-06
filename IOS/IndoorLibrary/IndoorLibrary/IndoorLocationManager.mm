@@ -9,7 +9,9 @@
 #import "IndoorLocationManager.h"
 #import "BluetoothMeasurementProvider.h"
 #import "GPSMeasurementProvider.h"
+#import "SensorMeasurementProvider.h"
 #import "BluetoothBridge.h"
+#import "SensorBridge.h"
 #import "IndoorError.h"
 
 
@@ -22,6 +24,7 @@
 @property (nonatomic, assign) NSTimeInterval time;
 @property (nonatomic, assign) BOOL startProviderFlag;
 @property (nonatomic, assign) IndoorLocationManagerMode managerMode;
+@property (nonatomic, assign) BOOL initSensorNavigator;
 @end
 
 
@@ -38,6 +41,7 @@
         self.time = 1;
         self.startProviderFlag = NO;
         self.beaconsUUIDs = [[NSMutableArray alloc] init];
+        _initSensorNavigator = NO;
         
     }
     return self;
@@ -67,6 +71,14 @@
                 NSLog(@"Add UUID before start BLE_PROVIDER");
             }
             provider = [[BluetoothMeasurementProvider alloc] initWithTransfer:self.transfer andUUIDs:self.beaconsUUIDs];
+            if(provider != nil){
+                
+                [self.providers addObject:provider];
+            }
+            
+            break;
+        case SENSOR_PROVIDER:
+            provider = [[SensorMeasurementProvider alloc] initWithTransfer: self.transfer];
             if(provider != nil){
                 
                 [self.providers addObject:provider];
@@ -104,6 +116,15 @@
                 else if (type == GPS_PROVIDER){
                     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
                         if (obj.type == BLE_PROVIDER)
+                        {
+                            obj = nil;
+                            [self.providers removeObject:obj];
+                        }
+                    }];
+                }
+                else if (type == SENSOR_PROVIDER){
+                    [self.providers enumerateObjectsUsingBlock:^(SensorMeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
+                        if (obj.type == SENSOR_PROVIDER)
                         {
                             obj = nil;
                             [self.providers removeObject:obj];
@@ -149,25 +170,44 @@
             NSLog(@"You can't add config in STANDART_MODE");
             
             break;
+            
+            case MESH_MODE:
+            [self _createMesh:meshIn andOut:masktableOut type:MESH_MODE];
+            break;
         case SENSOR_MODE:
+             [self _createMesh:meshIn andOut:masktableOut type:SENSOR_MODE];
+            
             break;
-            
-            
-        case MESH_MODE:
-            double nx = [[meshIn objectAtIndex:0] intValue], ny = [[meshIn objectAtIndex:1] intValue];
-            double dx =[[meshIn objectAtIndex:2] doubleValue], dy = [[meshIn objectAtIndex:3] doubleValue];
-            double x0 = [[meshIn objectAtIndex:4] doubleValue], y0 = [[meshIn objectAtIndex:5] doubleValue];
-            BluetoothBridge_createMesh(nx, ny, dx, dy, x0, y0);
-            
-            std::vector<int> buffer(masktableOut.count);
-            for (int i = 0; i < masktableOut.count; i++) {
-                buffer[i] = [[masktableOut objectAtIndex:i] intValue];
-            }
-            BluetoothBridge_setMaskTable(buffer);
-            break;
+
 
     }
 
+}
+-(void)_createMesh:(NSArray*)meshIn andOut:(NSArray*) masktableOut type:(IndoorLocationManagerMode)type{
+    double nx = [[meshIn objectAtIndex:0] intValue], ny = [[meshIn objectAtIndex:1] intValue];
+    double dx =[[meshIn objectAtIndex:2] doubleValue], dy = [[meshIn objectAtIndex:3] doubleValue];
+    double x0 = [[meshIn objectAtIndex:4] doubleValue], y0 = [[meshIn objectAtIndex:5] doubleValue];
+    if (type == SENSOR_MODE)
+    {
+        SensorBridge_createMesh(nx, ny, dx, dy, x0, y0);
+    }
+    else if (type == MESH_MODE){
+        BluetoothBridge_createMesh(nx, ny, dx, dy, x0, y0);
+    }
+    
+    
+    std::vector<int> buffer(masktableOut.count);
+    for (int i = 0; i < masktableOut.count; i++) {
+        buffer[i] = [[masktableOut objectAtIndex:i] intValue];
+    }
+    if (type == SENSOR_MODE)
+    {
+      SensorBridge_setMaskTable(buffer);
+    }
+    else if (type == MESH_MODE){
+        BluetoothBridge_setMaskTable(buffer);
+    }
+    
 }
 -(void)setGraph:(NSString*)graph and:(CGFloat) scale;{
     if (graph == nil)
@@ -184,21 +224,40 @@
     }
 }
 
-#pragma mark - Exaption 
-
-
-
-
 #pragma mark - Get Coordinates
 -(void)getCoordinates{
     
     NSMutableArray *coordinates = [NSMutableArray new];
     double outPosition[] = {0.0, 0.0, 0.0};
-    BluetoothBridge_getLastPosition(outPosition);
+    if (self.managerMode == SENSOR_MODE)
+    {
+        if (!_initSensorNavigator)
+        {
+        BOOL initialise = BluetoothBridge_isInitialise();
+        if (initialise)
+        {
+            SensorBridge_setAccelConfig(0, false);
+            double output[] = {0.0, 0.0};
+            BluetoothBridge_getInitialisePosition(output);
+            SensorBridge_init(output[0], output[1]);
+            self.initSensorNavigator = YES;
+        }
+        }
+        else{
+        SensorBridge_getLastPosition(outPosition);
+           // NSLog(@"-------SensorBridge_getLastPosition------");
+        }
+    }
+    else if (self.managerMode == MESH_MODE){
+        BluetoothBridge_getLastPosition(outPosition);
+    }
+    else if (self.managerMode == STANDART_MODE){
+        BluetoothBridge_getLastPosition(outPosition);
+    }
     for (int i = 0; i < 3; i++)
     {
         [coordinates addObject:@(outPosition[i])];
-        
+        //NSLog(@"-------Position------%f",outPosition[i]);
         
         
     }
@@ -258,8 +317,18 @@
 #pragma mark - Action
 
 -(void) prepare{
+    if (self.managerMode == SENSOR_MODE)
+    {
+        BluetoothBridge_init();
+    }
+    else if (self.managerMode == MESH_MODE){
+         BluetoothBridge_init();
+    }
+    else if (self.managerMode == STANDART_MODE){
+         BluetoothBridge_init();
+    }
     
-       BluetoothBridge_init();
+      
 }
 
 -(void) start{
@@ -317,6 +386,7 @@
         double timestamp = event.timestamp;
         BluetoothBridge_proces(timestamp, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi);
         
+        
     if (self.isStartLog)
     {
         NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -326,6 +396,12 @@
         [self.logs addObject:data];
     }
   }
+    if (event.type == SENSOR_VALUE)
+    {
+        SensorBridge_proces(event.timestamp, event.accelerometerData.acceleration.x, event.accelerometerData.acceleration.y, event.accelerometerData.acceleration.z, event.motion.attitude.pitch,  event.motion.attitude.yaw,  event.motion.attitude.roll);
+        NSLog(@"-------------------------%f",event.motion.attitude.roll);
+
+    }
 }
 
 

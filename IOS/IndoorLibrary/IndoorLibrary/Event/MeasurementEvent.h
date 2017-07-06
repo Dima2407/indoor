@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CLBeaconRegion.h>
+#import <CoreMotion/CoreMotion.h>
 
 typedef NS_ENUM(NSInteger, MeasurementType)
 {
@@ -26,7 +27,10 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 @property (nonatomic, assign) CGFloat longitude;
 @property (nonatomic, strong) CLBeacon *beacon;
 @property (nonatomic, assign) CGFloat txPower;
+@property (nonatomic, assign) CMAccelerometerData  *accelerometerData;
+@property (nonatomic, assign) CMDeviceMotion *motion;
 
 -(instancetype)initWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude;
 -(instancetype)initWithBeacon:(CLBeacon *)beacon;
+-(instancetype)initWithAccelerometerData:(CMAccelerometerData *)accelerometer andDeviceMotion:(CMDeviceMotion*)motion;
 @end

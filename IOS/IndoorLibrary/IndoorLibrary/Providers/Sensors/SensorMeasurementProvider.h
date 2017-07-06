@@ -11,4 +11,5 @@
 
 @interface SensorMeasurementProvider : MeasurementProvider
 
+-(instancetype)initWithTransfer: (IosMeasurementTransfer*) sensorTransfer;
 @end

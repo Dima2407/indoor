@@ -50,4 +50,17 @@
     }
     return self;
 }
+-(instancetype)initWithAccelerometerData:(CMAccelerometerData *)accelerometer andDeviceMotion:(CMDeviceMotion*)motion{
+    self = [super init];
+    
+    
+    if (self != nil)
+    {
+        _timestamp = [[NSDate date] timeIntervalSince1970];
+        _accelerometerData = accelerometer;
+        _motion = motion;
+        _type = SENSOR_VALUE;
+    }
+    return self;
+}
 @end

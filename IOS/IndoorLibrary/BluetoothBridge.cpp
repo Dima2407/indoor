@@ -6,8 +6,6 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#include <memory>
-
 #include "BluetoothBridge.h"
 
 

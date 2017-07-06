@@ -45,7 +45,9 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
         self.manager.locationListener = self;
         self.manager.errorListener = self;
         [self.manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
-        [self.manager addProvider:BLE_PROVIDER];
+        //[self.manager addProvider:BLE_PROVIDER];
+        [self.manager addProvider:SENSOR_PROVIDER];
+
 
         
     }
@@ -65,6 +67,10 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     else if ([mode isEqualToString:@"UseMesh"]){
     
          [self.manager setMode:MESH_MODE];
+    }
+    else if ([mode isEqualToString:@"Sensor"]){
+        
+        [self.manager setMode:SENSOR_MODE];
     }
     else{
         NSLog(@"Invalid mode type");

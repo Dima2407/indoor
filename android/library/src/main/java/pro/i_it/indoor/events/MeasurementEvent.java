@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class MeasurementEvent {
 
+    //WARNING: don't rename this fields
     private final MeasurementType type;
     private final long timestamp;
     private final double[] data;

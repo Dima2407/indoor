@@ -36,6 +36,8 @@ import khpi.com.demo.utils.ManeuverHelper;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
+import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
+import pro.i_it.indoor.mesh.MeshConfig;
 
 import com.squareup.picasso.Picasso;
 
@@ -144,13 +146,16 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         initCamera();
         cameraPreview.updateCamera(getCamera());
 
-        instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
+        final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
+        instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
-        if (floor.getGraphPath().contains("/mapData/8/"))
-            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
-        else
-            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
-
+        if (floor.getGraphPath().contains("/mapData/8/")) {
+            //it-jim
+            instance.useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
+        }else {
+            //kaa
+            instance.useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
+        }
         instance.start();
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override

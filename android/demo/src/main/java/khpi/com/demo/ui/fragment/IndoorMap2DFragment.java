@@ -46,6 +46,8 @@ import khpi.com.demo.utils.NetUtil;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
+import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
+import pro.i_it.indoor.mesh.MeshConfig;
 import pro.i_it.indoor.region.BluetoothBeacon;
 import pro.i_it.indoor.region.InMemoryBeaconsLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
@@ -94,9 +96,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     private RecyclerView.OnScrollListener listener;
     private Floor floor;
     private View cameraBtn;
-
-    private TimerTask task;
-    private Timer timer;
 
     public static String KEY_FLOOR_MAP = "floorMap";
     public static int REGION_RADIUS = 10;
@@ -197,23 +196,18 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     @Override
     public void onResume() {
         super.onResume();
-        instance.setMode(getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask());
+        final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
+        instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
-        if (floor.getGraphPath().contains("/mapData/8/"))
-            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.IT_JIM);
-        else
-            instance.setCurrentMap(getContext(), IndoorLocationManager.CurrentMap.KAA_OFFICE);
+        if (floor.getGraphPath().contains("/mapData/8/")) {
+            //it-jim
+            instance.useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
+        }else {
+            //kaa
+            instance.useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
+        }
 
         instance.start();
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                instance.callEvent();
-            }
-        };
-        timer = new Timer();
-        timer.schedule(task, 0l, 1000l);
-
         instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
@@ -286,9 +280,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     public void onPause() {
         Log.d("onLocationChanged", "onPause: ");
         super.onPause();
-        timer.cancel();
-        timer.purge();
-        task.cancel();
         instance.stop();
 
     }

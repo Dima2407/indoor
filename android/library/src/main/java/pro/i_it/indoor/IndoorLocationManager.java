@@ -1,8 +1,11 @@
 package pro.i_it.indoor;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import pro.i_it.indoor.events.MeasurementType;
+import pro.i_it.indoor.masks.MaskTableFetcher;
+import pro.i_it.indoor.mesh.MeshConfig;
 import pro.i_it.indoor.providers.*;
 import pro.i_it.indoor.region.BeaconsInRegionLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
@@ -26,20 +29,20 @@ public class IndoorLocationManager {
         System.loadLibrary("native-lib");
     }
 
-    private OnLocationUpdateListener internalLocationUpdateListener;
     private OnLocationUpdateListener onLocationUpdateListener;
     private BeaconsInRegionLoader beaconsInRegionLoader;
     private Mode mode = Mode.TRILATERATION_BEACON_NAVIGATOR;
-    private CurrentMap currentMap = CurrentMap.KAA_OFFICE;
-    private int[] maskArray;
-    private Context context;
 
     private OnErrorListener onErrorListener;
+    private Handler positionRequester;
 
     private Set<MeasurementProvider> providers;
+    private MaskTableFetcher maskTableFetcher;
+    private MeshConfig meshConfig;
 
     public IndoorLocationManager() {
         this.providers = new HashSet<>();
+        this.positionRequester = new Handler();
     }
 
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
@@ -54,17 +57,8 @@ public class IndoorLocationManager {
         this.onErrorListener = onErrorListener;
     }
 
-    public Mode getMode() {
-        return mode;
-    }
-
-    public void setMode(boolean useBinaryMask) {
-        this.mode = useBinaryMask ? Mode.STANDARD_BEACON_NAVIGATOR : Mode.TRILATERATION_BEACON_NAVIGATOR;
-    }
-
-    public void setCurrentMap(Context context, CurrentMap map) {
-        this.currentMap = map;
-        this.context = context;
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
     public void addProvider(Context context, MeasurementType type, MeasurementTransfer transfer) {
@@ -88,48 +82,9 @@ public class IndoorLocationManager {
         this.addProvider(context, type, new AndroidDebuggableMeasurementTransfer());
     }
 
-    private void readFileWithMask() {
-        List<Integer> maskList = new ArrayList<>();
-        int[] maskArray;
-
-        switch (currentMap) {
-
-            case KAA_OFFICE:
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources()
-                        .openRawResource(R.raw.masktable2)))) {
-                    String str;
-                    while ((str = br.readLine()) != null) {
-                        maskList.add(Integer.valueOf(str.trim()));
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                maskArray = new int[maskList.size()];
-                for (int i = 0; i < maskArray.length; i++)
-                    maskArray[i] = maskList.get(i);
-                this.maskArray = maskArray;
-                break;
-
-            case IT_JIM:
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources()
-                        .openRawResource(R.raw.masktable1)))) {
-                    String str;
-                    while ((str = br.readLine()) != null) {
-                        maskList.add(Integer.valueOf(str.trim()));
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                maskArray = new int[maskList.size()];
-                for (int i = 0; i < maskArray.length; i++)
-                    maskArray[i] = maskList.get(i);
-                this.maskArray = maskArray;
-                break;
-        }
+    public void useMask(MeshConfig meshConfig, MaskTableFetcher fetcher){
+        this.meshConfig  = meshConfig;
+        this.maskTableFetcher = fetcher;
     }
 
     public double[] getRoute(double x1, double y1, double x2, double y2) {
@@ -138,18 +93,20 @@ public class IndoorLocationManager {
     }
 
     public void start() {
-        setNativeCurrentMap(currentMap.code);
-        readFileWithMask();
-        setNativeMaskArray(maskArray);
-        internalLocationUpdateListener = new OnLocationUpdateListener() {
+        for (MeasurementProvider provider : providers) {
+            provider.start();
+        }
+        nativeInit(mode.getCode(), maskTableFetcher.fetchMaskTable(), meshConfig);
+        final float[] lastPosition = new float[3];
+        positionRequester.postDelayed(new Runnable() {
             @Override
-            public void onLocationChanged(float[] position) {
+            public void run() {
+                nativeTakeLastPosition(lastPosition);
                 if (onLocationUpdateListener != null) {
-                  //  position = new float[]{1f, 1.0f, 0, 0};
-                    onLocationUpdateListener.onLocationChanged(position);
+                    onLocationUpdateListener.onLocationChanged(lastPosition);
                 }
                 if (beaconsInRegionLoader != null) {
-                    SpaceRegion region = beaconsInRegionLoader.onLocationChanged(position[0], position[1], position[2]);
+                    SpaceRegion region = beaconsInRegionLoader.onLocationChanged(lastPosition[0], lastPosition[1], lastPosition[2]);
                     if (region.isChanged()) {
                         Set<SpaceBeacon> beacons = region.getBeacons();
                         SpaceBeacon[] data = new SpaceBeacon[beacons.size()];
@@ -158,43 +115,40 @@ public class IndoorLocationManager {
                         nativeSetBeacons(data);
                     }
                 }
+                positionRequester.postDelayed(this, 1000);
             }
-        };
-        for (MeasurementProvider provider : providers) {
-            provider.start();
-        }
-        nativeInit(mode.getCode(), internalLocationUpdateListener);
+        }, 1000);
     }
 
     public void stop() {
-       /* for (MeasurementProvider provider : providers) {
+        for (MeasurementProvider provider : providers) {
             provider.stop();
-        }*/
+        }
         onLocationUpdateListener = null;
-        internalLocationUpdateListener = null;
+        positionRequester.removeCallbacksAndMessages(null);
         nativeRelease();
     }
+    //route
 
     private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
 
+    //route
     public native void setGraphArraysFromFile(String fileContent, double scale);
 
-    private native void setNativeMaskArray(int[] mask);
-
-    private native void setNativeCurrentMap(int map);
-
-    private native void nativeInit(int modeType, OnLocationUpdateListener onUpdateListener);
+    private native void nativeInit(int modeType, int[] mask, MeshConfig config);
 
     private native void nativeRelease();
 
     private native void nativeSetBeacons(SpaceBeacon[] beacons);
 
-    public native void callEvent();
+    private native void nativeTakeLastPosition(float [] position);
 
     public enum Mode {
         @Deprecated
         TRILATERATION_BEACON_NAVIGATOR(0),
-        STANDARD_BEACON_NAVIGATOR(1);
+        @Deprecated
+        STANDARD_BEACON_NAVIGATOR(1),
+        SENSOR_BEACON_NAVIGATOR(2);
 
         private int code;
 
@@ -204,17 +158,6 @@ public class IndoorLocationManager {
 
         public int getCode() {
             return code;
-        }
-    }
-
-    public enum CurrentMap {
-        KAA_OFFICE(0),
-        IT_JIM(1);
-
-        private int code;
-
-        CurrentMap(int code) {
-            this.code = code;
         }
     }
 }

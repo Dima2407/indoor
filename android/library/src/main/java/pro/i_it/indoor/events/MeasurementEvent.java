@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class MeasurementEvent {
 
+    //WARNING: don't rename this fields
     private final MeasurementType type;
     private final long timestamp;
     private final double[] data;
@@ -36,6 +37,10 @@ public class MeasurementEvent {
         return new MeasurementEvent(MeasurementType.WIFI_VALUE,
                 wifi.SSID,
                 wifi.level);
+    }
+
+    public static MeasurementEvent createFromSensor(float x, float y, float z, float azimut, float pitch, float roll) {
+        return new MeasurementEvent(MeasurementType.SENSOR_VALUE, null, x, y, z, azimut, pitch, roll);
     }
 
     @Override

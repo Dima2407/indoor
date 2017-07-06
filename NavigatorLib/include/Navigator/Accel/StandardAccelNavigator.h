@@ -13,9 +13,21 @@
 namespace Navigator {
 namespace Accel {
 
+    /** @brief
+     *
+     */
 class StandardAccelNavigator : public AbstractAccelNavigator{
 public: //==== Methods
-    /// Constructor
+    /** @brief Constructor
+     *
+     * For the accelerometer navigation you need an initial position.
+     * Which is supposed to be obtained by the BLE navigation.
+     *
+     * @param[in] rMesh   Mesh+masktable,  nullptr disables all map functions
+     * @param[in] posX    Initial X position
+     * @param[in] posY    Initial Y position
+     * @param[in] config  Configuration, optional (default if not specified)
+     */
     StandardAccelNavigator(const std::shared_ptr<Mesh::RectanMesh> &rMesh,
                            double posX,
                            double posY,
@@ -24,10 +36,26 @@ public: //==== Methods
         toGlobal(config)
     {}
 
-    virtual Math::Position3D process(const AccelReceivedData &ard) override;
+    /** @brief Process an accelerometer data packet and return position
+     *
+     * @param[in] ard Accelerometer data packet
+     * @return        Position
+     */
+    virtual const Math::Position3D  & process(const AccelReceivedData &ard) override;
+
+    /// Get last position
+    virtual const Math::Position3D  & getLastPositon() const override {
+        return lastPosition;
+    }
+
 private: //===== Data
+    /// ZUPT algorithm, walls, mesh
     TrajectoryDetection trajectoryDetection;
+    /// Rotation to global coordinates, filter step detection
     ToGlobal toGlobal;
+
+    /// Last position
+    Math::Position3D lastPosition;
 };
 }
 }

@@ -263,6 +263,7 @@ public final class FloorRedactorActivity extends BaseActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void initViews() {
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         toolbar.setNavigationIcon(NavigationButtonFactory.createBackButton(this));
@@ -482,7 +483,7 @@ public final class FloorRedactorActivity extends BaseActivity {
             if (CalibrationResult.listContainsBeacon(calibrationResults, beaconModel)) {
                 calibrationResults.get(CalibrationResult.findIndex(calibrationResults, beaconModel))
                         .setCalibratedBeacon(beaconModel);
-            }
+                }
         }
 
         saveCalibrationResults();
@@ -846,6 +847,7 @@ public final class FloorRedactorActivity extends BaseActivity {
             beaconModel.setPosition(new PointF(((float) (model.getPosition().x * floorModel.getPixelSize())),
                                                (float) (model.getPosition().y * floorModel.getPixelSize())
             ));
+            beaconModel.setPositionZ(model.getPositionZ());
 
             result.add(i, beaconModel);
         }

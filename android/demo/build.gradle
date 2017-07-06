@@ -20,22 +20,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{
-            buildConfigField "String", "DEVELOPER_SERVER_URL", "\"http://185.86.76.206:8081/\""
-            buildConfigField "String", "PRODUCTION_SERVER_URL", "\"http://46.228.203.238:8080/\""
+            buildConfigField "String", "DEVELOPER_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
+            buildConfigField "String", "PRODUCTION_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
             buildConfigField "String", "DIRECTIONS_API_KEY", "\"AIzaSyASl2rXRVHQgnlXIDswpZrZWX8OHLg2fAs\""
-            buildConfigField "String", "USERNAME", "\"droid321\""
-            buildConfigField "String", "PASSWORD", "\"droid321\""
+            buildConfigField "String", "USERNAME", "\"xxx\""
+            buildConfigField "String", "PASSWORD", "\"12345678\""
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
-
     compile 'com.android.support:design:25.2.0'
     compile 'com.google.firebase:firebase-crash:9.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -47,9 +46,6 @@ dependencies {
     compile 'com.pkmmte.view:circularimageview:1.1'
     compile 'com.hackoeur:jglm:1.0.0'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
-
     compile project(':library')
     testCompile 'junit:junit:4.12'
-
-
 }

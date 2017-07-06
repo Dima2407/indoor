@@ -37,6 +37,17 @@ struct AccelConfig{
 
     /// Gravity (acceleration unit of the accelerometer in m/s^2)
     double globG = 9.8066;
+
+    // Different aspects of a map (mesh+mask). Note: if mesh = nullptr, it turns off all map aspects.
+
+    /// Apply map edges
+    bool useMapEdges = true;
+
+    /// Apply wall algorithm
+    bool useWalls = true;
+
+    /// Use mesh+mask to the final pposition
+    bool useMeshMask = true;
 };
 }
 }

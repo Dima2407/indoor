@@ -72,7 +72,8 @@ public class FloorsFragment extends GenericFragment implements AbstractRecyclerA
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Wait...");
         progressDialog.show();
-        MapCacheHelper.cacheMapData(getContext(), item, this);
+        getActivityBridge().getProjectApplication().getMapCacheHelper()
+                .cacheMapData( item, this);
         getActivityBridge().getNetBridge().loadInpointsByBuildingId(item.getBuildingId());
     }
 

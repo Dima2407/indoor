@@ -46,7 +46,7 @@ public class IndoorLocationManager {
     }
 
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
-        this.onLocationUpdateListener = listener;
+        this.onLocationUpdateListener = new LoggableLocationUpdateListener(listener);
     }
 
     public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader) {
@@ -79,7 +79,7 @@ public class IndoorLocationManager {
     }
 
     public void addProvider(Context context, MeasurementType type) {
-        this.addProvider(context, type, new AndroidDebuggableMeasurementTransfer());
+        this.addProvider(context, type, new AndroidLoggableMeasurementTransfer(new AndroidDebuggableMeasurementTransfer()));
     }
 
     public void useMask(MeshConfig meshConfig, MaskTableFetcher fetcher){

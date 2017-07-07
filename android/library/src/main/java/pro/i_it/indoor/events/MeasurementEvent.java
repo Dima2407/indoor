@@ -47,4 +47,16 @@ public class MeasurementEvent {
     public String toString() {
         return type + " event at " + timestamp + " - " + Arrays.toString(data);
     }
+
+    public MeasurementType getType() {
+        return type;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public double[] getData() {
+        return data;
+    }
 }

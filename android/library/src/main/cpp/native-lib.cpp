@@ -21,7 +21,7 @@ using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 
-AbstractBeaconNavigator *navigator;
+StandardBeaconNavigator *navigator;
 StandardAccelNavigator *sensorNavigator;
 PointGraph *pointGraph;
 shared_ptr<RectanMesh> mesh;
@@ -236,7 +236,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         case TRILATERATION_BEACON_NAVIGATOR : {
             auto rssiFact = make_shared<MovingAverageFilterFactory>(3);
             auto distFact = make_shared<NoFilterFactory>();
-            navigator = new TrilatBeaconNavigator(rssiFact, distFact);
+            //navigator = new TrilatBeaconNavigator(rssiFact, distFact);
         }
             break;
         case SENSOR_BEACON_NAVIGATOR   :
@@ -270,10 +270,14 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
-    delete[] navigator;
-    navigator = NULL;
-    delete[] pointGraph;
-    pointGraph = NULL;
+    if(navigator != NULL) {
+        delete[] navigator;
+        navigator = NULL;
+    }
+    if(pointGraph != NULL) {
+        delete[] pointGraph;
+        pointGraph = NULL;
+    }
 }
 
 JNIEXPORT void JNICALL
@@ -313,10 +317,12 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
                                                                    jfloatArray positionArray) {
     Position3D outPos = navigator->getLastPosition();
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL) {
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && navigator->isInitFinished() && sensorNavigator == NULL
+        && !std::isnan(outPos.x) && !std::isnan(outPos.y)) {
         AccelConfig config;
         config.mapOrientationAngle = 0;
         config.useFilter = true;
+        LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
         double startX = outPos.x, startY = outPos.y;
 

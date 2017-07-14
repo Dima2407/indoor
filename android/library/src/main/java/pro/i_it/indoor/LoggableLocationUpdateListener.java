@@ -27,8 +27,8 @@ public class LoggableLocationUpdateListener implements OnLocationUpdateListener 
             object.put("x", position[0]);
             object.put("y", position[1]);
             saveToFile("/storage/emulated/0/Download/positions.json", object);
-        } catch (JSONException e) {
-            Log.e(LoggableLocationUpdateListener.class.getSimpleName(), "onLocationChanged: ", e);
+        } catch (Exception e) {
+            Log.w(LoggableLocationUpdateListener.class.getSimpleName(), "onLocationChanged: ", e);
         }
         listener.onLocationChanged(position);
     }

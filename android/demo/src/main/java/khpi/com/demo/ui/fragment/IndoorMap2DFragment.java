@@ -392,8 +392,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         }
         mapView.setCoordinates(tx, ty, x, y);
 
-        Log.wtf("For Alexey.", "Current coords : x = " + x + " ;y = " + y + " ;tx = " + tx + " ;ty = " + ty);
-
         if (dest.x == 0 && dest.y == 0) {
             mapView.setRoute(new float[0]);
             return;

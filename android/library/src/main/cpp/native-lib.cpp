@@ -21,9 +21,9 @@ using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 
-StandardBeaconNavigator *navigator;
-StandardAccelNavigator *sensorNavigator;
-PointGraph *pointGraph;
+StandardBeaconNavigator *navigator = NULL;
+StandardAccelNavigator *sensorNavigator = NULL;
+PointGraph *pointGraph = NULL;
 shared_ptr<RectanMesh> mesh;
 
 typedef struct IndoorSdkApi {
@@ -77,7 +77,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
-        JNIEnv *env, jobject instance);
+        JNIEnv *, jobject );
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
@@ -274,6 +274,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         delete[] navigator;
         navigator = NULL;
     }
+    if(sensorNavigator != NULL){
+        delete[] sensorNavigator;
+        sensorNavigator = NULL;
+    }
     if(pointGraph != NULL) {
         delete[] pointGraph;
         pointGraph = NULL;
@@ -315,18 +319,25 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance,
                                                                    jfloatArray positionArray) {
-    Position3D outPos = navigator->getLastPosition();
+   /* if(!navigator->isInitFinished()){
+        return;
+    }*/
+    Position3D outPos(3.0, 12.5, 0.0);//navigator->getLastPosition();
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && navigator->isInitFinished() && sensorNavigator == NULL
+    if(currentMode == STANDARD_BEACON_NAVIGATOR && std::isnan(outPos.x) && std::isnan(outPos.y)){
+        return;
+    }
+
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL
         && !std::isnan(outPos.x) && !std::isnan(outPos.y)) {
         AccelConfig config;
-        config.mapOrientationAngle = 0;
-        config.useFilter = true;
+        config.mapOrientationAngle = 180;
+        config.useFilter = false;
         LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
         double startX = outPos.x, startY = outPos.y;
 
-        sensorNavigator = new StandardAccelNavigator(mesh, startX, startY, config);
+        sensorNavigator = new StandardAccelNavigator(NULL, startX, startY, config);
     }
 
     if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator != NULL) {

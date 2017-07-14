@@ -24,6 +24,7 @@ public class IndoorLocationManager {
 
 
     private static final String TAG = IndoorLocationManager.class.getSimpleName();
+    private volatile boolean active  = false;
 
     static {
         System.loadLibrary("native-lib");
@@ -89,38 +90,45 @@ public class IndoorLocationManager {
 
     public double[] getRoute(double x1, double y1, double x2, double y2) {
 
-        return getNativeRoute(x1, y1, x2, y2);
+        return getRoute(x1, y1, x2, y2);
     }
 
     public void start() {
+        active = true;
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
         nativeInit(mode.getCode(), maskTableFetcher.fetchMaskTable(), meshConfig);
-        final float[] lastPosition = new float[3];
+        final float[] lastPosition = new float[]{-1.0f,-1.0f,-1.0f};
         positionRequester.postDelayed(new Runnable() {
             @Override
             public void run() {
-                nativeTakeLastPosition(lastPosition);
-                if (onLocationUpdateListener != null) {
-                    onLocationUpdateListener.onLocationChanged(lastPosition);
-                }
-                if (beaconsInRegionLoader != null) {
-                    SpaceRegion region = beaconsInRegionLoader.onLocationChanged(lastPosition[0], lastPosition[1], lastPosition[2]);
-                    if (region.isChanged()) {
-                        Set<SpaceBeacon> beacons = region.getBeacons();
-                        SpaceBeacon[] data = new SpaceBeacon[beacons.size()];
-                        beacons.toArray(data);
-                        Log.d("TAGBEACON", "setBeacons, region.getBeacons.SIZE + " + region.getBeacons().size());
-                        nativeSetBeacons(data);
+                if(active) {
+                    nativeTakeLastPosition(lastPosition);
+                    if(lastPosition[0] >= 0.0f || lastPosition[1] >= 0.0f){
+                        if (onLocationUpdateListener != null) {
+                            onLocationUpdateListener.onLocationChanged(lastPosition);
+                        }
+                        if (beaconsInRegionLoader != null) {
+                            SpaceRegion region = beaconsInRegionLoader.onLocationChanged(lastPosition[0], lastPosition[1], lastPosition[2]);
+                            if (region.isChanged()) {
+                                Set<SpaceBeacon> beacons = region.getBeacons();
+                                SpaceBeacon[] data = new SpaceBeacon[beacons.size()];
+                                beacons.toArray(data);
+                                Log.d("TAGBEACON", "setBeacons, region.getBeacons.SIZE + " + region.getBeacons().size());
+                                nativeSetBeacons(data);
+                            }
+                        }
                     }
+                    positionRequester.postDelayed(this, 100);
                 }
-                positionRequester.postDelayed(this, 1000);
             }
-        }, 1000);
+        }, 100);
+
     }
 
     public void stop() {
+        active = false;
         for (MeasurementProvider provider : providers) {
             provider.stop();
         }

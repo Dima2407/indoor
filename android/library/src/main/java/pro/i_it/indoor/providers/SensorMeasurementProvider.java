@@ -9,8 +9,6 @@ import android.util.Pair;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
-
-
 import pro.i_it.indoor.events.MeasurementEvent;
 
 public class SensorMeasurementProvider extends MeasurementProvider {
@@ -44,6 +42,9 @@ public class SensorMeasurementProvider extends MeasurementProvider {
             if (accelerometerValues != null && magneticValues != null) {
                 float[] xyzA = accelerometerValues;
                 float[] xyzM = magneticValues;
+                float ax = (accelerometerValues[0] / 9.81f);
+                float ay = (accelerometerValues[1] / 9.81f);
+                float az = (accelerometerValues[2] / 9.81f);
 
                 SensorManager.getRotationMatrix(inR, null, xyzA, xyzM);
 
@@ -59,8 +60,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
                 float roll = result[2];
 
                 if (transfer != null) {
-                    // TODO
-                    final MeasurementEvent measurementEvent = MeasurementEvent.createFromSensor(xyzA[0], xyzA[1], xyzA[2], pitch, azimut, roll);
+                    final MeasurementEvent measurementEvent = MeasurementEvent.createFromSensor(ax, ay, az, azimut, pitch, roll);
                     transfer.deliver(measurementEvent);
 
                 }

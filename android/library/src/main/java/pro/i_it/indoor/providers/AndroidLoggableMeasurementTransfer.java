@@ -29,8 +29,8 @@ public class AndroidLoggableMeasurementTransfer implements MeasurementTransfer {
 
                 saveToFile("/storage/emulated/0/Download/accelerometer.json", convertAccel(event));
                 saveToFile("/storage/emulated/0/Download/angles.json", convertAngles(event));
-            } catch (JSONException e) {
-                Log.e(AndroidLoggableMeasurementTransfer.class.getSimpleName(), "deliver: ", e);
+            } catch (Exception e) {
+                Log.w(AndroidLoggableMeasurementTransfer.class.getSimpleName(), "deliver: ", e);
             }
         }
         transfer.deliver(event);

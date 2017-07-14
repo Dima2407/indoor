@@ -36,6 +36,15 @@
        
 
     }
+    if(event.type == SENSOR_VALUE){
+        
+        SEL selector = @selector(processEvent:);
+        if (self.delegate && [self.delegate respondsToSelector:selector]) {
+            [self.delegate performSelector:selector withObject:event];
+        }
+        
+        
+    }
     NSInteger eventType = event.type;
     switch (eventType) {
         case GEO_VALUE:
@@ -53,7 +62,7 @@
             break;
         case SENSOR_VALUE:
             
-            NSLog(@"SENSOR_VALUE");
+            //NSLog(@"SENSOR_VALUE");
             
             break;
             

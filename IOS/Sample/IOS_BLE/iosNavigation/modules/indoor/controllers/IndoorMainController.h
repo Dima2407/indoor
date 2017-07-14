@@ -27,7 +27,7 @@ typedef enum{
     
 }ConvertType;
 
-@interface IndoorMainController : UIViewController <UIScrollViewDelegate,BeaconManagerDelegate>
+@interface IndoorMainController : UIViewController <UIScrollViewDelegate, BeaconManagerDelegate>
 
 @property (assign, nonatomic) BOOL isRoute;
 

@@ -6,12 +6,9 @@
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#include <memory>
-
 #include "BluetoothBridge.h"
 
 
-//std::shared_ptr<Navigator::Beacons::TrilatBeaconNavigator> navigator;
  std::shared_ptr<Navigator::Beacons::StandardBeaconNavigator> navigator;
 std::shared_ptr<Navigator::Mesh::RectanMesh> mesh;
 std::shared_ptr<Navigator::Dijkstra::PointGraph> gr;
@@ -31,9 +28,6 @@ void BluetoothBridge_init() {
         navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(mesh,true);
         printf("Create Mesh Navigator");
     }
-        
-    
-    ///<::Beacons::TrilatBeaconNavigator> (rssiFact, distFact);
 
     
 }
@@ -155,9 +149,10 @@ bool BluetoothBridge_isInitialise(){
 extern "C"
 void BluetoothBridge_getInitialisePosition(double * output){
     Navigator::Math::Position3D outPos =  navigator->getInitPosition();
-    output[0] = outPos.x;
-    output[1] = outPos.y;
-    output[2] = outPos.z;
+    if(!std::isnan(outPos.x) && !std::isnan(outPos.y)){
+        output[0] = outPos.x;
+        output[1] = outPos.y;
+    }
    
     
 }

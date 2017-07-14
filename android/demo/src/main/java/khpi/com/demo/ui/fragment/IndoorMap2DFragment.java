@@ -201,9 +201,11 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
         if (floor.getGraphPath().contains("/mapData/8/")) {
             //it-jim
+            instance.setMapAngle(20);
             instance.useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
         }else {
             //kaa
+            instance.setMapAngle(0);
             instance.useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
         }
 

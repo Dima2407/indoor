@@ -59,8 +59,14 @@ public class SensorMeasurementProvider extends MeasurementProvider {
                 float pitch = result[1] * (-1);
                 float roll = result[2];
 
+                float tempAzimut = azimut - mapAngle;
+                if(tempAzimut > 180){
+                    tempAzimut = - 360 + tempAzimut;
+                }else if(tempAzimut < -180){
+                    tempAzimut = 360 + tempAzimut;
+                }
                 if (transfer != null) {
-                    final MeasurementEvent measurementEvent = MeasurementEvent.createFromSensor(ax, ay, az, azimut, pitch, roll);
+                    final MeasurementEvent measurementEvent = MeasurementEvent.createFromSensor(ax, ay, az, tempAzimut, pitch, roll);
                     transfer.deliver(measurementEvent);
 
                 }
@@ -73,6 +79,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
 
         }
     };
+    private float mapAngle;
 
 
     public SensorMeasurementProvider(Context context, MeasurementTransfer transfer) {
@@ -131,5 +138,9 @@ public class SensorMeasurementProvider extends MeasurementProvider {
                 break;
         }
         return new Pair<>(axis1, axis2);
+    }
+
+    public void setMapAngle(float mapAngle) {
+        this.mapAngle = mapAngle;
     }
 }

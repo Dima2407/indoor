@@ -19,6 +19,7 @@
 @property (strong, nonatomic) CLLocationManager *SensoroLocationManager;
 @property (strong, nonatomic) NSMutableData *jsonData;
 @property (strong, nonatomic) NSMutableArray *beaconsArray;
+@property (strong, nonatomic) NSMutableArray *positionArray;
 @property (nonatomic, strong)IndoorLocationManager *manager;
 @end
 static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
@@ -41,12 +42,14 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
         
         self.status = YES;
         self.jsonData = [NSMutableData data];
+        self.positionArray = [NSMutableArray new];
         self.manager = [[IndoorLocationManager alloc] init];
         self.manager.locationListener = self;
         self.manager.errorListener = self;
         [self.manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
         [self.manager addProvider:BLE_PROVIDER];
         [self.manager addProvider:SENSOR_PROVIDER];
+        self.manager.isStartLog = YES;
 
 
         
@@ -54,8 +57,10 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     return self;
 }
 -(NSArray*)getLogs{
+    NSMutableArray *log = [NSMutableArray arrayWithArray:[self.manager getLog]];
+    [log addObject:self.positionArray];
    
-    return [self.manager getLog];
+    return [log copy];
 }
 #pragma mark - Action
 
@@ -103,8 +108,14 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     
     CGFloat x = [[coordinte objectAtIndex:0] floatValue];
     CGFloat y = [[coordinte objectAtIndex:1] floatValue];
+    NSDictionary *pos = [NSDictionary dictionaryWithObjectsAndKeys:
+                     
+                        @(x),@"x",
+                        @(y),@"y",
+                        nil];
+    [self.positionArray addObject:pos];
     
-    if (isnan(x)) 
+    if (isnan(x))
 
     {
         
@@ -112,7 +123,7 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     }
     else{
 
-        NSLog(@"%f  %f",x,y);
+        //NSLog(@"%f  %f",x,y);
         NSArray* routing = nil;
         if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"kSettingsShowRout"])
         {

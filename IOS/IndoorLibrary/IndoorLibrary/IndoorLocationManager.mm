@@ -17,7 +17,9 @@
 
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
-@property (nonatomic, strong) NSMutableArray *logs;
+@property (nonatomic, strong) NSMutableArray *acselLogs;
+@property (nonatomic, strong) NSMutableArray *moutingLogs;
+@property (nonatomic, strong) NSMutableArray *beaconLogs;
 @property (nonatomic, strong) NSMutableSet *providers;
 @property (nonatomic, strong) IosMeasurementTransfer* transfer;
 @property (nonatomic, strong) NSMutableArray* beaconsUUIDs;
@@ -25,6 +27,7 @@
 @property (nonatomic, assign) BOOL startProviderFlag;
 @property (nonatomic, assign) IndoorLocationManagerMode managerMode;
 @property (nonatomic, assign) BOOL initSensorNavigator;
+@property (nonatomic, assign) double startTimestamp;
 @end
 
 
@@ -37,10 +40,13 @@
         self.providers = [NSMutableSet new];
         self.transfer = [[IosMeasurementTransfer alloc] init];
         self.transfer.delegate = self;
-        self.logs = [NSMutableArray new];
+        self.beaconLogs = [NSMutableArray new];
+        self.acselLogs = [NSMutableArray new];
+        self.moutingLogs = [NSMutableArray new];
         self.time = 1;
         self.startProviderFlag = NO;
         self.beaconsUUIDs = [[NSMutableArray alloc] init];
+        self.startTimestamp =  [[NSDate date] timeIntervalSince1970];
         _initSensorNavigator = NO;
         
     }
@@ -240,7 +246,8 @@
             double output[] = {-1.0, -1.0};
             BluetoothBridge_getInitialisePosition(output);
             if(output[0] != -1.0 && output[1] != -1.0){
-                SensorBridge_init(output[0], output[1]);
+               // SensorBridge_init(output[0], output[1]);
+                SensorBridge_init(3, 13);
                 self.initSensorNavigator = YES;
             }
         }
@@ -389,16 +396,51 @@
         
     if (self.isStartLog)
     {
+        NSString *time = [NSString stringWithFormat:@"%.3f",(timestamp -  self.startTimestamp)];
+
         NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
-                              @(timestamp),@"timestamp",
+                              @([time floatValue]),@"timestamp",
+                              @([event.beacon.major intValue]),@"major",
                               @([event.beacon.minor intValue]),@"minor",
+                              @(event.beacon.proximity),@"proximity",
+                              [event.beacon.proximityUUID UUIDString],@"proximityUUID",
+                              @(event.beacon.accuracy),@"accuracy",
                               @(event.beacon.rssi),@"rssi",nil];
-        [self.logs addObject:data];
+        [self.beaconLogs addObject:data];
     }
   }
     if (event.type == SENSOR_VALUE)
     {
-        SensorBridge_proces(event.timestamp, event.accelerometerData.acceleration.x, event.accelerometerData.acceleration.y, event.accelerometerData.acceleration.z, RADIANS_TO_DEGREES(event.motion.attitude.pitch),  RADIANS_TO_DEGREES(event.motion.attitude.yaw),  RADIANS_TO_DEGREES(event.motion.attitude.roll));
+        float azimuth = (RADIANS_TO_DEGREES(event.motion.attitude.yaw))+90;
+        
+        if (azimuth > 180) {
+            azimuth = azimuth -360;
+        }
+        SensorBridge_proces(event.timestamp, event.accelerometerData.acceleration.x, event.accelerometerData.acceleration.y, event.accelerometerData.acceleration.z, RADIANS_TO_DEGREES(event.motion.attitude.pitch),  azimuth,  RADIANS_TO_DEGREES(event.motion.attitude.roll));
+        if (self.isStartLog)
+            
+        {
+            if(self.initSensorNavigator){
+            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @(event.timestamp),@"timestamp",
+                                  @(event.accelerometerData.acceleration.x),@"x",
+                                  @(event.accelerometerData.acceleration.y),@"y",
+                                  @(event.accelerometerData.acceleration.z),@"z",
+                                  nil];
+            [self.acselLogs addObject:data];
+           
+            
+          
+            
+            NSDictionary *dataMouting = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         @(event.timestamp),@"timestamp",
+                                         @( RADIANS_TO_DEGREES(event.motion.attitude.pitch)),@"pitch",
+                                         @(azimuth),@"yaw",
+                                         @( RADIANS_TO_DEGREES(event.motion.attitude.roll)),@"roll",nil];
+             [self.moutingLogs addObject:dataMouting];
+        }
+        }
+
     }
 }
 
@@ -418,8 +460,10 @@
 
 -(NSArray*)getLog{
     
-    NSArray *indoorLogs = [NSArray arrayWithArray:self.logs];
-    [self.logs removeAllObjects];
+    NSArray *indoorLogs = [NSArray arrayWithObjects:[self.acselLogs copy],[self.moutingLogs copy],[self.beaconLogs copy],nil];
+    [self.acselLogs removeAllObjects];
+    [self.moutingLogs removeAllObjects];
+    [self.beaconLogs removeAllObjects];
     
     return indoorLogs;
 }

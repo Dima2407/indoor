@@ -41,7 +41,6 @@
     [self.motionManager setAccelerometerUpdateInterval:kCMDeviceMotionUpdateFrequency];
     [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue]
                         withHandler:^(CMAccelerometerData  *accelerometerData, NSError *error) {
-                              //  NSLog(@"Get CMAccelerometerData");
                             [self outputData];
                             
                                              }];
@@ -52,8 +51,6 @@
     
     [self.motionManager setDeviceMotionUpdateInterval:kCMDeviceMotionUpdateFrequency];
     [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXMagneticNorthZVertical toQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *motion, NSError *error){
-      // NSLog(@"Get CMDeviceMotion");
-           // [self outputDeviceMotionData:motion];
        
     }];
     
@@ -69,7 +66,6 @@
     MeasurementEvent * event =[[MeasurementEvent alloc] initWithAccelerometerData:accelerometerData andDeviceMotion:motion];
     event.timestamp = [[NSDate date] timeIntervalSince1970] - self.timestamp;
     [self.transfer deliver:event];
-    //NSLog(@"%@",accelerometerData);
     
     
 }

@@ -53,9 +53,14 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 #pragma mark - Action
 - (IBAction)sendLogs:(UIButton *)sender {
     NSError *error = nil;
+     NSArray *log = [[BeaconManager sharedManager] getLogs];
+    NSData *jsonSensorsAccelerometer = [NSJSONSerialization dataWithJSONObject:[log objectAtIndex:0] options:NSJSONWritingPrettyPrinted error:&error];
+   
+    NSData *anglesSensors = [NSJSONSerialization dataWithJSONObject:[log objectAtIndex:1] options:NSJSONWritingPrettyPrinted error:&error];
     
-    NSData *jsonIndoorData = [NSJSONSerialization dataWithJSONObject:[[BeaconManager sharedManager] getLogs] options:NSJSONWritingPrettyPrinted error:&error];
-    
+    NSData *position = [NSJSONSerialization dataWithJSONObject:[log objectAtIndex:3] options:NSJSONWritingPrettyPrinted error:&error];
+    NSData *beacons = [NSJSONSerialization dataWithJSONObject:[self _sortBeacons:[log objectAtIndex:2]] options:NSJSONWritingPrettyPrinted error:&error];
+ 
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     
     
@@ -66,10 +71,19 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     
     
     
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@IndoorLogs.txt",[dateFormatter stringFromDate:date]]];
-    [jsonIndoorData writeToFile:path atomically:YES];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@iOS_accelerometer.json",[dateFormatter stringFromDate:date]]];
+    NSString *pathAngles = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@iOS_angles.json",[dateFormatter stringFromDate:date]]];
+    NSString *pos = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@iOS_posotion.json",[dateFormatter stringFromDate:date]]];
+    NSString *bea = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@iOS_beacon.json",[dateFormatter stringFromDate:date]]];
+    [jsonSensorsAccelerometer writeToFile:path atomically:YES];
     NSURL *filePath = [NSURL fileURLWithPath:path];
-    NSArray *activity =[NSArray arrayWithObject:filePath];
+    [anglesSensors writeToFile:pathAngles atomically:YES];
+    NSURL *filePath1 = [NSURL fileURLWithPath:pathAngles];
+    [position writeToFile:pos atomically:YES];
+    NSURL *filePath2 = [NSURL fileURLWithPath:pos];
+    [beacons writeToFile:bea atomically:YES];
+    NSURL *filePath3 = [NSURL fileURLWithPath:bea];
+    NSArray *activity =[NSArray arrayWithObjects:filePath1, filePath, filePath2,filePath3, nil];
     UIActivityViewController* activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:activity
                                       applicationActivities:nil];
@@ -101,6 +115,32 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
  
     
 
+}
+-(NSArray*)_sortBeacons:(NSArray*)beacons{
+    NSMutableDictionary *arrays = [NSMutableDictionary new];
+    for (NSDictionary *beacon in beacons)
+    {
+        NSString *beaconMinor = [beacon objectForKey:@"minor"];
+        if (![arrays objectForKey:beaconMinor])
+        {
+            NSMutableArray *array = [[NSMutableArray alloc]initWithObjects:beacon,nil];
+            [arrays setObject:array forKey:[beacon objectForKey:@"minor"]];
+        }
+        else
+        {
+            NSMutableArray *array = [arrays objectForKey:beaconMinor];
+            [array addObject:beacon];
+            [arrays setObject:array forKey:beaconMinor];
+        }
+        
+    }
+
+    NSMutableArray *ar = [NSMutableArray new];
+    for (NSString * str in [arrays allKeys])
+    {
+        [ar addObject:[arrays objectForKey:str]];
+    }
+    return [ar copy];
 }
 
 - (IBAction) switchChanged:(UISwitch *)sender {

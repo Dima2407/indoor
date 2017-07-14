@@ -23,7 +23,7 @@ void SensorBridge_init(double startX, double startY) {
         printf("\nCreate  Accel Navigator without mesh");
     }
     else{
-        nv = new Navigator::Accel::StandardAccelNavigator(mesh, startX, startY, *config);
+        nv = new Navigator::Accel::StandardAccelNavigator(nullptr, startX, startY, *config);
         printf("\nCreate Mesh Accel Navigator");
     }
    
@@ -32,9 +32,9 @@ void SensorBridge_init(double startX, double startY) {
 extern "C"
 void SensorBridge_proces(double timestamp ,double ax, double ay, double az, double pitch, double yaw, double roll) {
     
-    
     Navigator::Accel::AccelReceivedData ard{
-        .timestamp =timestamp,
+       
+        .timestamp = timestamp,
         .ax = ax,
         .ay = ay,
         .az = az,
@@ -49,7 +49,6 @@ void SensorBridge_proces(double timestamp ,double ax, double ay, double az, doub
 }
 extern "C"
 void SensorBridge_getLastPosition(double * output){
-     //printf("Try getLastPositon" );
     if(nv != NULL){
         Navigator::Math::Position3D outPos = nv->getLastPositon();
         output[0] = outPos.x;

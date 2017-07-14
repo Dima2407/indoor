@@ -14,7 +14,6 @@
 @interface MeasurementEvent()
 
 
-
 @end
 
 @implementation MeasurementEvent

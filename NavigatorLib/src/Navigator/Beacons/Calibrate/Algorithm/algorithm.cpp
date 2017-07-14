@@ -32,15 +32,15 @@ namespace Navigator {
                     }
 
                     // Check the boundaries
-                    if (damp > 5)
-                        damp = 4.5;
-                    else if (damp < 1)
-                        damp = 1.5;
+                    if (damp > 5.0)
+                        damp = 5.0;
+                    else if (damp < 0.1)
+                        damp = 0.1;
 
-                    if (txPower < -90.0)
-                        txPower = -75.0;
-                    else if (txPower > -40.0)
-                        txPower = -63.0;
+                    if (txPower < -100.0)
+                        txPower = -100.0;
+                    else if (txPower > -20.0)
+                        txPower = -20.0;
 
                 }
 //================================================================================

@@ -5,24 +5,24 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 # Build all examples
-add_subdirectory(example1)
+# Removed to speed up builds
+# Uncomment what you need
+#add_subdirectory(example1)
 
-add_subdirectory(example2)
+#add_subdirectory(example2)
 
-add_subdirectory(example3)
+#add_subdirectory(example3)
 
-add_subdirectory(exampleCalibrate)
+#add_subdirectory(exampleCalibrate)
 
-add_subdirectory(exampleDijkstra)
+#add_subdirectory(exampleDijkstra)
 
-add_subdirectory(exampleMesh)
+#add_subdirectory(exampleMesh)
 
-add_subdirectory(exampleMesh2)
+#add_subdirectory(exampleMesh2)
 
-add_subdirectory(exampleZUPT)
+#add_subdirectory(exampleZUPT)
 
-add_subdirectory(TempVictor)
+#add_subdirectory(TempVictor)
 
 add_subdirectory(exampleAccel)
-
-

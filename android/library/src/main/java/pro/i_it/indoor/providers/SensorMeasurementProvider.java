@@ -25,6 +25,9 @@ public class SensorMeasurementProvider extends MeasurementProvider {
     private final SensorEventListener sensorDataListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
+            if(!active){
+                return;
+            }
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 if (accelerometerValues == null) {
                     accelerometerValues = new float[3];
@@ -80,6 +83,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
         }
     };
     private float mapAngle;
+    private boolean active = false;
 
 
     public SensorMeasurementProvider(Context context, MeasurementTransfer transfer) {
@@ -91,6 +95,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
     @Override
     public void start() {
 
+        active = true;
         axis = getDeviceAxis();
         inR = new float[9];
         outR = new float[9];
@@ -103,6 +108,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
 
     @Override
     public void stop() {
+        active = false;
         sensorManager.unregisterListener(sensorDataListener);
         axis = null;
         inR = null;

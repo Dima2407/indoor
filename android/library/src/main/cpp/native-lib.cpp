@@ -326,9 +326,9 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance,
                                                                    jfloatArray positionArray) {
     LOGD("IndoorLocationManager_nativeTakeLastPosition");
-    if(!navigator->isInitFinished()){
-        return;
-    }
+    //if(!navigator->isInitFinished()){
+    //    return;
+    //}
     Position3D outPos(3.0, 12.5, 0.0);//navigator->getLastPosition();
 
     if(std::isnan(outPos.x) || std::isnan(outPos.y)){

@@ -23,7 +23,7 @@ using namespace Navigator::Accel;
 
 StandardBeaconNavigator *navigator = NULL;
 StandardAccelNavigator *sensorNavigator = NULL;
-PointGraph *pointGraph = NULL;
+shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
 
 typedef struct IndoorSdkApi {
@@ -68,7 +68,7 @@ Mode currentMode;
 extern "C" {
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
+Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj);
 
 JNIEXPORT void JNICALL
@@ -138,8 +138,9 @@ void prepare_sdk(JNIEnv *env) {
 }
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
+Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj) {
+        LOGD("AndroidMeasurementTransfer_nativeDeliver");
 
     jobject typeObj = env->GetObjectField(obj, api.kMeasurementEventTypeField);
     jlong timeStamp = env->GetLongField(obj, api.kMeasurementEventTimestampField);
@@ -150,7 +151,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
     LOGD("event %d at %f ", eventTypeCode, eventTime);
-    if (eventTypeCode == 2) {
+    if (eventTypeCode == 2 && navigator != NULL) {
         jstring uuidString = (jstring) env->GetObjectField(obj, api.kMeasurementEventUUIDField);
 
         const char *uuid = env->GetStringUTFChars(uuidString, 0);
@@ -161,14 +162,15 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
              (int) data[1], data[3], data[2]);
 
         BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
+        if(navigator != NULL){
+            Position3D outPos = navigator->process(brd);
+            LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
+        }
 
-        Position3D outPos = navigator->process(brd);
-        LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
 
         env->ReleaseStringUTFChars(uuidString, uuid);
     } else if (eventTypeCode == 1 && currentMode == SENSOR_BEACON_NAVIGATOR &&
                sensorNavigator != NULL) {
-
         double ax = data[0];
         double ay = data[1];
         double az = data[2];
@@ -187,11 +189,13 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_deliver(
                 .roll = roll,
                 .yaw = azimut};
 
-        Position3D outPos = sensorNavigator->process(ard);
-        LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
+        if(sensorNavigator != NULL){
+            Position3D outPos = sensorNavigator->process(ard);
+            LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
+        }
     }
     env->ReleaseDoubleArrayElements(dataArray, data, 0);
-
+    LOGD("AndroidMeasurementTransfer_nativeDeliver -");
 }
 
 void initTracking() {
@@ -220,13 +224,14 @@ void initTracking() {
         }
     }
 
-    pointGraph = new PointGraph(edges, vertices);
+    pointGraph = make_shared<PointGraph>(edges, vertices);
 
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jint modeType, jintArray maskArray, jobject meshConfig) {
+        LOGD("IndoorLocationManager_nativeInit");
     prepare_sdk(env);
 
     currentMode = static_cast<Mode>(modeType);
@@ -265,11 +270,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         }
             break;
     }
+    LOGD("IndoorLocationManager_nativeInit -");
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
+        LOGD("IndoorLocationManager_nativeRelease");
     if(navigator != NULL) {
         delete[] navigator;
         navigator = NULL;
@@ -278,15 +285,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         delete[] sensorNavigator;
         sensorNavigator = NULL;
     }
-    if(pointGraph != NULL) {
-        delete[] pointGraph;
-        pointGraph = NULL;
-    }
+    LOGD("IndoorLocationManager_nativeRelease -");
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         JNIEnv *env, jobject instance, jobjectArray beacons) {
+        LOGD("IndoorLocationManager_nativeSetBeacons");
     jint size = env->GetArrayLength(beacons);
 
     jfloatArray position;
@@ -314,24 +319,25 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         env->ReleaseStringUTFChars(id, uuid);
 
     }
+    LOGD("IndoorLocationManager_nativeSetBeacons -");
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance,
                                                                    jfloatArray positionArray) {
-   /* if(!navigator->isInitFinished()){
+    LOGD("IndoorLocationManager_nativeTakeLastPosition");
+    if(!navigator->isInitFinished()){
         return;
-    }*/
+    }
     Position3D outPos(3.0, 12.5, 0.0);//navigator->getLastPosition();
 
-    if(currentMode == STANDARD_BEACON_NAVIGATOR && std::isnan(outPos.x) && std::isnan(outPos.y)){
+    if(std::isnan(outPos.x) || std::isnan(outPos.y)){
         return;
     }
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL
-        && !std::isnan(outPos.x) && !std::isnan(outPos.y)) {
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL) {
         AccelConfig config;
-        config.mapOrientationAngle = 180;
+        config.mapOrientationAngle = 0;
         config.useFilter = false;
         LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
@@ -352,12 +358,15 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
     data[2] = (float) outPos.z;
 
     env->ReleaseFloatArrayElements(positionArray, data, 0);
+    LOGD("IndoorLocationManager_nativeTakeLastPosition -");
 
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArray(JNIEnv *env, jobject instance,
                                                                 jintArray graphs_) {
+
+    LOGD("IndoorLocationManager_setNativeGraphArray");
     jint *graphs = env->GetIntArrayElements(graphs_, 0);
 
     const jsize graphsLenght = env->GetArrayLength(graphs_);
@@ -369,11 +378,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArray(JNIEnv *env, job
     }
 
     env->ReleaseIntArrayElements(graphs_, graphs, 0);
+    LOGD("IndoorLocationManager_setNativeGraphArray -");
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_setNativeEdgesArray(JNIEnv *env, jobject instance,
                                                                 jdoubleArray edges_) {
+    LOGD("IndoorLocationManager_setNativeEdgesArray");
     jdouble *edges = env->GetDoubleArrayElements(edges_, NULL);
 
     const jsize edgesLenght = env->GetArrayLength(edges_);
@@ -385,12 +396,15 @@ Java_pro_i_1it_indoor_IndoorLocationManager_setNativeEdgesArray(JNIEnv *env, job
     }
 
     env->ReleaseDoubleArrayElements(edges_, edges, 0);
+    LOGD("IndoorLocationManager_setNativeEdgesArray -");
 }
 
 JNIEXPORT jdoubleArray JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject instance,
                                                            jdouble x1, jdouble y1, jdouble x2,
                                                            jdouble y2) {
+
+    LOGD("IndoorLocationManager_getNativeRoute");
 
     Position3D pos1(x1, y1, 0.0);
     Position3D pos2(x2, y2, 0.0);
@@ -408,6 +422,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject 
     }
 
     env->ReleaseDoubleArrayElements(output, destArrayElems, NULL);
+    LOGD("IndoorLocationManager_getNativeRoute - ");
 
     return output;
 }
@@ -415,11 +430,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_setGraphArraysFromFile(JNIEnv *env, jobject instance,
                                                                    jstring file_, jdouble scale) {
+    LOGD("IndoorLocationManager_setGraphArraysFromFile");
     const char *file = env->GetStringUTFChars(file_, 0);
 
     std::string data(file);
 
-    pointGraph = new PointGraph(data, scale);
+    pointGraph = make_shared<PointGraph>(data, scale);
 
     env->ReleaseStringUTFChars(file_, file);
+    LOGD("IndoorLocationManager_setGraphArraysFromFile -");
 }

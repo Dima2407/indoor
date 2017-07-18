@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
+import android.util.Pair;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Point;
 import khpi.com.demo.model.Route;
@@ -24,11 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -52,6 +50,7 @@ public class RouteHelper {
     private PointF destinationPoint;
     private final double WALK_SPEED = 1.38;
     private float distance = 0;
+    private final Map<String, Pair<String, Integer>> graphs  = new ConcurrentHashMap<>();
 
     public List<Edge> getEdges() {
         return edges;
@@ -67,17 +66,22 @@ public class RouteHelper {
         routeExecutor = Executors.newSingleThreadExecutor();
     }
 
-    public void initMapFromFile(final File file, final IndoorLocationManager instance, final MapProcessingListener listener) {
+    public void initMapFromFile(final File file, final MapProcessingListener listener) {
+        Pair<String, Integer> graph = graphs.get(file.getAbsolutePath());
+        if(graph != null){
+            listener.onMapProcessed(graph);
+        }
         final Handler handler = new Handler(Looper.myLooper());
         routeExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    processFile(file, instance);
+                    final Pair<String, Integer> graph = processFile(file);
+                    graphs.put(file.getAbsolutePath(), graph);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            listener.onMapProcessed();
+                            listener.onMapProcessed(graph);
                         }
                     });
                 } catch (final IOException e) {;
@@ -96,7 +100,7 @@ public class RouteHelper {
 
 
     @WorkerThread
-    private void processFile(File file, IndoorLocationManager instance) throws IOException {
+    private Pair<String, Integer> processFile(File file) throws IOException {
         edges = new ArrayList<Edge>();
 
         InputStream ins = new FileInputStream(file);
@@ -133,49 +137,29 @@ public class RouteHelper {
             }
         }
         sb.deleteCharAt(sb.length() - 1);
-        String str = sb.toString();
-
-        instance.setGraphArraysFromFile(str, 1);
+        return new Pair<>(sb.toString(), 1);
     }
 
     public void findPath(final PointF start, final PointF end, final IndoorLocationManager instance, final RouteListener listener) {
-        final Handler handler = new Handler(Looper.getMainLooper());
-        routeExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (end == null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.onFail();
-                        }
-                    });
-                    return;
-                }
 
-                float[] temp = findPath(start, end, instance);
+        if (end == null) {
+            listener.onFail();
+            return;
+        }
+        float[] temp = findPath(start, end, instance);
 
-                final float[] path = new float[temp.length + 4];
-                path[0] = start.x;
-                path[1] = start.y;
-                System.arraycopy(temp, 0, path, 2, temp.length);
-                path[path.length - 2] = end.x;
-                path[path.length - 1] = end.y;
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (path.length > 0) {
-                            listener.onRouteFound(path);
-                        } else {
-                            listener.onFail();
-                        }
-                    }
-                });
-
-                destinationPoint = end;
-            }
-        });
+        final float[] path = new float[temp.length + 4];
+        path[0] = start.x;
+        path[1] = start.y;
+        System.arraycopy(temp, 0, path, 2, temp.length);
+        path[path.length - 2] = end.x;
+        path[path.length - 1] = end.y;
+        if (path.length > 0) {
+            listener.onRouteFound(path);
+        } else {
+            listener.onFail();
+        }
+        destinationPoint = end;
     }
 
     @WorkerThread
@@ -290,7 +274,7 @@ public class RouteHelper {
     }
 
     public interface MapProcessingListener {
-        void onMapProcessed();
+        void onMapProcessed(Pair<String,Integer> graph);
 
         void onFailed(@Nullable Throwable t);
     }

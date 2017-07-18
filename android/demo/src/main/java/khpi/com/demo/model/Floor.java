@@ -5,7 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import pro.i_it.indoor.region.BluetoothBeacon;
+import pro.i_it.indoor.region.SpaceBeacon;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -159,6 +162,16 @@ public class Floor implements Parcelable {
     }
 
     public List<BeaconModel> getBeacons() {
+        return beacons;
+    }
+
+    public List<? extends SpaceBeacon> getSpaceBeacons(){
+        List<SpaceBeacon> beacons = new ArrayList<>();
+        for(BeaconModel beacon : getBeacons()){
+            SpaceBeacon spaceBeacon = new BluetoothBeacon(beacon.getUuid(), beacon.getMajor(), beacon.getMinor(),
+                    beacon.getTxpower(), beacon.getDamp(), beacon.getPositionX(), beacon.getPositionY(), beacon.getPositionZ());
+            beacons.add(spaceBeacon);
+        }
         return beacons;
     }
 

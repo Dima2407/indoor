@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         MapSwitcherView.ChangeMapListener {
 
     private IndoorMapView mapView;
-    private IndoorLocationManager instance;
     private BottomSheet bottomSheet;
     private RecyclerView.OnScrollListener listener;
     private Floor floor;
@@ -106,13 +106,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         floor = arguments.getParcelable(KEY_FLOOR_MAP);
-        instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        instance = null;
+    private IndoorLocationManager getLocalManager() {
+        return getActivityBridge().getProjectApplication().getLocalManager();
     }
 
     @Nullable
@@ -196,93 +193,36 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("onLocationChanged", "onResume: ");
         final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
-        instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
+        getLocalManager().setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
         if (floor.getGraphPath().contains("/mapData/8/")) {
             //it-jim
-            instance.setMapAngle(20);
-            instance.useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
+            getLocalManager().setMapAngle(20);
+            getLocalManager().useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
         }else {
             //kaa
-            instance.setMapAngle(0);
-            instance.useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
+            getLocalManager().setMapAngle(0);
+            getLocalManager().useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
         }
 
-        instance.start();
-        instance.setOnLocationUpdateListener(new OnLocationUpdateListener() {
+        getLocalManager().start();
+        getLocalManager().setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
-
-                if (IS_DEBUG) {
-                    Log.d(TAG, "onLocationChanged: " + SystemClock.elapsedRealtime() / 1000 + "  " + Arrays.toString(position));
-                }
                 applyNewCoordinate(position[0], position[1], 1, 1);
             }
         });
 
-        List<BeaconModel> list = new ArrayList<>();
-        BeaconModel beacon1 = new BeaconModel();
-        beacon1.setUuid("23a01af0-232a-4518-9c0e-323fb773f5ef");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48049);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(4.5f);
-        beacon1.setPositionY(0.0f);
-        beacon1.setPositionZ(2.3f);
-        list.add(beacon1);
-
-        beacon1 = new BeaconModel();
-        beacon1.setUuid("23a01af0-232a-4518-9c0e-323fb773f5ef");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48050);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(0.0f);
-        beacon1.setPositionY(3.7f);
-        beacon1.setPositionZ(2.6f);
-        list.add(beacon1);
-
-        beacon1 = new BeaconModel();
-        beacon1.setUuid("23a01af0-232a-4518-9c0e-323fb773f5ef");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48051);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(4.0f);
-        beacon1.setPositionY(12.8f);
-        beacon1.setPositionZ(2.3f);
-        list.add(beacon1);
-
-        beacon1 = new BeaconModel();
-        beacon1.setUuid("23a01af0-232a-4518-9c0e-323fb773f5ef");
-        beacon1.setMajor(61902);
-        beacon1.setMinor(48052);
-        beacon1.setTxpower(-71.2f);
-        beacon1.setDamp(2);
-        beacon1.setPositionX(0.3f);
-        beacon1.setPositionY(9.9f);
-        beacon1.setPositionZ(2.6f);
-        list.add(beacon1);
-
-        floor.setBeacons(list);
-
-        Collection<SpaceBeacon> floorSpaceBeacons = new ArrayList<>();
-        for(BeaconModel beacon : floor.getBeacons()){
-            SpaceBeacon spaceBeacon = new BluetoothBeacon("23a01af0-232a-4518-9c0e-323fb773f5ef", beacon.getMajor(), beacon.getMinor(),
-                    beacon.getTxpower(), 2, beacon.getPositionX(), beacon.getPositionY(), beacon.getPositionZ());
-            floorSpaceBeacons.add(spaceBeacon);
-        }
-
-        instance.setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floorSpaceBeacons, REGION_RADIUS));
+        getLocalManager().setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floor.getSpaceBeacons(), REGION_RADIUS));
     }
 
     @Override
     public void onPause() {
         Log.d("onLocationChanged", "onPause: ");
         super.onPause();
-        instance.stop();
+        getLocalManager().stop();
 
     }
 
@@ -297,9 +237,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
         Log.i("IndMap", "floor.getGraphPath() = " + FileUtil.getLocacPath(getActivity(), floor.getGraphPath()));
-        getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), instance, new RouteHelper.MapProcessingListener() {
+        getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
             @Override
-            public void onMapProcessed() {
+            public void onMapProcessed(Pair<String,Integer> graph) {
+                getLocalManager().setGraph(graph.first, graph.second);
                 progressDialog.hide();
                 mapView.setEdges(getActivityBridge().getRouteHelper().getEdges());
             }
@@ -404,7 +345,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         }
         Log.i("locationManager", "apply new coords : dest.x = " + dest.x + " dest.y = " + dest.y);
 
-        getActivityBridge().getRouteHelper().findPath(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())), dest, instance, new RouteHelper.RouteListener() {
+        getActivityBridge().getRouteHelper().findPath(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())), dest, getLocalManager(), new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
                 onNewRoute(route);
@@ -431,7 +372,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onInpoictClicked(final Inpoint inpoint) {
-        getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), instance, new RouteHelper.RouteListener() {
+        getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), getLocalManager(), new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
                 Route r = getActivityBridge().getRouteHelper().buildRoute(getActivityBridge().getRouteHelper().getMoutions(route), floor);

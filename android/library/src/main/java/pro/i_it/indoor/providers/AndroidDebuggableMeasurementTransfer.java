@@ -9,7 +9,7 @@ public class AndroidDebuggableMeasurementTransfer implements MeasurementTransfer
     private final MeasurementTransfer transfer;
 
     public AndroidDebuggableMeasurementTransfer() {
-        this.transfer = new AndroidMeasurementTransfer();
+        this.transfer = AndroidMeasurementTransfer.TRANSFER;
     }
 
     @Override

@@ -13,7 +13,7 @@ public class InMemoryBeaconsLoader implements BeaconsInRegionLoader {
     private Set<SpaceBeacon> beacons;
     private SpaceRegion newRegion;
 
-    public InMemoryBeaconsLoader(Collection<SpaceBeacon> beacons, float radius){
+    public InMemoryBeaconsLoader(Collection<? extends SpaceBeacon> beacons, float radius){
         newRegion = new SpaceRegion();
         this.beacons = new HashSet<>(beacons);
         this.radius = radius;

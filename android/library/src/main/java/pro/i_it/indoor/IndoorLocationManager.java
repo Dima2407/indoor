@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import pro.i_it.indoor.events.MeasurementType;
+import pro.i_it.indoor.logger.AndroidLoggableMeasurementTransfer;
+import pro.i_it.indoor.logger.LoggableLocationUpdateListener;
 import pro.i_it.indoor.masks.MaskTableFetcher;
 import pro.i_it.indoor.mesh.MeshConfig;
 import pro.i_it.indoor.providers.*;
@@ -11,13 +13,7 @@ import pro.i_it.indoor.region.BeaconsInRegionLoader;
 import pro.i_it.indoor.region.SpaceBeacon;
 import pro.i_it.indoor.region.SpaceRegion;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class IndoorLocationManager {
@@ -40,6 +36,7 @@ public class IndoorLocationManager {
     private Set<MeasurementProvider> providers;
     private MaskTableFetcher maskTableFetcher;
     private MeshConfig meshConfig;
+    private final float[] lastPosition = new float[]{-1.0f,-1.0f,-1.0f};
 
     public IndoorLocationManager() {
         this.providers = new HashSet<>();
@@ -107,7 +104,9 @@ public class IndoorLocationManager {
             provider.start();
         }
         nativeInit(mode.getCode(), maskTableFetcher.fetchMaskTable(), meshConfig);
-        final float[] lastPosition = new float[]{-1.0f,-1.0f,-1.0f};
+        lastPosition[0] = -1.0f;
+        lastPosition[1] = -1.0f;
+        lastPosition[2] = -1.0f;
         positionRequester.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -148,8 +147,18 @@ public class IndoorLocationManager {
 
     private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
 
+    private native void setGraphArraysFromFile(String fileContent, double scale);
+
+    public void setGraph(String fileContent, double scale){
+        if(!active){
+            return;
+        }
+        setGraphArraysFromFile(fileContent, scale);
+
+    }
     //route
-    public native void setGraphArraysFromFile(String fileContent, double scale);
+
+
 
     private native void nativeInit(int modeType, int[] mask, MeshConfig config);
 

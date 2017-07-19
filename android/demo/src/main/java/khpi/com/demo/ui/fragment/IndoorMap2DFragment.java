@@ -195,16 +195,20 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         super.onResume();
         Log.d("onLocationChanged", "onResume: ");
         final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
-        getLocalManager().setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
+        getLocalManager().setMode(IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
         if (floor.getGraphPath().contains("/mapData/8/")) {
             //it-jim
             getLocalManager().setMapAngle(20);
-            getLocalManager().useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
-        }else {
+            if (useBinaryMask) {
+                getLocalManager().useMask(new MeshConfig(36, 24, 0.3, 0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
+            }
+        } else {
             //kaa
             getLocalManager().setMapAngle(0);
-            getLocalManager().useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
+            if (useBinaryMask) {
+                getLocalManager().useMask(new MeshConfig(22, 44, 0.3, 0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
+            }
         }
 
         getLocalManager().start();
@@ -239,7 +243,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         Log.i("IndMap", "floor.getGraphPath() = " + FileUtil.getLocacPath(getActivity(), floor.getGraphPath()));
         getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
             @Override
-            public void onMapProcessed(Pair<String,Integer> graph) {
+            public void onMapProcessed(Pair<String, Integer> graph) {
                 getLocalManager().setGraph(graph.first, graph.second);
                 progressDialog.hide();
                 mapView.setEdges(getActivityBridge().getRouteHelper().getEdges());
@@ -339,7 +343,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             mapView.setRoute(new float[0]);
             return;
         }
-        if (Float.isNaN(x) && Float.isNaN(x)){
+        if (Float.isNaN(x) && Float.isNaN(x)) {
             mapView.setRoute(new float[0]);
             return;
         }

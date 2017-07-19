@@ -21,8 +21,8 @@ using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 
-StandardBeaconNavigator *navigator = NULL;
-StandardAccelNavigator *sensorNavigator = NULL;
+shared_ptr<StandardBeaconNavigator> navigator;
+StandardAccelNavigator * sensorNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
 
@@ -265,8 +265,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
                 mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
 
                 mesh->setMaskTable(table);
-                navigator = new StandardBeaconNavigator(mesh, false);
             }
+            navigator = make_shared<StandardBeaconNavigator>(mesh, false);
         }
             break;
     }
@@ -277,12 +277,8 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
         LOGD("IndoorLocationManager_nativeRelease");
-    if(navigator != NULL) {
-        delete[] navigator;
-        navigator = NULL;
-    }
     if(sensorNavigator != NULL){
-        delete[] sensorNavigator;
+        //FIXME delete[] sensorNavigator;
         sensorNavigator = NULL;
     }
     LOGD("IndoorLocationManager_nativeRelease -");
@@ -329,7 +325,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
     //if(!navigator->isInitFinished()){
     //    return;
     //}
-    Position3D outPos(3.0, 12.5, 0.0);//navigator->getLastPosition();
+    Position3D outPos(0.3, 1.0, 0.0);
+    //Position3D outPos(3.0, 12.5, 0.0);
+    //Position3D outPos = navigator->getLastPosition();
 
     if(std::isnan(outPos.x) || std::isnan(outPos.y)){
         return;
@@ -343,7 +341,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
 
         double startX = outPos.x, startY = outPos.y;
 
-        sensorNavigator = new StandardAccelNavigator(NULL, startX, startY, config);
+        sensorNavigator = new StandardAccelNavigator(mesh, startX, startY, config);
     }
 
     if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator != NULL) {

@@ -14,12 +14,12 @@ public final class AndroidMeasurementTransfer implements MeasurementTransfer {
     private final Handler handler = new Handler();
 
     public void deliver(final MeasurementEvent event){
-        handler.post(new Runnable() {
+        /*handler.post(new Runnable() {
             @Override
-            public void run() {
+            public void run() {*/
                 nativeDeliver(event);
-            }
-        });
+            /*}
+        });*/
     }
 
     private native void nativeDeliver(MeasurementEvent event);

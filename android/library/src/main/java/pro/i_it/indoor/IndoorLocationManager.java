@@ -95,7 +95,7 @@ public class IndoorLocationManager {
 
     public double[] getRoute(double x1, double y1, double x2, double y2) {
 
-        return getRoute(x1, y1, x2, y2);
+        return getNativeRoute(x1, y1, x2, y2);
     }
 
     public void start() {
@@ -103,7 +103,8 @@ public class IndoorLocationManager {
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
-        nativeInit(mode.getCode(), maskTableFetcher.fetchMaskTable(), meshConfig);
+        int [] maskTable = maskTableFetcher != null ? maskTableFetcher.fetchMaskTable() : null;
+        nativeInit(mode.getCode(), maskTable, meshConfig);
         lastPosition[0] = -1.0f;
         lastPosition[1] = -1.0f;
         lastPosition[2] = -1.0f;

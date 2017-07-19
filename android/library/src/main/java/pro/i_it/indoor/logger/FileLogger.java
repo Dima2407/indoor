@@ -11,6 +11,8 @@ import java.io.IOException;
 
 class FileLogger {
 
+    private boolean logErrorOnce = true;
+
     protected final void appendToFile(String name, JSONObject data) {
         File f = fileOf(name);
         boolean firstRecord = !f.exists();
@@ -25,7 +27,10 @@ class FileLogger {
             }
             bw.flush();
         } catch (IOException e) {
-            Log.e(FileLogger.class.getSimpleName(), "appendToFile: ", e);
+            if(logErrorOnce) {
+                Log.w(FileLogger.class.getSimpleName(), "appendToFile: ", e);
+                logErrorOnce = false;
+            }
         }
     }
 

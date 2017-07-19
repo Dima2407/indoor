@@ -7,7 +7,6 @@ import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivityPresenter;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.events.MeasurementType;
-import pro.i_it.indoor.local.data.DataManager;
 
 import java.util.Arrays;
 
@@ -35,6 +34,5 @@ public class MainActivityPresenter implements IMainActivityPresenter {
             }
         });
         localManager.start();
-        view.updateData(DataManager.getSettingList());
     }
 }

@@ -17,6 +17,9 @@ android {
                 arguments "-DANDROID_STL=c++_shared", "-DANDROID_NATIVE_API_LEVEL=19"
             }
         }
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+        }
     }
 
     buildTypes {
@@ -28,32 +31,12 @@ android {
             minifyEnabled = false
             proguardFiles.add(file('proguard-rules.txt'))
 
-            buildConfigField "String", "SERVER_URL", "\"http://185.86.76.206:8081/\""
+            buildConfigField "String", "SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
         }
     }
     externalNativeBuild {
         cmake {
             path 'src/main/jni/CMakeLists.txt'
-        }
-    }
-
-    productFlavors {
-        "x86" {
-            ndk {
-                abiFilters 'x86'
-            }
-        }
-
-        "arm" {
-            ndk {
-                abiFilters 'armeabi'
-            }
-        }
-
-        "arm-v7" {
-            ndk {
-                abiFilters 'armeabi-v7a'
-            }
         }
     }
 }
@@ -73,7 +56,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile project(':network')
-    compile project(':models')
+    compile project(':tool/network')
+    compile project(':tool/models')
     testCompile 'junit:junit:4.12'
 }

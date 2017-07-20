@@ -44,7 +44,8 @@ public class NativeConfigMap {
     public double getDouble(String key) {
         Object o = configs.get(key);
         if(o instanceof Number){
-            return (double) o;
+            double o1 = (double) o;
+            return o1;
         }
         return Double.NaN;
     }
@@ -53,17 +54,9 @@ public class NativeConfigMap {
         Object o = configs.get(key);
         return o instanceof Boolean && (boolean) o;
     }
-    public String getString(String key) {
-        Object o = configs.get(key);
-        return String.valueOf(o);
-    }
 
-    public int[] getIntArray(String key) {
-        return (int[]) configs.get(key);
-    }
-
-    public Object[] getObjectArray(String key) {
-        return (Object[]) configs.get(key);
+    public Object getObject(String key) {
+        return configs.get(key);
     }
 
     public void set(String key, Object o) {

@@ -61,10 +61,7 @@ typedef struct IndoorSdkApi {
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
     jmethodID kGetBooleanMethod;
-    jmethodID kGetStringMethod;
-    jmethodID kGetObjectArrayMethod;
-    jmethodID kGetIntArrayMethod;
-    jmethodID kSetMethod;
+    jmethodID kGetObjectMethod;
 
 } IndoorSdkApi;
 
@@ -82,9 +79,6 @@ typedef struct IndoorSdkConfigs{
 } IndoorSdkConfigs;
 
 double timeS = 0;
-
-vector<int> mGraphs(2000);
-vector<double> mEdges(2000);
 
 IndoorSdkApi api;
 IndoorSdkConfigs configs;
@@ -145,35 +139,22 @@ void prepare_sdk(JNIEnv *env) {
     api.kGetIntMethod = env->GetMethodID(api.kConfigMapClass, "getInt", "(Ljava/lang/String;)I");
     api.kGetBooleanMethod = env->GetMethodID(api.kConfigMapClass, "getBoolean", "(Ljava/lang/String;)Z");
     api.kGetDoubleMethod = env->GetMethodID(api.kConfigMapClass, "getDouble", "(Ljava/lang/String;)D");
-    api.kGetStringMethod = env->GetMethodID(api.kConfigMapClass, "getString", "(Ljava/lang/String;)Ljava/lang/String;");
-    api.kGetIntArrayMethod = env->GetMethodID(api.kConfigMapClass, "getIntArray", "(Ljava/lang/String;)[I");
-    api.kGetObjectArrayMethod = env->GetMethodID(api.kConfigMapClass, "getObjectArray", "(Ljava/lang/String;)[Ljava/lang/Object;");
-    api.kSetMethod = env->GetMethodID(api.kConfigMapClass, "set", "(Ljava/lang/String;, Ljava/lang/Object;)V");
-    api.kSetMethod = env->GetMethodID(api.kConfigMapClass, "set", "(Ljava/lang/String;, Lpro/i_it/indoor/masks/MaskTableFetcher;)V");
-    api.kSetMethod = env->GetMethodID(api.kConfigMapClass, "set", "(Ljava/lang/String;, Ljava/util/Collection;)V");
-    api.kMeshConfigNXField = env->GetFieldID(api.kConfigMapClass, "KEY_MESH_N_X", "Ljava/lang/String;");
-    api.kMeshConfigNYField = env->GetFieldID(api.kConfigMapClass, "KEY_MESH_N_Y", "Ljava/lang/String;");
-    api.kMeshConfigDXField = env->GetFieldID(api.kConfigMapClass, "KEY_MESH_D_X", "Ljava/lang/String;");
-    api.kMeshConfigDYField = env->GetFieldID(api.kConfigMapClass, "KEY_MESH_D_Y", "Ljava/lang/String;");
-    api.kMeshConfigX0Field = env->GetFieldID(api.kConfigMapClass, "KEY_MESH_X_0", "Ljava/lang/String;");
-    api.kMeshConfigY0Field = env->GetFieldID(api.kConfigMapClass, "KEY_MESH_Y_0", "Ljava/lang/String;");
-    api.kMaskField = env->GetFieldID(api.kConfigMapClass, "KEY_MASK", "Ljava/lang/String;");
-    api.kMapAngleField = env->GetFieldID(api.kConfigMapClass, "KEY_MAP_ANGLE", "Ljava/lang/String;");
-    api.kUseMaskField = env->GetFieldID(api.kConfigMapClass, "KEY_USE_MASK", "Ljava/lang/String;");
-    api.kUseBeaconsField = env->GetFieldID(api.kConfigMapClass, "KEY_USE_BEACONS", "Ljava/lang/String;");
-    api.kUseSensorsField = env->GetFieldID(api.kConfigMapClass, "KEY_USE_SENSORS", "Ljava/lang/String;");
-    api.kInitXField = env->GetFieldID(api.kConfigMapClass, "KEY_INIT_X", "Ljava/lang/String;");
-    api.kInitYField = env->GetFieldID(api.kConfigMapClass, "KEY_INIT_Y", "Ljava/lang/String;");
-    api.kBeaconsField = env->GetFieldID(api.kConfigMapClass, "KEY_BEACONS", "Ljava/lang/String;");
+    api.kGetObjectMethod = env->GetMethodID(api.kConfigMapClass, "getObject", "(Ljava/lang/String;)Ljava/lang/Object;");
 
-
-    /*api.kMeshConfigClass = env->FindClass("pro/i_it/indoor/mesh/MeshConfig");
-    api.kMeshConfigNXField = env->GetFieldID(api.kMeshConfigClass, "nx", "D");
-    api.kMeshConfigNYField = env->GetFieldID(api.kMeshConfigClass, "ny", "D");
-    api.kMeshConfigDXField = env->GetFieldID(api.kMeshConfigClass, "dx", "D");
-    api.kMeshConfigDYField = env->GetFieldID(api.kMeshConfigClass, "dy", "D");
-    api.kMeshConfigX0Field = env->GetFieldID(api.kMeshConfigClass, "x0", "D");
-    api.kMeshConfigY0Field = env->GetFieldID(api.kMeshConfigClass, "y0", "D");*/
+    api.kMeshConfigNXField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_N_X", "Ljava/lang/String;");
+    api.kMeshConfigNYField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_N_Y", "Ljava/lang/String;");
+    api.kMeshConfigDXField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_D_X", "Ljava/lang/String;");
+    api.kMeshConfigDYField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_D_Y", "Ljava/lang/String;");
+    api.kMeshConfigX0Field = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_X_0", "Ljava/lang/String;");
+    api.kMeshConfigY0Field = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_Y_0", "Ljava/lang/String;");
+    api.kMaskField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MASK", "Ljava/lang/String;");
+    api.kMapAngleField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MAP_ANGLE", "Ljava/lang/String;");
+    api.kUseMaskField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_USE_MASK", "Ljava/lang/String;");
+    api.kUseBeaconsField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_USE_BEACONS", "Ljava/lang/String;");
+    api.kUseSensorsField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_USE_SENSORS", "Ljava/lang/String;");
+    api.kInitXField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_INIT_X", "Ljava/lang/String;");
+    api.kInitYField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_INIT_Y", "Ljava/lang/String;");
+    api.kBeaconsField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_BEACONS", "Ljava/lang/String;");
 }
 
 JNIEXPORT void JNICALL
@@ -208,6 +189,12 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         double azimut = data[3];
         double pitch = data[4];
         double roll = data[5];
+        azimut = azimut - configs.mapAngle;
+        if(azimut > 180){
+            azimut = - 360 + azimut;
+        }else if(azimut < -180){
+            azimut = 360 + azimut;
+        }
         LOGD("sensor ax ( %f ), ay ( %f ), az ( %f ), azimut ( %f ) , pitch ( %f ) , roll ( %f ) ",
              ax, ay, az, azimut, pitch, roll);
 
@@ -232,15 +219,27 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     prepare_sdk(env);
 
     configs = {};
-    configs.useBeacons = env->CallBooleanMethod(config, api.kMeasurementTypeGetCodeMethod);
-    configs.useSensors = env->CallBooleanMethod(config, api.kMeasurementTypeGetCodeMethod);
-    configs.useMask = env->CallBooleanMethod(config, api.kMeasurementTypeGetCodeMethod);
-    configs.mapAngle = env->CallIntMethod(config, api.kMeasurementTypeGetCodeMethod);
-    configs.startX = env->CallFloatMethod(config, api.kMeasurementTypeGetCodeMethod);
-    configs.startY = env->CallFloatMethod(config, api.kMeasurementTypeGetCodeMethod);
+    jstring keyUseBeacons = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kUseBeaconsField);
+    configs.useBeacons = env->CallBooleanMethod(config, api.kGetBooleanMethod, keyUseBeacons);
+
+    jstring keyUseSensors = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kUseSensorsField);
+    configs.useSensors = env->CallBooleanMethod(config, api.kGetBooleanMethod, keyUseSensors);
+
+    jstring keyUseMask = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kUseMaskField);
+    configs.useMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, keyUseMask);
+
+    jstring keyMapAngle = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMapAngleField);
+    configs.mapAngle = env->CallIntMethod(config, api.kGetIntMethod, keyMapAngle);
+
+    jstring keyStartX = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kInitXField);
+    configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, keyStartX);
+
+    jstring keyStartY = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kInitYField);
+    configs.startY = env->CallFloatMethod(config, api.kGetFloatMethod, keyStartY);
 
     if(configs.useMask){
-        jintArray maskArray = (jintArray)env->CallObjectMethod(config, api.kMeasurementTypeGetCodeMethod);
+        jstring keyMaskArray = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMaskField);
+        jintArray maskArray = (jintArray)env->CallObjectMethod(config, api.kGetObjectMethod, keyMaskArray);
         const jsize length = env->GetArrayLength(maskArray);
         jint *mask = env->GetIntArrayElements(maskArray, 0);
 
@@ -249,12 +248,18 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
         env->ReleaseIntArrayElements(maskArray, mask, 0);
 
-        const double nx = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
-        const double ny = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
-        const double dx = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
-        const double dy = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
-        const double x0 = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
-        const double y0 = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+        jstring keyNX = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigNXField);
+        const double nx = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyNX);
+        jstring keyNY = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigNYField);
+        const double ny = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyNY);
+        jstring keyDX = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigDXField);
+        const double dx = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyDX);
+        jstring keyDY = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigDYField);
+        const double dy = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyDY);
+        jstring keyX0 = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigX0Field);
+        const double x0 = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyX0);
+        jstring keyY0 = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigY0Field);
+        const double y0 = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyY0);
 
         mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
 
@@ -263,7 +268,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     if(configs.useBeacons){
         navigator = make_shared<StandardBeaconNavigator>(mesh, false);
 
-        jobjectArray beacons = (jobjectArray)env->CallObjectMethod(config, api.kMeasurementTypeGetCodeMethod);
+        jstring keyBeacons = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kBeaconsField);
+        jobjectArray beacons = (jobjectArray)env->CallObjectMethod(config, api.kGetObjectMethod, keyBeacons);
 
         jint size = env->GetArrayLength(beacons);
 

@@ -89,6 +89,8 @@ public final class SettingsActivity extends GenericActivity {
 
         spinner.setAdapter(adapter);
 
+        spinner.setSelection(getProjectApplication().getSharedHelper().getActiveModeKey());
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

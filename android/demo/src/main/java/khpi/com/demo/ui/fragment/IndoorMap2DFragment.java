@@ -180,16 +180,16 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             //it-jim
             configs.set(NativeConfigMap.KEY_MAP_ANGLE, 20);
             if (useBinaryMask) {
-                configs.set(NativeConfigMap.KEY_MESH_N_X, 36);
-                configs.set(NativeConfigMap.KEY_MESH_N_Y, 24);
+                configs.set(NativeConfigMap.KEY_MESH_N_X, 36.0);
+                configs.set(NativeConfigMap.KEY_MESH_N_Y, 24.0);
                 configs.set(NativeConfigMap.KEY_MASK, new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
             }
         } else {
             //kaa
             configs.set(NativeConfigMap.KEY_MAP_ANGLE, 0);
             if (useBinaryMask) {
-                configs.set(NativeConfigMap.KEY_MESH_N_X, 22);
-                configs.set(NativeConfigMap.KEY_MESH_N_Y, 44);
+                configs.set(NativeConfigMap.KEY_MESH_N_X, 22.0);
+                configs.set(NativeConfigMap.KEY_MESH_N_Y, 44.0);
                 configs.set(NativeConfigMap.KEY_MASK, new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
             }
         }

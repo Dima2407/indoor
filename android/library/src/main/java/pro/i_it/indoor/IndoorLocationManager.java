@@ -85,14 +85,6 @@ public class IndoorLocationManager {
         //this.addProvider(context, type, new AndroidLoggableMeasurementTransfer(new AndroidDebuggableMeasurementTransfer()));
     }
 
-    public void setMapAngle(float angle){
-        for(MeasurementProvider p : providers){
-            if( p instanceof SensorMeasurementProvider){
-                ((SensorMeasurementProvider)p).setMapAngle(angle);
-            }
-        }
-    }
-
     public double[] getRoute(double x1, double y1, double x2, double y2) {
 
         return getNativeRoute(x1, y1, x2, y2);

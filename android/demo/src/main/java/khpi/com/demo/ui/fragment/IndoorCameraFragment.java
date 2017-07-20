@@ -50,7 +50,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     private CameraPreview cameraPreview;
     private Floor floor;
 
-    private IndoorLocationManager instance;
+   // private IndoorLocationManager instance;
     private IndoorRadarView radarView;
 
     private BottomSheet bottomSheet;
@@ -71,7 +71,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         floor = getArguments().getParcelable(KEY_PARCELABLE_FLOOR);
-        instance = getActivityBridge().getProjectApplication().getLocalManager();
+      //  instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
     @Nullable
@@ -146,7 +146,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         cameraPreview.updateCamera(getCamera());
 
         final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
-        instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
+        /*instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
         if (floor.getGraphPath().contains("/mapData/8/")) {
             //it-jim
@@ -164,7 +164,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 onNewPosition(position[0], position[1]);
             }
         });
-
+*/
         deviceOrientationListener = new OrientationBridge.DeviceOrientationListener() {
             @Override
             public void onOrientationUpdated(final float azimuth, final float pitch, final float roll) {
@@ -243,11 +243,11 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
 
         PointF currentPosition = new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize()));
 
-        if (destinationPoint != null) {
+        /*if (destinationPoint != null) {
             getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), instance, routeListener);
         } else {
             getActivityBridge().getRouteHelper().updateRoute(currentPosition, instance, routeListener);
-        }
+        }*/
     }
 
     @Override
@@ -316,7 +316,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     @Override
     public void onPause() {
         super.onPause();
-        instance.stop();
+        //instance.stop();
         indoorCameraOverlay.onPause();
     }
 

@@ -2,6 +2,7 @@ package khpi.com.demo.ui.fragment;
 
 import android.content.Context;
 
+import khpi.com.demo.core.SharedHelper;
 import khpi.com.demo.core.bridge.ActivityBridge;
 
 abstract class GenericFragment extends android.support.v4.app.Fragment {
@@ -17,5 +18,9 @@ abstract class GenericFragment extends android.support.v4.app.Fragment {
 
     protected ActivityBridge getActivityBridge() {
         return activityBridge;
+    }
+
+    protected SharedHelper getSharedHelper () {
+        return getActivityBridge().getProjectApplication().getSharedHelper();
     }
 }

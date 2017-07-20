@@ -37,7 +37,6 @@ import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
-import pro.i_it.indoor.mesh.MeshConfig;
 
 import com.squareup.picasso.Picasso;
 

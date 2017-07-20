@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Indoor Navigator</string>
+    <string-array name="modes">
+        <item>Вариант 1</item>
+        <item>Вариант 2A</item>
+        <item>Вариант 2B</item>
+        <item>Вариант 3</item>
+        <item>Вариант 4</item>
+    </string-array>
 </resources>

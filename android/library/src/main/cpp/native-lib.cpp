@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
-//#define NDEBUG
+
+//#define NDEBUG 0
 
 #include <iostream>
 #include <cmath>
@@ -22,9 +23,11 @@ using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 
 shared_ptr<StandardBeaconNavigator> navigator;
-StandardAccelNavigator * sensorNavigator;
+shared_ptr<StandardAccelNavigator> sensorNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
+
+bool sensorNavigatorInitialized = false;
 
 typedef struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
@@ -140,8 +143,6 @@ void prepare_sdk(JNIEnv *env) {
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj) {
-        LOGD("AndroidMeasurementTransfer_nativeDeliver");
-
     jobject typeObj = env->GetObjectField(obj, api.kMeasurementEventTypeField);
     jlong timeStamp = env->GetLongField(obj, api.kMeasurementEventTimestampField);
     jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
@@ -150,8 +151,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
-    LOGD("event %d at %f ", eventTypeCode, eventTime);
-    if (eventTypeCode == 2 && navigator != NULL) {
+    if (eventTypeCode == 2 && currentMode == STANDARD_BEACON_NAVIGATOR) {
         jstring uuidString = (jstring) env->GetObjectField(obj, api.kMeasurementEventUUIDField);
 
         const char *uuid = env->GetStringUTFChars(uuidString, 0);
@@ -162,15 +162,10 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
              (int) data[1], data[3], data[2]);
 
         BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
-        if(navigator != NULL){
-            Position3D outPos = navigator->process(brd);
-            LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
-        }
-
-
+        Position3D outPos = navigator->process(brd);
+        LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
         env->ReleaseStringUTFChars(uuidString, uuid);
-    } else if (eventTypeCode == 1 && currentMode == SENSOR_BEACON_NAVIGATOR &&
-               sensorNavigator != NULL) {
+    } else if (eventTypeCode == 1 && currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigatorInitialized) {
         double ax = data[0];
         double ay = data[1];
         double az = data[2];
@@ -188,49 +183,15 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
                 .pitch = pitch,
                 .roll = roll,
                 .yaw = azimut};
-
-        if(sensorNavigator != NULL){
             Position3D outPos = sensorNavigator->process(ard);
             LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
-        }
     }
     env->ReleaseDoubleArrayElements(dataArray, data, 0);
-    LOGD("AndroidMeasurementTransfer_nativeDeliver -");
-}
-
-void initTracking() {
-    vector<vector<Edge>> edges;
-    int j = 0;
-    int k = 0;
-    vector<Edge> vEdge;
-    for (int i = 0; i < sizeof(mEdges); i++) {
-        if ((i + 1) % 3 == 0) {
-            Edge edge(int(mEdges[i - 1]), mEdges[i]);
-            vEdge[k++] = edge;
-            if (k == 2) {
-                edges[j++] = vEdge;
-                k = 0;
-            }
-        }
-    }
-    edges[j] = vector<Edge>();
-
-    vector<Position3D> vertices;
-    int m = 0;
-    for (int i = 0; i < sizeof(mGraphs); i++) {
-        if (i % 2 != 0) {
-            Position3D position3D(double(mGraphs[i - 1]), double(mGraphs[i]), 0.0);
-            vertices[m++] = position3D;
-        }
-    }
-
-    pointGraph = make_shared<PointGraph>(edges, vertices);
-
 }
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
-        JNIEnv *env, jobject instance, jint modeType, jintArray maskArray, jobject meshConfig) {
+        JNIEnv *env, jobject instance, jobject config) {
         LOGD("IndoorLocationManager_nativeInit");
     prepare_sdk(env);
 
@@ -268,7 +229,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             }
             navigator = make_shared<StandardBeaconNavigator>(mesh, false);
         }
-            break;
+        break;
     }
     LOGD("IndoorLocationManager_nativeInit -");
 }
@@ -276,11 +237,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
-        LOGD("IndoorLocationManager_nativeRelease");
-    if(sensorNavigator != NULL){
-        //FIXME delete[] sensorNavigator;
-        sensorNavigator = NULL;
-    }
+    LOGD("IndoorLocationManager_nativeRelease");
+    sensorNavigatorInitialized = false;
     LOGD("IndoorLocationManager_nativeRelease -");
 }
 
@@ -290,22 +248,15 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
         LOGD("IndoorLocationManager_nativeSetBeacons");
     jint size = env->GetArrayLength(beacons);
 
-    jfloatArray position;
-    jstring id;
-    jfloatArray values;
     for (int i = 0; i < size; i++) {
         jobject beacon = env->GetObjectArrayElement(beacons, i);
-        position = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetPositionMethod);
-        id = (jstring) env->CallObjectMethod(beacon, api.kSpaceBeaconGetIdMethod);
-        values = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetValuesMethod);
+        jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetPositionMethod);
+        jstring id = (jstring) env->CallObjectMethod(beacon, api.kSpaceBeaconGetIdMethod);
+        jfloatArray values = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetValuesMethod);
 
         jfloat *elements = env->GetFloatArrayElements(values, 0);
         jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
         const char *uuid = env->GetStringUTFChars(id, 0);
-        __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacon %s, %f, %f", uuid, elements[0],
-                            elements[1]);
-        __android_log_print(ANDROID_LOG_DEBUG, "TAGTAG", "beacon %f, %f, %f", elementsPos[0],
-                            elementsPos[1], elementsPos[2]);
 
         BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
         navigator->addBeacon(Beacon(uid, elements[2], elements[3],
@@ -322,18 +273,21 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance,
                                                                    jfloatArray positionArray) {
     LOGD("IndoorLocationManager_nativeTakeLastPosition");
-    //if(!navigator->isInitFinished()){
-    //    return;
-    //}
-    Position3D outPos(0.3, 1.0, 0.0);
-    //Position3D outPos(3.0, 12.5, 0.0);
-    //Position3D outPos = navigator->getLastPosition();
+
+    Position3D outPos;
+
+    if(currentMode == STANDARD_BEACON_NAVIGATOR){
+        if(!navigator->isInitFinished()){
+            return;
+        }
+        outPos = navigator->getLastPosition();
+    }
 
     if(std::isnan(outPos.x) || std::isnan(outPos.y)){
         return;
     }
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator == NULL) {
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && !sensorNavigatorInitialized) {
         AccelConfig config;
         config.mapOrientationAngle = 0;
         config.useFilter = false;
@@ -341,10 +295,11 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
 
         double startX = outPos.x, startY = outPos.y;
 
-        sensorNavigator = new StandardAccelNavigator(mesh, startX, startY, config);
+        sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, config);
+        sensorNavigatorInitialized = true;
     }
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigator != NULL) {
+    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigatorInitialized) {
         outPos = sensorNavigator->getLastPositon();
     }
 

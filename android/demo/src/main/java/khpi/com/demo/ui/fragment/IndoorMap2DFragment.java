@@ -1,16 +1,9 @@
 package khpi.com.demo.ui.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.PointF;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,18 +16,14 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import khpi.com.demo.R;
-import khpi.com.demo.model.BeaconModel;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
-import khpi.com.demo.model.Point;
 import khpi.com.demo.model.Route;
 import khpi.com.demo.model.Step;
-import khpi.com.demo.net.model.LoginModel;
 import khpi.com.demo.routing.IndoorMapView;
 import khpi.com.demo.routing.RouteHelper;
 import khpi.com.demo.ui.BottomSheet;
@@ -43,46 +32,17 @@ import khpi.com.demo.ui.adapter.RouteDataAdapter;
 import khpi.com.demo.ui.view.MapSwitcherView;
 import khpi.com.demo.utils.FileUtil;
 import khpi.com.demo.utils.ManeuverHelper;
-import khpi.com.demo.utils.NetUtil;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
+import pro.i_it.indoor.config.NativeConfigMap;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
-import pro.i_it.indoor.mesh.MeshConfig;
-import pro.i_it.indoor.region.BluetoothBeacon;
 import pro.i_it.indoor.region.InMemoryBeaconsLoader;
-import pro.i_it.indoor.region.SpaceBeacon;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import static pro.i_it.indoor.DebugConfig.TAG;
-import static pro.i_it.indoor.config.DebugConfig.IS_DEBUG;
 
 /**
  * Created by kit on 9/15/16.
@@ -194,32 +154,55 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     public void onResume() {
         super.onResume();
         Log.d("onLocationChanged", "onResume: ");
-        final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
-        getLocalManager().setMode(IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
+        final boolean useBinaryMask = getSharedHelper().useBinaryMask();
 
+
+        NativeConfigMap configs = new NativeConfigMap();
+        if(getSharedHelper().getActiveModeKey() == 0){
+            configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
+            configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
+        } else if(getSharedHelper().getActiveModeKey() == 1) {
+            configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
+            PointF initPosition = getSharedHelper().getInitPosition();
+            configs.set(NativeConfigMap.KEY_INIT_X, initPosition.x);
+            configs.set(NativeConfigMap.KEY_INIT_Y, initPosition.y);
+        }else if(getSharedHelper().getActiveModeKey() == 2){
+            configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
+            configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
+            configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
+        }
+        configs.set(NativeConfigMap.KEY_USE_MASK, getSharedHelper().useBinaryMask());
+        configs.set(NativeConfigMap.KEY_MESH_D_X, 0.3);
+        configs.set(NativeConfigMap.KEY_MESH_D_Y, 0.3);
+        configs.set(NativeConfigMap.KEY_MESH_X_0, 0.0);
+        configs.set(NativeConfigMap.KEY_MESH_Y_0, 0.0);
         if (floor.getGraphPath().contains("/mapData/8/")) {
             //it-jim
-            getLocalManager().setMapAngle(20);
+            configs.set(NativeConfigMap.KEY_MAP_ANGLE, 20);
             if (useBinaryMask) {
-                getLocalManager().useMask(new MeshConfig(36, 24, 0.3, 0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
+                configs.set(NativeConfigMap.KEY_MESH_N_X, 36);
+                configs.set(NativeConfigMap.KEY_MESH_N_Y, 24);
+                configs.set(NativeConfigMap.KEY_MASK, new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
             }
         } else {
             //kaa
-            getLocalManager().setMapAngle(0);
+            configs.set(NativeConfigMap.KEY_MAP_ANGLE, 0);
             if (useBinaryMask) {
-                getLocalManager().useMask(new MeshConfig(22, 44, 0.3, 0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
+                configs.set(NativeConfigMap.KEY_MESH_N_X, 22);
+                configs.set(NativeConfigMap.KEY_MESH_N_Y, 44);
+                configs.set(NativeConfigMap.KEY_MASK, new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
             }
         }
 
-        getLocalManager().start();
+        getLocalManager().setConfiguration(configs);
+
         getLocalManager().setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(float[] position) {
                 applyNewCoordinate(position[0], position[1], 1, 1);
             }
         });
-
-        getLocalManager().setBeaconsInRegionLoader(new InMemoryBeaconsLoader(floor.getSpaceBeacons(), REGION_RADIUS));
+        getLocalManager().start();
     }
 
     @Override

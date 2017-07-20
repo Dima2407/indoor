@@ -27,21 +27,35 @@ public class NativeConfigMap {
     private final Map<String, Object> configs = new HashMap<>();
 
     public float getFloat(String key) {
-        return (float) configs.get(key);
+        Object o = configs.get(key);
+        if(o instanceof Number){
+            return (float) o;
+        }
+        return Float.NaN;
     }
 
     public int getInt(String key) {
-        return (int) configs.get(key);
+        Object o = configs.get(key);
+        if(o instanceof Number){
+            return (int) o;
+        }
+        return -1;
     }
     public double getDouble(String key) {
-        return (double) configs.get(key);
+        Object o = configs.get(key);
+        if(o instanceof Number){
+            return (double) o;
+        }
+        return Double.NaN;
     }
 
-    public boolean getBoolean(String key){
-        return (boolean)configs.get(key);
+    public boolean getBoolean(String key) {
+        Object o = configs.get(key);
+        return o instanceof Boolean && (boolean) o;
     }
     public String getString(String key) {
-        return (String) configs.get(key);
+        Object o = configs.get(key);
+        return String.valueOf(o);
     }
 
     public int[] getIntArray(String key) {

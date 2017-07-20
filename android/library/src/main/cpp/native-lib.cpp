@@ -27,8 +27,6 @@ shared_ptr<StandardAccelNavigator> sensorNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
 
-bool sensorNavigatorInitialized = false;
-
 typedef struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
     jmethodID kSpaceBeaconGetPositionMethod;
@@ -54,19 +52,26 @@ typedef struct IndoorSdkApi {
 
 } IndoorSdkApi;
 
-double timeS = 0;
+typedef struct IndoorSdkConfigs{
+    bool useBeacons;
+    bool useSensors;
+    bool useMask;
 
-enum Mode {
-    TRILATERATION_BEACON_NAVIGATOR = 0,
-    STANDARD_BEACON_NAVIGATOR = 1,
-    SENSOR_BEACON_NAVIGATOR = 2
-};
+    int mapAngle;
+
+    float startX = std::nan("");
+    float startY = std::nan("");
+
+    bool sensorsActive;
+} IndoorSdkConfigs;
+
+double timeS = 0;
 
 vector<int> mGraphs(2000);
 vector<double> mEdges(2000);
 
 IndoorSdkApi api;
-Mode currentMode;
+IndoorSdkConfigs configs;
 
 extern "C" {
 
@@ -76,26 +81,14 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
-        JNIEnv *, jobject, jint, jintArray, jobject);
+        JNIEnv *, jobject, jobject);
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *, jobject );
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
-        JNIEnv *env, jobject instance, jobjectArray beacons);
-
-JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *, jobject, jfloatArray);
-
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArray(JNIEnv *env, jobject instance,
-                                                                jintArray graphs_);
-
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setNativeEdgesArray(JNIEnv *env, jobject instance,
-                                                                jdoubleArray edges_);
 
 JNIEXPORT jdoubleArray JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject instance,
@@ -151,7 +144,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
-    if (eventTypeCode == 2 && currentMode == STANDARD_BEACON_NAVIGATOR) {
+    if (eventTypeCode == 2 && configs.useBeacons) {
         jstring uuidString = (jstring) env->GetObjectField(obj, api.kMeasurementEventUUIDField);
 
         const char *uuid = env->GetStringUTFChars(uuidString, 0);
@@ -165,7 +158,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         Position3D outPos = navigator->process(brd);
         LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
         env->ReleaseStringUTFChars(uuidString, uuid);
-    } else if (eventTypeCode == 1 && currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigatorInitialized) {
+    } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
         double ax = data[0];
         double ay = data[1];
         double az = data[2];
@@ -195,41 +188,60 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         LOGD("IndoorLocationManager_nativeInit");
     prepare_sdk(env);
 
-    currentMode = static_cast<Mode>(modeType);
+    configs = {};
+    configs.useBeacons = env->CallBooleanMethod(config, api.kMeasurementTypeGetCodeMethod);
+    configs.useSensors = env->CallBooleanMethod(config, api.kMeasurementTypeGetCodeMethod);
+    configs.useMask = env->CallBooleanMethod(config, api.kMeasurementTypeGetCodeMethod);
+    configs.mapAngle = env->CallIntMethod(config, api.kMeasurementTypeGetCodeMethod);
+    configs.startX = env->CallFloatMethod(config, api.kMeasurementTypeGetCodeMethod);
+    configs.startY = env->CallFloatMethod(config, api.kMeasurementTypeGetCodeMethod);
 
-    switch (currentMode) {
+    if(configs.useMask){
+        jintArray maskArray = (jintArray)env->CallObjectMethod(config, api.kMeasurementTypeGetCodeMethod);
+        const jsize length = env->GetArrayLength(maskArray);
+        jint *mask = env->GetIntArrayElements(maskArray, 0);
 
-        case TRILATERATION_BEACON_NAVIGATOR : {
-            auto rssiFact = make_shared<MovingAverageFilterFactory>(3);
-            auto distFact = make_shared<NoFilterFactory>();
-            //navigator = new TrilatBeaconNavigator(rssiFact, distFact);
+        vector<int> table(length);
+        memcpy(&table[0], mask, length * sizeof(int));
+
+        env->ReleaseIntArrayElements(maskArray, mask, 0);
+
+        const double nx = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+        const double ny = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+        const double dx = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+        const double dy = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+        const double x0 = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+        const double y0 = env->CallDoubleMethod(config, api.kMeasurementTypeGetCodeMethod);
+
+        mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
+
+        mesh->setMaskTable(table);
+    }
+    if(configs.useBeacons){
+        navigator = make_shared<StandardBeaconNavigator>(mesh, false);
+
+        jobjectArray beacons = (jobjectArray)env->CallObjectMethod(config, api.kMeasurementTypeGetCodeMethod);
+
+        jint size = env->GetArrayLength(beacons);
+
+        for (int i = 0; i < size; i++) {
+            jobject beacon = env->GetObjectArrayElement(beacons, i);
+            jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetPositionMethod);
+            jstring id = (jstring) env->CallObjectMethod(beacon, api.kSpaceBeaconGetIdMethod);
+            jfloatArray values = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetValuesMethod);
+
+            jfloat *elements = env->GetFloatArrayElements(values, 0);
+            jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
+            const char *uuid = env->GetStringUTFChars(id, 0);
+
+            BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
+            navigator->addBeacon(Beacon(uid, elements[2], elements[3],
+                                        Position3D(elementsPos[0], elementsPos[1], elementsPos[2]),
+                                        ""));
+
+            env->ReleaseFloatArrayElements(values, elements, 0);
+            env->ReleaseStringUTFChars(id, uuid);
         }
-            break;
-        case SENSOR_BEACON_NAVIGATOR   :
-        case STANDARD_BEACON_NAVIGATOR : {
-            if (maskArray != NULL) {
-                const jsize length = env->GetArrayLength(maskArray);
-                jint *mask = env->GetIntArrayElements(maskArray, 0);
-
-                vector<int> table(length);
-                memcpy(&table[0], mask, length * sizeof(int));
-
-                env->ReleaseIntArrayElements(maskArray, mask, 0);
-
-                const double nx = env->GetDoubleField(meshConfig, api.kMeshConfigNXField);
-                const double ny = env->GetDoubleField(meshConfig, api.kMeshConfigNYField);
-                const double dx = env->GetDoubleField(meshConfig, api.kMeshConfigDXField);
-                const double dy = env->GetDoubleField(meshConfig, api.kMeshConfigDYField);
-                const double x0 = env->GetDoubleField(meshConfig, api.kMeshConfigX0Field);
-                const double y0 = env->GetDoubleField(meshConfig, api.kMeshConfigY0Field);
-
-                mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
-
-                mesh->setMaskTable(table);
-            }
-            navigator = make_shared<StandardBeaconNavigator>(mesh, false);
-        }
-        break;
     }
     LOGD("IndoorLocationManager_nativeInit -");
 }
@@ -238,35 +250,7 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *env, jobject instance) {
     LOGD("IndoorLocationManager_nativeRelease");
-    sensorNavigatorInitialized = false;
     LOGD("IndoorLocationManager_nativeRelease -");
-}
-
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeSetBeacons(
-        JNIEnv *env, jobject instance, jobjectArray beacons) {
-        LOGD("IndoorLocationManager_nativeSetBeacons");
-    jint size = env->GetArrayLength(beacons);
-
-    for (int i = 0; i < size; i++) {
-        jobject beacon = env->GetObjectArrayElement(beacons, i);
-        jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetPositionMethod);
-        jstring id = (jstring) env->CallObjectMethod(beacon, api.kSpaceBeaconGetIdMethod);
-        jfloatArray values = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetValuesMethod);
-
-        jfloat *elements = env->GetFloatArrayElements(values, 0);
-        jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
-        const char *uuid = env->GetStringUTFChars(id, 0);
-
-        BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
-        navigator->addBeacon(Beacon(uid, elements[2], elements[3],
-                                    Position3D(elementsPos[0], elementsPos[1], elementsPos[2]),
-                                    ""));
-
-        env->ReleaseStringUTFChars(id, uuid);
-
-    }
-    LOGD("IndoorLocationManager_nativeSetBeacons -");
 }
 
 JNIEXPORT void JNICALL
@@ -274,9 +258,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
                                                                    jfloatArray positionArray) {
     LOGD("IndoorLocationManager_nativeTakeLastPosition");
 
-    Position3D outPos;
+    Position3D outPos(configs.startX, configs.startY, 0.0f);
 
-    if(currentMode == STANDARD_BEACON_NAVIGATOR){
+    if(configs.useBeacons){
         if(!navigator->isInitFinished()){
             return;
         }
@@ -287,19 +271,19 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
         return;
     }
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && !sensorNavigatorInitialized) {
+    if (configs.useSensors && !configs.sensorsActive) {
         AccelConfig config;
-        config.mapOrientationAngle = 0;
+        config.mapOrientationAngle = configs.mapAngle;
         config.useFilter = false;
         LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
         double startX = outPos.x, startY = outPos.y;
 
         sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, config);
-        sensorNavigatorInitialized = true;
+        configs.sensorsActive = true;
     }
 
-    if (currentMode == SENSOR_BEACON_NAVIGATOR && sensorNavigatorInitialized) {
+    if (configs.useSensors) {
         outPos = sensorNavigator->getLastPositon();
     }
 
@@ -313,43 +297,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
     env->ReleaseFloatArrayElements(positionArray, data, 0);
     LOGD("IndoorLocationManager_nativeTakeLastPosition -");
 
-}
-
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setNativeGraphArray(JNIEnv *env, jobject instance,
-                                                                jintArray graphs_) {
-
-    LOGD("IndoorLocationManager_setNativeGraphArray");
-    jint *graphs = env->GetIntArrayElements(graphs_, 0);
-
-    const jsize graphsLenght = env->GetArrayLength(graphs_);
-
-    mGraphs.clear();
-    mGraphs.resize(graphsLenght);
-    for (int i = 0; i < graphsLenght; i++) {
-        mGraphs[i] = graphs[i];
-    }
-
-    env->ReleaseIntArrayElements(graphs_, graphs, 0);
-    LOGD("IndoorLocationManager_setNativeGraphArray -");
-}
-
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setNativeEdgesArray(JNIEnv *env, jobject instance,
-                                                                jdoubleArray edges_) {
-    LOGD("IndoorLocationManager_setNativeEdgesArray");
-    jdouble *edges = env->GetDoubleArrayElements(edges_, NULL);
-
-    const jsize edgesLenght = env->GetArrayLength(edges_);
-
-    mEdges.clear();
-    mEdges.resize(edgesLenght);
-    for (int i = 0; i < edgesLenght; i++) {
-        mEdges[i] = edges[i];
-    }
-
-    env->ReleaseDoubleArrayElements(edges_, edges, 0);
-    LOGD("IndoorLocationManager_setNativeEdgesArray -");
 }
 
 JNIEXPORT jdoubleArray JNICALL

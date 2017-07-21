@@ -114,7 +114,7 @@ int main() {
     PointGraph g3("graph.txt");
     pointPath.clear();
 
-    cout << "dist = " << g2.dijkstraP(1, 6, pointPath) << endl;
+    cout << "dist = " << g3.dijkstraP(1, 6, pointPath) << endl;
     for (const Position3D &p : pointPath)
         cout << p.x << " " << p.y << endl;
 
@@ -127,14 +127,12 @@ int main() {
                     std::istreambuf_iterator<char>());
     temp.close();
 
-    // Put rescale = 0.07 or something to convert from pixels to meters
     PointGraph g4(buffer, 1.0);
     pointPath.clear();
 
-    cout << "dist = " << g2.dijkstraP(1, 6, pointPath) << endl;
+    cout << "dist = " << g4.dijkstraP(1, 6, pointPath) << endl;
     for (const Position3D &p : pointPath)
         cout << p.x << " " << p.y << endl;
-
 
     return 0;
 }

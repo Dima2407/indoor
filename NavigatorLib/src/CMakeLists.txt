@@ -18,6 +18,8 @@ set(SOURCE_FILES
     ../include/Navigator/Math/Filter/IFilter.h
     ../include/Navigator/Math/Filter/NoFilter.h
     ../include/Navigator/Math/Filter/RingBuffer.h
+    ./Navigator/Math/Kalman/KalmanFilter.cpp ../include/Navigator/Math/Kalman/KalmanFilter.h
+    ../include/Navigator/Math/Kalman/KalmanConfig.h
     #
     ../include/Navigator/Beacons/Factory/NoFilterFactory.h
     ../include/Navigator/Beacons/Factory/MovingAverageFilterFactory.h

@@ -22,8 +22,6 @@ import android.widget.Toast;
 import khpi.com.demo.R;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
-import khpi.com.demo.model.Route;
-import khpi.com.demo.model.Step;
 import khpi.com.demo.routing.IndoorMapView;
 import khpi.com.demo.routing.RouteHelper;
 import khpi.com.demo.ui.BottomSheet;
@@ -38,6 +36,8 @@ import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.config.NativeConfigMap;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
 import pro.i_it.indoor.region.InMemoryBeaconsLoader;
+import pro.i_it.indoor.routing.Route;
+import pro.i_it.indoor.routing.Step;
 
 import com.squareup.picasso.Picasso;
 
@@ -59,7 +59,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     public static String KEY_FLOOR_MAP = "floorMap";
     public static int REGION_RADIUS = 10;
-    public static PointF dest = new PointF();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,9 +104,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         bottomSheet.getCancelButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                dest.x = 0;
-                dest.y = 0;
-                getActivityBridge().getRouteHelper().clear();
+                getLocalManager().clearDestination();
                 bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
                 bottomSheet.getHintContainer().setVisibility(View.GONE);
                 bottomSheet.getCancelButton().setVisibility(View.GONE);
@@ -137,17 +134,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         });
 
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        float[] route = getActivityBridge().getRouteHelper().getRoute();
-        if (route != null && route.length != 0) {
-            onNewRoute(route);
-            dest = getActivityBridge().getRouteHelper().getDestinationPoint();
-        }
     }
 
     @Override
@@ -194,12 +180,15 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             }
         }
 
+        configs.set(NativeConfigMap.KEY_GRAPH_PATH, FileUtil.getLocacPath(getActivity(), floor.getGraphPath()).getAbsolutePath());
+        configs.set(NativeConfigMap.KEY_GRAPH_SCALE, 1.0);
+
         getLocalManager().setConfiguration(configs);
 
         getLocalManager().setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
-            public void onLocationChanged(float[] position) {
-                applyNewCoordinate(position[0], position[1], 1, 1);
+            public void onLocationChanged(PointF position, float[] route) {
+                applyNewCoordinate(position.x, position.y, 1, 1, route);
             }
         });
         getLocalManager().start();
@@ -226,8 +215,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         Log.i("IndMap", "floor.getGraphPath() = " + FileUtil.getLocacPath(getActivity(), floor.getGraphPath()));
         getActivityBridge().getRouteHelper().initMapFromFile(FileUtil.getLocacPath(getActivity(), floor.getGraphPath()), new RouteHelper.MapProcessingListener() {
             @Override
-            public void onMapProcessed(Pair<String, Integer> graph) {
-                getLocalManager().setGraph(graph.first, graph.second);
+            public void onMapProcessed() {
                 progressDialog.hide();
                 mapView.setEdges(getActivityBridge().getRouteHelper().getEdges());
             }
@@ -251,10 +239,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onDestinationChanged(float x, float y) {
-        Log.d("DemoIndorMapFragment", "x:" + x);
-        Log.d("DemoIndorMapFragment", "y:" + y);
-        dest.x = x;
-        dest.y = y;
+        getLocalManager().setDestination(x, y, floor.getPixelSize());
     }
 
     private void onNewRoute(float[] route) {
@@ -270,9 +255,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         layoutParams.topMargin = PixelsUtil.dpToPx(72, getContext());
         cameraBtn.setLayoutParams(layoutParams);
 
-        List<RouteHelper.Motion> motions = getActivityBridge().getRouteHelper().getMoutions(route);
-
-        Route r = getActivityBridge().getRouteHelper().buildRoute(motions, floor);
+        Route r = getLocalManager().buildRoute();
         if (r == null || r.getSteps().isEmpty()) {
             return;
         }
@@ -316,53 +299,33 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     }
 
 
-    private void applyNewCoordinate(float x, float y, float tx, float ty) {
+    private void applyNewCoordinate(float x, float y, float tx, float ty, float [] route) {
         if (getActivity() == null) {
             return;
         }
         mapView.setCoordinates(tx, ty, x, y);
+        mapView.setRoute(route);
 
-        if (dest.x == 0 && dest.y == 0) {
-            mapView.setRoute(new float[0]);
-            return;
+        if(route.length == 0){
+            bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
+            bottomSheet.getCancelButton().setVisibility(View.GONE);
+            bottomSheet.getHintContainer().setVisibility(View.GONE);
+
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) cameraBtn.getLayoutParams();
+            layoutParams.topMargin = PixelsUtil.dpToPx(16, getContext());
+            cameraBtn.setLayoutParams(layoutParams);
+        } else {
+            onNewRoute(route);
         }
-        if (Float.isNaN(x) && Float.isNaN(x)) {
-            mapView.setRoute(new float[0]);
-            return;
-        }
-        Log.i("locationManager", "apply new coords : dest.x = " + dest.x + " dest.y = " + dest.y);
-
-        getActivityBridge().getRouteHelper().findPath(new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize())), dest, getLocalManager(), new RouteHelper.RouteListener() {
-            @Override
-            public void onRouteFound(float[] route) {
-                onNewRoute(route);
-            }
-
-            @Override
-            public void onFail() {
-                Log.d("DemoIndorMapFragment", "No route to this point");
-                if (dest.x == 0 && dest.y == 0) {
-                    return;
-                }
-                mapView.setRoute(new float[0]);
-
-                bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
-                bottomSheet.getCancelButton().setVisibility(View.GONE);
-                bottomSheet.getHintContainer().setVisibility(View.GONE);
-
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) cameraBtn.getLayoutParams();
-                layoutParams.topMargin = PixelsUtil.dpToPx(16, getContext());
-                cameraBtn.setLayoutParams(layoutParams);
-            }
-        });
     }
 
     @Override
     public void onInpoictClicked(final Inpoint inpoint) {
-        getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), getLocalManager(), new RouteHelper.RouteListener() {
+        //FIXME:
+        /*getActivityBridge().getRouteHelper().findPath(mapView.getCoordinates(), new PointF((float) inpoint.getX(), (float) inpoint.getY()), getLocalManager(), new RouteHelper.RouteListener() {
             @Override
             public void onRouteFound(float[] route) {
-                Route r = getActivityBridge().getRouteHelper().buildRoute(getActivityBridge().getRouteHelper().getMoutions(route), floor);
+                Route r = getLocalManager().buildRoute(floor.getPixelSize());
                 new AlertDialog.Builder(getActivity())
                         .setIcon(R.drawable.poi_big_icn)
                         .setTitle(inpoint.getTitle())
@@ -391,7 +354,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                         })
                         .create().show();
             }
-        });
+        });*/
     }
 
     @Override

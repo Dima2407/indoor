@@ -1,5 +1,6 @@
 package pro.i_it.indoor.logger;
 
+import android.graphics.PointF;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -17,16 +18,16 @@ public class LoggableLocationUpdateListener extends FileLogger implements OnLoca
     }
 
     @Override
-    public void onLocationChanged(float[] position) {
+    public void onLocationChanged(PointF position, float[] route) {
         try {
             JSONObject object = new JSONObject();
-            object.put("x", position[0]);
-            object.put("y", position[1]);
+            object.put("x", position.x);
+            object.put("y", position.y);
             appendToFile(POSITIONS_JSON, object);
         } catch (Exception e) {
             Log.w(LoggableLocationUpdateListener.class.getSimpleName(), "onLocationChanged: ", e);
         }
-        listener.onLocationChanged(position);
+        listener.onLocationChanged(position, route);
     }
 
 }

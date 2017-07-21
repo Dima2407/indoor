@@ -9,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import khpi.com.demo.R;
-import khpi.com.demo.model.Step;
 import khpi.com.demo.utils.ManeuverHelper;
+import pro.i_it.indoor.routing.Step;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

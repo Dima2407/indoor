@@ -1,73 +1,76 @@
 package pro.i_it.indoor.config;
 
+import android.util.SparseArray;
+
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import pro.i_it.indoor.masks.MaskTableFetcher;
 
 public class NativeConfigMap {
 
-    public static final String KEY_MESH_N_X = "mesh_nx";
-    public static final String KEY_MESH_N_Y = "mesh_ny";
-    public static final String KEY_MESH_D_X = "mesh_dx";
-    public static final String KEY_MESH_D_Y = "mesh_dy";
-    public static final String KEY_MESH_X_0 = "mesh_x0";
-    public static final String KEY_MESH_Y_0 = "mesh_y0";
-    public static final String KEY_MASK = "mask";
+    public static final int KEY_MESH_N_X = 0;
+    public static final int KEY_MESH_N_Y = 1;
+    public static final int KEY_MESH_D_X = 2;
+    public static final int KEY_MESH_D_Y = 3;
+    public static final int KEY_MESH_X_0 = 4;
+    public static final int KEY_MESH_Y_0 = 5;
+    public static final int KEY_MASK = 6;
 
-    public static final String KEY_MAP_ANGLE = "map_angle";
-    public static final String KEY_USE_MASK = "use_mask";
-    public static final String KEY_USE_BEACONS = "use_beacons";
-    public static final String KEY_USE_SENSORS = "use_sensors";
-    public static final String KEY_INIT_X = "x0";
-    public static final String KEY_INIT_Y = "y0";
-    public static final String KEY_BEACONS = "beacons";
+    public static final int KEY_MAP_ANGLE = 7;
+    public static final int KEY_USE_MASK = 8;
+    public static final int KEY_USE_BEACONS = 9;
+    public static final int KEY_USE_SENSORS =10;
+    public static final int KEY_INIT_X = 11;
+    public static final int KEY_INIT_Y = 12;
+    public static final int KEY_BEACONS = 13;
 
-    private final Map<String, Object> configs = new HashMap<>();
+    public static final int KEY_GRAPH_PATH = 14;
+    public static final int KEY_GRAPH_SCALE = 15;
 
-    public float getFloat(String key) {
+    private final SparseArray<Object> configs = new SparseArray<>();
+
+    public float getFloat(int key) {
         Object o = configs.get(key);
-        if(o instanceof Number){
+        if(o instanceof Float){
             return (float) o;
         }
         return Float.NaN;
     }
 
-    public int getInt(String key) {
+    public int getInt(int key) {
         Object o = configs.get(key);
-        if(o instanceof Number){
+        if(o instanceof Integer){
             return (int) o;
         }
         return -1;
     }
-    public double getDouble(String key) {
+    public double getDouble(int key) {
         Object o = configs.get(key);
-        if(o instanceof Number){
+        if(o instanceof Double){
             double o1 = (double) o;
             return o1;
         }
         return Double.NaN;
     }
 
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(int key) {
         Object o = configs.get(key);
         return o instanceof Boolean && (boolean) o;
     }
 
-    public Object getObject(String key) {
+    public Object getObject(int key) {
         return configs.get(key);
     }
 
-    public void set(String key, Object o) {
+    public void set(int key, Object o) {
         configs.put(key, o);
     }
 
-    public void set(String key, MaskTableFetcher fetcher) {
+    public void set(int key, MaskTableFetcher fetcher) {
         configs.put(key, fetcher.fetchMaskTable());
     }
 
-    public void set(String key, Collection<?> items){
+    public void set(int key, Collection<?> items){
         configs.put(key, items.toArray());
     }
 

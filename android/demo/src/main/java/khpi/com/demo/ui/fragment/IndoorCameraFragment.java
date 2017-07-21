@@ -21,8 +21,6 @@ import khpi.com.demo.core.bridge.OrientationBridge;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Point;
-import khpi.com.demo.model.Route;
-import khpi.com.demo.model.Step;
 import khpi.com.demo.routing.RouteHelper;
 import khpi.com.demo.ui.BottomSheet;
 import khpi.com.demo.ui.adapter.RouteDataAdapter;
@@ -37,6 +35,8 @@ import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
+import pro.i_it.indoor.routing.Route;
+import pro.i_it.indoor.routing.Step;
 
 import com.squareup.picasso.Picasso;
 
@@ -67,6 +67,10 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         return fragment;
     }
 
+    private IndoorLocationManager getLocalManager() {
+        return getActivityBridge().getProjectApplication().getLocalManager();
+    }
+
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +92,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         bottomSheet.getCancelButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivityBridge().getRouteHelper().clear();
+
+                getLocalManager().clearDestination();
 
                 bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
                 bottomSheet.getHintContainer().setVisibility(View.GONE);
@@ -97,9 +102,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 radarView.setRoute(new float[0]);
 
                 destinationPoint = null;
-
-                IndoorMap2DFragment.dest.x = 0;
-                IndoorMap2DFragment.dest.y = 0;
 
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) radarView.getLayoutParams();
                 layoutParams.bottomMargin = PixelsUtil.dpToPx(16, getContext());
@@ -209,37 +211,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 radarView.setCoordinates(0, 0, x, y);
             }
         });
-        RouteHelper.RouteListener routeListener = new RouteHelper.RouteListener() {
-            @Override
-            public void onRouteFound(final float[] route) {
-                if (getContext() == null) {
-                    return;
-                }
-                radarView.setRoute(route);
 
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onNewRoute(route);
-                    }
-                });
-            }
-
-            @Override
-            public void onFail() {
-                if (getContext() == null) {
-                    return;
-                }
-                bottomSheet.getHintContainer().setVisibility(View.GONE);
-                bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
-                bottomSheet.getCancelButton().setVisibility(View.GONE);
-                radarView.setRoute(new float[0]);
-                getActivityBridge().getRouteHelper().clear();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) radarView.getLayoutParams();
-                layoutParams.bottomMargin = PixelsUtil.dpToPx(16, getContext());
-                radarView.setLayoutParams(layoutParams);
-            }
-        };
 
         PointF currentPosition = new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize()));
 
@@ -267,9 +239,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         layoutParams.bottomMargin = PixelsUtil.dpToPx(96, getContext());
         radarView.setLayoutParams(layoutParams);
 
-        List<RouteHelper.Motion> motions = getActivityBridge().getRouteHelper().getMoutions(route);
 
-        final Route r = getActivityBridge().getRouteHelper().buildRoute(motions, floor);
+        final Route r = getLocalManager().buildRoute();
 
         indoorCameraOverlay.queueEvent(new Runnable() {
             @Override

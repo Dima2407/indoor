@@ -7,11 +7,9 @@ import android.os.Message;
 import pro.i_it.indoor.config.NativeConfigMap;
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.logger.LoggableLocationUpdateListener;
-import pro.i_it.indoor.masks.MaskTableFetcher;
 import pro.i_it.indoor.providers.*;
-import pro.i_it.indoor.region.BeaconsInRegionLoader;
-import pro.i_it.indoor.region.SpaceBeacon;
-import pro.i_it.indoor.region.SpaceRegion;
+import pro.i_it.indoor.routing.IndoorRouter;
+import pro.i_it.indoor.routing.Route;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,8 +32,8 @@ public class IndoorLocationManager {
     private Handler positionRequester;
 
     private Set<MeasurementProvider> providers;
-    private final float[] lastPosition = new float[]{-1.0f,-1.0f,-1.0f};
     private NativeConfigMap configuration;
+    private final IndoorRouter router = new IndoorRouter();
 
     public IndoorLocationManager() {
         this.providers = new HashSet<>();
@@ -43,10 +41,10 @@ public class IndoorLocationManager {
             @Override
             public void handleMessage(Message msg) {
                 if(active) {
-                    nativeTakeLastPosition(lastPosition);
-                    if(lastPosition[0] >= 0.0f || lastPosition[1] >= 0.0f){
+                    nativeTakeLastPositionWithDestination(router);
+                    if(router.positionDetected()){
                         if (onLocationUpdateListener != null) {
-                            onLocationUpdateListener.onLocationChanged(lastPosition);
+                            onLocationUpdateListener.onLocationChanged(router.getStartPosition(), router.getRoute());
                         }
                     }
                     sendEmptyMessageDelayed(POSITION_REQUEST, POSITION_REQUEST_DELAY);
@@ -85,20 +83,13 @@ public class IndoorLocationManager {
         //this.addProvider(context, type, new AndroidLoggableMeasurementTransfer(new AndroidDebuggableMeasurementTransfer()));
     }
 
-    public double[] getRoute(double x1, double y1, double x2, double y2) {
-
-        return getNativeRoute(x1, y1, x2, y2);
-    }
-
     public void start() {
         active = true;
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
         nativeInit(configuration);
-        lastPosition[0] = -1.0f;
-        lastPosition[1] = -1.0f;
-        lastPosition[2] = -1.0f;
+        router.clear();
         positionRequester.sendEmptyMessageDelayed(POSITION_REQUEST, POSITION_REQUEST_DELAY);
     }
 
@@ -110,31 +101,29 @@ public class IndoorLocationManager {
         onLocationUpdateListener = null;
         positionRequester.removeCallbacksAndMessages(null);
         nativeRelease();
+        router.clear();
     }
-    //route
 
-    private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
-
-    private native void setGraphArraysFromFile(String fileContent, double scale);
-
-    public void setGraph(String fileContent, double scale){
-        if(!active){
-            return;
-        }
-        setGraphArraysFromFile(fileContent, scale);
-
+    public void setDestination(float destinationX, float destinationY, double pixelSize){
+        router.setDestination(destinationX,destinationY, pixelSize);
     }
-    //route
-
-
 
     private native void nativeInit(NativeConfigMap configuration);
 
     private native void nativeRelease();
 
-    private native void nativeTakeLastPosition(float [] position);
+    private native void nativeTakeLastPositionWithDestination(IndoorRouter router);
+
 
     public void setConfiguration(NativeConfigMap configuration) {
         this.configuration = configuration;
+    }
+
+    public void clearDestination() {
+        router.clearDestination();
+    }
+
+    public Route buildRoute(){
+        return router.buildRoute();
     }
 }

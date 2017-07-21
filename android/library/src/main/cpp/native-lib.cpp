@@ -43,25 +43,37 @@ typedef struct IndoorSdkApi {
     jmethodID kMeasurementTypeGetCodeMethod;
 
     jclass kConfigMapClass;
-    jfieldID kMeshConfigNXField;
-    jfieldID kMeshConfigNYField;
-    jfieldID kMeshConfigDXField;
-    jfieldID kMeshConfigDYField;
-    jfieldID kMeshConfigX0Field;
-    jfieldID kMeshConfigY0Field;
-    jfieldID kMaskField;
-    jfieldID kMapAngleField;
-    jfieldID kUseMaskField;
-    jfieldID kUseBeaconsField;
-    jfieldID kUseSensorsField;
-    jfieldID kInitXField;
-    jfieldID kInitYField;
-    jfieldID kBeaconsField;
+    int kMeshConfigNXField = 0;
+    int kMeshConfigNYField = 1;
+    int kMeshConfigDXField = 2;
+    int kMeshConfigDYField = 3;
+    int kMeshConfigX0Field = 4;
+    int kMeshConfigY0Field = 5;
+    int kMaskField = 6;
+    int kMapAngleField = 7;
+    int kUseMaskField = 8;
+    int kUseBeaconsField = 9;
+    int kUseSensorsField = 10;
+    int kInitXField = 11;
+    int kInitYField = 12;
+    int kBeaconsField = 13;
+    int kGraphPath = 14;
+    int kGraphScale = 1;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
     jmethodID kGetBooleanMethod;
     jmethodID kGetObjectMethod;
+
+    jclass kIndoorRouterClass;
+
+    jfieldID kIndoorRouterOriginXField;
+    jfieldID kIndoorRouterOriginYField;
+    jfieldID kIndoorRouterDestinationXField;
+    jfieldID kIndoorRouterDestinationYField;
+    jfieldID kIndoorRouterDistanceField;
+    jfieldID kIndoorRouterRouteField;
+    jfieldID kIndoorRouterPixelSizeField;
 
 } IndoorSdkApi;
 
@@ -95,21 +107,12 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
-        JNIEnv *, jobject );
+        JNIEnv *, jobject);
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *, jobject, jfloatArray);
+Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestination(JNIEnv *, jobject, jobject);
 
-JNIEXPORT jdoubleArray JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject instance,
-                                                           jdouble x1, jdouble y1, jdouble x2,
-                                                           jdouble y2);
-
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setGraphArraysFromFile(JNIEnv *env, jobject instance,
-                                                                   jstring file_, jdouble scale);
 }
-
 //endregion
 
 void prepare_sdk(JNIEnv *env) {
@@ -135,26 +138,22 @@ void prepare_sdk(JNIEnv *env) {
                                                          "()I");
 
     api.kConfigMapClass = env->FindClass("pro/i_it/indoor/config/NativeConfigMap");
-    api.kGetFloatMethod = env->GetMethodID(api.kConfigMapClass, "getFloat", "(Ljava/lang/String;)F");
-    api.kGetIntMethod = env->GetMethodID(api.kConfigMapClass, "getInt", "(Ljava/lang/String;)I");
-    api.kGetBooleanMethod = env->GetMethodID(api.kConfigMapClass, "getBoolean", "(Ljava/lang/String;)Z");
-    api.kGetDoubleMethod = env->GetMethodID(api.kConfigMapClass, "getDouble", "(Ljava/lang/String;)D");
-    api.kGetObjectMethod = env->GetMethodID(api.kConfigMapClass, "getObject", "(Ljava/lang/String;)Ljava/lang/Object;");
+    api.kGetFloatMethod = env->GetMethodID(api.kConfigMapClass, "getFloat", "(I)F");
+    api.kGetIntMethod = env->GetMethodID(api.kConfigMapClass, "getInt", "(I)I");
+    api.kGetBooleanMethod = env->GetMethodID(api.kConfigMapClass, "getBoolean", "(I)Z");
+    api.kGetDoubleMethod = env->GetMethodID(api.kConfigMapClass, "getDouble", "(I)D");
+    api.kGetObjectMethod = env->GetMethodID(api.kConfigMapClass, "getObject",
+                                            "(I)Ljava/lang/Object;");
 
-    api.kMeshConfigNXField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_N_X", "Ljava/lang/String;");
-    api.kMeshConfigNYField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_N_Y", "Ljava/lang/String;");
-    api.kMeshConfigDXField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_D_X", "Ljava/lang/String;");
-    api.kMeshConfigDYField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_D_Y", "Ljava/lang/String;");
-    api.kMeshConfigX0Field = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_X_0", "Ljava/lang/String;");
-    api.kMeshConfigY0Field = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MESH_Y_0", "Ljava/lang/String;");
-    api.kMaskField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MASK", "Ljava/lang/String;");
-    api.kMapAngleField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_MAP_ANGLE", "Ljava/lang/String;");
-    api.kUseMaskField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_USE_MASK", "Ljava/lang/String;");
-    api.kUseBeaconsField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_USE_BEACONS", "Ljava/lang/String;");
-    api.kUseSensorsField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_USE_SENSORS", "Ljava/lang/String;");
-    api.kInitXField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_INIT_X", "Ljava/lang/String;");
-    api.kInitYField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_INIT_Y", "Ljava/lang/String;");
-    api.kBeaconsField = env->GetStaticFieldID(api.kConfigMapClass, "KEY_BEACONS", "Ljava/lang/String;");
+    api.kIndoorRouterClass = env->FindClass("pro/i_it/indoor/routing/IndoorRouter");
+    api.kIndoorRouterOriginXField = env->GetFieldID(api.kIndoorRouterClass, "startX", "F");
+    api.kIndoorRouterOriginYField = env->GetFieldID(api.kIndoorRouterClass, "startY", "F");
+    api.kIndoorRouterDestinationXField = env->GetFieldID(api.kIndoorRouterClass, "destinationX", "F");
+    api.kIndoorRouterDestinationYField = env->GetFieldID(api.kIndoorRouterClass, "destinationY", "F");
+    api.kIndoorRouterDistanceField = env->GetFieldID(api.kIndoorRouterClass, "distance", "F");
+    api.kIndoorRouterRouteField = env->GetFieldID(api.kIndoorRouterClass, "route", "[F");
+    api.kIndoorRouterPixelSizeField = env->GetFieldID(api.kIndoorRouterClass, "pixelSize", "D");
+
 }
 
 JNIEXPORT void JNICALL
@@ -190,9 +189,9 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         double pitch = data[4];
         double roll = data[5];
         azimut = azimut - configs.mapAngle;
-        if(azimut > 180){
-            azimut = - 360 + azimut;
-        }else if(azimut < -180){
+        if (azimut > 180) {
+            azimut = -360 + azimut;
+        } else if (azimut < -180) {
             azimut = 360 + azimut;
         }
         LOGD("sensor ax ( %f ), ay ( %f ), az ( %f ), azimut ( %f ) , pitch ( %f ) , roll ( %f ) ",
@@ -206,8 +205,8 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
                 .pitch = pitch,
                 .roll = roll,
                 .yaw = azimut};
-            Position3D outPos = sensorNavigator->process(ard);
-            LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
+        Position3D outPos = sensorNavigator->process(ard);
+        LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
     }
     env->ReleaseDoubleArrayElements(dataArray, data, 0);
 }
@@ -215,31 +214,22 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jobject config) {
-        LOGD("IndoorLocationManager_nativeInit");
+    LOGD("IndoorLocationManager_nativeInit");
     prepare_sdk(env);
 
     configs = {};
-    jstring keyUseBeacons = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kUseBeaconsField);
-    configs.useBeacons = env->CallBooleanMethod(config, api.kGetBooleanMethod, keyUseBeacons);
+    configs.useBeacons = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                api.kUseBeaconsField);
+    configs.useSensors = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                api.kUseSensorsField);
+    configs.useMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMaskField);
+    configs.mapAngle = env->CallIntMethod(config, api.kGetIntMethod, api.kMapAngleField);
+    configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitXField);
+    configs.startY = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitYField);
 
-    jstring keyUseSensors = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kUseSensorsField);
-    configs.useSensors = env->CallBooleanMethod(config, api.kGetBooleanMethod, keyUseSensors);
-
-    jstring keyUseMask = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kUseMaskField);
-    configs.useMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, keyUseMask);
-
-    jstring keyMapAngle = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMapAngleField);
-    configs.mapAngle = env->CallIntMethod(config, api.kGetIntMethod, keyMapAngle);
-
-    jstring keyStartX = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kInitXField);
-    configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, keyStartX);
-
-    jstring keyStartY = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kInitYField);
-    configs.startY = env->CallFloatMethod(config, api.kGetFloatMethod, keyStartY);
-
-    if(configs.useMask){
-        jstring keyMaskArray = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMaskField);
-        jintArray maskArray = (jintArray)env->CallObjectMethod(config, api.kGetObjectMethod, keyMaskArray);
+    if (configs.useMask) {
+        jintArray maskArray = (jintArray) env->CallObjectMethod(config, api.kGetObjectMethod,
+                                                                api.kMaskField);
         const jsize length = env->GetArrayLength(maskArray);
         jint *mask = env->GetIntArrayElements(maskArray, 0);
 
@@ -248,36 +238,38 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
         env->ReleaseIntArrayElements(maskArray, mask, 0);
 
-        jstring keyNX = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigNXField);
-        const double nx = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyNX);
-        jstring keyNY = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigNYField);
-        const double ny = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyNY);
-        jstring keyDX = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigDXField);
-        const double dx = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyDX);
-        jstring keyDY = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigDYField);
-        const double dy = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyDY);
-        jstring keyX0 = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigX0Field);
-        const double x0 = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyX0);
-        jstring keyY0 = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kMeshConfigY0Field);
-        const double y0 = env->CallDoubleMethod(config, api.kGetDoubleMethod, keyY0);
+        const double nx = env->CallDoubleMethod(config, api.kGetDoubleMethod,
+                                                api.kMeshConfigNXField);
+        const double ny = env->CallDoubleMethod(config, api.kGetDoubleMethod,
+                                                api.kMeshConfigNYField);
+        const double dx = env->CallDoubleMethod(config, api.kGetDoubleMethod,
+                                                api.kMeshConfigDXField);
+        const double dy = env->CallDoubleMethod(config, api.kGetDoubleMethod,
+                                                api.kMeshConfigDYField);
+        const double x0 = env->CallDoubleMethod(config, api.kGetDoubleMethod,
+                                                api.kMeshConfigX0Field);
+        const double y0 = env->CallDoubleMethod(config, api.kGetDoubleMethod,
+                                                api.kMeshConfigY0Field);
 
         mesh = make_shared<RectanMesh>(nx, ny, dx, dy, x0, y0);
 
         mesh->setMaskTable(table);
     }
-    if(configs.useBeacons){
+    if (configs.useBeacons) {
         navigator = make_shared<StandardBeaconNavigator>(mesh, false);
 
-        jstring keyBeacons = (jstring)env->GetStaticObjectField(api.kConfigMapClass, api.kBeaconsField);
-        jobjectArray beacons = (jobjectArray)env->CallObjectMethod(config, api.kGetObjectMethod, keyBeacons);
+        jobjectArray beacons = (jobjectArray) env->CallObjectMethod(config, api.kGetObjectMethod,
+                                                                    api.kBeaconsField);
 
         jint size = env->GetArrayLength(beacons);
 
         for (int i = 0; i < size; i++) {
             jobject beacon = env->GetObjectArrayElement(beacons, i);
-            jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetPositionMethod);
+            jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon,
+                                                                       api.kSpaceBeaconGetPositionMethod);
             jstring id = (jstring) env->CallObjectMethod(beacon, api.kSpaceBeaconGetIdMethod);
-            jfloatArray values = (jfloatArray) env->CallObjectMethod(beacon, api.kSpaceBeaconGetValuesMethod);
+            jfloatArray values = (jfloatArray) env->CallObjectMethod(beacon,
+                                                                     api.kSpaceBeaconGetValuesMethod);
 
             jfloat *elements = env->GetFloatArrayElements(values, 0);
             jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
@@ -292,6 +284,16 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             env->ReleaseStringUTFChars(id, uuid);
         }
     }
+
+    jstring graphPath_ = (jstring) env->CallObjectMethod(config, api.kGetObjectMethod,
+                                                         api.kGraphPath);
+    double scale = env->CallDoubleMethod(config, api.kGetDoubleMethod, api.kGraphScale);
+    //TODO: scale unused now, but in future
+    const char *graphPath = env->GetStringUTFChars(graphPath_, 0);
+
+    pointGraph = make_shared<PointGraph>(graphPath);
+
+    env->ReleaseStringUTFChars(graphPath_, graphPath);
     LOGD("IndoorLocationManager_nativeInit -");
 }
 
@@ -303,20 +305,20 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
 }
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, jobject instance,
-                                                                   jfloatArray positionArray) {
+Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestination(JNIEnv *env, jobject instance,
+                                                                   jobject router) {
     LOGD("IndoorLocationManager_nativeTakeLastPosition");
 
     Position3D outPos(configs.startX, configs.startY, 0.0f);
 
-    if(configs.useBeacons){
-        if(!navigator->isInitFinished()){
+    if (configs.useBeacons) {
+        if (!navigator->isInitFinished()) {
             return;
         }
         outPos = navigator->getLastPosition();
     }
 
-    if(std::isnan(outPos.x) || std::isnan(outPos.y)){
+    if (std::isnan(outPos.x) || std::isnan(outPos.y)) {
         return;
     }
 
@@ -338,54 +340,43 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPosition(JNIEnv *env, 
 
     LOGD("last position (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
 
-    float *data = env->GetFloatArrayElements(positionArray, NULL);
-    data[0] = (float) outPos.x;
-    data[1] = (float) outPos.y;
-    data[2] = (float) outPos.z;
+    env->SetFloatField(router, api.kIndoorRouterOriginXField, (float) outPos.x);
+    env->SetFloatField(router, api.kIndoorRouterOriginYField, (float) outPos.y);
 
-    env->ReleaseFloatArrayElements(positionArray, data, 0);
-    LOGD("IndoorLocationManager_nativeTakeLastPosition -");
 
-}
+    double destinationX = env->GetFloatField(router, api.kIndoorRouterDestinationXField);
+    double destinationY = env->GetFloatField(router, api.kIndoorRouterDestinationYField);
+    if(destinationX < 0 && destinationY < 0){
+        return;
+    }
+    double pixelSize = env->GetDoubleField(router, api.kIndoorRouterPixelSizeField);
+    double startX = outPos.x / pixelSize;
+    double startY = outPos.y / pixelSize;
 
-JNIEXPORT jdoubleArray JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_getNativeRoute(JNIEnv *env, jobject instance,
-                                                           jdouble x1, jdouble y1, jdouble x2,
-                                                           jdouble y2) {
-
-    LOGD("IndoorLocationManager_getNativeRoute");
-
-    Position3D pos1(x1, y1, 0.0);
-    Position3D pos2(x2, y2, 0.0);
-    int startNode = pointGraph->findNearestVertex(pos1);
-    int endNode = pointGraph->findNearestVertex(pos2);
+    Position3D start(startX, startY, 0.0);
+    Position3D end(destinationX, destinationY, 0.0);
+    int startNode = pointGraph->findNearestVertex(start);
+    int endNode = pointGraph->findNearestVertex(end);
     vector<Position3D> route;
     double distance = pointGraph->dijkstraP(startNode, endNode, route);
-    jdoubleArray output = env->NewDoubleArray(route.size() * 2 + 1);  // first element = distance
-    jdouble *destArrayElems = env->GetDoubleArrayElements(output, NULL);
-    destArrayElems[0] = distance;
-    int j = 1;
-    for (int i = 0; i < route.size(); i++) {
-        destArrayElems[j++] = route[i].x;
-        destArrayElems[j++] = route[i].y;
+
+    env->SetFloatField(router, api.kIndoorRouterDistanceField, (float) distance);
+
+    int length = route.size() * 2 + 4;
+    jfloatArray output = env->NewFloatArray(length);  //
+    jfloat *destArrayElems = env->GetFloatArrayElements(output, NULL);
+    destArrayElems[0] = (float)startX;
+    destArrayElems[1] = (float)startY;
+    for (int i = 0, j = 2; i < route.size(); i++, j+=2) {
+        destArrayElems[j] = (float)route[i].x;
+        destArrayElems[j + 1] = (float)route[i].y;
     }
+    destArrayElems[length - 2] = (float)destinationX;
+    destArrayElems[length - 1] = (float)destinationY;
 
-    env->ReleaseDoubleArrayElements(output, destArrayElems, NULL);
-    LOGD("IndoorLocationManager_getNativeRoute - ");
+    env->ReleaseFloatArrayElements(output, destArrayElems, NULL);
 
-    return output;
-}
+    env->SetObjectField(router, api.kIndoorRouterRouteField, output);
 
-JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_setGraphArraysFromFile(JNIEnv *env, jobject instance,
-                                                                   jstring file_, jdouble scale) {
-    LOGD("IndoorLocationManager_setGraphArraysFromFile");
-    const char *file = env->GetStringUTFChars(file_, 0);
-
-    std::string data(file);
-
-    pointGraph = make_shared<PointGraph>(data, scale);
-
-    env->ReleaseStringUTFChars(file_, file);
-    LOGD("IndoorLocationManager_setGraphArraysFromFile -");
+    LOGD("IndoorLocationManager_nativeTakeLastPosition -");
 }

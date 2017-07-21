@@ -6,11 +6,12 @@ import android.os.Looper;
 
 import khpi.com.demo.R;
 import khpi.com.demo.model.Point;
-import khpi.com.demo.model.Route;
-import khpi.com.demo.model.Step;
 import khpi.com.demo.n.NativeFacade;
 import khpi.com.demo.utils.GeoUtils;
 import khpi.com.demo.utils.GeometryUtils;
+import pro.i_it.indoor.routing.Route;
+import pro.i_it.indoor.routing.Step;
+
 import com.hackoeur.jglm.Vec3;
 import com.hackoeur.jglm.support.FastMath;
 

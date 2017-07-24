@@ -6,6 +6,7 @@ set(arch arm64)
 
 set(SOURCE_FILES
     ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
+        ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
     ./Navigator/Beacons/StandardBeaconNavigator.cpp ../include/Navigator/Beacons/StandardBeaconNavigator.h
     ../include/Navigator/Beacons/Beacon.h
     ../include/Navigator/Beacons/BeaconReceivedData.h
@@ -47,7 +48,7 @@ set(SOURCE_FILES
     ./Navigator/Accel/ToGlobal.cpp ../include/Navigator/Accel/ToGlobal.h
     ../include/Navigator/Accel/TempData.h
     ./Navigator/Accel/FilterImpl.cpp ../include/Navigator/Accel/FilterImpl.h
-    )
+       )
 
 include_directories(
     ../include/

@@ -11,11 +11,11 @@ set(CMAKE_CXX_STANDARD 14)
 
 #add_subdirectory(example2)
 
-#add_subdirectory(example3)
+add_subdirectory(example3)
 
 #add_subdirectory(exampleCalibrate)
 
-add_subdirectory(exampleDijkstra)
+# add_subdirectory(exampleDijkstra)
 
 #add_subdirectory(exampleMesh)
 

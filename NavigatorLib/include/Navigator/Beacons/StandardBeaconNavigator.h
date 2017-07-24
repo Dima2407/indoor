@@ -8,6 +8,7 @@
 
 #include "Navigator/Beacons/AbstractBeaconNavigator.h"
 #include "Navigator/Beacons/TrilatBeaconNavigator.h"
+#include "Navigator/Beacons/StandardBeaconNavigatorConfig.h"
 #include "Navigator/Beacons/Factory/NoFilterFactory.h"
 #include "Navigator/Beacons/Factory/MovingAverageFilterFactory.h"
 
@@ -62,17 +63,14 @@ namespace Navigator {
          *
          */
         class StandardBeaconNavigator : public AbstractBeaconNavigator {
-        public: //========== consts
-            /// Initialization phase duration in seconds
-            static constexpr double INIT_PHASE_DURATION = 5.0;
-
         public: //==========Constructor
             /**  Constructor
              *
              * @param mesh[in]      Mesh+masktable to use (nullptr for no mesh)
              * @param ios[in]       true for iOS, false for Android (different default filters)
              */
-            StandardBeaconNavigator(const std::shared_ptr<Mesh::RectanMesh> &mesh, bool ios);
+            StandardBeaconNavigator(const std::shared_ptr<Mesh::RectanMesh> &mesh, bool ios,
+                                    const StandardBeaconNavigatorConfig & config = StandardBeaconNavigatorConfig());
 
         public: //======== Methods from AbstractBeaconNavigator implemented
             /// Process a single input data
@@ -129,7 +127,13 @@ namespace Navigator {
             /// Check timestamps and change navigator filters if needed
             void checkTimes();
 
+            /// Set up the default post-init filters
+            void setFilters();
+
         private: //=========== Fields ====
+            /// Config
+            StandardBeaconNavigatorConfig config;
+
             /// true for iOS, false for Android (different default filters)
             bool ios;
 
@@ -147,6 +151,11 @@ namespace Navigator {
 
             /// Position after initialization
             Math::Position3D initPosition;
+
+            /// Factoriy for setting up RSSI filters
+            std::shared_ptr<Factory::IFilterFactory> rssiFactory;
+            /// Factoriy for setting up distance filters
+            std::shared_ptr<Factory::IFilterFactory> distanceFactory;
 
         };
     }

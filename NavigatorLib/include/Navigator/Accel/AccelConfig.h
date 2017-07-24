@@ -61,7 +61,7 @@ struct AccelConfig{
     /// Apply wall algorithm
     bool useWalls = true;
 
-    /// Use mesh+mask to the final pposition
+    /// Use mesh+mask to the final position
     bool useMeshMask = true;
 };
 }

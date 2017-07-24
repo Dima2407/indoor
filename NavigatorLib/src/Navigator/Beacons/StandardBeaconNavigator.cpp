@@ -7,22 +7,23 @@
 namespace Navigator {
     namespace Beacons {
 
-        StandardBeaconNavigator::StandardBeaconNavigator(const std::shared_ptr<Mesh::RectanMesh> &mesh, bool ios)  :
+        StandardBeaconNavigator::StandardBeaconNavigator(const std::shared_ptr<Mesh::RectanMesh> &mesh, bool ios,
+                                                         const StandardBeaconNavigatorConfig &config) :
                 mesh(mesh),
-                ios(ios) {
+                ios(ios),
+                config(config) {
 
             // Set up the filters for the init phase
-            triNav.setRssiFilterFactory( std::make_shared<Factory::MovingAverageFilterFactory>(20));
+            triNav.setRssiFilterFactory(std::make_shared<Factory::MovingAverageFilterFactory>(20));
             triNav.setDistanceFilterFactory(std::make_shared<Factory::NoFilterFactory>());
 
             // Configure the Trilat navigator
 
             // Do we use full 3D trilat instead of 2D ? (default = false)
-            triNav.setUse3DTrilat(false);
+            triNav.setUse3DTrilat(config.use3DTrilat);
 
-            // Max number of nearest beacons to use on each trilateration
-            // 0 = unlimited, default = 0
-            triNav.setUseNearest(3);
+            // Max number of nearest beacons to use on each trilateration, 0 = unlimited
+            triNav.setUseNearest(config.useNearest);
 
             // Start recording history
             triNav.startHistory();
@@ -55,10 +56,12 @@ namespace Navigator {
 
         Math::Position3D StandardBeaconNavigator::postProcess(Math::Position3D pos) {
             // Postprocess using mesh+masktable
-            if (mesh == nullptr)
-                return pos;
+            if (mesh != nullptr && config.useMeshMask)
+                return mesh->process(pos);
+            else if (mesh != nullptr && config.useMapEdges)
+                return mesh->checkEdges(pos);
             else
-                return mesh -> process(pos);
+                return pos;
         }
 
         //====================================================================
@@ -70,7 +73,7 @@ namespace Navigator {
             double t2 = triNav.getLastTimestamp();
             double t1 = triNav.getFirstTimestamp();
 
-            if (!initFinished && !isnan(t1) && !isnan(t2) && t2-t1 > INIT_PHASE_DURATION) {
+            if (!initFinished && !isnan(t1) && !isnan(t2) && t2 - t1 > config.initPhaseDuration) {
                 // Finish the initialization
 
                 initFinished = true;
@@ -83,25 +86,28 @@ namespace Navigator {
                 // After that time idle the beacon's filters are reset
                 triNav.setBeaconTimeout(1.5);
 
-                // Set up new filters
-                shared_ptr<Factory::IFilterFactory> rssiFactory;
-                shared_ptr<Factory::IFilterFactory> distanceFactory;
-
-                if (ios) {
-                    // No filters for iOS
-                    rssiFactory =  make_shared<Factory::NoFilterFactory>();
-                    distanceFactory = make_shared<Factory::NoFilterFactory>();
-                } else {
-                    // Moving average for Android
-                    rssiFactory = make_shared<Factory::MovingAverageFilterFactory>(3);
-                    distanceFactory = make_shared<Factory::NoFilterFactory>();
-                }
 
                 // Re-run the history
                 triNav.rerunHistory(rssiFactory, distanceFactory);
 
                 // Update the last position (and the one about to be returned by process() )
                 lastPosition = triNav.getLastPosition();
+            }
+        }
+        //====================================================================
+
+        void StandardBeaconNavigator::setFilters() {
+            using namespace std;
+
+            // Set up new filters
+            if (ios) {
+                // No filters for iOS
+                rssiFactory = make_shared<Factory::NoFilterFactory>();
+                distanceFactory = make_shared<Factory::NoFilterFactory>();
+            } else {
+                // Moving average for Android
+                rssiFactory = make_shared<Factory::MovingAverageFilterFactory>(3);
+                distanceFactory = make_shared<Factory::NoFilterFactory>();
             }
         }
 

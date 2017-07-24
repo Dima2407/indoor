@@ -7,6 +7,7 @@
 #include "./BeaconUID.h"
 #include "./TrilatBeaconNavigator.h"
 #include "./StandardBeaconNavigator.h"
+#include "./StandardBeaconNavigatorConfig.h"
 #
 #include "./Factory/IFilterFactory.h"
 #include "./Factory/AlphaBetaFilterFactory.h"

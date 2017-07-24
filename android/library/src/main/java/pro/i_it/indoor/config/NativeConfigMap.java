@@ -27,6 +27,11 @@ public class NativeConfigMap {
     public static final int KEY_GRAPH_PATH = 14;
     public static final int KEY_GRAPH_SCALE = 15;
 
+    public static final int  KEY_USE_FILTER = 16;
+    public static final int  KEY_USE_MAP_EDGES = 17;
+    public static final int  KEY_USE_MESH_MASK = 18;
+    public static final int  KEY_USE_WALLS = 19;
+
     private final SparseArray<Object> configs = new SparseArray<>();
 
     public float getFloat(int key) {

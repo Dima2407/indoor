@@ -57,8 +57,12 @@ typedef struct IndoorSdkApi {
     int kInitXField = 11;
     int kInitYField = 12;
     int kBeaconsField = 13;
-    int kGraphPath = 14;
-    int kGraphScale = 1;
+    int kGraphPathField = 14;
+    int kGraphScaleField = 15;
+    int kUseFilterField = 16;
+    int kUseMapEdgesField = 17;
+    int kUseMeshMaskField = 18;
+    int kUseWallsField = 19;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -88,6 +92,11 @@ typedef struct IndoorSdkConfigs{
     float startY = std::nan("");
 
     bool sensorsActive;
+
+    bool useFilter = false;
+    bool useMapEdges = false;
+    bool useMeshMask = false;
+    bool useWalls = false;
 } IndoorSdkConfigs;
 
 double timeS = 0;
@@ -226,6 +235,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.mapAngle = env->CallIntMethod(config, api.kGetIntMethod, api.kMapAngleField);
     configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitXField);
     configs.startY = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitYField);
+    configs.useFilter = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseFilterField);
+    configs.useMapEdges = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMapEdgesField);
+    configs.useMeshMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMeshMaskField);
+    configs.useWalls = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseWallsField);
 
     if (configs.useMask) {
         jintArray maskArray = (jintArray) env->CallObjectMethod(config, api.kGetObjectMethod,
@@ -286,8 +299,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     }
 
     jstring graphPath_ = (jstring) env->CallObjectMethod(config, api.kGetObjectMethod,
-                                                         api.kGraphPath);
-    double scale = env->CallDoubleMethod(config, api.kGetDoubleMethod, api.kGraphScale);
+                                                         api.kGraphPathField);
+    double scale = env->CallDoubleMethod(config, api.kGetDoubleMethod, api.kGraphScaleField);
     //TODO: scale unused now, but in future
     const char *graphPath = env->GetStringUTFChars(graphPath_, 0);
 
@@ -325,7 +338,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     if (configs.useSensors && !configs.sensorsActive) {
         AccelConfig config;
         config.mapOrientationAngle = configs.mapAngle;
-        config.useFilter = false;
+        config.useFilter = configs.useFilter;
+        config.useMapEdges = configs.useMapEdges;
+        config.useMeshMask = configs.useMeshMask;
+        config.useWalls = configs.useWalls;
         LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
         double startX = outPos.x, startY = outPos.y;

@@ -4,13 +4,17 @@
 
 #pragma once
 
-#include "Navigator/Math/Filter/AlphaBetaFilter.h"
+#include "KalmanConfig.h"
 
 namespace Navigator {
     namespace Math {
         namespace Kalman {
             class KalmanFilter {
+
             public:
+                KalmanFilter(const KalmanConfig& config = KalmanConfig()) :
+                    config(config) {}
+
                 void process();
 
                 virtual ~KalmanFilter() {};
@@ -21,6 +25,8 @@ namespace Navigator {
                 void correctKalman();
                 void correctCurrentMoment();
                 void correctError();
+
+                KalmanConfig config;
             };
         }
     }

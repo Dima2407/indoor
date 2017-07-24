@@ -13,20 +13,27 @@ namespace Navigator {
                 ios(ios),
                 config(config) {
 
-            // Set up the filters for the init phase
-            triNav.setRssiFilterFactory(std::make_shared<Factory::MovingAverageFilterFactory>(20));
-            triNav.setDistanceFilterFactory(std::make_shared<Factory::NoFilterFactory>());
 
-            // Configure the Trilat navigator
-
+            // Trilateration config
             // Do we use full 3D trilat instead of 2D ? (default = false)
             triNav.setUse3DTrilat(config.use3DTrilat);
-
             // Max number of nearest beacons to use on each trilateration, 0 = unlimited
             triNav.setUseNearest(config.useNearest);
 
-            // Start recording history
-            triNav.startHistory();
+            if (config.useInit) {
+                // Set up the filters for the init phase
+                rssiFactory= std::make_shared<Factory::MovingAverageFilterFactory>(20);
+                distanceFactory = std::make_shared<Factory::NoFilterFactory>();
+
+                // Start recording history
+                triNav.startHistory();
+            } else {
+                setFilters(); // No init, set up post-init filters right now
+            }
+
+            // Set the chosen filter factories
+            triNav.setRssiFilterFactory(rssiFactory);
+            triNav.setDistanceFilterFactory(distanceFactory);
         }
         //====================================================================
 
@@ -47,7 +54,8 @@ namespace Navigator {
 
             lastPosition = postProcess(pos);
 
-            checkTimes(); // End the init phase if it's time
+            if (config.useInit && !initFinished)
+                checkTimes(); // End the init phase if it's time
 
             return lastPosition;
         }
@@ -73,7 +81,7 @@ namespace Navigator {
             double t2 = triNav.getLastTimestamp();
             double t1 = triNav.getFirstTimestamp();
 
-            if (!initFinished && !isnan(t1) && !isnan(t2) && t2 - t1 > config.initPhaseDuration) {
+            if (!isnan(t1) && !isnan(t2) && t2 - t1 > config.initPhaseDuration) {
                 // Finish the initialization
 
                 initFinished = true;
@@ -82,10 +90,8 @@ namespace Navigator {
                 // Stop recording history
                 triNav.stopHistory();
 
-                // Beacon timeout in seconds (default = 10)
-                // After that time idle the beacon's filters are reset
-                triNav.setBeaconTimeout(1.5);
-
+                // Set the new filters
+                setFilters();
 
                 // Re-run the history
                 triNav.rerunHistory(rssiFactory, distanceFactory);
@@ -98,6 +104,10 @@ namespace Navigator {
 
         void StandardBeaconNavigator::setFilters() {
             using namespace std;
+
+            // Beacon timeout in seconds (default = 10)
+            // After that time idle the beacon's filters are reset
+            triNav.setBeaconTimeout(1.5);
 
             // Set up new filters
             if (ios) {

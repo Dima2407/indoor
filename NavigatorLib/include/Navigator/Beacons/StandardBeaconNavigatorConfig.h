@@ -16,6 +16,10 @@ namespace Navigator {
             /// Initialization phase duration in seconds
             double initPhaseDuration = 5.0;
 
+            // ========= Post-init filters config
+
+            // Not yet, can be added if needed
+
             // ======== Trilat config
             /// Do we use full 3D trilat instead of 2D ? (default = false)
             bool use3DTrilat = false;

@@ -1,5 +1,6 @@
 package kaa_solutions.com.indoorsdk.ui.main;
 
+import android.graphics.PointF;
 import android.os.SystemClock;
 import android.util.Log;
 import kaa_solutions.com.indoorsdk.ui.main.interfaces.IMainActivity;
@@ -27,10 +28,8 @@ public class MainActivityPresenter implements IMainActivityPresenter {
         localManager.addProvider(view.getActivity(), MeasurementType.WIFI_VALUE);
         localManager.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
-            public void onLocationChanged(float[] position) {
-                if (IS_DEBUG) {
-                    Log.d(TAG, "onLocationChanged: " + SystemClock.elapsedRealtime() / 1000 + "  " + Arrays.toString(position));
-                }
+            public void onLocationChanged(PointF position, float[] route) {
+
             }
         });
         localManager.start();

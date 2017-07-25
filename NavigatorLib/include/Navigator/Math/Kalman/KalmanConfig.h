@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <vector>
 #include <Eigen/Dense>
 
 namespace Navigator {
@@ -14,44 +15,44 @@ namespace Navigator {
              * Started configuration for Kalman's Filter
              */
             struct KalmanConfig {
-                /**
-                 * @brief beaconsN
-                 * count of beakons
-                 */
-                static const int beaconsN = 1;
+
+                KalmanConfig() {
+//                    x_many(10);
+                    P_INIT << 100, 0,
+                              0, 100;
+                    Q << 0.001, 0,
+                         0, 0.001;
+                    H << 1, 0;
+                    I << 1, 0,
+                         0, 1;
+                }
 
                 /**
                  *  @brief x_many
-                 *  this array holds parameters RSSI and dRSSI of each beacons
+                 *  this Matrix holds parameters RSSI and dRSSI of each beacons
                  **/
-//                double x_many[2][beaconsN] = {{0}};
-                Eigen::Matrix<double, 2, beaconsN> x_many;
+                double currentRssi = 0;
+                double rssiPrev = 0;
 
-                /**
-                 *  @brief p_many
-                 *  this array holds values matrix P for each beacons
-                 **/
-//                double p_many[4][beaconsN] = {{0}};
-                Eigen::Matrix<double, 4, beaconsN> p_many;
+                double currentDeltaRssi = 0;
+                double deltaRssiPrev = 0;
 
                 /**
                  *  @brief timer
                  *  array of counters that hold information about last time of change
                  **/
-                double timer[beaconsN];
+                double timer = 0;
 
                 /**
                  *  @brief P_INIT
                  *  start values covariant matrix
                  **/
-//                double P_INIT[2][2] = {{100, 0}, {0, 100}};
                 Eigen::Matrix<double, 2, 2> P_INIT;
 
                 /**
                  *  @brief Q
                  *  Variance of process model noise
                  **/
-//                double Q[2][2] = {{0.001, 0}, {0, 0.001}};
                 Eigen::Matrix<double, 2, 2> Q;
 
                 /**
@@ -71,14 +72,12 @@ namespace Navigator {
                  *  @brief H
                  *  matrix of identity
                  **/
-                int H[2] = {1, 0};
-//                Eigen::Matrix<double, 1, 0> H;
+                Eigen::Matrix<double, 1, 2> H;
 
                 /**
                  *  @brief I
                  *  unit matrix
                  **/
-//                int I[2][2] = {{1, 0}, {0,1}};
                 Eigen::Matrix<double, 2, 2> I;
             };
          }

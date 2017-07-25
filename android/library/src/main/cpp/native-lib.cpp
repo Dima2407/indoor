@@ -63,6 +63,7 @@ typedef struct IndoorSdkApi {
     int kUseMapEdgesField = 17;
     int kUseMeshMaskField = 18;
     int kUseWallsField = 19;
+    int kActiveBLEModeField = 20;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -97,6 +98,7 @@ typedef struct IndoorSdkConfigs{
     bool useMapEdges = false;
     bool useMeshMask = false;
     bool useWalls = false;
+    int activeBLEMode = 1;
 } IndoorSdkConfigs;
 
 double timeS = 0;
@@ -239,6 +241,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.useMapEdges = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMapEdgesField);
     configs.useMeshMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMeshMaskField);
     configs.useWalls = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseWallsField);
+    configs.activeBLEMode = env->CallIntMethod(config, api.kGetIntMethod, api.kActiveBLEModeField);
 
     if (configs.useMask) {
         jintArray maskArray = (jintArray) env->CallObjectMethod(config, api.kGetObjectMethod,
@@ -269,7 +272,17 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         mesh->setMaskTable(table);
     }
     if (configs.useBeacons) {
-        navigator = make_shared<StandardBeaconNavigator>(mesh, false);
+        StandardBeaconNavigatorConfig nConfig;
+        nConfig.useMeshMask = configs.useMeshMask;
+        nConfig.useMapEdges = configs.useMapEdges;
+        if(configs.activeBLEMode == 1) {
+            nConfig.useInit = true;
+        } else if(configs.activeBLEMode == 3){
+            nConfig.useNearest = 0;
+        }
+
+
+        navigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
 
         jobjectArray beacons = (jobjectArray) env->CallObjectMethod(config, api.kGetObjectMethod,
                                                                     api.kBeaconsField);
@@ -336,17 +349,17 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     }
 
     if (configs.useSensors && !configs.sensorsActive) {
-        AccelConfig config;
-        config.mapOrientationAngle = configs.mapAngle;
-        config.useFilter = configs.useFilter;
-        config.useMapEdges = configs.useMapEdges;
-        config.useMeshMask = configs.useMeshMask;
-        config.useWalls = configs.useWalls;
+        AccelConfig aConfig;
+        aConfig.mapOrientationAngle = configs.mapAngle;
+        aConfig.useFilter = configs.useFilter;
+        aConfig.useMapEdges = configs.useMapEdges;
+        aConfig.useMeshMask = configs.useMeshMask;
+        aConfig.useWalls = configs.useWalls;
         LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
         double startX = outPos.x, startY = outPos.y;
 
-        sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, config);
+        sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, aConfig);
         configs.sensorsActive = true;
     }
 

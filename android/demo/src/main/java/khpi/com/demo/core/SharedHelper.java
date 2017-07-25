@@ -3,6 +3,7 @@ package khpi.com.demo.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PointF;
+import android.text.TextUtils;
 
 import pro.i_it.indoor.masks.MaskTableFetcher;
 
@@ -69,6 +70,12 @@ public final class SharedHelper {
     }
 
     public void setInitPosition(String x, String y) {
+        if (TextUtils.isEmpty(x)) {
+            x = "0.0";
+        }
+        if (TextUtils.isEmpty(y)) {
+            y = "0.0";
+        }
         sharedPreferences.edit()
                 .putFloat(X_POSITION, Float.parseFloat(x))
                 .putFloat(Y_POSITION, Float.parseFloat(y))

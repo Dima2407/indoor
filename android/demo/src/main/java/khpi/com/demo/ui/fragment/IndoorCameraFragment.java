@@ -147,7 +147,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         initCamera();
         cameraPreview.updateCamera(getCamera());
 
-        final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
+        //final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
         /*instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
         if (floor.getGraphPath().contains("/mapData/8/")) {

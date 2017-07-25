@@ -94,6 +94,7 @@ public class IndoorLocationManager {
     }
 
     public void stop() {
+        configuration = null;
         active = false;
         for (MeasurementProvider provider : providers) {
             provider.stop();

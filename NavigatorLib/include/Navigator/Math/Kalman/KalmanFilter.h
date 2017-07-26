@@ -15,25 +15,25 @@ namespace Navigator {
             public:
                 KalmanFilter(const KalmanConfig& config = KalmanConfig()) :
                     config(config)
-                {
-                    rssi << 0, 0;
-                }
+                {}
 
                 Value process(Value in) override;
 
             private:
-                void predictCurrentMoment(const Eigen::Matrix<double, 2, 2>& Ak);
-                void predictError(const Eigen::Matrix<double, 2, 2>& Ak);
+                Eigen::Matrix<double, 2, 1> predictCurrentMoment(const Eigen::Matrix<double, 2, 2>& Ak);
+                Eigen::Matrix<double, 2, 2> predictError(const Eigen::Matrix<double, 2, 2>& Ak);
 
-                Eigen::Matrix<double, 2, 1> correctKalman();
-                Eigen::Matrix<double, 2, 1> correctCurrentMoment(const double val, const Eigen::Matrix<double, 2, 1>& kalmansCoefficient);
-                Eigen::Matrix<double, 2, 2> correctError(const Eigen::Matrix<double, 2, 1>& kalmansCoefficient);
+                Eigen::Matrix<double, 2, 1> correctKalman(const Eigen::Matrix<double, 2, 2>& tempP);
+                void correctCurrentMoment(Eigen::Matrix<double, 2, 1> tempX,
+                                                                 const Eigen::Matrix<double, 2, 1>& kalmansCoefficient,
+                                                                 const double val);
+                void correctError(const Eigen::Matrix<double, 2, 2>& tempP,
+                                                         const Eigen::Matrix<double, 2, 1>& kalmansCoefficient);
 
                 KalmanConfig config;
-                Eigen::Matrix<double, 2, 1> rssi;
                 double currentTime = 0;
-                Eigen::Matrix<double, 2, 1> predictX;
-                Eigen::Matrix<double, 2, 2> predictP;
+                Eigen::Matrix<double, 2, 1> lastX;
+                Eigen::Matrix<double, 2, 2> lastP;
             };
         }
     }

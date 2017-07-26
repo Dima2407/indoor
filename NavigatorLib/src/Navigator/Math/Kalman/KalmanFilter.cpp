@@ -17,15 +17,14 @@ namespace Navigator {
                 Ak(1, 0) = 0;
                 Ak(1, 1) = 1;
 
-                predictCurrentMoment(Ak);
-                predictError(Ak);
-                Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman();
-                Eigen::Matrix<double, 2, 1> currentX = correctCurrentMoment(val, kalmansCoefficient);
-                Eigen::Matrix<double, 2, 2> currentP = correctError(kalmansCoefficient);
+                Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak);
+                Eigen::Matrix<double, 2, 2> tempP = predictError(Ak);
+                Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP);
+                correctCurrentMoment(tempX, kalmansCoefficient, val);
+                correctError(tempP, kalmansCoefficient);
 
                 currentTime = in.timeStamp;
-                predictX = currentX;
-                predictP = currentP;
+                return Filter::IFilter::Value(lastX(0,0), currentTime);
             }
 
             /**
@@ -35,9 +34,8 @@ namespace Navigator {
             *  for the current time moment k  from the filter model using the RSSI value,
             *  the previous time point k-1
             */
-            void KalmanFilter::predictCurrentMoment(const Eigen::Matrix<double, 2, 2>& Ak) {
-                Eigen::Matrix<double, 2, 1> xk1(rssi(0, 0), rssi(1, 0));
-                predictX = Ak * xk1;
+            Eigen::Matrix<double, 2, 1> KalmanFilter::predictCurrentMoment(const Eigen::Matrix<double, 2, 2>& Ak) {
+                return Ak * lastX;
             }
 
             /**
@@ -47,41 +45,44 @@ namespace Navigator {
              *  covariance matrix (result) using the matrix value for the previous
              *  time point k-1 and the noise matrix of the filter model (Q)
              */
-            void KalmanFilter::predictError(const Eigen::Matrix<double, 2, 2>& Ak) {
-                predictP = Ak * predictP * Ak.transpose() + config.Q;
+            Eigen::Matrix<double, 2, 2> KalmanFilter::predictError(const Eigen::Matrix<double, 2, 2>& Ak) {
+                return Ak * lastP * Ak.transpose() + config.Q;
             }
 
             /**
              * @brief KalmanFilter::correctKalman
+             * @param tempP
              * @return
              * calculate coefficient Kalmana
              */
-            Eigen::Matrix<double, 2, 1> KalmanFilter::correctKalman() {
-                double smallExpression = pow((config.H * predictP * config.H.transpose() + config.R), -1);
-                return predictP * config.H.transpose() * smallExpression;
+            Eigen::Matrix<double, 2, 1> KalmanFilter::correctKalman(const Eigen::Matrix<double, 2, 2>& tempP) {
+                double smallExpression = pow((config.H * tempP * config.H.transpose() + config.R), -1);
+                return tempP * config.H.transpose() * smallExpression;
             }
 
             /**
              * @brief KalmanFilter::correctCurrentMoment
-             * @param val
+             * @param tempX
              * @param kalmansCoefficient
-             * @return
+             * @param val
              * calculate values RSSI and ΔRSSI for current time
              * with given predictions
              */
-            Eigen::Matrix<double, 2, 1> KalmanFilter::correctCurrentMoment(const double val,
-                                                    const Eigen::Matrix<double, 2, 1>& kalmansCoefficient) {
-                return predictX + kalmansCoefficient * (val - config.H * predictX);
+            void KalmanFilter::correctCurrentMoment(Eigen::Matrix<double, 2, 1> tempX,
+                                                                           const Eigen::Matrix<double, 2, 1>& kalmansCoefficient,
+                                                                           const double val) {
+                lastX = tempX + kalmansCoefficient * (val - config.H * lastX);
             }
 
             /**
              * @brief KalmanFilter::correctError
+             * @param tempP
              * @param kalmansCoefficient
-             * @return
              * calculate values of matrix the covariance of the errors model for current time
              */
-            Eigen::Matrix<double, 2, 2> KalmanFilter::correctError(const Eigen::Matrix<double, 2, 1>& kalmansCoefficient) {
-                return (config.I - kalmansCoefficient * config.H) * predictP;
+            void KalmanFilter::correctError(const Eigen::Matrix<double, 2, 2>& tempP,
+                                            const Eigen::Matrix<double, 2, 1>& kalmansCoefficient) {
+                lastP = (config.I - kalmansCoefficient * config.H) * tempP;
             }
         }
     }

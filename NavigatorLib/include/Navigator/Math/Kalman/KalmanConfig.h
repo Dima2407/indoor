@@ -17,7 +17,6 @@ namespace Navigator {
             struct KalmanConfig {
 
                 KalmanConfig() {
-//                    x_many(10);
                     P_INIT << 100, 0,
                               0, 100;
                     Q << 0.001, 0,

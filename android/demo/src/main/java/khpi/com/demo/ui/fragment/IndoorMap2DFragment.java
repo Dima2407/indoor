@@ -165,12 +165,12 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                     configs.set(NativeConfigMap.KEY_INIT_Y, initPosition.y);
                     break;
                 case SharedHelper.SUB_MODE_SENSORS_2:
-                    configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
+                    configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
                     configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);
                     break;
                 case SharedHelper.SUB_MODE_SENSORS_3:
-                    configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
+                    configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
                     configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
                     break;

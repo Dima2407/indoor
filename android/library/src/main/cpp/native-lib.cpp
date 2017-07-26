@@ -343,6 +343,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
             return;
         }
         outPos = navigator->getLastPosition();
+
     }
 
     if (std::isnan(outPos.x) || std::isnan(outPos.y)) {

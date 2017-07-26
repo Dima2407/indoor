@@ -44,7 +44,7 @@ public: //==== Methods
     virtual const Math::Position3D  & process(const AccelReceivedData &ard) override;
 
     /// Get last position
-    virtual const Math::Position3D  & getLastPositon() const override {
+    virtual const Math::Position3D  & getLastPosition() const override {
         return lastPosition;
     }
 

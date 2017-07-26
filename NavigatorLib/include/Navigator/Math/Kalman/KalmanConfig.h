@@ -28,16 +28,6 @@ namespace Navigator {
                 }
 
                 /**
-                 *  @brief x_many
-                 *  this Matrix holds parameters RSSI and dRSSI of each beacons
-                 **/
-                double currentRssi = 0;
-                double rssiPrev = 0;
-
-                double currentDeltaRssi = 0;
-                double deltaRssiPrev = 0;
-
-                /**
                  *  @brief timer
                  *  array of counters that hold information about last time of change
                  **/

@@ -43,6 +43,7 @@ public final class SettingsActivity extends GenericActivity {
     private Switch settingWallCorrSwitch;
     private LinearLayout beaconModsLayout;
     private LinearLayout sensorModsLayout;
+    private LinearLayout settingsWallCorrLayout;
 
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, SettingsActivity.class));
@@ -89,6 +90,7 @@ public final class SettingsActivity extends GenericActivity {
         sensorSwitch = (Switch) findViewById(R.id.sensor_switch);
         beaconModsLayout = (LinearLayout) findViewById(R.id.beacon_mod_group);
         sensorModsLayout = (LinearLayout) findViewById(R.id.sensor_mod_group);
+        settingsWallCorrLayout = (LinearLayout) findViewById(R.id.settings_wall_corr_layout);
 
         bleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -98,9 +100,12 @@ public final class SettingsActivity extends GenericActivity {
                     updateActiveBLESubmode(submode);
                     beaconModsLayout.setVisibility(View.VISIBLE);
                     sensorModsLayout.setVisibility(View.GONE);
+                    settingWallCorrSwitch.setChecked(false);
+                    settingsWallCorrLayout.setVisibility(View.GONE);
                     sensorSwitch.setChecked(false);
                 } else {
                     beaconModsLayout.setVisibility(View.GONE);
+                    settingsWallCorrLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -140,8 +145,8 @@ public final class SettingsActivity extends GenericActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    beaconMod2Switch.setChecked(true);
                     beaconMod1Switch.setChecked(false);
+                    beaconMod2Switch.setChecked(true);
                     beaconMod3Switch.setChecked(false);
                 }
             }
@@ -151,9 +156,9 @@ public final class SettingsActivity extends GenericActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    beaconMod3Switch.setChecked(true);
                     beaconMod1Switch.setChecked(false);
                     beaconMod2Switch.setChecked(false);
+                    beaconMod3Switch.setChecked(true);
                 }
             }
         });

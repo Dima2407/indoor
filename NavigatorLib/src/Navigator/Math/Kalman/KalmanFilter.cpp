@@ -8,6 +8,15 @@
 namespace Navigator {
     namespace Math {
         namespace Kalman {
+
+            /**
+             * @brief KalmanFilter::process
+             * @param in
+             * @return
+             * Application for Kalman's filter for raw RSSI
+             * - smoothing of fluctuating RSSI values
+             * - the restoration of "missing" packets with indications of the model Kalman filter
+             */
             Filter::IFilter::Value KalmanFilter::process(Filter::IFilter::Value in) {
                 double val = in.val;
                 double deltaT = in.timeStamp - currentTime;
@@ -24,6 +33,27 @@ namespace Navigator {
                 correctError(tempP, kalmansCoefficient);
 
                 currentTime = in.timeStamp;
+                return Filter::IFilter::Value(lastX(0,0), currentTime);
+            }
+
+            /**
+             * @brief KalmanFilter::processOnlyPredict
+             * @param timestamp
+             * @return
+             * Application for Kalman's filter without section "Correct"
+             */
+            Filter::IFilter::Value KalmanFilter::processOnlyPredict(double timestamp) {
+                double deltaT = timestamp - currentTime;
+                Eigen::Matrix<double, 2, 2> Ak;
+                Ak(0, 0) = 1;
+                Ak(0, 1) = deltaT;
+                Ak(1, 0) = 0;
+                Ak(1, 1) = 1;
+
+                lastX = predictCurrentMoment(Ak);
+                lastP = predictError(Ak);
+
+                currentTime = timestamp;
                 return Filter::IFilter::Value(lastX(0,0), currentTime);
             }
 

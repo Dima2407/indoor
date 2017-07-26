@@ -18,6 +18,7 @@ namespace Navigator {
                 {}
 
                 Value process(Value in) override;
+                Value processOnlyPredict(double timestamp);
 
             private:
                 Eigen::Matrix<double, 2, 1> predictCurrentMoment(const Eigen::Matrix<double, 2, 2>& Ak);

@@ -243,6 +243,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.useWalls = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseWallsField);
     configs.activeBLEMode = env->CallIntMethod(config, api.kGetIntMethod, api.kActiveBLEModeField);
 
+
     if (configs.useMask) {
         jintArray maskArray = (jintArray) env->CallObjectMethod(config, api.kGetObjectMethod,
                                                                 api.kMaskField);
@@ -364,7 +365,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     }
 
     if (configs.useSensors) {
-        outPos = sensorNavigator->getLastPositon();
+        outPos = sensorNavigator->getLastPosition();
     }
 
     LOGD("last position (%f,%f,%f)", outPos.x, outPos.y, outPos.z);

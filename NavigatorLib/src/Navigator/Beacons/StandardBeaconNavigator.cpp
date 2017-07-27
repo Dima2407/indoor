@@ -43,7 +43,8 @@ namespace Navigator {
 
             lastPosition = postProcess(pos);
 
-            checkTimes(); // End the init phase if it's time
+            if (config.useInit && !initFinished)
+                checkTimes(); // End the init phase if it's time
 
             return lastPosition;
         }

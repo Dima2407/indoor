@@ -38,6 +38,7 @@ typedef struct IndoorSdkApi {
     jfieldID kMeasurementEventTimestampField;
     jfieldID kMeasurementEventDataField;
     jfieldID kMeasurementEventUUIDField;
+    jfieldID kMeasurementEventNestedField;
 
     jclass kMeasurementTypeEnum;
     jmethodID kMeasurementTypeGetCodeMethod;
@@ -141,6 +142,7 @@ void prepare_sdk(JNIEnv *env) {
     api.kMeasurementEventTimestampField = env->GetFieldID(api.kMeasurementEventClass, "timestamp",
                                                           "J");
     api.kMeasurementEventDataField = env->GetFieldID(api.kMeasurementEventClass, "data", "[D");
+    api.kMeasurementEventNestedField = env->GetFieldID(api.kMeasurementEventClass, "nested", "[Lpro/i_it/indoor/events/MeasurementEvent;");
     api.kMeasurementEventUUIDField = env->GetFieldID(api.kMeasurementEventClass, "uuid",
                                                      "Ljava/lang/String;");
 
@@ -172,27 +174,47 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj) {
     jobject typeObj = env->GetObjectField(obj, api.kMeasurementEventTypeField);
     jlong timeStamp = env->GetLongField(obj, api.kMeasurementEventTimestampField);
-    jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
-                                                                api.kMeasurementEventDataField);
-    double *data = env->GetDoubleArrayElements(dataArray, NULL);
+    jobjectArray nestedEvents = (jobjectArray)env->GetObjectField(obj, api.kMeasurementEventNestedField);
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
     if (eventTypeCode == 2 && configs.useBeacons) {
-        jstring uuidString = (jstring) env->GetObjectField(obj, api.kMeasurementEventUUIDField);
 
-        const char *uuid = env->GetStringUTFChars(uuidString, 0);
+        const jsize length = env->GetArrayLength(nestedEvents);
 
-        BeaconUID uid(uuid, (int) data[0], (int) data[1]);
+        std::vector<BeaconReceivedData> beacons;
 
-        LOGD("beacon %s, major ( %d ), minor ( %d ), rssi ( %f ), tx ( %f ) ", uuid, (int) data[0],
-             (int) data[1], data[3], data[2]);
+        for(int i = 0; i < length; i++) {
 
-        BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
-        Position3D outPos = navigator->process(brd);
+            jobject event = env->GetObjectArrayElement(nestedEvents, i);
+
+            jstring uuidString = (jstring) env->GetObjectField(event, api.kMeasurementEventUUIDField);
+
+            jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(event,
+                                                                        api.kMeasurementEventDataField);
+
+            double *data = env->GetDoubleArrayElements(dataArray, NULL);
+
+            const char *uuid = env->GetStringUTFChars(uuidString, 0);
+
+            BeaconUID uid(uuid, (int) data[0], (int) data[1]);
+
+            LOGD("beacon at (%f) %s, major ( %d ), minor ( %d ), rssi ( %f ), tx ( %f ) ",
+                 eventTime, uuid, (int) data[0],
+                 (int) data[1], data[3], data[2]);
+
+            BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
+            beacons.push_back(brd);
+            env->ReleaseStringUTFChars(uuidString, uuid);
+            env->ReleaseDoubleArrayElements(dataArray, data, 0);
+        }
+        Position3D outPos = navigator->process(beacons);
         LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
-        env->ReleaseStringUTFChars(uuidString, uuid);
+
     } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
+        jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
+                                                                    api.kMeasurementEventDataField);
+        double *data = env->GetDoubleArrayElements(dataArray, NULL);
         double ax = data[0];
         double ay = data[1];
         double az = data[2];
@@ -218,8 +240,8 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
                 .yaw = azimut};
         Position3D outPos = sensorNavigator->process(ard);
         LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
+        env->ReleaseDoubleArrayElements(dataArray, data, 0);
     }
-    env->ReleaseDoubleArrayElements(dataArray, data, 0);
 }
 
 JNIEXPORT void JNICALL

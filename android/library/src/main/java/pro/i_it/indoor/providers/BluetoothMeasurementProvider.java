@@ -20,10 +20,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
             if (transfer != null) {
                 Log.d("onLocationChanged", "number of beacons " + collection.size());
-                for (Beacon beacon : collection) {
-                    final MeasurementEvent event = MeasurementEvent.createBluetooth(beacon);
-                    transfer.deliver(event);
-                }
+                transfer.deliver(MeasurementEvent.createBluetooth(collection));
 
             }
         }

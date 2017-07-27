@@ -26,3 +26,5 @@ add_subdirectory(exampleDijkstra)
 #add_subdirectory(TempVictor)
 
 add_subdirectory(exampleAccel)
+
+add_subdirectory(testKalmanFilterByVictor)

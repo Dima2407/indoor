@@ -15,14 +15,12 @@ using namespace Math;
 
 // Test Kalman's filtr
 int main() {
-    constexpr double accuracy = 1.0e-10;
     std::vector<double> vecVal;
     std::vector<double> vecTimestamp;
     std::vector<double> vecValResult;
     double buff;
-    cout << fixed << setprecision(15);
+    cout << fixed << setprecision(6);
     ifstream fin("C:/QtProjects/KalmanTestData/input_output.txt");
-
     while (fin >> buff) {
         vecTimestamp.push_back(buff);
         fin >> buff;
@@ -32,32 +30,19 @@ int main() {
     }
     fin.close();
 
-    Kalman::KalmanFilter filter();
-
+    Kalman::KalmanFilter filter;
     for (int i = 0; i < vecVal.size(); ++i) {
         double rssi = vecVal[i];
         double timestamp = vecTimestamp[i];
         Filter::IFilter::Value result;
-        if (rssi == 0.00) {
-//            result = filter().processOnlyPredict(timestamp);
+        if (rssi == 0.000000) {
+            result = filter.processOnlyPredict(timestamp);
         } else {
             Filter::IFilter::Value val(rssi, timestamp);
-//            result = filter.process(val);
+            result = filter.process(val);
         }
+//        cout << " result-rssi = " << result.val << endl;
     }
-//    ifstream finX("C:/QtProjects/to_victor/tx.dat");
-//    ofstream foutY("C:/QtProjects/to_victor/myTy.dat");
-//    foutY << fixed << setprecision(15);
-//    vector<Math::Filter::IFilter::Value> res;
-//    while (finX >> buff) {
-//        double timestamp = buff;
-//        finX >> buff;
-//        double val = buff;
-//        Math::Filter::IFilter::Value myVal(val, timestamp);
-//        Math::Filter::IFilter::Value result = filter.process(myVal);
-//        foutY << "  " << result.timeStamp << "      " << result.val << endl;
-//    }
-//    foutY.close();
-//    finX.close();
+
     return 0;
 }

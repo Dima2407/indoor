@@ -2,9 +2,11 @@
 // Created by  Victor Draban on 7/21/2017.
 //
 
+#include <iostream>
+#include <iomanip>
 #include <cmath>
 #include "Navigator/Math/Kalman/KalmanFilter.h"
-
+using namespace std;
 namespace Navigator {
     namespace Math {
         namespace Kalman {
@@ -27,11 +29,29 @@ namespace Navigator {
                 Ak(1, 0) = 0;
                 Ak(1, 1) = 1;
 
-                Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak);
-                Eigen::Matrix<double, 2, 2> tempP = predictError(Ak);
+                Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak); // CORRECT
+                // ----------------
+//                cout << " tempX(0,0) = " << tempX(0,0) << " tempX(1,0) = " << tempX(1,0) << endl;
+                // ----------------
+                Eigen::Matrix<double, 2, 2> tempP = predictError(Ak); // CORRECT
+                // ----------------
+                std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
+                          << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
+                // ----------------
                 Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP);
+                // ----------------
+//                std::cout << " kalmansCoefficient(0,0) = " << kalmansCoefficient(0,0)
+//                          << " kalmansCoefficient(1,0) = " << kalmansCoefficient(1,0) << std::endl;
+                // ----------------
                 correctCurrentMoment(tempX, kalmansCoefficient, val);
+                // ----------------
+//                std::cout << " lastX(0,0) = " << lastX(0,0) << " lastX(1,0) = " << lastX(1,0) << std::endl;
+                // ----------------
                 correctError(tempP, kalmansCoefficient);
+                // ----------------
+//                std::cout << " lastP(0,0) = " << lastP(0,0) << " lastP(0,1) = " << lastP(0,1)
+//                          << " lastP(1,0) = " << lastP(1,0) << " lastP(1,1) = " << lastP(1,1) << std::endl;
+                // ----------------
 
                 lastTime = in.timeStamp;
                 return Filter::IFilter::Value(lastX(0,0), lastTime);

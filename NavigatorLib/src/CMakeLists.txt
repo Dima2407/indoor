@@ -5,12 +5,16 @@ set(CMAKE_CXX_STANDARD 14)
 set(arch arm64)
 
 set(SOURCE_FILES
+    ../include/Navigator/Beacons/AbstractBeaconNavigator.h
     ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
         ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
     ./Navigator/Beacons/StandardBeaconNavigator.cpp ../include/Navigator/Beacons/StandardBeaconNavigator.h
+    ./Navigator/Beacons/KalmanBeaconNavigator.cpp ../include/Navigator/Beacons/KalmanBeaconNavigator.h
     ../include/Navigator/Beacons/Beacon.h
+    ../include/Navigator/Beacons/BeaconUID.h
     ../include/Navigator/Beacons/BeaconReceivedData.h
     ./Navigator/Beacons/BeaconProcessor.cpp ../include/Navigator/Beacons/BeaconProcessor.h
+    ./Navigator/Beacons/KalmanBeaconProcessor.cpp ../include/Navigator/Beacons/KalmanBeaconProcessor.h
     #
     ./Navigator/Math/Filter/AlphaBetaFilter.cpp  ../include/Navigator/Math/Filter/AlphaBetaFilter.h
     ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp  ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h

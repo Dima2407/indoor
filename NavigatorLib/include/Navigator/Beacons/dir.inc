@@ -10,6 +10,7 @@
 #include "./StandardBeaconNavigator.h"
 #include "./StandardBeaconNavigatorConfig.h"
 #include "./KalmanBeaconNavigator.h"
+#include "./KalmanBeaconNavigatorConfig.h"
 #
 #include "./Factory/IFilterFactory.h"
 #include "./Factory/AlphaBetaFilterFactory.h"

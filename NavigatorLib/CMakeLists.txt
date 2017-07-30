@@ -27,9 +27,8 @@ add_subdirectory(examples)
 # Build all tools
 add_subdirectory(tools)
 
-
 # Build unittest
-add_subdirectory(unittest)
+#add_subdirectory(unittest)
 
 # Build test-tool
 # RRemoved to speed up build, include if needed
@@ -39,5 +38,3 @@ add_subdirectory(unittest)
 # Uncomment if you have Boost installed
 #add_subdirectory(NavigatorJson)
 
-# Пока нет нужды. Хватает хэдеров
-#add_subdirectory(lib/Eigen)

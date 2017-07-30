@@ -9,17 +9,16 @@ double KalmanBeaconProcessor::processOnlyPredict(double timeStamp)
 {
     using Math::Kalman::KalmanFilter;
 
-    if (active)
+    if (!active)
         throw std::runtime_error(" KalmanBeaconProcessor::processOnlyPredict on inactive processor !");
 
-    // cast rssi filter to Kalman
-    KalmanFilter & filter = * std::static_pointer_cast<KalmanFilter>(rssiFilter);
-
     // Filter rssi
-    IFilter::Value rssiPair = filter.processOnlyPredict(timeStamp);
+    IFilter::Value rssiPair = ((KalmanFilter &)(*rssiFilter)).processOnlyPredict(timeStamp);
 
     // Calculate raw distance from the filtered RSSI
-    return calculateDistance(rssiPair.val);
+    double distance = calculateDistance(rssiPair.val);
+    lastDistance = distance; // Save distance but NOT timestamp !
+    return distance;
 }
 
 }

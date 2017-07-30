@@ -7,7 +7,8 @@ set(arch arm64)
 set(SOURCE_FILES
     ../include/Navigator/Beacons/AbstractBeaconNavigator.h
     ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
-        ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
+    ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
+    ../include/Navigator/Beacons/KalmanBeaconNavigatorConfig.h
     ./Navigator/Beacons/StandardBeaconNavigator.cpp ../include/Navigator/Beacons/StandardBeaconNavigator.h
     ./Navigator/Beacons/KalmanBeaconNavigator.cpp ../include/Navigator/Beacons/KalmanBeaconNavigator.h
     ../include/Navigator/Beacons/Beacon.h

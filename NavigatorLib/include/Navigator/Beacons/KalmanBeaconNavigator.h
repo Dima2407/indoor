@@ -28,7 +28,9 @@ public: // ====== Methods
         filterConfig(filterConfig) {}
 
     /// Process a single input data -- not available
-    //virtual const Math::Position3D &process(const BeaconReceivedData & brd) = 0;
+    virtual const Math::Position3D &process(const BeaconReceivedData & brd) {
+        throw std::runtime_error("KalmanBeaconNavigator::process() with a singe packet is forbidden !");
+    }
 
     /// Process a vector of input data, assuming identical timestamps
     virtual const Math::Position3D &process(const std::vector<BeaconReceivedData> & brds) override;
@@ -71,6 +73,9 @@ private: //========= Methods
 
     /// Check all beacons for the timeout using current timestamp
     void checkTimeout(double timeStamp);
+
+    /// The post-processing with mesh and masktable
+    Math::Position3D postProcess(Math::Position3D pos);
 
 private: //========= Data
     /// The Mesh + MaskTable

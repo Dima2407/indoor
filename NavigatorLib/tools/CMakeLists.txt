@@ -18,6 +18,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 #add_subdirectory(maskgen2)
 
-add_subdirectory(acceltester)
+#add_subdirectory(acceltester)
 
 

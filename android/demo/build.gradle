@@ -20,10 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{
-            buildConfigField "String", "DEVELOPER_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
-            buildConfigField "String", "PRODUCTION_SERVER_URL", "\"http://kaa-solutions.onthewifi.com:8081/\""
+            buildConfigField "String", "DEVELOPER_SERVER_URL", "\"http://185.86.79.154:8081/\""
+            buildConfigField "String", "PRODUCTION_SERVER_URL", "\"http://185.86.79.154:8081/\""
             buildConfigField "String", "DIRECTIONS_API_KEY", "\"AIzaSyASl2rXRVHQgnlXIDswpZrZWX8OHLg2fAs\""
-            buildConfigField "String", "USERNAME", "\"xxx\""
+            buildConfigField "String", "USERNAME", "\"test\""
             buildConfigField "String", "PASSWORD", "\"12345678\""
         }
     }

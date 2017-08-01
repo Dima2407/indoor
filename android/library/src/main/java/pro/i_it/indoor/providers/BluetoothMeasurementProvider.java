@@ -58,6 +58,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
 
             beaconManager.addMonitorNotifier(monitorNotifier);
             beaconManager.addRangeNotifier(rangeNotifier);
+            Log.d("MyDebugTag", "beaconManagerMonitor" + beaconManager);
             try {
                 beaconManager.startMonitoringBeaconsInRegion(region);
             } catch (RemoteException e) {

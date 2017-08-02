@@ -27,15 +27,15 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
     [[BeaconManager sharedManager] stopBeacon];
     
     
-    BOOL radar= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowRadar];
-    [self.showRadar setOn:radar animated:YES];
-    BOOL mesh= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsUseMesh];
-    [self.useMesh setOn:mesh animated:YES];
-    BOOL poi= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowPoi];
-    [self.showPOI setOn:poi animated:YES];
-    BOOL log= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsframeOnLogs];
-    [self.onLogs setOn:log animated:YES];
-    self.sendLogButton.userInteractionEnabled = log;
+//    BOOL radar= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowRadar];
+//    [self.showRadar setOn:radar animated:YES];
+//    BOOL mesh= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsUseMesh];
+//    [self.useMesh setOn:mesh animated:YES];
+//    BOOL poi= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsShowPoi];
+//    [self.showPOI setOn:poi animated:YES];
+//    BOOL log= [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsframeOnLogs];
+//    [self.onLogs setOn:log animated:YES];
+//    self.sendLogButton.userInteractionEnabled = log;
     
 }
 //-(void)viewWillDisappear:(BOOL)animated{

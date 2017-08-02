@@ -41,7 +41,9 @@ int main() {
             Filter::IFilter::Value val(rssi, timestamp);
             result = filter.process(val);
         }
-//        cout << " result-rssi = " << result.val << endl;
+//        cout << " result-rssi = " << result.val << " <-----> ";
+//        cout << " vecValResult = " << vecValResult[i] << " <------> " ;
+//        cout << vecValResult[i] - result.val << endl;
     }
 
     return 0;

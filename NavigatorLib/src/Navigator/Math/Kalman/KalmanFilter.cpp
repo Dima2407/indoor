@@ -14,13 +14,22 @@ namespace Navigator {
             Filter::IFilter::Value KalmanFilter::process(Filter::IFilter::Value in) {
                 double val = in.val;
                 lastPacketTime = in.timeStamp;
-                if (!isInitialize) {
+                if (!isInitialize) {  // CORRECT
                     lastX(0,0) = in.val;
                     lastX(1,0) = 0;
                     lastP = config.P_INIT;
                     lastTime = in.timeStamp;
                     isInitialize = true;
-                    return in;
+//                    cout << "lastX(0,0) = " << lastX(0,0) << endl;
+//                    cout << "lastX(1,0) = " << lastX(1,0) << endl;
+//                    cout << "lastP(0,0) = " << lastP(0,0) << endl;
+//                    cout << "lastP(0,1) = " << lastP(0,1) << endl;
+//                    cout << "lastP(1,0) = " << lastP(1,0) << endl;
+//                    cout << "lastP(1,1) = " << lastP(1,1) << endl;
+//                    cout << "lastTime = " << lastTime << endl;
+//                    cout << "isInitialize = " << isInitialize << endl;
+//                    cout << "-----------------------------" << endl;
+//                    return in;
                 }
                 double deltaT = in.timeStamp - lastTime;
                 Eigen::Matrix<double, 2, 2> Ak;
@@ -28,6 +37,8 @@ namespace Navigator {
                 Ak(0, 1) = deltaT;
                 Ak(1, 0) = 0;
                 Ak(1, 1) = 1;
+                std::cout << " Ak(0,0) = " << Ak(0,0) << " Ak(0,1) = " << Ak(0,1)
+                                 << " Ak(1,0) = " << Ak(1,0) << " Ak(1,1) = " << Ak(1,1) << std::endl;
 
                 Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak); // CORRECT
                 // ----------------
@@ -37,20 +48,24 @@ namespace Navigator {
                 // ----------------
                 std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
                           << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
+                cout << " -----------  end step prediction  ------------" << endl;
                 // ----------------
-                Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP);
+                Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP); // CORRECT
+                // мои расчеты (0.999257  0.399677)  --- программа посчитала (0.999201  0.399677)
                 // ----------------
 //                std::cout << " kalmansCoefficient(0,0) = " << kalmansCoefficient(0,0)
 //                          << " kalmansCoefficient(1,0) = " << kalmansCoefficient(1,0) << std::endl;
+//                cout << " -----------  end step calculated kalmansCoefficient  ------------" << endl;
                 // ----------------
-                correctCurrentMoment(tempX, kalmansCoefficient, val);
+                correctCurrentMoment(tempX, kalmansCoefficient, val); // CORRECT
                 // ----------------
-//                std::cout << " lastX(0,0) = " << lastX(0,0) << " lastX(1,0) = " << lastX(1,0) << std::endl;
+//                std::cout << " lastX(0,0) = " << lastX(0,0) << " lastX(1,0) = " << lastX(1,0) << " ";
                 // ----------------
                 correctError(tempP, kalmansCoefficient);
                 // ----------------
 //                std::cout << " lastP(0,0) = " << lastP(0,0) << " lastP(0,1) = " << lastP(0,1)
 //                          << " lastP(1,0) = " << lastP(1,0) << " lastP(1,1) = " << lastP(1,1) << std::endl;
+//                cout << " -----------  end step correction  ------------" << endl;
                 // ----------------
 
                 lastTime = in.timeStamp;
@@ -81,12 +96,17 @@ namespace Navigator {
             // ------------ private -----------------
 
             Eigen::Matrix<double, 2, 1> KalmanFilter::predictCurrentMoment(const Eigen::Matrix<double, 2, 2>& Ak) {
+//                Eigen::Matrix<double, 2, 1> result = Ak * lastX;
+//                cout << result << endl;
                 return Ak * lastX;
             }
 
             // -----------------
 
             Eigen::Matrix<double, 2, 2> KalmanFilter::predictError(const Eigen::Matrix<double, 2, 2>& Ak) {
+//                Eigen::Matrix<double, 2, 2> result = Ak * lastP * Ak.transpose() + config.Q;
+//                std::cout << " result(0,0) = " << result(0,0) << " result(0,1) = " << result(0,1)
+//                          << " result(1,0) = " << result(1,0) << " result(1,1) = " << result(1,1) << std::endl;
                 return Ak * lastP * Ak.transpose() + config.Q;
             }
 
@@ -94,6 +114,9 @@ namespace Navigator {
 
             Eigen::Matrix<double, 2, 1> KalmanFilter::correctKalman(const Eigen::Matrix<double, 2, 2>& tempP) {
                 double smallExpression = pow((config.H * tempP * config.H.transpose() + config.R), -1);
+//                cout << "config.H * tempP * config.H.transpose() + config.R"
+//                     << config.H * tempP * config.H.transpose() + config.R << endl;
+//                cout << "smallExpression = " << smallExpression << endl;
                 return tempP * config.H.transpose() * smallExpression;
             }
 
@@ -102,7 +125,7 @@ namespace Navigator {
             void KalmanFilter::correctCurrentMoment(Eigen::Matrix<double, 2, 1> tempX,
                                                                            const Eigen::Matrix<double, 2, 1>& kalmansCoefficient,
                                                                            const double val) {
-                lastX = tempX + kalmansCoefficient * (val - config.H * lastX);
+                lastX = tempX + kalmansCoefficient * (val - config.H * tempX);
             }
 
             // -----------------

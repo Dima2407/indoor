@@ -3,6 +3,7 @@ project(NavigatorLib)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-DEIGEN_DONT_ALIGN)
 
 ## Build libNavigator.a
 add_subdirectory(src)

@@ -15,9 +15,9 @@
  */
 typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
 {
-    STANDART_MODE = 1,
+    BLE_MODE = 1,
     SENSOR_MODE,
-    MESH_MODE
+    FILTER_MODE
 };
 
 @interface IndoorLocationManager : NSObject
@@ -42,17 +42,7 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
  
  */
 -(void)setMode:(IndoorLocationManagerMode)mode;
-/*!
- * @discussion Adds NSArray of configs for mesh
- * @param meshIn Specifies the parameters of config for maps mesh
- * @param masktableOut Specifies the parameters of config for binary mask
- */
--(void)setMeshConfig:(NSArray*)meshIn andOut:(NSArray*) masktableOut;
-/*!
- * @discussion Adds NSString of configs for graph
- * @param graph Specifies edges for routing
-  */
--(void)setGraph:(NSString*)graph and:(CGFloat)scale;
+
 /*!
  * @discussion Adds NSArray destination coordinates
  * @param destination Specifies destination coordinate
@@ -61,19 +51,24 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
 /*!
  * @discussion Adds a card of bicons
  * @param config Specifies the parameters of one beacon by an object of type BeaconConfig
- 
+ */
+
+-(void)setConfiguration:(NSDictionary*) config;
+/*!
+ * @discussion Adds a card of bicons
+ * @param config Specifies the parameters of one beacon by an object of type BeaconConfig
  */
 
 -(void)setBeaconConfig:(BeaconConfig*) config;
 /*!
  * @discussion Adds UUID bikons
- * @warning It is better to use one UUID for 1 building 
+ * @warning It is better to use one UUID for 1 building
  * @param uuid UUID string value
  */
 -(void)addUUID:(NSString*)uuid;
 /*!
  * @discussion Return NSMutableArray of NSDictionarys where value by key "x" - return x coordinate, "y" - y coordinate, "z" - z coordinate.
-  */
+ */
 -(NSMutableArray*)getRouting;
 /*!
  * @discussion Return CGFloat value distance to destination in meters
@@ -103,15 +98,11 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
 -(void)prepare;
 /*!
  * @discussion Start data processing
-
  */
 -(void)start;
 /*!
  * @discussion Stops data processing
  */
 -(void)stop;
-/*!
- * @discussion release IndoorLocationManager
- */
--(void)deleteMesh;
+
 @end

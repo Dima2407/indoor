@@ -22,17 +22,17 @@
 -(void) setBeaconMap:(FloorModel*)map withBeaconData:(NSArray*)data;
 -(void) startBeacon;
 -(void) stopBeacon;
--(void)deleteMesh;
+-(void)setSensorConfig:(NSString*)filter useMap:(BOOL)map useMesh:(BOOL)mesh useWalls:(BOOL)walls x:(double)x y:(double)y;
+-(void)setBeaconConfig:(NSString*)filter useMap:(int)map useMesh:(int)mesh useWalls:(int)walls;
 -(NSArray*) getLogs;
--(void) setMode:(NSString*)mode;
--(void) setConfigs:(NSArray*)mesh and:(NSArray*)mask;
+-(void) setMesh:(NSArray*)mesh and:(NSArray*)mask;
 -(void)setDestination:(CGPoint)destination;
 -(void) setGraph:(FloorModel*)floor withGraph:(NSString*)gpaphJsonString;
 -(CGFloat)getDistance;
 
 @end
 
-@protocol BeaconManagerDelegate 
+@protocol BeaconManagerDelegate
 
 -(void) currentLocation:(CGPoint)location;
 -(void) currentRouting:(NSArray*)way;

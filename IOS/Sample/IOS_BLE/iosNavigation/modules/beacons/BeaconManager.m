@@ -67,7 +67,7 @@ static  NSString *kSettingsframeOnLogs = @"kSettingsframeOnLogs";
 -(void) setMode:(NSString*)mode{
     if ([mode isEqualToString:@"Standart"])
     {
-        [self.manager setMode:STANDART_MODE];
+        [self.manager setMode:SENSOR_MODE];
     }
     else if ([mode isEqualToString:@"UseMesh"]){
     

@@ -4,6 +4,8 @@
 
 #pragma once
 
+//#define EIGEN_DONT_ALIGN
+
 #include "KalmanConfig.h"
 #include "Navigator/Math/Filter/IFilter.h"
 
@@ -12,8 +14,8 @@ namespace Navigator {
         namespace Kalman {
             class KalmanFilter: public Filter::IFilter {
 
-
             public:
+
                 KalmanFilter(const KalmanConfig& config = KalmanConfig()) :
                     config(config)
                 {}
@@ -35,6 +37,10 @@ namespace Navigator {
                  * Application for Kalman's filter without section "Correct"
                  */
                 Value processOnlyPredict(double timestamp);
+
+                void reset() override {
+                    isInitialize = false;
+                }
 
             private:
 

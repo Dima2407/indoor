@@ -37,8 +37,8 @@ namespace Navigator {
                 Ak(0, 1) = deltaT;
                 Ak(1, 0) = 0;
                 Ak(1, 1) = 1;
-                std::cout << " Ak(0,0) = " << Ak(0,0) << " Ak(0,1) = " << Ak(0,1)
-                                 << " Ak(1,0) = " << Ak(1,0) << " Ak(1,1) = " << Ak(1,1) << std::endl;
+//                std::cout << " Ak(0,0) = " << Ak(0,0) << " Ak(0,1) = " << Ak(0,1)
+//                                 << " Ak(1,0) = " << Ak(1,0) << " Ak(1,1) = " << Ak(1,1) << std::endl;
 
                 Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak); // CORRECT
                 // ----------------
@@ -46,9 +46,9 @@ namespace Navigator {
                 // ----------------
                 Eigen::Matrix<double, 2, 2> tempP = predictError(Ak); // CORRECT
                 // ----------------
-                std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
-                          << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
-                cout << " -----------  end step prediction  ------------" << endl;
+//                std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
+//                          << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
+//                cout << " -----------  end step prediction  ------------" << endl;
                 // ----------------
                 Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP); // CORRECT
                 // мои расчеты (0.999257  0.399677)  --- программа посчитала (0.999201  0.399677)

@@ -6,10 +6,11 @@
 
 namespace Navigator {
     namespace Accel {
-        Math::Position3D StandardAccelNavigator::process(const AccelReceivedData &ard) {
+        const Math::Position3D  & StandardAccelNavigator::process(const AccelReceivedData &ard) {
             AccelOutputData aod = toGlobal.process(ard);
 
-            return trajectoryDetection.process(aod);
+            lastPosition = trajectoryDetection.process(aod);
+            return lastPosition;
         }
     }
 }

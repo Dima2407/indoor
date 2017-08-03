@@ -33,6 +33,8 @@ public class NativeConfigMap {
     public static final int KEY_USE_WALLS = 19;
     public static final int KEY_ACTIVE_BLE_MODE = 20;
 
+    public static final int KEY_MULTI_LATERATION = 21;
+
     private final SparseArray<Object> configs = new SparseArray<>();
 
     public float getFloat(int key) {

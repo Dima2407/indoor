@@ -96,8 +96,8 @@ public final class SettingsActivity extends GenericActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    int submode = getProjectApplication().getSharedHelper().getBLESubMode();
-                    updateActiveBLESubmode(submode);
+
+                    updateActiveBLESubmode();
                     beaconModsLayout.setVisibility(View.VISIBLE);
                     sensorModsLayout.setVisibility(View.GONE);
                     settingWallCorrSwitch.setChecked(false);
@@ -136,7 +136,6 @@ public final class SettingsActivity extends GenericActivity {
                 if (isChecked) {
                     beaconMod1Switch.setChecked(true);
                     beaconMod2Switch.setChecked(false);
-                    beaconMod3Switch.setChecked(false);
                 }
             }
         });
@@ -147,7 +146,6 @@ public final class SettingsActivity extends GenericActivity {
                 if (isChecked) {
                     beaconMod1Switch.setChecked(false);
                     beaconMod2Switch.setChecked(true);
-                    beaconMod3Switch.setChecked(false);
                 }
             }
         });
@@ -156,8 +154,6 @@ public final class SettingsActivity extends GenericActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    beaconMod1Switch.setChecked(false);
-                    beaconMod2Switch.setChecked(false);
                     beaconMod3Switch.setChecked(true);
                 }
             }
@@ -273,8 +269,7 @@ public final class SettingsActivity extends GenericActivity {
             sensorModsLayout.setVisibility(View.GONE);
             bleSwitch.setChecked(true);
             sensorSwitch.setChecked(false);
-            int submode = getProjectApplication().getSharedHelper().getBLESubMode();
-            updateActiveBLESubmode(submode);
+            updateActiveBLESubmode();
         } else if (activeMode == SharedHelper.MODE_SENSORS) {
             beaconModsLayout.setVisibility(View.GONE);
             sensorModsLayout.setVisibility(View.VISIBLE);
@@ -287,8 +282,7 @@ public final class SettingsActivity extends GenericActivity {
             sensorSwitch.setChecked(false);
             beaconModsLayout.setVisibility(View.VISIBLE);
             sensorModsLayout.setVisibility(View.GONE);
-            int submode = getProjectApplication().getSharedHelper().getBLESubMode();
-            updateActiveBLESubmode(submode);
+            updateActiveBLESubmode();
         }
         updateInitPosition(activeMode,
                 getProjectApplication().getSharedHelper().getSensorsSubMode());
@@ -314,24 +308,20 @@ public final class SettingsActivity extends GenericActivity {
         }
     }
 
-    private void updateActiveBLESubmode(int submode) {
+    private void updateActiveBLESubmode() {
+        int submode = getProjectApplication().getSharedHelper().getBLESubMode();
+        boolean enabled = getProjectApplication().getSharedHelper().isMultiLaterationEnabled();
         if (submode == SharedHelper.SUB_MODE_BLE_1) {
             beaconMod1Switch.setChecked(true);
             beaconMod2Switch.setChecked(false);
-            beaconMod3Switch.setChecked(false);
         } else if (submode == SharedHelper.SUB_MODE_BLE_2) {
             beaconMod1Switch.setChecked(false);
             beaconMod2Switch.setChecked(true);
-            beaconMod3Switch.setChecked(false);
-        } else if (submode == SharedHelper.SUB_MODE_BLE_3) {
-            beaconMod1Switch.setChecked(false);
-            beaconMod2Switch.setChecked(false);
-            beaconMod3Switch.setChecked(true);
         } else {
             beaconMod1Switch.setChecked(true);
             beaconMod2Switch.setChecked(false);
-            beaconMod3Switch.setChecked(false);
         }
+        beaconMod3Switch.setChecked(enabled);
     }
 
     @Override
@@ -340,6 +330,7 @@ public final class SettingsActivity extends GenericActivity {
         if (bleSwitch.isChecked()) {
             getProjectApplication().getSharedHelper().setActiveModeKey(SharedHelper.MODE_BLE);
             getProjectApplication().getSharedHelper().setSensorsSubMode(-1);
+            getProjectApplication().getSharedHelper().setMultiLaterationEnabled(beaconMod3Switch.isChecked());
         } else if (sensorSwitch.isChecked()) {
             getProjectApplication().getSharedHelper().setActiveModeKey(SharedHelper.MODE_SENSORS);
             getProjectApplication().getSharedHelper().setBLESubMode(-1);
@@ -353,8 +344,6 @@ public final class SettingsActivity extends GenericActivity {
                 getProjectApplication().getSharedHelper().setBLESubMode(SharedHelper.SUB_MODE_BLE_1);
             } else if (beaconMod2Switch.isChecked()) {
                 getProjectApplication().getSharedHelper().setBLESubMode(SharedHelper.SUB_MODE_BLE_2);
-            } else if (beaconMod3Switch.isChecked()) {
-                getProjectApplication().getSharedHelper().setBLESubMode(SharedHelper.SUB_MODE_BLE_3);
             } else {
                 getProjectApplication().getSharedHelper().setBLESubMode(SharedHelper.SUB_MODE_BLE_1);
             }

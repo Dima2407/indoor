@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.text.TextUtils;
 
-import pro.i_it.indoor.masks.MaskTableFetcher;
-
 public final class SharedHelper {
 
     public static final int MODE_BLE = 1;
@@ -15,7 +13,6 @@ public final class SharedHelper {
 
     public static final int SUB_MODE_BLE_1 = 1;
     public static final int SUB_MODE_BLE_2 = 2;
-    public static final int SUB_MODE_BLE_3 = 3;
 
     public static final int SUB_MODE_SENSORS_1 = 1;
     public static final int SUB_MODE_SENSORS_2 = 2;
@@ -32,6 +29,8 @@ public final class SharedHelper {
     private static final String MAP_CORRECTION = "map correction";
     private static final String MESH_CORRECTION = "mesh correction";
     private static final String WALLS_CORRECTION = "walls correction";
+
+    private static final String MULTI_LATERATION_ENABLED = "multi lateration enabled";
 
     private final SharedPreferences sharedPreferences;
 
@@ -130,5 +129,13 @@ public final class SharedHelper {
 
     public void setWallCoordinateCorrection(boolean value) {
         sharedPreferences.edit().putBoolean(WALLS_CORRECTION, value).apply();
+    }
+
+    public boolean isMultiLaterationEnabled() {
+        return sharedPreferences.getBoolean(MULTI_LATERATION_ENABLED, false);
+    }
+
+    public void setMultiLaterationEnabled(boolean enabled) {
+        sharedPreferences.edit().putBoolean(MULTI_LATERATION_ENABLED, enabled).apply();
     }
 }

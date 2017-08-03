@@ -145,6 +145,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         if(getSharedHelper().getActiveModeKey() == SharedHelper.MODE_BLE){
             configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
             configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
+            configs.set(NativeConfigMap.KEY_MULTI_LATERATION, getSharedHelper().isMultiLaterationEnabled());
             switch (getSharedHelper().getBLESubMode()){
                 case SharedHelper.SUB_MODE_BLE_1:
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);
@@ -152,9 +153,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                 case SharedHelper.SUB_MODE_BLE_2:
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
                     break;
-                case SharedHelper.SUB_MODE_BLE_3:
-                    configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 3);
-                    break;
+
             }
         } else if(getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS) {
             configs.set(NativeConfigMap.KEY_USE_SENSORS, true);

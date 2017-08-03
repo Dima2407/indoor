@@ -65,6 +65,7 @@ typedef struct IndoorSdkApi {
     int kUseMeshMaskField = 18;
     int kUseWallsField = 19;
     int kActiveBLEModeField = 20;
+    int kMultiLaterationEnabledField = 21;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -100,6 +101,7 @@ typedef struct IndoorSdkConfigs{
     bool useMeshMask = false;
     bool useWalls = false;
     int activeBLEMode = 1;
+    bool multiLaterationEnabled = false;
 } IndoorSdkConfigs;
 
 double timeS = 0;
@@ -264,6 +266,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.useMeshMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMeshMaskField);
     configs.useWalls = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseWallsField);
     configs.activeBLEMode = env->CallIntMethod(config, api.kGetIntMethod, api.kActiveBLEModeField);
+    configs.multiLaterationEnabled = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                            api.kMultiLaterationEnabledField);
 
 
     if (configs.useMask) {
@@ -300,7 +304,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         nConfig.useMapEdges = configs.useMapEdges;
         if(configs.activeBLEMode == 1) {
             nConfig.useInit = true;
-        } else if(configs.activeBLEMode == 3){
+        }
+        if (configs.multiLaterationEnabled) {
             nConfig.useNearest = 0;
         }
 

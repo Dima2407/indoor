@@ -22,6 +22,8 @@ namespace Navigator {
                     lastX(0,0) = in.val;
                     lastX(1,0) = 0;
                     lastP = config.P_INIT;
+                    tempX = lastX; // For getters only
+                    tempP = lastP;
                     lastTime = in.timeStamp;
                     isInitialized = true;
 //                    cout << "lastX = \n" << lastX << endl;
@@ -48,13 +50,13 @@ namespace Navigator {
 //                std::cout << " Ak(0,0) = " << Ak(0,0) << " Ak(0,1) = " << Ak(0,1)
 //                                 << " Ak(1,0) = " << Ak(1,0) << " Ak(1,1) = " << Ak(1,1) << std::endl;
 
-                Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak); // CORRECT
+                tempX = predictCurrentMoment(Ak); // CORRECT
 //                cout << "tempX = \n" << tempX << endl;
 
                 // ----------------
 //                cout << " tempX(0,0) = " << tempX(0,0) << " tempX(1,0) = " << tempX(1,0) << endl;
                 // ----------------
-                Eigen::Matrix<double, 2, 2> tempP = predictError(Ak); // CORRECT
+                tempP = predictError(Ak); // CORRECT
 //                cout << "tempP = \n" << tempP << endl;
 
                 // ----------------
@@ -91,7 +93,8 @@ namespace Navigator {
 
             Filter::IFilter::Value KalmanFilter::processOnlyPredict(double timestamp) {
                 if (timestamp - lastPacketTime > config.timeout) {
-                    isInitialized = false;
+//                    isInitialized = false;
+                    lastTime = timestamp;
                     return Filter::IFilter::Value(lastX(0,0), timestamp);
                 }
                 double deltaT = timestamp - lastTime;
@@ -103,6 +106,8 @@ namespace Navigator {
 
                 lastX = predictCurrentMoment(Ak);
                 lastP = predictError(Ak);
+                tempX = lastX;
+                tempP = lastP;
 
                 lastTime = timestamp;
                 return Filter::IFilter::Value(lastX(0,0), timestamp);

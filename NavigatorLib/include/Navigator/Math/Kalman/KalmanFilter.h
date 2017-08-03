@@ -42,6 +42,34 @@ namespace Navigator {
                     isInitialized = false;
                 }
 
+                const Eigen::Matrix<double, 2, 1> &getLastX() const {
+                    return lastX;
+                }
+
+                const Eigen::Matrix<double, 2, 2> &getLastP() const {
+                    return lastP;
+                }
+
+                const Eigen::Matrix<double, 2, 1> &getTempX() const {
+                    return tempX;
+                }
+
+                const Eigen::Matrix<double, 2, 2> &getTempP() const {
+                    return tempP;
+                }
+
+                bool getIsInitialized() const {
+                    return isInitialized;
+                }
+
+                double getLastTime() const {
+                    return lastTime;
+                }
+
+                double getLastPacketTime() const {
+                    return lastPacketTime;
+                }
+
             private:
 
                 /**
@@ -91,12 +119,16 @@ namespace Navigator {
                 void correctError(const Eigen::Matrix<double, 2, 2>& tempP,
                                                          const Eigen::Matrix<double, 2, 1>& kalmansCoefficient);
 
+
+            private: //===== Fields
                 bool isInitialized = false;
                 KalmanConfig config;
                 double lastTime;
                 double lastPacketTime;
                 Eigen::Matrix<double, 2, 1> lastX;
                 Eigen::Matrix<double, 2, 2> lastP;
+                Eigen::Matrix<double, 2, 1> tempX;
+                Eigen::Matrix<double, 2, 2> tempP;
             };
         }
     }

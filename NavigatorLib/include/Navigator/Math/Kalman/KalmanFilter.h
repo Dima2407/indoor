@@ -39,7 +39,7 @@ namespace Navigator {
                 Value processOnlyPredict(double timestamp);
 
                 void reset() override {
-                    isInitialize = false;
+                    isInitialized = false;
                 }
 
             private:
@@ -91,7 +91,7 @@ namespace Navigator {
                 void correctError(const Eigen::Matrix<double, 2, 2>& tempP,
                                                          const Eigen::Matrix<double, 2, 1>& kalmansCoefficient);
 
-                bool isInitialize = false;
+                bool isInitialized = false;
                 KalmanConfig config;
                 double lastTime;
                 double lastPacketTime;

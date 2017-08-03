@@ -14,12 +14,18 @@ namespace Navigator {
             Filter::IFilter::Value KalmanFilter::process(Filter::IFilter::Value in) {
                 double val = in.val;
                 lastPacketTime = in.timeStamp;
-                if (!isInitialize) {  // CORRECT
+                cout.precision(17);
+//                cout << "--------------------" << endl;
+//                cout << "KalmanFilter:   " << in.timeStamp << "   " << in.val << endl;
+
+                if (!isInitialized) {  // CORRECT
                     lastX(0,0) = in.val;
                     lastX(1,0) = 0;
                     lastP = config.P_INIT;
                     lastTime = in.timeStamp;
-                    isInitialize = true;
+                    isInitialized = true;
+//                    cout << "lastX = \n" << lastX << endl;
+//                    cout << "lastP = \n" << lastP << endl;
 //                    cout << "lastX(0,0) = " << lastX(0,0) << endl;
 //                    cout << "lastX(1,0) = " << lastX(1,0) << endl;
 //                    cout << "lastP(0,0) = " << lastP(0,0) << endl;
@@ -27,9 +33,9 @@ namespace Navigator {
 //                    cout << "lastP(1,0) = " << lastP(1,0) << endl;
 //                    cout << "lastP(1,1) = " << lastP(1,1) << endl;
 //                    cout << "lastTime = " << lastTime << endl;
-//                    cout << "isInitialize = " << isInitialize << endl;
+//                    cout << "isInitialized = " << isInitialized << endl;
 //                    cout << "-----------------------------" << endl;
-//                    return in;
+                    return in;
                 }
                 double deltaT = in.timeStamp - lastTime;
                 Eigen::Matrix<double, 2, 2> Ak;
@@ -37,20 +43,28 @@ namespace Navigator {
                 Ak(0, 1) = deltaT;
                 Ak(1, 0) = 0;
                 Ak(1, 1) = 1;
+//                cout << "Ak = \n" << Ak << endl;
+
 //                std::cout << " Ak(0,0) = " << Ak(0,0) << " Ak(0,1) = " << Ak(0,1)
 //                                 << " Ak(1,0) = " << Ak(1,0) << " Ak(1,1) = " << Ak(1,1) << std::endl;
 
                 Eigen::Matrix<double, 2, 1> tempX = predictCurrentMoment(Ak); // CORRECT
+//                cout << "tempX = \n" << tempX << endl;
+
                 // ----------------
 //                cout << " tempX(0,0) = " << tempX(0,0) << " tempX(1,0) = " << tempX(1,0) << endl;
                 // ----------------
                 Eigen::Matrix<double, 2, 2> tempP = predictError(Ak); // CORRECT
+//                cout << "tempP = \n" << tempP << endl;
+
                 // ----------------
 //                std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
 //                          << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
 //                cout << " -----------  end step prediction  ------------" << endl;
                 // ----------------
                 Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP); // CORRECT
+//                cout << "K = \n" << kalmansCoefficient << endl;
+
                 // мои расчеты (0.999257  0.399677)  --- программа посчитала (0.999201  0.399677)
                 // ----------------
 //                std::cout << " kalmansCoefficient(0,0) = " << kalmansCoefficient(0,0)
@@ -67,16 +81,17 @@ namespace Navigator {
 //                          << " lastP(1,0) = " << lastP(1,0) << " lastP(1,1) = " << lastP(1,1) << std::endl;
 //                cout << " -----------  end step correction  ------------" << endl;
                 // ----------------
-
+//                cout << "lastX = \n" << lastX << endl;
+//                cout << "lastP = \n" << lastP << endl;
                 lastTime = in.timeStamp;
-                return Filter::IFilter::Value(lastX(0,0), lastTime);
+                return Filter::IFilter::Value(lastX(0,0), in.timeStamp);
             }
 
             // -----------------
 
             Filter::IFilter::Value KalmanFilter::processOnlyPredict(double timestamp) {
                 if (timestamp - lastPacketTime > config.timeout) {
-                    isInitialize = false;
+                    isInitialized = false;
                     return Filter::IFilter::Value(lastX(0,0), timestamp);
                 }
                 double deltaT = timestamp - lastTime;

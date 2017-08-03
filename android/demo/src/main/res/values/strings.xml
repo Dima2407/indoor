@@ -2,6 +2,15 @@
     <string name="app_name">Indoor Navigator</string>
     <string name="ble_switch_name">BLE Beacons Navigation</string>
     <string name="sensor_switch_name">Sensor Navigation</string>
+    <string name="beacon_mod_1_switch_name">Beacons Modification 1 (init., cycle buffers, av.filter)</string>
+    <string name="beacon_mod_2_switch_name">Beacons Modification 2 (RSSI Kalman filter)</string>
+    <string name="beacon_multi_lateration_mod_switch_name">Beacons Multirateration (OFF = Trilateration)</string>
+    <string name="sensor_mod_1_switch_name">Sensor Modification 1 (manual initialization)</string>
+    <string name="sensor_mod_2_switch_name">Sensor Modification 2 (initialization via RSSI averaging)</string>
+    <string name="sensor_mod_3_switch_name">Sensor Modification 3 (initialization via RSSI Kalman filter)</string>
+
+    Sensor Modification 1
+
     <string-array name="modes">
         <item>Вариант 1</item>
         <item>Вариант 2A</item>

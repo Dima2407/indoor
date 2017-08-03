@@ -7,6 +7,8 @@
 #include <vector>
 #include <Eigen/Dense>
 
+//#define EIGEN_DONT_ALIGN
+
 namespace Navigator {
     namespace Math {
         namespace Kalman {

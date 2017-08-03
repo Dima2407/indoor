@@ -113,6 +113,10 @@ namespace Navigator {
 	        /// Reset filters etc but don't clear beacons
             virtual void reset() override;
 
+            virtual const  bool isInitFinished() const override {
+                return true;
+            }
+
         public: //========= Other methods
 
             /// Start recording history, works like a stopwatch

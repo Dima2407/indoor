@@ -21,8 +21,9 @@ using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
+using namespace Navigator::Math::Kalman;
 
-shared_ptr<StandardBeaconNavigator> navigator;
+shared_ptr<AbstractBeaconNavigator> navigator;
 shared_ptr<StandardAccelNavigator> sensorNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
@@ -299,18 +300,32 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         mesh->setMaskTable(table);
     }
     if (configs.useBeacons) {
-        StandardBeaconNavigatorConfig nConfig;
-        nConfig.useMeshMask = configs.useMeshMask;
-        nConfig.useMapEdges = configs.useMapEdges;
+
+
         if(configs.activeBLEMode == 1) {
+
+            StandardBeaconNavigatorConfig nConfig;
+            nConfig.useMeshMask = configs.useMeshMask;
+            nConfig.useMapEdges = configs.useMapEdges;
             nConfig.useInit = true;
-        }
-        if (configs.multiLaterationEnabled) {
-            nConfig.useNearest = 0;
-        }
 
+            if (configs.multiLaterationEnabled) {
+                nConfig.useNearest = 0;
+            }
+            navigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
+        } else if (configs.activeBLEMode == 2) {
+            KalmanBeaconNavigatorConfig nConfig;
+            nConfig.useMeshMask = configs.useMeshMask;
+            nConfig.useMapEdges = configs.useMapEdges;
 
-        navigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
+            if (configs.multiLaterationEnabled) {
+                nConfig.useNearest = 0;
+            }
+
+            KalmanConfig filterConfig;
+
+            navigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
+        }
 
         jobjectArray beacons = (jobjectArray) env->CallObjectMethod(config, api.kGetObjectMethod,
                                                                     api.kBeaconsField);

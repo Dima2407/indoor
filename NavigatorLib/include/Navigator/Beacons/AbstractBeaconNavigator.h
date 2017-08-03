@@ -59,6 +59,8 @@ namespace Navigator {
 
             /// Reset filters etc but don't clear beacons
             virtual void reset() = 0;
+
+            virtual const bool isInitFinished() const = 0;
         };
     }
 }

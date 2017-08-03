@@ -111,10 +111,11 @@ namespace Navigator {
                 lastPosition = Math::Position3D();
             }
 
-        public: ///========= Other methods
-            bool isInitFinished() const {
+            virtual const bool isInitFinished() const override {
                 return initFinished;
             }
+
+        public: ///========= Other methods
 
             const Math::Position3D &getInitPosition() const {
                 return initPosition;

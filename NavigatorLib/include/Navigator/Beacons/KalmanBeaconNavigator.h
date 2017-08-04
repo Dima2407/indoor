@@ -63,6 +63,10 @@ public: // ====== Methods
     /// Reset filters etc but don't clear beacons
     virtual void reset() override;
 
+    virtual const bool isInitFinished() const override {
+        return true;
+    }
+
 private: //========= Methods
 
     /// Run the trilateration once based on current active beacons

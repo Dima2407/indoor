@@ -49,7 +49,6 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
     if(navigator){
         
        Navigator::Math::Position3D pos =   navigator->process(brd);
-        printf("X------%f, X------%f",pos.x, pos.y);
     }
     
 }
@@ -96,7 +95,6 @@ void BluetoothBridge_readGraph(std::string graph, double scale ){
 }
 extern "C"
 void BluetoothBridge_setDestination(IndoorPosition p ){
-    printf("Set destination  x-%f, y-%f,",p.x, p.y);
     if (gr==NULL)
     {
         printf("Set graph first");
@@ -177,10 +175,6 @@ void BluetoothBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges,
     conf.useMeshMask = useMeshMask;
     conf.useMapEdges = useMapEdges;
     
-    printf("useInit-----%d",conf.useInit);
-    printf("use3DTrilat----%d",conf.useNearest);
-    printf("useMapEdges----%d",conf.useMapEdges);
-    printf("useMeshMask---%d",conf.useMeshMask);
     
     
 }

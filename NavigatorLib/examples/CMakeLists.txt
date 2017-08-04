@@ -29,4 +29,6 @@ add_subdirectory(example4)
 
 #add_subdirectory(exampleAccel)
 
-add_subdirectory(testKalmanFilterByVictor)
+#add_subdirectory(testKalmanFilterByVictor)
+
+#add_subdirectory(kalmantest)

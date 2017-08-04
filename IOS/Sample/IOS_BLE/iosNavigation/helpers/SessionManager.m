@@ -126,7 +126,7 @@
            dataType:(NSString*)typefile
          floorModel:(FloorModel*)floor
  withCoplitionBlock:(void(^)(FloorModel *map))complitionBlock{
-    
+ //dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
     NSString *urlStr = [NSString stringWithFormat:@"http://185.86.79.154:8081/mob%@",path];
     NSURL *url = [NSURL URLWithString:urlStr];
     
@@ -146,6 +146,7 @@
         }
         complitionBlock(floor);
     }];
+  //});
 }
 #pragma mark - Get google route points -
 -(void) getRouteWithStartLocation:(CLLocationCoordinate2D)startLocation finishLocation:(CLLocationCoordinate2D)finishLocation complitionBlock:(void(^)(NSString *routeLine,NSArray *routePoints))complitionBlock{

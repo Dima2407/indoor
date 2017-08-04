@@ -12,7 +12,7 @@
 #import "IndoorStreamController.h"
 #import "FloorModel.h"
 #import "UIColor+HEX.h"
-
+#import "IndoorHeader.h"
 @interface FloorTableViewController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 //@property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -25,6 +25,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
+        //[[BeaconManager sharedManager] stopBeacon];
 }
 
 - (void)viewDidLoad {
@@ -66,17 +67,30 @@
 }
 
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBLENavigationSwitch] ||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorNavigationSwitch])
+    {
+        
+        FloorModel *floor = self.map.froorsArray[indexPath.row];
+        IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
+        vc.floor = floor;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Choose navigation type, please" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    FloorModel *floor = self.map.froorsArray[indexPath.row];
-    IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
-    vc.floor = floor;
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Create Drop Down Menu -
 -(void) createDropdownMenu{
-    
+  
+      
     SWRevealViewController *revealViewController = self.revealViewController;
     if ( revealViewController )
     {
@@ -85,6 +99,7 @@
         [self.menuButton setAction: @selector( revealToggle: )];
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
+
 }
 
 /*

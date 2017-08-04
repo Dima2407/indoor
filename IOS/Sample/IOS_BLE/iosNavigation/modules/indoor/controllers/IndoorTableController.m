@@ -18,7 +18,7 @@
 #import "FloorTableViewController.h"
 #import "BuildingModel.h"
 #import "UIColor+HEX.h"
-
+#import "IndoorHeader.h"
 
 
 @interface IndoorTableController () <CLLocationManagerDelegate, UITableViewDelegate,UITableViewDataSource>
@@ -116,10 +116,21 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (building.froorsArray.count == 1){
-        FloorModel *floor = [building.froorsArray firstObject];
-        IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
-        vc.floor = floor;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kBLENavigationSwitch] ||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorNavigationSwitch])
+        {
+            
+            FloorModel *floor = [building.froorsArray firstObject];
+            IndoorMapController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"IndoorMapController"];
+            vc.floor = floor;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Choose navigation type, please" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }
+
+      
 
     }
     else{
@@ -132,6 +143,5 @@
     
     
 }
-
 @end
 

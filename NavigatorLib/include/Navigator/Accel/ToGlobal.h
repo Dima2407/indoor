@@ -61,18 +61,11 @@ namespace Navigator {
             /// Configuration
             AccelConfig config;
 
+            /// The expected gravity along az (+1.0 or -1.0)
+            static constexpr double GRAVITY_AZ = +1.0;
+
             /// The last timestamp before the current one
             double lastTime = std::nan("");
-
-//            std::vector<double> const a{1, -5.6403125091553754, 14.179734483869705, -20.695873101662205,
-//                                        19.142583364228241, -11.472236200051777, 4.344994383668622,
-//                                        -0.94986943840591642, 0.0916890050488007};
-
-
-//            std::vector<double> const b{2.7733888284864122E-6, 2.2187110627891297E-5, 7.7654887197619541E-5,
-//                                        0.00015530977439523908, 0.00019413721799404885, 0.00015530977439523908,
-//                                        7.7654887197619541E-5, 2.2187110627891297E-5, 2.7733888284864122E-6};
-
 
             /// Filters, allocate if needed
             std::unique_ptr<FilterImpl> filterAX, filterAY, filterAZ;

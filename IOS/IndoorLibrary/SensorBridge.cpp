@@ -60,7 +60,10 @@ void SensorBridge_createMesh(double nx, double ny, double dx, double dy, double 
 extern "C"
 void SensorBridge_readGraph(std::string graph, double scale ){
     mapScale = scale;
-    gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+    if (gr == NULL)
+    {
+    //gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+    }
 }
 extern "C"
 void SensorBridge_setMaskTable(const std::vector<int> &mTable){
@@ -131,4 +134,9 @@ void SensorBridge_setDestination(struct position p ){
         destinationPosition = gr->findNearestVertex(Navigator::Math::Position3D(p.x, p.y,0));
         
     }
+}
+extern "C"
+void SensorBridge_stop(){
+    nv = nullptr;
+    
 }

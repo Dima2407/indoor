@@ -15,7 +15,7 @@ namespace Navigator {
             virtual const Math::Position3D  & process(const AccelReceivedData & brd) = 0;
 
             /// Get last position
-            virtual const Math::Position3D  & getLastPositon() const = 0;
+            virtual const Math::Position3D  & getLastPosition() const = 0;
         };
 
     }

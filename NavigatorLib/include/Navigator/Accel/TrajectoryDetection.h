@@ -1,5 +1,6 @@
 //
 // Created by Igor Maschikevich on 6/8/2017.
+// Modified by Oleksiy Grechnyev
 //
 #pragma once
 
@@ -66,7 +67,12 @@ public:
             maxY = mesh.y0 + (mesh.ny - 1) * mesh.dy;
         }
     }
-    Math::Position3D process(const Accel::AccelOutputData &data);
+
+    /// Process input data using ZUPT algorithm
+    Math::Position3D processZUPT(const Accel::AccelOutputData &data);
+
+    /// Process input data using Dummy algorithm
+    Math::Position3D processDummy(const Accel::AccelOutputData &data);
 
     /// The algorithm calculates the speed taking into account the static and dynamic stages of the user's movement.
     double algorithmZUPT (double axAy, double startVelocity, bool isStationary, double timeDiff);

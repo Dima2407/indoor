@@ -23,7 +23,7 @@
 -(void) startBeacon;
 -(void) stopBeacon;
 -(void)setSensorConfig:(NSString*)filter useMap:(BOOL)map useMesh:(BOOL)mesh useWalls:(BOOL)walls x:(double)x y:(double)y;
--(void)setBeaconConfig:(NSString*)filter useMap:(int)map useMesh:(int)mesh useWalls:(int)walls;
+-(void)setBeaconConfig:(NSString*)filter useMultilat:(BOOL)multilat useMap:(BOOL)map useMesh:(BOOL)mesh useWalls:(BOOL)walls;
 -(NSArray*) getLogs;
 -(void) setMesh:(NSArray*)mesh and:(NSArray*)mask;
 -(void)setDestination:(CGPoint)destination;

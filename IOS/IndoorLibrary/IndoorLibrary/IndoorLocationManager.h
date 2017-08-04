@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger, IndoorLocationManagerMode)
 /*! @brief This property sets frequency getting coordinates */
 @property (nonatomic, strong) NSTimer *timer;
 
++(IndoorLocationManager*) sharedManager;
 /*!
  * @discussion Choose IndoorLocationManager working mode
  * @param mode Specifies the mode of IndoorLocationManager

@@ -35,8 +35,9 @@ void BluetoothBridge_init() {
 extern "C"
 void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, double txPower, double damp, double x, double y, double z){
     Navigator::Beacons::Beacon beacon(Navigator::Beacons::BeaconUID(uuidstr,major,minor), txPower, damp, Navigator::Math::Position3D(x,y,z), "");
-    
+    if(navigator){
     navigator->addBeacon(beacon);
+    }
     
 }
 
@@ -44,11 +45,12 @@ extern "C"
 void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi) {
     Navigator::Beacons::BeaconUID uuid(uuidStr,major,minor);
     Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
-    
     // Process it
-    Navigator::Math::Position3D pos = navigator->process(brd);
-    // printf("process %f, %f\n", pos.x, pos.y);
-    
+    if(navigator){
+        
+       Navigator::Math::Position3D pos =   navigator->process(brd);
+        printf("X------%f, X------%f",pos.x, pos.y);
+    }
     
 }
 extern "C"
@@ -62,7 +64,6 @@ void BluetoothBridge_getLastPosition(double * output){
         output[0] = outPos.x;
         output[1] = outPos.y;
         output[2] = outPos.z;
-        printf("X----%f, Y----%f",outPos.x,outPos.y);
     }
     
 }
@@ -86,7 +87,12 @@ void BluetoothBridge_realeseMesh(){
 extern "C"
 void BluetoothBridge_readGraph(std::string graph, double scale ){
     mapScale = scale;
-    gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+    if (gr == NULL)
+    {
+      
+   // gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+        
+    }
 }
 extern "C"
 void BluetoothBridge_setDestination(IndoorPosition p ){
@@ -176,5 +182,10 @@ void BluetoothBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges,
     printf("useMapEdges----%d",conf.useMapEdges);
     printf("useMeshMask---%d",conf.useMeshMask);
     
+    
+}
+extern "C"
+void BluetoothBridge_stop(){
+    navigator = nullptr;
     
 }

@@ -33,6 +33,17 @@
 
 
 @implementation IndoorLocationManager
+
++(IndoorLocationManager*) sharedManager{
+    
+    static IndoorLocationManager *manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [[self alloc]init];
+        
+    });
+    return manager;
+}
 - (instancetype)init
 {
     self = [super init];
@@ -49,6 +60,7 @@
         self.beaconsUUIDs = [[NSMutableArray alloc] init];
         self.startTimestamp =  [[NSDate date] timeIntervalSince1970];
         _initSensorNavigator = NO;
+       
         
     }
     return self;
@@ -172,7 +184,6 @@
 }
 
 -(void)_createMesh:(IndoorLocationManagerMode)type{
-    NSLog(@"%@", self.config);
     double nx = [[self.config objectForKey:@"nx"] floatValue], ny = [[self.config objectForKey:@"ny"] floatValue];
     double dx = [[self.config objectForKey:@"dx"] floatValue], dy =  [[self.config objectForKey:@"dy"] floatValue];
     double x0 =  [[self.config objectForKey:@"x0"] floatValue], y0 =  [[self.config objectForKey:@"y0"] floatValue];
@@ -220,56 +231,72 @@
 #pragma Set Config
 -(void)setConfiguration:(NSDictionary*) config{
     self.config = config;
+   
 }
 
 #pragma mark - Get Coordinates
 -(void)getCoordinates{
-    
+
     NSMutableArray *coordinates = [NSMutableArray new];
     double outPosition[] = {0.0, 0.0, 0.0};
     if (self.managerMode == SENSOR_MODE)
     {
-        SensorBridge_getLastPosition(outPosition);
-        for (int i = 0; i < 3; i++)
+       
+         if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue])
         {
-            [coordinates addObject:@(outPosition[i])];
-            
+                if (!_initSensorNavigator)
+                {
+                    BOOL initialise = BluetoothBridge_isInitialise();
+                    if (initialise)
+                    {
+                        
+                        double output[] = {-1.0, -1.0};
+                        BluetoothBridge_getInitialisePosition(output);
+                        
+                        if(output[0] != -1.0 && output[1] != -1.0){
+                            NSLog(@"sensorRSSIAveraging Init X ---- %f",output[0]);
+                            NSLog(@"sensorRSSIAveraging Init Y ----%f",output[1]);
+                            SensorBridge_init(output[0], output[1]);
+                            self.initSensorNavigator = YES;
+                            
+                        }
+                    }
+                }
+                else{
+                    SensorBridge_getLastPosition(outPosition);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        [coordinates addObject:@(outPosition[i])];
+                        
+                    }
+                        [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+                }
         }
-        [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
-        //        if (!_initSensorNavigator)
-        //        {
-        //            BOOL initialise = BluetoothBridge_isInitialise();
-        //            if (initialise)
-        //            {
-        //                SensorBridge_setAccelConfig(0, true);
-        //                double output[] = {-1.0, -1.0};
-        //                BluetoothBridge_getInitialisePosition(output);
-        //                if(output[0] != -1.0 && output[1] != -1.0){
-        //                    // SensorBridge_init(output[0], output[1]);
-        //                    SensorBridge_init(3, 13);
-        //                    self.initSensorNavigator = YES;
-        //                }
-        //            }
-        //        }
-        //        else{
-        //            SensorBridge_getLastPosition(outPosition);
-        //        }
+        else{
+            SensorBridge_getLastPosition(outPosition);
+            for (int i = 0; i < 3; i++)
+            {
+                [coordinates addObject:@(outPosition[i])];
+                
+            }
+                [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+        }
     }
     else if (self.managerMode == BLE_MODE){
         BluetoothBridge_getLastPosition(outPosition);
-        double initPosition[] = {0.0, 0.0, 0.0};
         
         for (int i = 0; i < 3; i++)
         {
             [coordinates addObject:@(outPosition[i])];
             
         }
+            [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
     }
     //    else if (self.managerMode == FILTER_MODE){
     //
     //    }
     
-    [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+
     
 }
 
@@ -358,19 +385,34 @@
     {
         [self setGraph:SENSOR_MODE];
         [self _createMesh:SENSOR_MODE];
-        SensorBridge_setAccelConfig([[self.config objectForKey:@"orientationAngle"] intValue], false, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
-        double x = [[self.config objectForKey:@"x"] floatValue];
-        double y = [[self.config objectForKey:@"y"] floatValue];
-        SensorBridge_init(x, y);
-        self.initSensorNavigator = YES;
-        
+       
+        if ([[self.config objectForKey:@"sensorInitManual"] boolValue])
+        {
+            
+            SensorBridge_setAccelConfig([[self.config objectForKey:@"orientationAngle"] intValue], false, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+            double x = [[self.config objectForKey:@"x"] floatValue];
+            double y = [[self.config objectForKey:@"y"] floatValue];
+            NSLog(@"sensorInitManual Init X ---- %f",x);
+            NSLog(@"sensorInitManual Init Y ----%f",y);
+            SensorBridge_init(x, y);
+            
+        }
+       
+         else if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue]){
+            SensorBridge_setAccelConfig([[self.config
+                                          objectForKey:@"orientationAngle"] intValue], false, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+            
+            BluetoothBridge_setConfig(true, false, true, false);
+            BluetoothBridge_init();
+            
+        }
+       
     }
     else if (self.managerMode == BLE_MODE){
         [self setGraph:BLE_MODE];
         [self _createMesh:BLE_MODE];
         
         BluetoothBridge_setConfig([[self.config objectForKey:@"bleCircleBuffers"] boolValue], [[self.config objectForKey:@"bleTrilatiration"] boolValue], [[self.config objectForKey:@"bleMap"] boolValue], [[self.config objectForKey:@"bleMesh"] boolValue]);
-        //NSLog(@"%@",self.config);
         BluetoothBridge_init();
     }
     else if (self.managerMode == FILTER_MODE){
@@ -425,8 +467,14 @@
         {
             [self.timer  invalidate];
             self.timer = nil;
-            
-        }}];
+        }
+        if (obj.type == SENSOR_PROVIDER)
+        {
+            [self.timer  invalidate];
+            self.timer = nil;
+        }
+    }];
+   
 }
 
 -(void)deleteMesh{
@@ -459,7 +507,9 @@
                                   [event.beacon.proximityUUID UUIDString],@"proximityUUID",
                                   @(event.beacon.accuracy),@"accuracy",
                                   @(event.beacon.rssi),@"rssi",nil];
-            [self.beaconLogs addObject:data];
+            if(data){
+              [self.beaconLogs addObject:data];
+            }
         }
     }
     if (event.type == SENSOR_VALUE)
@@ -485,8 +535,9 @@
                                       @(event.accelerometerData.acceleration.y),@"y",
                                       @(event.accelerometerData.acceleration.z),@"z",
                                       nil];
-                [self.acselLogs addObject:data];
-                
+                if(data){
+                 [self.acselLogs addObject:data];
+                }
                 
                 
                 
@@ -495,7 +546,9 @@
                                              @( RADIANS_TO_DEGREES(event.motion.attitude.pitch)),@"pitch",
                                              @(azimuth),@"yaw",
                                              @( RADIANS_TO_DEGREES(event.motion.attitude.roll)),@"roll",nil];
+                if(dataMouting){
                 [self.moutingLogs addObject:dataMouting];
+                }
             }
         }
         

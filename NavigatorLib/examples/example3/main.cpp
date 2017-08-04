@@ -83,7 +83,17 @@ int main() {
 
       The position just after initialization can be obtained vis getInitPosition()
      */
-    StandardBeaconNavigator navigator(mesh1, false);  // !!! true = iOS, false = Android !!!
+
+    // Set up config, see this struct for the options
+    StandardBeaconNavigatorConfig config;
+
+    // Some possible options, these are the defaults
+//    config.useNearest = 3;  // 3 = trilat, 0 = multilat
+//    config.useInit = true;
+//    config.useMeshMask = true;
+//    config.useMapEdges = true;
+
+    StandardBeaconNavigator navigator(mesh1, false, config);  // !!! true = iOS, false = Android !!!
 
     /* Create 4 beacons
      * I used array of beacons in the example

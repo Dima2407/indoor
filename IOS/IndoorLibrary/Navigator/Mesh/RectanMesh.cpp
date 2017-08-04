@@ -27,5 +27,22 @@ namespace Navigator {
             double y = mesh.iy2y(ind % mesh.ny);
             return Math::Position3D(x, y, inPos.z);
         }
+
+        Math::Position3D RectanMesh::checkEdges(Math::Position3D inPos) const {
+            double x2 = mesh.x0 + mesh.dx*(mesh.nx-1);
+            double y2 = mesh.y0 + mesh.dy*(mesh.ny-1);
+
+            if (inPos.x < mesh.x0)
+                inPos.x = mesh.x0;
+            else if (inPos.x > x2)
+                inPos.x = x2;
+
+            if (inPos.y < mesh.y0)
+                inPos.y = mesh.y0;
+            else if (inPos.y > y2)
+                inPos.y = y2;
+
+            return inPos;
+        }
     }
 }

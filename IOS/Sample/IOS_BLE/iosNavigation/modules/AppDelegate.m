@@ -10,6 +10,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <Foundation/Foundation.h>
 
+#import "IndoorHeader.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +22,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [GMSServices provideAPIKey:@"AIzaSyCNAO2K42kZYbJ-kOY_3DcX8mTpYD6bxHE"];
-    //[Fabric with:@[[Crashlytics class]]];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLENavigationSwitch];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorNavigationSwitch];
     return YES;
 }
 

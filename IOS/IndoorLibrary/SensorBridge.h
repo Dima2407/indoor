@@ -60,3 +60,7 @@ void SensorBridge_getPositionFromGraph(std::vector<position> &way);
 extern "C"
 #endif
 void SensorBridge_setDestination(struct position p );
+#ifdef __cplusplus
+extern "C"
+#endif
+void SensorBridge_stop();

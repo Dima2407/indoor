@@ -1,5 +1,6 @@
 //
 // Created by  Victor Draban on 6/7/2017.
+// Modified by Oleksiy Grechnyev
 //
 
 #include <iostream>
@@ -21,8 +22,8 @@ AccelOutputData ToGlobal::process(const AccelReceivedData & data)
 
     // Rotate accel to global coords
     rotateAccelerations(tempData);
-    // To left-hand XY coordinate system because of maps
-    tempData.ay = - tempData.ay;
+    // To the left-hand XY coordinate system because of maps : not now !
+//    tempData.ay = - tempData.ay;
 
     // Filter if needed
     filterAccelerations(tempData);
@@ -30,12 +31,16 @@ AccelOutputData ToGlobal::process(const AccelReceivedData & data)
     // The "recognize step" algorithm
     recognizeStep(tempData);
 
-    // Copy data to result. No more angles !
+    // Copy data to result. No more angles (update: except yaw) !
     result.isStationary = tempData.isStationary;
     result.ax = tempData.ax;
     result.ay = tempData.ay;
     result.az = tempData.az;
     result.timestamp = data.timestamp;
+    result.yaw = tempData.yaw; // Save the yaw angle for the dummy algorithm
+
+    // Modify the yaw angle
+    result.yaw += (result.yaw>0) ? -M_PI : M_PI;
 
     // Calculate time elapsed since the previous packet
     if (std::isnan(lastTime)) {
@@ -51,8 +56,9 @@ AccelOutputData ToGlobal::process(const AccelReceivedData & data)
 // =================================================================================
 
 void ToGlobal::recognizeStep(TempData &out) {
-    auto a_norm = sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az) - 1.0;
-    out.isStationary = (a_norm < config.accThreshold);
+//    double a_norm = sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az);
+    double a_norm2 = out.ax*out.ax + out.ay*out.ay + out.az*out.az;
+    out.isStationary = (a_norm2 < config.accThreshold);
 }
 
 // =================================================================================
@@ -63,7 +69,7 @@ void ToGlobal::angleCorrection(const AccelReceivedData &in, TempData &out) {
     out.roll = in.roll*(M_PI/180);
     out.yaw = (in.yaw + config.mapOrientationAngle)*(M_PI/180);
 
-    // Don't forget to copy accelerations and timestamp also
+    // Don't forget to copy accelerations and timestamp also to the Tempdata object
     out.ax = in.ax;
     out.ay = in.ay;
     out.az = in.az;
@@ -74,13 +80,13 @@ void ToGlobal::angleCorrection(const AccelReceivedData &in, TempData &out) {
 
 void ToGlobal::filterAccelerations(TempData &out) {
     if (config.useFilter) {
-        out.az += 1.0; // Exclude gravity
+        out.az -= GRAVITY_AZ; // Remove the gravity before filtering az
 
         out.ax = filterAX->process({out.ax, out.timestamp}).val;
         out.ay = filterAY->process({out.ay, out.timestamp}).val;
         out.az = filterAZ->process({out.az, out.timestamp}).val;
 
-        out.az -= 1.0; // Put the gravity back again
+        out.az += GRAVITY_AZ; // Put the gravity back again
     }
 }
 
@@ -90,10 +96,10 @@ void ToGlobal::rotateAccelerations(TempData &out)
     using namespace Eigen;
 
     Quaternion<double> quat = initQuaternion(out.pitch, out.roll, out.yaw);
-    Quaternion<double> invertQuat = quat.conjugate();
+    Quaternion<double> conjgQuat = quat.conjugate();
     Quaternion<double> r(0, out.ax, out.ay, out.az);
 
-    Quaternion<double> resultQ = quat * r * invertQuat;
+    Quaternion<double> resultQ = quat * r * conjgQuat;
 
     out.ax = resultQ.x();
     out.ay = resultQ.y();

@@ -15,9 +15,7 @@
 
 namespace Navigator {
     namespace Beacons {
-           
-        //using namespace Navigator::Math::Filter;
-    
+
         /** @brief Calculates distance as a function of RSSI for a beacon
          *
          * @startuml
@@ -149,9 +147,9 @@ namespace Navigator {
                 return active;
             }
 
-        private:
+        protected:
             //---------------------------------------------
-            // Private methods
+            // Protected methods
             //---------------------------------------------
 
             /** @brief The raw distance function, no filters

@@ -68,6 +68,9 @@ namespace Navigator {
              */
             Math::Position3D process(const Math::Position3D & inPos) const;
 
+            /// Check edges of the map only
+            Math::Position3D checkEdges(Math::Position3D inPos) const;
+
             /// , must be of size nx*ny to be of any use
 
             /** @brief Use this to set up the mask table

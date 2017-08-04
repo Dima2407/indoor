@@ -96,3 +96,7 @@ void BluetoothBridge_getInitialisePosition(double * output);
 extern "C"
 #endif
 void BluetoothBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges, bool useMeshMask);
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_stop();

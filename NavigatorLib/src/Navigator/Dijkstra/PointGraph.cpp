@@ -21,27 +21,27 @@ namespace Navigator {
             ifstream in(fileName);
 
             if (!in)
-                throw runtime_error("PointGraph: Cannot open file" + fileName);
+                throw runtime_error("PointGraph: Cannot open file " + fileName);
 
-            if (! parseFromStream(in))
-                throw runtime_error("PointGraph: Cannot parse file" + fileName);
+            if (!parseFromStream(in))
+                throw runtime_error("PointGraph: Cannot parse file " + fileName);
 
             in.close();
         }
 //============================================================================
 
-        PointGraph::PointGraph(const std::string &data, double rescale): Graph({}) {
+        PointGraph::PointGraph(const std::string &data, double rescale) : Graph({}) {
             using namespace std;
             using namespace Navigator::Math;
 
             stringstream in(data);
 
             // Read from stream
-            if (! parseFromStream(in))
+            if (!parseFromStream(in))
                 throw runtime_error("PointGraph: Cannot parse string !");
 
             // Rescale
-            for (Position3D & p : vertices) {
+            for (Position3D &p : vertices) {
                 p.x *= rescale;
                 p.y *= rescale;
                 p.z *= rescale;
@@ -65,7 +65,7 @@ namespace Navigator {
         }
 //============================================================================
 
-        int PointGraph::findVertex(const Math::Position3D &coord) const{
+        int PointGraph::findVertex(const Math::Position3D &coord) const {
             using namespace Navigator::Math;
 
             for (int i = 0; i < vertices.size(); ++i) {
@@ -100,10 +100,10 @@ namespace Navigator {
             if (i < 0 || i >= size || j < 0 || j >= size)
                 throw runtime_error("PointGraph::addEdge : index out of bounds.");
 
-            vector<Edge> & ve = edges[i];  // Edges of vertex i
+            vector<Edge> &ve = edges[i];  // Edges of vertex i
 
             // Check if the j-vertex exists already, I don't like stupid iterators
-            for (Edge & e : ve)
+            for (Edge &e : ve)
                 if (e.to == j) {
                     // Found !
                     e.weight = dist; // Replace the weight aka dist
@@ -124,8 +124,17 @@ namespace Navigator {
 
             string line;
 
-            // Line 1 = type of file
-            getline(in, line);
+            // Check if a string is empty or blank (only spaces)
+            auto isBlank = [](const string &s) -> bool {
+                return s.empty() || s.find_first_not_of(" \r\n") == string::npos;
+            };
+
+            // Line 1 = type of file, ignoring blank lines
+            for (;;) {
+                getline(in, line);
+                if (!isBlank(line))
+                    break;
+            }
 //            cout << line << endl;
 
             // Note : ->GOOD file format :
@@ -139,12 +148,15 @@ namespace Navigator {
             // Edges don't have directions. "1 2 107.0" automatically gives "2 1 107.0"
 
             bool flag;
-            if (line == "->GOOD")
+            if (0 == line.find("->GOOD"))
                 flag = true;
-            else if (line == "->GRAPH")
+            else if (0 == line.find("->GRAPH"))
                 flag = false;
-            else
+            else {
+                cerr << "Not ->GOOD or ->GRAPH !!!" << endl;
+                cerr << "line = '" << line << "'" << endl;
                 return false;
+             }   
 
             // Read point positions
             double x, y;
@@ -155,8 +167,12 @@ namespace Navigator {
                 getline(in, line);
                 stringstream stin(line);
 
+                // Ignore blank lines
+                if (isBlank(line))
+                    continue;
+
                 // Read x,y until an uncompatible line
-                if (! (stin >> x >> y))
+                if (!(stin >> x >> y))
                     break;
 
                 vertices.push_back(Position3D(x, y, 0.0));
@@ -168,8 +184,12 @@ namespace Navigator {
 
 //            cout << line << endl;
 
-            if (line != "->EDGES")
+            if (0 != line.find("->EDGES")) {
+                cerr << "Not ->EDGES !!!" << endl;
+                cerr << line.find("->EDGES") << endl;
+                cerr << "line = '" << line << "'" << endl;
                 return false;
+            }    
 
             // Read the edges
             int size = vertices.size();

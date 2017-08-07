@@ -389,7 +389,7 @@ public final class SettingsActivity extends GenericActivity {
             } else if (sensorMod3Switch.isChecked()) {
                 getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_3);
             } else {
-                getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_1);
+                getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_2);
             }
         }
         if (getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS

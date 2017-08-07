@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.text.TextUtils;
+import android.util.Log;
 
 public final class SharedHelper {
 
@@ -97,10 +98,11 @@ public final class SharedHelper {
     }
 
     public int getSensorsSubMode() {
-        return sharedPreferences.getInt(ACTIVE_SENSORS_MODE, 1);
+        return sharedPreferences.getInt(ACTIVE_SENSORS_MODE, SUB_MODE_SENSORS_2);
     }
 
     public void setSensorsSubMode(int value) {
+        Log.e("Sensor SubMode", "setSensorsSubMode: " + value);
         sharedPreferences.edit()
                 .putInt(ACTIVE_SENSORS_MODE, value)
                 .apply();

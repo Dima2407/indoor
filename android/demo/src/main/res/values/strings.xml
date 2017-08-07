@@ -9,6 +9,8 @@
     <string name="sensor_mod_2_switch_name">Sensor Modification 2 (initialization via RSSI averaging)</string>
     <string name="sensor_mod_3_switch_name">Sensor Modification 3 (initialization via RSSI Kalman filter)</string>
 
+    <string name="settings_dialog_string">Select one of the modes and the modifications.</string>
+
     Sensor Modification 1
 
     <string-array name="modes">

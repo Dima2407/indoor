@@ -16,6 +16,8 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import khpi.com.demo.utils.FileUtil;
 import khpi.com.demo.utils.ManeuverHelper;
 import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
+import pro.i_it.indoor.OnInitializationCompletedListener;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.config.NativeConfigMap;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
@@ -57,6 +60,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     private RecyclerView.OnScrollListener listener;
     private Floor floor;
     private View cameraBtn;
+    private RelativeLayout progressBar;
+
 
     public static String KEY_FLOOR_MAP = "floorMap";
     public static int REGION_RADIUS = 10;
@@ -82,6 +87,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        progressBar = (RelativeLayout) view.findViewById(R.id.initialization_progress_bar);
 
         Log.i("onLocationChanged", "IndoorMap : onViewCreated");
         listener = new RecyclerView.OnScrollListener() {
@@ -207,6 +214,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             }
         }
 
+        configs.set(NativeConfigMap.KEY_USE_FILTER, true);
         configs.set(NativeConfigMap.KEY_GRAPH_PATH, FileUtil.getLocacPath(getActivity(), floor.getGraphPath()).getAbsolutePath());
         configs.set(NativeConfigMap.KEY_GRAPH_SCALE, 1.0);
 
@@ -216,6 +224,12 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             @Override
             public void onLocationChanged(PointF position, float[] route) {
                 applyNewCoordinate(position.x, position.y, 1, 1, route);
+            }
+        });
+        getLocalManager().setOnInitializationCompletedListener(new OnInitializationCompletedListener() {
+            @Override
+            public void onInitializationCompleted() {
+                progressBar.setVisibility(View.GONE);
             }
         });
         getLocalManager().start();

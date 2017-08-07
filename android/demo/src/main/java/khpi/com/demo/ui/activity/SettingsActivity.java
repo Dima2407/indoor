@@ -51,6 +51,26 @@ public final class SettingsActivity extends GenericActivity {
         activity.startActivity(new Intent(activity, SettingsActivity.class));
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder;
+        AlertDialog mustSetModDialog;
+        builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setCancelable(true);
+        builder.setMessage(R.string.settings_dialog_string);
+        mustSetModDialog = builder.create();
+        if (bleSwitch.isChecked() || sensorSwitch.isChecked()) {
+            if (beaconMod1Switch.isChecked() || beaconMod3Switch.isChecked() || beaconMod3Switch.isChecked()
+                    || sensorMod1Switch.isChecked() || sensorMod2Switch.isChecked() || sensorMod3Switch.isChecked()) {
+                super.onBackPressed();
+            } else {
+                mustSetModDialog.show();
+            }
+        } else {
+            mustSetModDialog.show();
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,12 +88,12 @@ public final class SettingsActivity extends GenericActivity {
             public void onClick(View v) {
                 onBackPressed();
             }
+
         });
 
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(indicator);
-
 
         Switch useProduction = (Switch) findViewById(R.id.settings_use_production_server);
         useProduction.setChecked(getProjectApplication().getSharedHelper().useProduction());
@@ -120,6 +140,7 @@ public final class SettingsActivity extends GenericActivity {
                 }
             }
         });
+
 
         sensorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

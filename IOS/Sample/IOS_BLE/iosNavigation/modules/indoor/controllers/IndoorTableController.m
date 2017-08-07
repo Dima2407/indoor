@@ -35,7 +35,7 @@
 @implementation IndoorTableController
 
 -(void)viewWillAppear:(BOOL)animated{
-   
+   [[BeaconManager sharedManager] stopBeacon];
 }
 - (void)viewDidLoad {
     
@@ -107,7 +107,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     BuildingModel *building = [self.mapsArray objectAtIndex:indexPath.row];
     if (building.froorsArray.count>1)
     {

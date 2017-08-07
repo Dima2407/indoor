@@ -37,7 +37,8 @@
 
 @implementation IndoorMapController
 -(void)viewWillAppear:(BOOL)animated{
-   }
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -61,57 +62,59 @@
     self.distanceLabel.text = @"Total distance 0.0 m";
     self.distanceLabel.font = [UIFont systemFontOfSize:14];
     
-    [self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
+    //[self createDropdownMenuWihtMenuButton:self.menuButton view:self.view];
     [self addTapGestureOnView:self.mapView selector:@selector(didTap:)];
     [self addTapGestureOnView:self.routeInfoMenu selector:@selector(tapRouteInfoAction:)];
-        [[SessionManager sharedManager] getFloorMap:self.floor.mapPath dataType:@"map" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
+    [[SessionManager sharedManager] getFloorMap:self.floor.mapPath dataType:@"map" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
+        
+        
+        
+        if([UIImage imageWithData:map.mapImage]){
             
-           
+            dispatch_async (dispatch_get_main_queue(), ^{
+                [self setMapImage:map.mapImage];
+                
+            });
+        }
+        else{
+            dispatch_async (dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Map is empty" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            });
             
-            if([UIImage imageWithData:map.mapImage]){
-                
-                  dispatch_async (dispatch_get_main_queue(), ^{
-                      [self setMapImage:map.mapImage];
             
-                   });
-            }
-            else{
-                dispatch_async (dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Map is empty" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                    [alert show];
-                    
-                });
-              
-                
-                
-            }
-        }];
+            
+        }
+    }];
     [[SessionManager sharedManager] getFloorMap:self.floor.graphPath dataType:@"graph" floorModel:self.floor withCoplitionBlock:^(FloorModel *map) {
         if(map.mapGraph != nil){
             NSString *stringFromData = [NSString stringWithUTF8String:[self.floor.mapGraph bytes]];
             if (stringFromData)
             {
-                  [[BeaconManager sharedManager]setGraph:self.floor withGraph:stringFromData];
+                [[BeaconManager sharedManager]setGraph:self.floor withGraph:stringFromData];
             }
-          
-           
+            
+            
         }
         else{
             NSLog(@"GraphData is nil");
-                }
+        }
     }];
- 
+    
     
     
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#4154B2"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.backItem.title = @"Back";
+  
+   
     
 }
 -(void)startNavigation{
-    
-    
+
     NSArray* mesh;
     NSArray* mask;
     if ([self.floor.buildingTitle isEqualToString:@"IT-Jim"])
@@ -226,7 +229,7 @@
     
 }
 -(void)viewWillDisappear:(BOOL)animated{
-
+    //[[BeaconManager sharedManager] stopBeacon];
 }
 
 
@@ -312,27 +315,27 @@
 -(void) setMapImage:(NSData*)imgData{
     
     dispatch_async (dispatch_get_main_queue(), ^{
-         [self startNavigation];
+        [self startNavigation];
         UIImage *map = [UIImage imageWithData:imgData];
         
         self.mapView.image = map;
         self.drawView = [self createDrawViewWithStartPoint:CGPointZero withSizeView:self.mapView];
-       
-        [[SessionManager sharedManager] getIndoorPoiForFloorID:[NSString stringWithFormat:@"%zd", self.floor.idFloor] complitionBlock:^(NSDictionary *poiDictionary) {
-             dispatch_async(dispatch_get_main_queue(), ^{
-         self.poisDictionary = poiDictionary;
         
-         [self createPoiMarkers:poiDictionary];
-        self.currentPositionView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"map_pin_icn"]];
-        self.currentPositionView.frame = CGRectMake(0, 0, 25, 40);
-        [self.drawView addSubview:self.currentPositionView];
-        [self.view setNeedsDisplay];
-             });
+        [[SessionManager sharedManager] getIndoorPoiForFloorID:[NSString stringWithFormat:@"%zd", self.floor.idFloor] complitionBlock:^(NSDictionary *poiDictionary) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.poisDictionary = poiDictionary;
+                
+                [self createPoiMarkers:poiDictionary];
+                self.currentPositionView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"map_pin_icn"]];
+                self.currentPositionView.frame = CGRectMake(0, 0, 25, 40);
+                [self.drawView addSubview:self.currentPositionView];
+                [self.view setNeedsDisplay];
+            });
             
-                }];
+        }];
         
     });
- 
+    
 }
 #pragma mark - Tap Gesture -
 -(void) didTap:(UITapGestureRecognizer*)gesture{
@@ -417,16 +420,17 @@
 }
 #pragma mark - BeaconManagerDelegate -
 -(void)currentLocation:(CGPoint)location{
-    if([[NSUserDefaults standardUserDefaults] boolForKey:kBLECircleSwitch] ){
+ 
+    if([[NSUserDefaults standardUserDefaults] boolForKey:kBLECircleSwitch]||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging]){
         if (CGPointEqualToPoint(location, CGPointZero))
         {
-        
-        self.navigationController.navigationBar.topItem.title = @"Initialization...";
-        CGPoint p = CGPointMake(0, 0);
-        self.startPoint = p;
-        
-        self.drawView.startPoint = p;
-        [self.drawView setNeedsDisplay];
+            
+            self.navigationController.navigationBar.topItem.title = @"Initialization...";
+            CGPoint p = CGPointMake(0, 0);
+            self.startPoint = p;
+            
+            self.drawView.startPoint = p;
+            [self.drawView setNeedsDisplay];
         }
         else{
             self.navigationController.navigationBar.topItem.title = @"";
@@ -459,7 +463,7 @@
             self.drawView.startPoint = p;
             [self.drawView setNeedsDisplay];
         }
-
+        
     }
     else{
         self.navigationController.navigationBar.topItem.title = @"";

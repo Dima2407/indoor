@@ -48,7 +48,7 @@
         self.status = YES;
         self.jsonData = [NSMutableData data];
         self.positionArray = [NSMutableArray new];
-        self.manager = [IndoorLocationManager sharedManager];
+        self.manager = [[IndoorLocationManager alloc] init];
         self.manager.locationListener = self;
         self.manager.errorListener = self;
         [self prepare];
@@ -85,7 +85,6 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kBLENavigationSwitch])
     {
         [self.manager addUUID:@"23A01AF0-232A-4518-9C0E-323FB773F5EF"];
-        [self.manager addUUID:@"STRING1
         [self.manager addProvider:BLE_PROVIDER];
     }
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSensorNavigationSwitch])
@@ -106,6 +105,10 @@
 -(void) stopBeacon{
     
     [self.manager stop];
+
+}
+-(void) releseBeacon{
+        self.manager = nil;
 }
 
 #pragma mark - IndoorLocationListenerProtocol

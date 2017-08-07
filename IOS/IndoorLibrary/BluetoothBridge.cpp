@@ -47,9 +47,7 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
     Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
     // Process it
     if(navigator){
-        
-       Navigator::Math::Position3D pos =   navigator->process(brd);
-        printf("X------%f, X------%f",pos.x, pos.y);
+        navigator->process(brd);
     }
     
 }
@@ -151,7 +149,12 @@ double BluetoothBridge_getDistance(){
 }
 extern "C"
 bool BluetoothBridge_isInitialise(){
+    if(navigator){
     return navigator->isInitFinished();
+    }
+    else{
+        return false;
+    }
 }
 
 extern "C"

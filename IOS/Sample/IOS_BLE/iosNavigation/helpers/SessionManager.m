@@ -91,7 +91,7 @@
   
     
  NSString* pathLogin = @"http://185.86.79.154:8081/mobile/login";
-    NSDictionary* params = @{@"username" : @"test",
+    NSDictionary* params = @{@"username" : @"ios",
                              @"password" : @"12345678"};
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];

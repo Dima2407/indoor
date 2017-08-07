@@ -79,7 +79,7 @@ void SensorBridge_setAccelConfig(int orientationAngle, bool useFilter, bool useM
     printf("useMeshMask---%d\n",useMeshMask);
     config = {};
     config.mapOrientationAngle = orientationAngle; // Map orientation angle in degrees from the server
-    config.useFilter = useFilter;
+    config.useFilter = true;
     config.useMapEdges = useMapEdges;
     config.useWalls = useWalls;
     config.useMeshMask = useMeshMask;

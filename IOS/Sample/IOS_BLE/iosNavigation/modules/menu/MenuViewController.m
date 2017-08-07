@@ -43,11 +43,17 @@
     [[NSUserDefaults standardUserDefaults] setDouble:0.0 forKey:kSensorX];
     [[NSUserDefaults standardUserDefaults] setDouble:0.0 forKey:kSensorY];
     
-    //[self onBLE];
+    [self onSwitch];
     //[self offSensor];
-   // [self.xSensorTextField setKeyboardType:UIKeyboardTypeNumberPad];
-    //[self.ySensorTextField setKeyboardType:UIKeyboardTypeNumberPad];
-    
+    [self.xSensorTextField setKeyboardType:UIKeyboardTypeNumberPad];
+    [self.ySensorTextField setKeyboardType:UIKeyboardTypeNumberPad];
+    BOOL sensorRssi =  [[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging];
+    if (sensorRssi)
+    {
+        self.xSensorTextField.userInteractionEnabled = NO;
+        self.ySensorTextField.userInteractionEnabled = NO;
+    }
+ 
     
     self.sendLogButton.userInteractionEnabled = log;
     
@@ -88,6 +94,11 @@
         BOOL sensorManual =  [[NSUserDefaults standardUserDefaults] boolForKey:kSensorManual];
         [self.SensorManual setOn:sensorManual animated:YES];
         BOOL sensorRssi =  [[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging];
+        if (sensorRssi)
+        {
+            self.xSensorTextField.userInteractionEnabled = NO;
+            self.ySensorTextField.userInteractionEnabled = NO;
+        }
         [self.SensorRSSIAveraging setOn:sensorRssi animated:YES];
         self.SensorSettingsView.hidden = NO;
         //    BOOL sensorKalman =  [[NSUserDefaults standardUserDefaults] boolForKey:kBLEKalmanSwitch];
@@ -108,12 +119,12 @@
 }
 
 
-- (IBAction)addedX:(UITextField *)sender {
-    [[NSUserDefaults standardUserDefaults] setDouble:[self.xSensorTextField.text floatValue ] forKey:kSensorX];
-}
-- (IBAction)addedY:(UITextField *)sender {
-    [[NSUserDefaults standardUserDefaults] setDouble:[self.ySensorTextField.text floatValue ] forKey:kSensorY];
-}
+//- (IBAction)addedX:(UITextField *)sender {
+//    [[NSUserDefaults standardUserDefaults] setDouble:[self.xSensorTextField.text floatValue ] forKey:kSensorX];
+//}
+//- (IBAction)addedY:(UITextField *)sender {
+//    [[NSUserDefaults standardUserDefaults] setDouble:[self.ySensorTextField.text floatValue ] forKey:kSensorY];
+//}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -124,9 +135,11 @@
 - (IBAction)BLESwitchAction:(UISwitch *)sender {
     if([sender isOn]){
         [self onBLE];
+        [self offSensor];
     }
     else{
         [self offBLE];
+        [self onSensor];
     }
     [[NSUserDefaults standardUserDefaults] setBool:self.BLENavigationSwitch.on forKey:kBLENavigationSwitch];
     
@@ -135,28 +148,23 @@
 - (IBAction)SensorSwitchAction:(UISwitch *)sender {
     if([sender isOn]){
         [self onSensor];
+        [self offBLE];
     }
     else{
         [self offSensor];
+        [self onBLE];
     }
     [[NSUserDefaults standardUserDefaults] setBool:self.SensorNavigationSwitch.on forKey:kSensorNavigationSwitch];
     
 }
-//    - (IBAction)AplicationFilterSwitchAction:(UISwitch *)sender {
-//        if([sender isOn]){
-//            self.ApplicationFiltersView.hidden = NO;
-//            self.BLESettingsView.hidden = YES;
-//            self.BLESettingsView.hidden = YES;
-//        }
-//        else{
-//            self.ApplicationFiltersView.hidden = YES;
-//        }
-//        self.BLESettingsView.hidden = YES;
-//    }
+
 
 - (IBAction)BLESwitchChanged:(UISwitch *)sender {
+    if (sender.isOn)
+    {
     if([sender isEqual:self.BLECircleSwitch]){
         [[NSUserDefaults standardUserDefaults] setBool:self.BLECircleSwitch.on forKey:kBLECircleSwitch];
+           [self.BLECircleSwitch setOn:YES];
         //        [self.BLEKalmanSwitch setOn:NO];
         //        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLEKalmanSwitch];
         
@@ -175,13 +183,32 @@
     else if([sender isEqual:self.BLEWallsSwitch]){
         [[NSUserDefaults standardUserDefaults] setBool:self.BLEWallsSwitch.on forKey:kBLEWallsSwitch];
     }
-    
+    }
+    else{
+        if([sender isEqual:self.BLECircleSwitch]){
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBLECircleSwitch];
+            [self.BLECircleSwitch setOn:YES];
+            //        [self.BLEKalmanSwitch setOn:NO];
+            //        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLEKalmanSwitch];
+            
+        }
+        else if([sender isEqual:self.BLETrilatirationSwitch]){
+            [[NSUserDefaults standardUserDefaults] setBool:self.BLETrilatirationSwitch.on forKey:kBLETrilatirationSwitch];
+        }
+        else if([sender isEqual:self.BLEKalmanSwitch]){
+        }
+ 
+    }
     
 }
 - (IBAction)SensorSwitchChanged:(UISwitch *)sender {
     
+    if (sender.isOn)
+    {
     if([sender isEqual:self.SensorManual]){
         [[NSUserDefaults standardUserDefaults] setBool:self.SensorManual.on forKey:kSensorManual];
+        self.xSensorTextField.userInteractionEnabled = YES;
+        self.ySensorTextField.userInteractionEnabled = YES;
         [self.SensorRSSIAveraging setOn:NO];
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorRSSIAveraging];
         //        [self.SensorKalmanSwitch setOn:NO];
@@ -191,6 +218,8 @@
     else if([sender isEqual:self.SensorRSSIAveraging]){
         [[NSUserDefaults standardUserDefaults] setBool:self.SensorRSSIAveraging.on forKey:kSensorRSSIAveraging];
         [self.SensorManual setOn:NO];
+        self.xSensorTextField.userInteractionEnabled = NO;
+        self.ySensorTextField.userInteractionEnabled = NO;
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorManual];
         //        [self.BLEKalmanSwitch setOn:NO];
         //        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLEKalmanSwitch];
@@ -206,7 +235,29 @@
     else if([sender isEqual:self.SensorWallsCorrectionSwitch]){
         [[NSUserDefaults standardUserDefaults] setBool:self.SensorWallsCorrectionSwitch.on forKey:kSensorWallsCorrectionSwitch];
     }
-    
+    }
+    else{
+        if([sender isEqual:self.SensorManual]){
+            [[NSUserDefaults standardUserDefaults] setBool:self.SensorManual.on forKey:kSensorManual];
+            [self.SensorRSSIAveraging setOn:YES];
+            self.xSensorTextField.userInteractionEnabled = NO;
+            self.ySensorTextField.userInteractionEnabled = NO;
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSensorRSSIAveraging];
+            //        [self.SensorKalmanSwitch setOn:NO];
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorKalmanSwitch];
+            
+        }
+        else if([sender isEqual:self.SensorRSSIAveraging]){
+            [[NSUserDefaults standardUserDefaults] setBool:self.SensorRSSIAveraging.on forKey:kSensorRSSIAveraging];
+            self.xSensorTextField.userInteractionEnabled = YES;
+            self.ySensorTextField.userInteractionEnabled = YES;
+            [self.SensorManual setOn:YES];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSensorManual];
+            //        [self.BLEKalmanSwitch setOn:NO];
+            //        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLEKalmanSwitch];
+        }
+        
+    }
     
 }
 - (IBAction)APPSwitchChanged:(UISwitch *)sender {
@@ -350,7 +401,7 @@
     [self.BLEWallsSwitch setOn:NO animated:YES];
      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLEMeshSwitch];
     [self.BLEMeshSwitch setOn:NO animated:YES];
-    [self offSensor];
+    //[self offSensor];
     
 
     
@@ -394,7 +445,7 @@
     [self.SensorWallsCorrectionSwitch setOn:NO animated:YES];
    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorMeshCorrectionSwitch];
     [self.SensorMeshCorrectionSwitch setOn:NO animated:YES];
-    [self offBLE];
+    //[self offBLE];
 }
 -(void)offSensor{
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorNavigationSwitch];

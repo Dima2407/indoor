@@ -48,7 +48,7 @@
         self.status = YES;
         self.jsonData = [NSMutableData data];
         self.positionArray = [NSMutableArray new];
-        self.manager = [IndoorLocationManager sharedManager];
+        self.manager = [[IndoorLocationManager alloc] init];
         self.manager.locationListener = self;
         self.manager.errorListener = self;
         [self prepare];
@@ -105,6 +105,10 @@
 -(void) stopBeacon{
     
     [self.manager stop];
+
+}
+-(void) releseBeacon{
+        self.manager = nil;
 }
 
 #pragma mark - IndoorLocationListenerProtocol

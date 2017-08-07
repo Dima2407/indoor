@@ -23,7 +23,13 @@
     
     [GMSServices provideAPIKey:@"AIzaSyCNAO2K42kZYbJ-kOY_3DcX8mTpYD6bxHE"];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kBLENavigationSwitch];
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorNavigationSwitch];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSensorNavigationSwitch];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSensorManual];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSensorRSSIAveraging];
+    
+    [[NSUserDefaults standardUserDefaults] setDouble:0.0 forKey:kSensorX];
+    [[NSUserDefaults standardUserDefaults] setDouble:0.0 forKey:kSensorY];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSensorMapCorrectionSwitch];
     return YES;
 }
 

@@ -34,16 +34,6 @@
 
 @implementation IndoorLocationManager
 
-+(IndoorLocationManager*) sharedManager{
-    
-    static IndoorLocationManager *manager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        manager = [[self alloc]init];
-        
-    });
-    return manager;
-}
 - (instancetype)init
 {
     self = [super init];
@@ -246,6 +236,12 @@
         {
                 if (!_initSensorNavigator)
                 {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        [coordinates addObject:@(outPosition[i])];
+                        
+                    }
+                     [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
                     BOOL initialise = BluetoothBridge_isInitialise();
                     if (initialise)
                     {
@@ -254,8 +250,6 @@
                         BluetoothBridge_getInitialisePosition(output);
                         
                         if(output[0] != -1.0 && output[1] != -1.0){
-                            NSLog(@"sensorRSSIAveraging Init X ---- %f",output[0]);
-                            NSLog(@"sensorRSSIAveraging Init Y ----%f",output[1]);
                             SensorBridge_init(output[0], output[1]);
                             self.initSensorNavigator = YES;
                             
@@ -389,7 +383,7 @@
         if ([[self.config objectForKey:@"sensorInitManual"] boolValue])
         {
             
-            SensorBridge_setAccelConfig([[self.config objectForKey:@"orientationAngle"] intValue], false, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+            SensorBridge_setAccelConfig([[self.config objectForKey:@"orientationAngle"] intValue], true, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
             double x = [[self.config objectForKey:@"x"] floatValue];
             double y = [[self.config objectForKey:@"y"] floatValue];
             NSLog(@"sensorInitManual Init X ---- %f",x);
@@ -400,7 +394,7 @@
        
          else if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue]){
             SensorBridge_setAccelConfig([[self.config
-                                          objectForKey:@"orientationAngle"] intValue], false, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+                                          objectForKey:@"orientationAngle"] intValue], true, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
             
             BluetoothBridge_setConfig(true, false, true, false);
             BluetoothBridge_init();
@@ -459,7 +453,7 @@
 }
 
 -(void) stop{
-    
+    self.initSensorNavigator = NO;
     self.startProviderFlag = NO;
     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
         [obj stop];
@@ -472,6 +466,9 @@
         {
             [self.timer  invalidate];
             self.timer = nil;
+            if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue]){
+                BluetoothBridge_stop();
+            }
         }
     }];
    

@@ -25,7 +25,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-        //[[BeaconManager sharedManager] stopBeacon];
+   
 }
 
 - (void)viewDidLoad {

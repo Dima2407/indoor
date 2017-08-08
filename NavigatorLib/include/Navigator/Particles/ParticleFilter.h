@@ -19,7 +19,9 @@ namespace Navigator {
         public:  // ========== Methods
             /// Constructor
             ParticleFilter(const ParticleFilterConfig &config = ParticleFilterConfig()) : config(config) {
-//                randomEngine = std::mt19937(time(nullptr));
+                // Pre-allocate vectors
+                particles = std::vector<Math::Position2D>(config.numPart);
+                weights = std::vector<double>(config.numPart);
             }
 
             /// Initialize with a position (seed particles)
@@ -39,8 +41,25 @@ namespace Navigator {
                                                                 const Math::Position2D &)> & allowMove
                                        );
 
+            const Math::Position2D &getLastPosition() const {
+                return lastPosition;
+            }
+
         private: //======= Methods ==============
 
+            /// Prediction step of the algorithm, move particles
+            void moveParticles(const Math::Position2D & delta);
+
+            /// Correction step of the algorithm : calculate weights
+            void calcWeights(const Math::Position2D & z,
+                         const std::function<bool(const Math::Position2D &,
+                                                  const Math::Position2D &)> & allowMove);
+
+            /// Resample particles
+            void resample();
+
+            /// Calculate lastPosition
+            void calcLastPosition();
 
         private: //======= Random generators
             /// Generate uniform random number between x1 and x2

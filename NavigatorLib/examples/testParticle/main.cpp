@@ -11,5 +11,7 @@ int main(){
     using namespace std;
     using namespace Navigator::Particles;
 
+    cout << "Goblins WON !" << endl;
+
     return 0;
 }

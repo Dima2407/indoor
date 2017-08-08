@@ -12,7 +12,7 @@ include_directories(
 
 set(SOURCE_FILES
         main.cpp
-        ../testParticle/main.cpp)
+        )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} Navigator)

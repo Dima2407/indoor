@@ -45,9 +45,37 @@ public final class SettingsActivity extends GenericActivity {
     private LinearLayout sensorModsLayout;
     private LinearLayout settingsWallCorrLayout;
 
+    private boolean modActivated;
+
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, SettingsActivity.class));
     }
+
+    /*@Override
+    public void onBackPressed() {
+        final AlertDialog.Builder builder;
+        final AlertDialog mustSetModDialog;
+        builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setCancelable(true);
+        builder.setMessage(R.string.settings_dialog_string);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        mustSetModDialog = builder.create();
+        if (bleSwitch.isChecked() || sensorSwitch.isChecked()) {
+            if (beaconMod1Switch.isChecked() || beaconMod3Switch.isChecked() || beaconMod3Switch.isChecked()
+                    || sensorMod1Switch.isChecked() || sensorMod2Switch.isChecked() || sensorMod3Switch.isChecked()) {
+                super.onBackPressed();
+            } else {
+                mustSetModDialog.show();
+            }
+        } else {
+            mustSetModDialog.show();
+        }
+    }*/
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -55,15 +83,23 @@ public final class SettingsActivity extends GenericActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
         indicator.setProgress(1);
         indicator.setColor(Color.WHITE);
 
-        getSupportActionBar().setHomeAsUpIndicator(indicator);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(indicator);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+
+        });
+
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeAsUpIndicator(indicator);
 
         Switch useProduction = (Switch) findViewById(R.id.settings_use_production_server);
         useProduction.setChecked(getProjectApplication().getSharedHelper().useProduction());
@@ -96,7 +132,6 @@ public final class SettingsActivity extends GenericActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-
                     updateActiveBLESubmode();
                     beaconModsLayout.setVisibility(View.VISIBLE);
                     sensorModsLayout.setVisibility(View.GONE);
@@ -105,10 +140,13 @@ public final class SettingsActivity extends GenericActivity {
                     sensorSwitch.setChecked(false);
                 } else {
                     beaconModsLayout.setVisibility(View.GONE);
+                    sensorSwitch.setChecked(true);
                     settingsWallCorrLayout.setVisibility(View.VISIBLE);
+
                 }
             }
         });
+
 
         sensorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -120,6 +158,7 @@ public final class SettingsActivity extends GenericActivity {
                     beaconModsLayout.setVisibility(View.GONE);
                     bleSwitch.setChecked(false);
                 } else {
+                    bleSwitch.setChecked(true);
                     sensorModsLayout.setVisibility(View.GONE);
 
                 }
@@ -278,10 +317,10 @@ public final class SettingsActivity extends GenericActivity {
             int submode = getProjectApplication().getSharedHelper().getSensorsSubMode();
             updateActiveSensorSubmode(submode);
         } else {
-            bleSwitch.setChecked(true);
-            sensorSwitch.setChecked(false);
-            beaconModsLayout.setVisibility(View.VISIBLE);
-            sensorModsLayout.setVisibility(View.GONE);
+            sensorSwitch.setChecked(true);
+            bleSwitch.setChecked(false);
+            beaconModsLayout.setVisibility(View.GONE);
+            sensorModsLayout.setVisibility(View.VISIBLE);
             updateActiveBLESubmode();
         }
         updateInitPosition(activeMode,
@@ -302,8 +341,8 @@ public final class SettingsActivity extends GenericActivity {
             sensorMod2Switch.setChecked(false);
             sensorMod3Switch.setChecked(true);
         } else {
-            sensorMod1Switch.setChecked(true);
-            sensorMod2Switch.setChecked(false);
+            sensorMod1Switch.setChecked(false);
+            sensorMod2Switch.setChecked(true);
             sensorMod3Switch.setChecked(false);
         }
     }
@@ -357,7 +396,7 @@ public final class SettingsActivity extends GenericActivity {
             } else if (sensorMod3Switch.isChecked()) {
                 getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_3);
             } else {
-                getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_1);
+                getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_2);
             }
         }
         if (getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS
@@ -385,6 +424,5 @@ public final class SettingsActivity extends GenericActivity {
         finish();
         return true;
     }
-
 
 }

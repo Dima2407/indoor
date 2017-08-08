@@ -21,6 +21,12 @@ public class IndoorLocationManager {
     public static final int POSITION_REQUEST = 101;
     public static final int POSITION_REQUEST_DELAY = 700;
     private volatile boolean active  = false;
+    private boolean initialized = false;
+    private OnInitializationCompletedListener onInitializationCompletedListener;
+
+    public void setOnInitializationCompletedListener(OnInitializationCompletedListener onInitializationCompletedListener) {
+        this.onInitializationCompletedListener = onInitializationCompletedListener;
+    }
 
     static {
         System.loadLibrary("native-lib");
@@ -43,6 +49,10 @@ public class IndoorLocationManager {
                 if(active) {
                     nativeTakeLastPositionWithDestination(router);
                     if(router.positionDetected()){
+                        if (onInitializationCompletedListener != null && !initialized) {
+                            onInitializationCompletedListener.onInitializationCompleted();
+                            initialized = true;
+                        }
                         if (onLocationUpdateListener != null) {
                             onLocationUpdateListener.onLocationChanged(router.getStartPosition(), router.getRoute());
                         }
@@ -85,6 +95,7 @@ public class IndoorLocationManager {
 
     public void start() {
         active = true;
+        initialized = false;
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
@@ -94,6 +105,7 @@ public class IndoorLocationManager {
     }
 
     public void stop() {
+        initialized = false;
         configuration = null;
         active = false;
         for (MeasurementProvider provider : providers) {

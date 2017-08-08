@@ -60,7 +60,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     private RecyclerView.OnScrollListener listener;
     private Floor floor;
     private View cameraBtn;
-    private RelativeLayout progressBar;
+    //private RelativeLayout progressBar;
+
 
 
     public static String KEY_FLOOR_MAP = "floorMap";
@@ -88,7 +89,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar = (RelativeLayout) view.findViewById(R.id.initialization_progress_bar);
+        //progressBar = (RelativeLayout) view.findViewById(R.id.initialization_progress_bar);
 
         Log.i("onLocationChanged", "IndoorMap : onViewCreated");
         listener = new RecyclerView.OnScrollListener() {
@@ -226,10 +227,15 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                 applyNewCoordinate(position.x, position.y, 1, 1, route);
             }
         });
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Please wait");
+        progressDialog.setTitle("Initialization");
+        progressDialog.show();
         getLocalManager().setOnInitializationCompletedListener(new OnInitializationCompletedListener() {
             @Override
             public void onInitializationCompleted() {
-                progressBar.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
+                progressDialog.hide();
             }
         });
         getLocalManager().start();

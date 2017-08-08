@@ -53,11 +53,17 @@ public final class SettingsActivity extends GenericActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder;
-        AlertDialog mustSetModDialog;
+        final AlertDialog.Builder builder;
+        final AlertDialog mustSetModDialog;
         builder = new AlertDialog.Builder(SettingsActivity.this);
         builder.setCancelable(true);
         builder.setMessage(R.string.settings_dialog_string);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
         mustSetModDialog = builder.create();
         if (bleSwitch.isChecked() || sensorSwitch.isChecked()) {
             if (beaconMod1Switch.isChecked() || beaconMod3Switch.isChecked() || beaconMod3Switch.isChecked()
@@ -417,6 +423,5 @@ public final class SettingsActivity extends GenericActivity {
         finish();
         return true;
     }
-
 
 }

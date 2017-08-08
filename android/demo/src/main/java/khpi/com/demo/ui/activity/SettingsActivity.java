@@ -51,7 +51,7 @@ public final class SettingsActivity extends GenericActivity {
         activity.startActivity(new Intent(activity, SettingsActivity.class));
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         final AlertDialog.Builder builder;
         final AlertDialog mustSetModDialog;
@@ -75,7 +75,7 @@ public final class SettingsActivity extends GenericActivity {
         } else {
             mustSetModDialog.show();
         }
-    }
+    }*/
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -132,7 +132,6 @@ public final class SettingsActivity extends GenericActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-
                     updateActiveBLESubmode();
                     beaconModsLayout.setVisibility(View.VISIBLE);
                     sensorModsLayout.setVisibility(View.GONE);
@@ -141,6 +140,7 @@ public final class SettingsActivity extends GenericActivity {
                     sensorSwitch.setChecked(false);
                 } else {
                     beaconModsLayout.setVisibility(View.GONE);
+                    sensorSwitch.setChecked(true);
                     settingsWallCorrLayout.setVisibility(View.VISIBLE);
 
                 }
@@ -158,6 +158,7 @@ public final class SettingsActivity extends GenericActivity {
                     beaconModsLayout.setVisibility(View.GONE);
                     bleSwitch.setChecked(false);
                 } else {
+                    bleSwitch.setChecked(true);
                     sensorModsLayout.setVisibility(View.GONE);
 
                 }

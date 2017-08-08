@@ -19,6 +19,7 @@
 #include "./Navigator/Math/dir.inc"
 #include "./Navigator/Mesh/dir.inc"
 #include "./Navigator/Dijkstra/dir.inc"
+#include "./Navigator/Particles/dir.inc"
 
 
 namespace Navigator {

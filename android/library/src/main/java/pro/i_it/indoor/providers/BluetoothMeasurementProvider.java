@@ -19,7 +19,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         @Override
         public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
             if (transfer != null) {
-                Log.d("onLocationChanged", "number of beacons " + collection.size());
+                Log.d(TAG, "number of beacons " + collection.size());
                 transfer.deliver(MeasurementEvent.createBluetooth(collection));
 
             }
@@ -29,31 +29,30 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
     private MonitorNotifier monitorNotifier = new MonitorNotifier() {
         @Override
         public void didEnterRegion(Region region) {
-            try {
-                beaconManager.startRangingBeaconsInRegion(region);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
         public void didExitRegion(Region region) {
-            try {
-                beaconManager.stopRangingBeaconsInRegion(region);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
-        public void didDetermineStateForRegion(int i, Region region) {
-
+        public void didDetermineStateForRegion(int state, Region region) {
+            try {
+                if (state == MonitorNotifier.INSIDE) {
+                    beaconManager.startRangingBeaconsInRegion(region);
+                } else {
+                    beaconManager.stopRangingBeaconsInRegion(region);
+                }
+            } catch (RemoteException e) {
+                Log.w(TAG, "didDetermineStateForRegion: ", e);
+            }
         }
     };
     private Context context;
     private final BeaconConsumer beaconConsumer = new BeaconConsumer() {
         @Override
         public void onBeaconServiceConnect() {
+            Log.d(TAG, "onBeaconServiceConnect: ");
             final Region region = new Region("rangingId", Identifier.parse("23a01af0-232a-4518-9c0e-323fb773f5ef"), null, null);
 
             beaconManager.addMonitorNotifier(monitorNotifier);
@@ -62,7 +61,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
             try {
                 beaconManager.startMonitoringBeaconsInRegion(region);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                Log.w(TAG, "onBeaconServiceConnect: ", e);
             }
         }
 
@@ -73,11 +72,15 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
 
         @Override
         public void unbindService(ServiceConnection serviceConnection) {
+            Log.d(TAG, "unbindService: ");
+            beaconManager.removeMonitorNotifier(monitorNotifier);
+            beaconManager.removeRangeNotifier(rangeNotifier);
             context.unbindService(serviceConnection);
         }
 
         @Override
         public boolean bindService(Intent intent, ServiceConnection serviceConnection, int flags) {
+            Log.d(TAG, "bindService: ");
             return context.bindService(intent, serviceConnection, flags);
         }
     };
@@ -110,8 +113,6 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
 
     @Override
     public void stop() {
-        beaconManager.removeRangeNotifier(rangeNotifier);
-        beaconManager.removeMonitoreNotifier(monitorNotifier);
         beaconManager.unbind(beaconConsumer);
     }
 

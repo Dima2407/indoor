@@ -109,7 +109,7 @@ public final class SharedHelper {
     }
 
     public boolean useMapCoordinateCorrection() {
-        return sharedPreferences.getBoolean(MAP_CORRECTION, false);
+        return sharedPreferences.getBoolean(MAP_CORRECTION, true);
     }
 
 

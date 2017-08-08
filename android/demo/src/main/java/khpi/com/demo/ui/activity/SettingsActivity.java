@@ -175,7 +175,10 @@ public final class SettingsActivity extends GenericActivity {
                 if (isChecked) {
                     beaconMod1Switch.setChecked(true);
                     beaconMod2Switch.setChecked(false);
+                } else if (!beaconMod2Switch.isChecked()) {
+                    beaconMod1Switch.setChecked(true);
                 }
+
             }
         });
 
@@ -184,6 +187,8 @@ public final class SettingsActivity extends GenericActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
                     beaconMod1Switch.setChecked(false);
+                    beaconMod2Switch.setChecked(true);
+                } else if (!beaconMod1Switch.isChecked()) {
                     beaconMod2Switch.setChecked(true);
                 }
             }
@@ -211,6 +216,8 @@ public final class SettingsActivity extends GenericActivity {
                     sensorMod2Switch.setChecked(false);
                     sensorMod3Switch.setChecked(false);
 
+                } else if (!sensorMod2Switch.isChecked() && !sensorMod3Switch.isChecked()) {
+                    sensorMod1Switch.setChecked(true);
                 } else {
                     sensorSettingInitLayout.setVisibility(View.GONE);
                 }
@@ -224,6 +231,9 @@ public final class SettingsActivity extends GenericActivity {
                     sensorSettingInitLayout.setVisibility(View.GONE);
                     sensorMod1Switch.setChecked(false);
                     sensorMod3Switch.setChecked(false);
+
+                } else if (!sensorMod1Switch.isChecked() && !sensorMod3Switch.isChecked()) {
+                    sensorMod2Switch.setChecked(true);
                 }
             }
         });
@@ -235,6 +245,9 @@ public final class SettingsActivity extends GenericActivity {
                     sensorSettingInitLayout.setVisibility(View.GONE);
                     sensorMod1Switch.setChecked(false);
                     sensorMod2Switch.setChecked(false);
+
+                } else if (!sensorMod1Switch.isChecked() && !sensorMod2Switch.isChecked()) {
+                    sensorMod3Switch.setChecked(true);
                 }
             }
         });

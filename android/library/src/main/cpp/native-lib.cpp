@@ -272,6 +272,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
 
     if (configs.useMask) {
+
         jintArray maskArray = (jintArray) env->CallObjectMethod(config, api.kGetObjectMethod,
                                                                 api.kMaskField);
         const jsize length = env->GetArrayLength(maskArray);

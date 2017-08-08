@@ -212,7 +212,7 @@ public class IndoorMapView extends SubsamplingScaleImageView {
         // draw coordinates
         if (coordinates != null) {
             PointF p = sourceToViewCoord(coordinates.x, coordinates.y);
-            canvas.drawBitmap(positionBitmap, p.x - positionBitmap.getWidth()/2, p.y - positionBitmap.getHeight() / 2, null);
+            canvas.drawBitmap(positionBitmap, p.x - positionBitmap.getWidth()/2, p.y - positionBitmap.getHeight(), null);
         }
 
 

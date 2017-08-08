@@ -58,7 +58,7 @@ AccelOutputData ToGlobal::process(const AccelReceivedData & data)
 void ToGlobal::recognizeStep(TempData &out) {
 //    double a_norm = sqrt(out.ax*out.ax + out.ay*out.ay + out.az*out.az);
     double a_norm2 = out.ax*out.ax + out.ay*out.ay + out.az*out.az;
-    out.isStationary = (a_norm2 < config.accThreshold);
+    out.isStationary = (a_norm2 < config.accThreshold*config.accThreshold);
 }
 
 // =================================================================================

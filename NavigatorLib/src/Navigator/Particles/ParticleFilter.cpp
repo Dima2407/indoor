@@ -34,6 +34,12 @@ namespace Navigator {
             // and adding a random value
             // Input: particles, delta
             // Output : particles
+            double sigma = 0.1; /// -- может вынести в .h-файл или в ParticleFilterConfig???
+
+            for (Math::Position2D iter : particles) { ///-- могу ли я использовать auto вместо Math::Position2D ??? --
+                iter.x = lastPosition.x + delta.x + randNorm(sigma);
+                iter.y = lastPosition.y + delta.y + randNorm(sigma);
+            }
         }
         //===================================================
 
@@ -42,6 +48,27 @@ namespace Navigator {
             // TODO calculate particle weights using z (BLE position) and allowMove
             // Input: particles, z, allowMove
             // Output : weights
+            double sum = 0;
+            double sigma = 0.1; /// -- может вынести в .h-файл или в ParticleFilterConfig???
+
+            for (int i = 0; i < particles.size(); ++i) {
+                Math::Position2D particle = particles[i];
+                if (allowMove(lastPosition, particle)) {
+                    double expression = 1 / (sigma * std::sqrt(2 * M_PI));
+                    double degreeEforX = -(std::pow(particle.x - z.x, 2) / (2 * sigma * sigma));
+                    double degreeEforY = -(std::pow(particle.y - z.y, 2) / (2 * sigma * sigma));
+                    double weightX = expression * std::pow(M_E, degreeEforX);
+                    double weightY = expression * std::pow(M_E, degreeEforY);
+                    weights[i] = weightX * weightY;
+                    sum += weights[i];
+                } else {
+                    weights[i] = 0;
+                }
+            }
+
+            for (auto iter : weights) {
+                iter /= sum;
+            }
         }
         //===================================================
 
@@ -52,6 +79,36 @@ namespace Navigator {
 
             // Note: you will need another vector newParticles, and something like (in the end)
             //  particles=newParticles;
+            std::vector<double> newParticles;
+            double max = 0;
+
+            for (double iter :weights) {
+                if (max < iter) {
+                    max = iter;
+                }
+            }
+
+            double randi = randRange(1, weights.size()); /// диапазон от 0 до N ведь так ??? а не от 1
+            double betta = randRange(0, 2 * max);
+
+            while (true) {
+                for (int i = 0; i < weights.size(); ++i) {
+    //                double betta = randRange(0, 2 * max);
+                    if (weights[i] > 0) {
+                        if (betta > weights[i]) {
+                            betta -= weights[i];
+                        } else {
+                           newParticles.push_back(weights[i]);
+                           betta = randRange(0, 2 * max);
+                           if (i == weights.size() - 1) {
+                               goto out;
+                           }
+                        }
+                    }
+                }
+            }
+            out:
+            particles = newParticles;
         }
         //===================================================
 
@@ -59,6 +116,16 @@ namespace Navigator {
             // TODO calculate the position (average over particles)
             // Input : particles
             // Output : lastPosition
+            int sumX = 0;
+            int sumY = 0;
+
+            for (Math::Position2D iter : particles) {
+                sumX += iter.x;
+                sumY += iter.y;
+            }
+
+            lastPosition.x = sumX;
+            lastPosition.y = sumY;
         }
         //===================================================
 

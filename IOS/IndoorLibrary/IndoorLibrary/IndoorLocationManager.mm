@@ -13,7 +13,8 @@
 #import "BluetoothBridge.h"
 #import "SensorBridge.h"
 #import "IndoorError.h"
-
+#include <iostream>
+#include <vector>
 
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
@@ -487,10 +488,18 @@
 -(void)processEvent: (MeasurementEvent *) event{
     if (event.type == BLE_VALUE)
     {
-        std::string uuid = std::string([[NSString stringWithFormat:@"%@", event.beacon.proximityUUID] UTF8String]);
-        double timestamp = event.timestamp;
-        BluetoothBridge_proces(timestamp, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi);
+          double timestamp = event.timestamp;
+        __block std::vector<Navigator::Beacons::BeaconReceivedData> bleBeacons;
+        [event.beacons enumerateObjectsUsingBlock:^(CLBeacon*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            std::string uuid = std::string([[NSString stringWithFormat:@"%@", event.beacon.proximityUUID] UTF8String]);
+            Navigator::Beacons::BeaconUID uidStr(uuid,[obj.major intValue],[obj.minor intValue]);
+            Navigator::Beacons::BeaconReceivedData brd(timestamp, uidStr,obj.rssi);
+           // NSLog(@"timestamp = %f,RSSSI = %zd",timestamp,obj.rssi);
+             bleBeacons.push_back(brd);
+            
+        }];
         
+       BluetoothBridge_process(bleBeacons);
         
         if (self.isStartLog)
         {

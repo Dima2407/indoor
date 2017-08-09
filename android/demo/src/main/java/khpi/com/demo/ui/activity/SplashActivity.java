@@ -32,7 +32,16 @@ public class SplashActivity extends GenericActivity {
         if (mBluetoothAdapter == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Bluetooth LE not supported by this device");
-            builder.setNegativeButton("EXIT", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (PermissionUtil.checkAllPermissions(SplashActivity.this)) {
+                        MainActivity.start(SplashActivity.this);
+                        finish();
+                    }
+                }
+            });
+            builder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();

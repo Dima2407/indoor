@@ -13,100 +13,375 @@
         app:title="Settings"
         app:titleTextColor="@android:color/white" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/server_icn" />
-
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="32dp"
-                android:layout_weight="1"
-                android:text="Use production server?"
-                android:textColor="@android:color/black" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-            <Switch
-                android:id="@+id/settings_use_production_server"
-                android:layout_width="48dp"
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/server_icn" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_weight="1"
+                    android:text="Use production server?"
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/settings_use_production_server"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/points_icn" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_weight="1"
+                    android:text="Draw indoor radar?"
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/settings_in_radar"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ble_switch_name"
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/ble_beacons_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/beacon_mod_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/beacon_mod_1_switch_name"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/ble_switch_mod_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/beacon_mod_2_switch_name"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/ble_switch_mod_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/beacon_multi_lateration_mod_switch_name"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/ble_switch_mod_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sensor_switch_name"
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/sensor_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sensor_mod_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sensor_mod_1_switch_name"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/sensor_switch_mod_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_init_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="X: " />
+
+                    <EditText
+                        android:id="@+id/settings_init_position_x"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="Y: " />
+
+                    <EditText
+                        android:id="@+id/settings_init_position_y"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sensor_mod_2_switch_name"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/sensor_switch_mod_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sensor_mod_3_switch_name"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/sensor_switch_mod_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Map coordinates correction"
+                    android:textColor="@android:color/black"
+
+                    />
+
+                <Switch
+                    android:id="@+id/setting_map_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Mesh coordinates correction"
+                    android:textColor="@android:color/black"
+
+                    />
+
+                <Switch
+                    android:id="@+id/setting_mesh_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/settings_wall_corr_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Walls coordinates correction"
+                    android:textColor="@android:color/black"
+
+                    />
+
+                <Switch
+                    android:id="@+id/setting_walls_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/points_icn" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="32dp"
-                android:layout_weight="1"
-                android:text="Draw indoor radar?"
-                android:textColor="@android:color/black" />
-
-            <Switch
-                android:id="@+id/settings_in_radar"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/circle" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="32dp"
-                android:layout_weight="1"
-                android:text="Use binary mask?"
-                android:textColor="@android:color/black" />
-
-            <Switch
-                android:id="@+id/settings_use_binary_mask"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

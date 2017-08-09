@@ -2,63 +2,73 @@ package pro.i_it.indoor;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
-import pro.i_it.indoor.events.MeasurementType;
-import pro.i_it.indoor.masks.MaskTableFetcher;
-import pro.i_it.indoor.mesh.MeshConfig;
-import pro.i_it.indoor.providers.*;
-import pro.i_it.indoor.region.BeaconsInRegionLoader;
-import pro.i_it.indoor.region.SpaceBeacon;
-import pro.i_it.indoor.region.SpaceRegion;
+import android.os.Message;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import pro.i_it.indoor.config.NativeConfigMap;
+import pro.i_it.indoor.events.MeasurementType;
+import pro.i_it.indoor.logger.LoggableLocationUpdateListener;
+import pro.i_it.indoor.providers.*;
+import pro.i_it.indoor.routing.IndoorRouter;
+import pro.i_it.indoor.routing.Route;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class IndoorLocationManager {
 
 
     private static final String TAG = IndoorLocationManager.class.getSimpleName();
+    public static final int POSITION_REQUEST = 101;
+    public static final int POSITION_REQUEST_DELAY = 700;
+    private volatile boolean active  = false;
+    private boolean initialized = false;
+    private OnInitializationCompletedListener onInitializationCompletedListener;
+
+    public void setOnInitializationCompletedListener(OnInitializationCompletedListener onInitializationCompletedListener) {
+        this.onInitializationCompletedListener = onInitializationCompletedListener;
+    }
 
     static {
         System.loadLibrary("native-lib");
     }
 
     private OnLocationUpdateListener onLocationUpdateListener;
-    private BeaconsInRegionLoader beaconsInRegionLoader;
-    private Mode mode = Mode.TRILATERATION_BEACON_NAVIGATOR;
 
     private OnErrorListener onErrorListener;
     private Handler positionRequester;
 
     private Set<MeasurementProvider> providers;
-    private MaskTableFetcher maskTableFetcher;
-    private MeshConfig meshConfig;
+    private NativeConfigMap configuration;
+    private final IndoorRouter router = new IndoorRouter();
 
     public IndoorLocationManager() {
         this.providers = new HashSet<>();
-        this.positionRequester = new Handler();
+        this.positionRequester = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if(active) {
+                    nativeTakeLastPositionWithDestination(router);
+                    if(router.positionDetected()){
+                        if (onInitializationCompletedListener != null && !initialized) {
+                            onInitializationCompletedListener.onInitializationCompleted();
+                            initialized = true;
+                        }
+                        if (onLocationUpdateListener != null) {
+                            onLocationUpdateListener.onLocationChanged(router.getStartPosition(), router.getRoute());
+                        }
+                    }
+                    sendEmptyMessageDelayed(POSITION_REQUEST, POSITION_REQUEST_DELAY);
+                }
+            }
+        };
     }
 
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
-        this.onLocationUpdateListener = listener;
-    }
-
-    public void setBeaconsInRegionLoader(BeaconsInRegionLoader beaconsInRegionLoader) {
-        this.beaconsInRegionLoader = beaconsInRegionLoader;
+        this.onLocationUpdateListener = new LoggableLocationUpdateListener(listener);
     }
 
     public void setOnErrorListener(OnErrorListener onErrorListener) {
         this.onErrorListener = onErrorListener;
-    }
-
-    public void setMode(Mode mode) {
-        this.mode = mode;
     }
 
     public void addProvider(Context context, MeasurementType type, MeasurementTransfer transfer) {
@@ -79,85 +89,54 @@ public class IndoorLocationManager {
     }
 
     public void addProvider(Context context, MeasurementType type) {
-        this.addProvider(context, type, new AndroidDebuggableMeasurementTransfer());
-    }
-
-    public void useMask(MeshConfig meshConfig, MaskTableFetcher fetcher){
-        this.meshConfig  = meshConfig;
-        this.maskTableFetcher = fetcher;
-    }
-
-    public double[] getRoute(double x1, double y1, double x2, double y2) {
-
-        return getNativeRoute(x1, y1, x2, y2);
+        this.addProvider(context, type, AndroidMeasurementTransfer.TRANSFER);
+        //this.addProvider(context, type, new AndroidLoggableMeasurementTransfer(new AndroidDebuggableMeasurementTransfer()));
     }
 
     public void start() {
+        active = true;
+        initialized = false;
         for (MeasurementProvider provider : providers) {
             provider.start();
         }
-        nativeInit(mode.getCode(), maskTableFetcher.fetchMaskTable(), meshConfig);
-        final float[] lastPosition = new float[3];
-        positionRequester.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                nativeTakeLastPosition(lastPosition);
-                if (onLocationUpdateListener != null) {
-                    onLocationUpdateListener.onLocationChanged(lastPosition);
-                }
-                if (beaconsInRegionLoader != null) {
-                    SpaceRegion region = beaconsInRegionLoader.onLocationChanged(lastPosition[0], lastPosition[1], lastPosition[2]);
-                    if (region.isChanged()) {
-                        Set<SpaceBeacon> beacons = region.getBeacons();
-                        SpaceBeacon[] data = new SpaceBeacon[beacons.size()];
-                        beacons.toArray(data);
-                        Log.d("TAGBEACON", "setBeacons, region.getBeacons.SIZE + " + region.getBeacons().size());
-                        nativeSetBeacons(data);
-                    }
-                }
-                positionRequester.postDelayed(this, 1000);
-            }
-        }, 1000);
+        nativeInit(configuration);
+        router.clear();
+        positionRequester.sendEmptyMessageDelayed(POSITION_REQUEST, POSITION_REQUEST_DELAY);
     }
 
     public void stop() {
+        initialized = false;
+        configuration = null;
+        active = false;
         for (MeasurementProvider provider : providers) {
             provider.stop();
         }
         onLocationUpdateListener = null;
         positionRequester.removeCallbacksAndMessages(null);
         nativeRelease();
+        router.clear();
     }
-    //route
 
-    private native double[] getNativeRoute(double x1, double y1, double x2, double y2);
+    public void setDestination(float destinationX, float destinationY, double pixelSize){
+        router.setDestination(destinationX,destinationY, pixelSize);
+    }
 
-    //route
-    public native void setGraphArraysFromFile(String fileContent, double scale);
-
-    private native void nativeInit(int modeType, int[] mask, MeshConfig config);
+    private native void nativeInit(NativeConfigMap configuration);
 
     private native void nativeRelease();
 
-    private native void nativeSetBeacons(SpaceBeacon[] beacons);
+    private native void nativeTakeLastPositionWithDestination(IndoorRouter router);
 
-    private native void nativeTakeLastPosition(float [] position);
 
-    public enum Mode {
-        @Deprecated
-        TRILATERATION_BEACON_NAVIGATOR(0),
-        @Deprecated
-        STANDARD_BEACON_NAVIGATOR(1),
-        SENSOR_BEACON_NAVIGATOR(2);
+    public void setConfiguration(NativeConfigMap configuration) {
+        this.configuration = configuration;
+    }
 
-        private int code;
+    public void clearDestination() {
+        router.clearDestination();
+    }
 
-        Mode(int code) {
-            this.code = code;
-        }
-
-        public int getCode() {
-            return code;
-        }
+    public Route buildRoute(){
+        return router.buildRoute();
     }
 }

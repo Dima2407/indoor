@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 @interface MeasurementEvent : NSObject
 @property (nonatomic, assign) CGFloat timestamp;
 @property (nonatomic, assign) MeasurementType type;
-@property (nonatomic, strong) NSArray *values;
+@property (nonatomic, strong) NSArray *beacons;
 @property (nonatomic, assign) CGFloat latitude;
 @property (nonatomic, assign) CGFloat longitude;
 @property (nonatomic, strong) CLBeacon *beacon;
@@ -33,4 +33,5 @@ typedef NS_ENUM(NSInteger, MeasurementType)
 -(instancetype)initWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude;
 -(instancetype)initWithBeacon:(CLBeacon *)beacon;
 -(instancetype)initWithAccelerometerData:(CMAccelerometerData *)accelerometer andDeviceMotion:(CMDeviceMotion*)motion;
+-(instancetype)initWithBeacons:(NSArray<CLBeacon*> *)beacons;
 @end

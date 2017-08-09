@@ -21,12 +21,7 @@ import khpi.com.demo.routing.RouteHelper;
 
 import khpi.com.demo.utils.FileUtil;
 import pro.i_it.indoor.IndoorLocationManager;
-import pro.i_it.indoor.OnLocationUpdateListener;
-import pro.i_it.indoor.dependency.LocaleManager;
 import pro.i_it.indoor.events.MeasurementType;
-import pro.i_it.indoor.local.data.DataManager;
-
-import static pro.i_it.indoor.config.DebugConfig.IS_DEBUG;
 
 public final class GRApplication extends Application {
 

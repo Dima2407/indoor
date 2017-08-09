@@ -181,19 +181,6 @@ public class IndoorMapView extends SubsamplingScaleImageView {
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         paint.setAlpha(150);
-        int r = nodeSize;
-
-        if (calculatedMapNodes != null) {
-            for (int y = 0; y < calculatedMapNodes.length; y++) {
-                for (int x = 0; x < calculatedMapNodes[0].length; x++) {
-                    if (calculatedMapNodes[y][x] == 1) {
-
-                    }
-                }
-            }
-        }
-
-
         //Draw beacons
         if (beacons != null) {
             for (BeaconModel beacon : beacons) {

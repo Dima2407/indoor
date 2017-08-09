@@ -9,8 +9,6 @@ import android.util.Pair;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
-
-
 import pro.i_it.indoor.events.MeasurementEvent;
 
 public class SensorMeasurementProvider extends MeasurementProvider {
@@ -27,6 +25,9 @@ public class SensorMeasurementProvider extends MeasurementProvider {
     private final SensorEventListener sensorDataListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
+            if(!active){
+                return;
+            }
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 if (accelerometerValues == null) {
                     accelerometerValues = new float[3];
@@ -44,6 +45,9 @@ public class SensorMeasurementProvider extends MeasurementProvider {
             if (accelerometerValues != null && magneticValues != null) {
                 float[] xyzA = accelerometerValues;
                 float[] xyzM = magneticValues;
+                float ax = (accelerometerValues[0] / 9.81f);
+                float ay = (accelerometerValues[1] / 9.81f);
+                float az = (accelerometerValues[2] / 9.81f);
 
                 SensorManager.getRotationMatrix(inR, null, xyzA, xyzM);
 
@@ -59,8 +63,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
                 float roll = result[2];
 
                 if (transfer != null) {
-                    // TODO
-                    final MeasurementEvent measurementEvent = MeasurementEvent.createFromSensor(xyzA[0], xyzA[1], xyzA[2], pitch, azimut, roll);
+                    final MeasurementEvent measurementEvent = MeasurementEvent.createFromSensor(ax, ay, az, azimut, pitch, roll);
                     transfer.deliver(measurementEvent);
 
                 }
@@ -73,6 +76,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
 
         }
     };
+    private boolean active = false;
 
 
     public SensorMeasurementProvider(Context context, MeasurementTransfer transfer) {
@@ -84,6 +88,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
     @Override
     public void start() {
 
+        active = true;
         axis = getDeviceAxis();
         inR = new float[9];
         outR = new float[9];
@@ -96,6 +101,7 @@ public class SensorMeasurementProvider extends MeasurementProvider {
 
     @Override
     public void stop() {
+        active = false;
         sensorManager.unregisterListener(sensorDataListener);
         axis = null;
         inR = null;
@@ -132,4 +138,5 @@ public class SensorMeasurementProvider extends MeasurementProvider {
         }
         return new Pair<>(axis1, axis2);
     }
+
 }

@@ -45,7 +45,7 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_process(double timestamp, std::string uuidStr, int major, int minor, double rssi);
+void BluetoothBridge_process( const std::vector<Navigator::Beacons::BeaconReceivedData> beacons);
 //get position
 #ifdef __cplusplus
 extern "C"

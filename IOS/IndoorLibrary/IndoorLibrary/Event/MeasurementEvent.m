@@ -62,4 +62,15 @@
     }
     return self;
 }
+-(instancetype)initWithBeacons:(NSArray<CLBeacon*> *)beacons{
+    self = [super init];
+    
+    if (self != nil)
+    {
+        _timestamp = [[NSDate date] timeIntervalSince1970];
+        _beacons = beacons;
+        _type = BLE_VALUE;
+    }
+    return self;
+}
 @end

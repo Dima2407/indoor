@@ -8,8 +8,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import khpi.com.demo.model.Point;
-import khpi.com.demo.model.Route;
 import khpi.com.demo.utils.GeoUtils;
+import pro.i_it.indoor.routing.Route;
 
 import java.util.List;
 

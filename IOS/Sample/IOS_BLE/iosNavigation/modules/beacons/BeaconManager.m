@@ -143,8 +143,8 @@
         
         [self.delegate currentRouting:routing];
         [self.delegate currentLocation:CGPointMake(x, y)];
-                        NSLog(@"X-----%f",x);
-                        NSLog(@"Y-----%f",y);
+//                        NSLog(@"X-----%f",x);
+//                        NSLog(@"Y-----%f",y);
     }
 }
 -(CGFloat)getDistance{

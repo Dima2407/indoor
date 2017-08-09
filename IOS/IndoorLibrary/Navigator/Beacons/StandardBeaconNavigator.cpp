@@ -2,6 +2,8 @@
 // Created by  Oleksiy Grechnyev on 5/3/2017.
 //
 
+#include <iostream>
+
 #include "Navigator/Beacons/StandardBeaconNavigator.h"
 
 namespace Navigator {
@@ -51,7 +53,13 @@ namespace Navigator {
         //====================================================================
 
         const Math::Position3D &StandardBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds) {
+            
+            
+            
+            
             Math::Position3D pos = triNav.process(brds);
+            
+            std::cout << "pos = " << pos.x << " " << pos.y << std::endl;
 
             lastPosition = postProcess(pos);
 

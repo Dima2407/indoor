@@ -1,15 +1,13 @@
 //
-//  BluetoothBridge.cpp
+//  KalmanBridge.cpp
 //  IndoorLibrary
 //
-//  Created by AppleFace on 19.03.17.
+//  Created by Lina Pischenko on 09.08.17.
 //  Copyright © 2017 PischenkoL. All rights reserved.
 //
 
-#include "BluetoothBridge.h"
-
-
-std::shared_ptr<Navigator::Beacons::StandardBeaconNavigator> navigator;
+#include "KalmanBridge.hpp"
+std::shared_ptr<Navigator::Beacons::KalmanBeaconNavigator> kalmanNavigator;
 std::shared_ptr<Navigator::Mesh::RectanMesh> mesh;
 std::shared_ptr<Navigator::Dijkstra::PointGraph> gr;
 Navigator::Beacons::StandardBeaconNavigatorConfig conf;
@@ -18,14 +16,14 @@ double mapScale;
 double dictance;
 
 extern "C"
-void BluetoothBridge_init() {
+void KalmanBridge_init() {
     if (mesh == nullptr)
     {
-        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(nullptr,true,conf);
+        kalmanNavigator = std::make_shared<Navigator::Beacons::KalmanBeaconNavigator>(nullptr,true,conf);
         printf("Create Navigator");
     }
     else{
-        navigator = std::make_shared<Navigator::Beacons::StandardBeaconNavigator>(mesh,true,conf);
+        kalmanNavigator = std::make_shared<Navigator::Beacons::KalmanBeaconNavigator>(mesh,true,conf);
         printf("Create Mesh Navigator");
         
     }
@@ -33,42 +31,41 @@ void BluetoothBridge_init() {
 }
 
 extern "C"
-void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, double txPower, double damp, double x, double y, double z){
+void KalmanBridge_initBeacon(std::string uuidstr, int major, int minor, double txPower, double damp, double x, double y, double z){
     Navigator::Beacons::Beacon beacon(Navigator::Beacons::BeaconUID(uuidstr,major,minor), txPower, damp, Navigator::Math::Position3D(x,y,z), "");
-    if(navigator){
-    navigator->addBeacon(beacon);
+    if(kalmanNavigator){
+        kalmanNavigator->addBeacon(beacon);
     }
     
 }
 
 extern "C"
-void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi) {
+void KalmanBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi) {
     Navigator::Beacons::BeaconUID uuid(uuidStr,major,minor);
     Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
     // Process it
-    if(navigator){
-         navigator->process(brd);
+    if(kalmanNavigator){
+        kalmanNavigator->process(brd);
+    }
+}
+extern "C"
+void KalmanBridge_process( const std::vector<Navigator::Beacons::BeaconReceivedData> beacons) {
+    // Process it
+    if(kalmanNavigator){
+        //for (auto i: beacons)
+        // printf("timestamp = %f, rssi = %f,count = %lu ",i.timestamp, i.rssi, beacons.size());
+        Navigator::Math::Position3D outPos = kalmanNavigator->process(beacons);
     }
     
 }
 extern "C"
-void BluetoothBridge_process( const std::vector<Navigator::Beacons::BeaconReceivedData> beacons) {
-    // Process it
-    if(navigator){
-        //for (auto i: beacons)
-           // printf("timestamp = %f, rssi = %f,count = %lu ",i.timestamp, i.rssi, beacons.size());
-        Navigator::Math::Position3D outPos = navigator->process(beacons);
-        }
-    
-}
-extern "C"
-void BluetoothBridge_getLastPosition(double * output){
+void KalmanBridge_getLastPosition(double * output){
     
     
-    if (BluetoothBridge_isInitialise())
+    if (KalmanBridge_isInitialise())
     {
         
-        Navigator::Math::Position3D outPos = navigator->getLastPosition();
+        Navigator::Math::Position3D outPos = kalmanNavigator->getLastPosition();
         output[0] = outPos.x;
         output[1] = outPos.y;
         output[2] = outPos.z;
@@ -76,20 +73,20 @@ void BluetoothBridge_getLastPosition(double * output){
     
 }
 extern "C"
-void BluetoothBridge_createMesh(int nx, int ny, double dx, double dy, double x0, double y0){
+void KalmanBridge_createMesh(int nx, int ny, double dx, double dy, double x0, double y0){
     
     mesh = std::make_shared<Navigator::Mesh::RectanMesh>(nx, ny, dx, dy, x0, y0);
     
 }
 
 extern "C"
-void BluetoothBridge_setMaskTable(const std::vector<int> &mTable){
+void KalmanBridge_setMaskTable(const std::vector<int> &mTable){
     
     mesh->setMaskTable(mTable);
     
 }
 extern "C"
-void BluetoothBridge_realeseMesh(){
+void KalmanBridge_realeseMesh(){
     mesh = NULL;
 }
 extern "C"
@@ -97,13 +94,13 @@ void BluetoothBridge_readGraph(std::string graph, double scale ){
     mapScale = scale;
     if (gr == NULL)
     {
-      
-   // gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+        
+        // gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
         
     }
 }
 extern "C"
-void BluetoothBridge_setDestination(IndoorPosition p ){
+void KalmanBridge_setDestination(IndoorPosition p ){
     if (gr==NULL)
     {
         printf("Set graph first");
@@ -115,8 +112,8 @@ void BluetoothBridge_setDestination(IndoorPosition p ){
 }
 
 extern "C"
-void BluetoothBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
-    if (BluetoothBridge_isInitialise())
+void KalmanBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
+    if (KalmanBridge_isInitialise())
     {
         
         if (destinationPosition == 0)
@@ -125,7 +122,7 @@ void BluetoothBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
         }
         else{
             std::vector<Navigator::Math::Position3D> pointPath;
-            Navigator::Math::Position3D lastPosition = navigator->getLastPosition();
+            Navigator::Math::Position3D lastPosition = kalmanNavigator->getLastPosition();
             lastPosition.x = lastPosition.x / mapScale;
             lastPosition.y = lastPosition.y / mapScale;
             
@@ -151,16 +148,16 @@ void BluetoothBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
     }
 }
 extern "C"
-double BluetoothBridge_getDistance(){
+double KalmanBridge_getDistance(){
     
     
     return dictance;
 }
 extern "C"
-bool BluetoothBridge_isInitialise(){
-    if(navigator !=NULL)
+bool KalmanBridge_isInitialise(){
+    if(kalmanNavigator !=NULL)
     {
-        return navigator->isInitFinished();
+        return kalmanNavigator->isInitFinished();
     }
     else{
         return false;
@@ -168,8 +165,8 @@ bool BluetoothBridge_isInitialise(){
 }
 
 extern "C"
-void BluetoothBridge_getInitialisePosition(double * output){
-    Navigator::Math::Position3D outPos =  navigator->getInitPosition();
+void KalmanBridge_getInitialisePosition(double * output){
+    Navigator::Math::Position3D outPos =  kalmanNavigator->getInitPosition();
     if(!std::isnan(outPos.x) && !std::isnan(outPos.y)){
         output[0] = outPos.x;
         output[1] = outPos.y;
@@ -178,7 +175,7 @@ void BluetoothBridge_getInitialisePosition(double * output){
     
 }
 extern "C"
-void BluetoothBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges, bool useMeshMask){
+void KalmanBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges, bool useMeshMask){
     conf = {};
     if (use3DTrilat)
     {
@@ -194,7 +191,7 @@ void BluetoothBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges,
     
 }
 extern "C"
-void BluetoothBridge_stop(){
-    navigator = nullptr;
+void KalmanBridge_stop(){
+    kalmanNavigator = nullptr;
     
 }

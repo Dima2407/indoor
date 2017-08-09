@@ -21,8 +21,6 @@ import khpi.com.demo.core.bridge.OrientationBridge;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Point;
-import khpi.com.demo.model.Route;
-import khpi.com.demo.model.Step;
 import khpi.com.demo.routing.RouteHelper;
 import khpi.com.demo.ui.BottomSheet;
 import khpi.com.demo.ui.adapter.RouteDataAdapter;
@@ -37,7 +35,8 @@ import khpi.com.demo.utils.PixelsUtil;
 import pro.i_it.indoor.IndoorLocationManager;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
-import pro.i_it.indoor.mesh.MeshConfig;
+import pro.i_it.indoor.routing.Route;
+import pro.i_it.indoor.routing.Step;
 
 import com.squareup.picasso.Picasso;
 
@@ -51,7 +50,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     private CameraPreview cameraPreview;
     private Floor floor;
 
-    private IndoorLocationManager instance;
+   // private IndoorLocationManager instance;
     private IndoorRadarView radarView;
 
     private BottomSheet bottomSheet;
@@ -68,11 +67,15 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         return fragment;
     }
 
+    private IndoorLocationManager getLocalManager() {
+        return getActivityBridge().getProjectApplication().getLocalManager();
+    }
+
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         floor = getArguments().getParcelable(KEY_PARCELABLE_FLOOR);
-        instance = getActivityBridge().getProjectApplication().getLocalManager();
+      //  instance = getActivityBridge().getProjectApplication().getLocalManager();
     }
 
     @Nullable
@@ -89,7 +92,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         bottomSheet.getCancelButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivityBridge().getRouteHelper().clear();
+
+                getLocalManager().clearDestination();
 
                 bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
                 bottomSheet.getHintContainer().setVisibility(View.GONE);
@@ -98,9 +102,6 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 radarView.setRoute(new float[0]);
 
                 destinationPoint = null;
-
-                IndoorMap2DFragment.dest.x = 0;
-                IndoorMap2DFragment.dest.y = 0;
 
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) radarView.getLayoutParams();
                 layoutParams.bottomMargin = PixelsUtil.dpToPx(16, getContext());
@@ -146,14 +147,16 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         initCamera();
         cameraPreview.updateCamera(getCamera());
 
-        final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
-        instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
+        //final boolean useBinaryMask = getActivityBridge().getProjectApplication().getSharedHelper().useBinaryMask();
+        /*instance.setMode(useBinaryMask ? IndoorLocationManager.Mode.STANDARD_BEACON_NAVIGATOR : IndoorLocationManager.Mode.SENSOR_BEACON_NAVIGATOR);
 
         if (floor.getGraphPath().contains("/mapData/8/")) {
             //it-jim
+            instance.setMapAngle(20);
             instance.useMask(new MeshConfig(36,24,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
         }else {
             //kaa
+            instance.setMapAngle(0);
             instance.useMask(new MeshConfig(22,44,0.3,0.3), new ResourcesMaskTableFetcher(getResources(), R.raw.masktable2));
         }
         instance.start();
@@ -163,7 +166,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 onNewPosition(position[0], position[1]);
             }
         });
-
+*/
         deviceOrientationListener = new OrientationBridge.DeviceOrientationListener() {
             @Override
             public void onOrientationUpdated(final float azimuth, final float pitch, final float roll) {
@@ -208,45 +211,15 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
                 radarView.setCoordinates(0, 0, x, y);
             }
         });
-        RouteHelper.RouteListener routeListener = new RouteHelper.RouteListener() {
-            @Override
-            public void onRouteFound(final float[] route) {
-                if (getContext() == null) {
-                    return;
-                }
-                radarView.setRoute(route);
 
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onNewRoute(route);
-                    }
-                });
-            }
-
-            @Override
-            public void onFail() {
-                if (getContext() == null) {
-                    return;
-                }
-                bottomSheet.getHintContainer().setVisibility(View.GONE);
-                bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
-                bottomSheet.getCancelButton().setVisibility(View.GONE);
-                radarView.setRoute(new float[0]);
-                getActivityBridge().getRouteHelper().clear();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) radarView.getLayoutParams();
-                layoutParams.bottomMargin = PixelsUtil.dpToPx(16, getContext());
-                radarView.setLayoutParams(layoutParams);
-            }
-        };
 
         PointF currentPosition = new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize()));
 
-        if (destinationPoint != null) {
+        /*if (destinationPoint != null) {
             getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), instance, routeListener);
         } else {
             getActivityBridge().getRouteHelper().updateRoute(currentPosition, instance, routeListener);
-        }
+        }*/
     }
 
     @Override
@@ -266,9 +239,8 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         layoutParams.bottomMargin = PixelsUtil.dpToPx(96, getContext());
         radarView.setLayoutParams(layoutParams);
 
-        List<RouteHelper.Motion> motions = getActivityBridge().getRouteHelper().getMoutions(route);
 
-        final Route r = getActivityBridge().getRouteHelper().buildRoute(motions, floor);
+        final Route r = getLocalManager().buildRoute();
 
         indoorCameraOverlay.queueEvent(new Runnable() {
             @Override
@@ -315,7 +287,7 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
     @Override
     public void onPause() {
         super.onPause();
-        instance.stop();
+        //instance.stop();
         indoorCameraOverlay.onPause();
     }
 

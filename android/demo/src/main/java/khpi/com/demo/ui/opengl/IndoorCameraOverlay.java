@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import khpi.com.demo.model.Floor;
 import khpi.com.demo.model.Inpoint;
 import khpi.com.demo.model.Point;
-import khpi.com.demo.model.Route;
+import pro.i_it.indoor.routing.Route;
 
 import java.util.ArrayList;
 import java.util.List;

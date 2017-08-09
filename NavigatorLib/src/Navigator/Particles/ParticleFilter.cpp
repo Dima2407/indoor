@@ -80,7 +80,7 @@ namespace Navigator {
             // Note: you will need another vector newParticles, and something like (in the end)
             //  particles=newParticles;
             std::vector<double> newParticles;
-            double max = 0;
+            double max = 0;                         /// может быть max в других значениях береться...
 
             for (double iter :weights) {
                 if (max < iter) {
@@ -94,7 +94,7 @@ namespace Navigator {
             while (true) {
                 for (int i = 0; i < weights.size(); ++i) {
     //                double betta = randRange(0, 2 * max);
-                    if (weights[i] > 0) {
+                    if (weights[i] > 0) {               /// обязательно ли тянуть сюда вес = 0 ?
                         if (betta > weights[i]) {
                             betta -= weights[i];
                         } else {
@@ -108,7 +108,7 @@ namespace Navigator {
                 }
             }
             out:
-            particles = newParticles;
+            particles = newParticles;                   /// может не так...
         }
         //===================================================
 

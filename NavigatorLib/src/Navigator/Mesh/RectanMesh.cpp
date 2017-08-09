@@ -8,6 +8,7 @@
 
 namespace Navigator {
     namespace Mesh {
+//=========================================================
 
         Math::Position3D RectanMesh::process(const Math::Position3D &inPos) const{
 
@@ -27,22 +28,83 @@ namespace Navigator {
             double y = mesh.iy2y(ind % mesh.ny);
             return Math::Position3D(x, y, inPos.z);
         }
+//=========================================================
 
         Math::Position3D RectanMesh::checkEdges(Math::Position3D inPos) const {
-            double x2 = mesh.x0 + mesh.dx*(mesh.nx-1);
-            double y2 = mesh.y0 + mesh.dy*(mesh.ny-1);
+            if (inPos.x < minX)
+                inPos.x = minX;
+            else if (inPos.x > maxX)
+                inPos.x = maxX;
 
-            if (inPos.x < mesh.x0)
-                inPos.x = mesh.x0;
-            else if (inPos.x > x2)
-                inPos.x = x2;
-
-            if (inPos.y < mesh.y0)
-                inPos.y = mesh.y0;
-            else if (inPos.y > y2)
-                inPos.y = y2;
+            if (inPos.y < minY)
+                inPos.y = minY;
+            else if (inPos.y > maxY)
+                inPos.y = maxY;
 
             return inPos;
         }
+//=========================================================
+        void RectanMesh::init() {
+            xi = std::fmin(mesh.dx / 2, mesh.dy / 2);
+            minX = mesh.x0;
+            minY = mesh.y0;
+            maxX = mesh.x0 + (mesh.nx - 1) * mesh.dx;
+            maxY = mesh.y0 + (mesh.ny - 1) * mesh.dy;
+        }
+//=========================================================
+
+        bool RectanMesh::checkWall(double x1, double y1, double x2, double y2) {
+            double length = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
+            double t = 0;
+            double inPosX, inPosY;
+
+            for (int ksiP = 0; ; ++ksiP) {
+                t = (ksiP * xi) / length;
+                inPosX = x1 + (x2 - x1) * t;
+                inPosY = y1 + (y2 - y1) * t;
+
+                if (t >= 1.0)
+                    return checkBlack(x2, y2);
+
+                else if(checkBlack(inPosX, inPosY))
+                    return true;
+            }
+        }
+//=========================================================
+
+        bool RectanMesh::checkBlack(double x, double y) {
+            if (isOutsideMap(x, y))
+                return true;
+
+            // Find the mesh node nearest to inPos (iX = 0 .. nx-1, iY = 0..ny-1)
+            int iX = mesh.x2ix(x);
+            int iY = mesh.y2iy(y);
+            // Calculate the single value index (ind == 0 .. size-1)
+            int ind = iX * mesh.ny + iY;
+
+            return !maskTable.empty() && ind!=maskTable[ind];  // true for black
+        }
+//=========================================================
+
+        double RectanMesh::checkX(double x) {
+            if (x < minX)
+                return minX;
+            else if (x > maxX)
+                return maxX;
+            else
+                return x;
+        }
+//=========================================================
+
+        double RectanMesh::checkY(double y) {
+            if (y < minY)
+                return minY;
+            else if (y > maxY)
+                return maxY;
+            else
+                return y;
+        }
+//=========================================================
+
     }
 }

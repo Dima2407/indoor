@@ -16,6 +16,9 @@ namespace Navigator {
 
             /// Get last position
             virtual const Math::Position3D  & getLastPosition() const = 0;
+
+            /// Get delta and reset it to 0 (thread safe)
+            virtual Math::Position2D getResetDelta() = 0;
         };
 
     }

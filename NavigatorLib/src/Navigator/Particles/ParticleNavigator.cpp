@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <cstdio>
 
 #include "Navigator/Particles/ParticleNavigator.h"
 
@@ -31,6 +32,7 @@ namespace Navigator {
             if (isnan(delta.x) || isnan(delta.y))
                 throw runtime_error("ParticleNavigator : ACC gives NAN !");
 
+            printf("delta = %lf %lf \n", delta.x, delta.y);
             // Don't run the filter if delta is zero
             if (delta.abs() < 1.e-10)
                 return lastPosition;
@@ -50,11 +52,14 @@ namespace Navigator {
                     return true; // Always allowed
             });
 
-            lastPosition = postProcess(z); // Mesh + mask
+            lastPosition = postProcess(result); // Mesh + mask
             return lastPosition;
         }
 //=============================================================
         Math::Position3D ParticleNavigator::postProcess(const Math::Position3D &p) {
+            if (std::isnan(p.x) || std::isnan(p.y))
+                return p;
+
             // Postprocess using rMesh+masktable
             if (rMesh != nullptr && config.useMeshMask)
                 return rMesh->process(p);

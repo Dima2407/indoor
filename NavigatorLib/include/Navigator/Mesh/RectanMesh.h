@@ -103,21 +103,21 @@ namespace Navigator {
             }
 
             /// True if a position is outside the map
-            bool isOutsideMap(double x, double y) {
+            bool isOutsideMap(double x, double y) const {
                 return x<minX || x>maxX || y<minY || y>maxY;
             }
 
             /// True if the line (x0,y0) -> (x,y) crosses a wall (obstacle), or is outside map boundaries
-            bool checkWall(double x1, double y1, double x2, double y2);
+            bool checkWall(double x1, double y1, double x2, double y2) const;
 
             /// True if the nearest mesh node is black, also if out-of-map
-            bool checkBlack(double x, double y);
+            bool checkBlack(double x, double y) const;
 
             /// Put the X-coord into map boundaries
-            double checkX(double x);
+            double checkX(double x) const;
 
             /// Put the Y-coord into map boundaries
-            double checkY(double y);
+            double checkY(double y) const;
 
         private: // ======= Methods
             /// Init map boundaries etc

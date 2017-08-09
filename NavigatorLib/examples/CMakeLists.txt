@@ -11,9 +11,11 @@ set(CMAKE_CXX_STANDARD 14)
 
 #add_subdirectory(example2)
 
-add_subdirectory(example3)
+#add_subdirectory(example3)
 
 #add_subdirectory(example4)
+
+add_subdirectory(example5)
 
 #add_subdirectory(exampleCalibrate)
 
@@ -33,4 +35,4 @@ add_subdirectory(example3)
 
 #add_subdirectory(kalmantest)
 
-add_subdirectory(testParticle)
+#add_subdirectory(testParticle)

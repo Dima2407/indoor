@@ -53,7 +53,7 @@ namespace Navigator {
         }
 //=========================================================
 
-        bool RectanMesh::checkWall(double x1, double y1, double x2, double y2) {
+        bool RectanMesh::checkWall(double x1, double y1, double x2, double y2)  const{
             double length = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
             double t = 0;
             double inPosX, inPosY;
@@ -72,7 +72,7 @@ namespace Navigator {
         }
 //=========================================================
 
-        bool RectanMesh::checkBlack(double x, double y) {
+        bool RectanMesh::checkBlack(double x, double y)  const{
             if (isOutsideMap(x, y))
                 return true;
 
@@ -86,7 +86,7 @@ namespace Navigator {
         }
 //=========================================================
 
-        double RectanMesh::checkX(double x) {
+        double RectanMesh::checkX(double x) const {
             if (x < minX)
                 return minX;
             else if (x > maxX)
@@ -96,7 +96,7 @@ namespace Navigator {
         }
 //=========================================================
 
-        double RectanMesh::checkY(double y) {
+        double RectanMesh::checkY(double y)  const{
             if (y < minY)
                 return minY;
             else if (y > maxY)

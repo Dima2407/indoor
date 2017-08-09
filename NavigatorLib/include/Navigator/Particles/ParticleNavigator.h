@@ -19,6 +19,16 @@ namespace Navigator {
         class ParticleNavigator : public INavigator{
         public: //================ Methods
 
+            /// Constructor
+            ParticleNavigator(const std::shared_ptr<Beacons::AbstractBeaconNavigator> &bNav,
+                              const std::shared_ptr<Accel::AbstractAccelNavigator> &aNav,
+                              const std::shared_ptr<Mesh::RectanMesh> &rMesh,
+                              const ParticleNavigatorConfig &config = ParticleNavigatorConfig())
+                    : bNav(bNav),
+                      aNav(aNav),
+                      rMesh(rMesh),
+                      config(config) {}
+
             /// Run a particle filter step and return last position
             Math::Position3D obtainLastPosition() override;
 

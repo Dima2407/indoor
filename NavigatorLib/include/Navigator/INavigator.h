@@ -13,7 +13,7 @@ namespace Navigator {
         virtual Math::Position3D obtainLastPosition() = 0;
 
         /// virtual destructor
-        virtual ~INavigator() = 0;
+        virtual ~INavigator() = default;
     };
 }
 

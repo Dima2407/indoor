@@ -13,7 +13,21 @@ namespace Navigator {
             // Use either ZUPT or Dummy alorithm
 //            lastPosition = trajectoryDetection.processZUPT(aod);
             lastPosition = trajectoryDetection.processDummy(aod);
+
+            // Accumulate delta for the particle navigator
+            deltaMutex.lock(); // Thread safe
+            delta += trajectoryDetection.getDelta();
+            deltaMutex.unlock();
+
             return lastPosition;
+        }
+        //======================================================
+        Math::Position2D StandardAccelNavigator::getResetDelta() {
+            deltaMutex.lock(); // Thread safe
+            Math::Position2D temp = delta;  // get
+            delta = {0, 0};  // reset
+            deltaMutex.unlock();
+            return temp;
         }
     }
 }

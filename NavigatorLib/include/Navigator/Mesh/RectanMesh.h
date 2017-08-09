@@ -28,7 +28,9 @@ namespace Navigator {
         public: // ======= Constructors
             // Create a mesh with given parameters and no masktable
             RectanMesh(const int nx, const int ny, const double dx, const double dy, const double x0, const double y0)
-                    : mesh(nx, ny, dx, dy, x0, y0) {}
+                    : mesh(nx, ny, dx, dy, x0, y0) {
+                init();
+            }
 
            RectanMesh(const std::string &meshFileName, const std::string &maskTblFileName) : mesh(meshFileName) {
                using namespace std;
@@ -53,6 +55,8 @@ namespace Navigator {
 
                // Load the table
                setMaskTable(mTable);
+
+               init();
            }
 
         public: // ======= Methods
@@ -93,18 +97,45 @@ namespace Navigator {
                 return mesh;
             }
 
+            /// Number of mesh nodes
             int size() const {
                 return mesh.nx * mesh.ny;
             }
-        private: // ======= Parameters
 
-            MeshData mesh; // Mesh parameters
+            /// True if a position is outside the map
+            bool isOutsideMap(double x, double y) const {
+                return x<minX || x>maxX || y<minY || y>maxY;
+            }
 
+            /// True if the line (x0,y0) -> (x,y) crosses a wall (obstacle), or is outside map boundaries
+            bool checkWall(double x1, double y1, double x2, double y2) const;
 
-        private: // ======= Mask table data
+            /// True if the nearest mesh node is black, also if out-of-map
+            bool checkBlack(double x, double y) const;
+
+            /// Put the X-coord into map boundaries
+            double checkX(double x) const;
+
+            /// Put the Y-coord into map boundaries
+            double checkY(double y) const;
+
+        private: // ======= Methods
+            /// Init map boundaries etc
+            void init();
+
+        private: // ======= Data
+            /// Mesh parameters
+            MeshData mesh;
 
             /// The table of size nx*ny gives the index to the nearest white mesh node to the given node, ignored if empty
             std::vector<int> maskTable;
+
+            /// Map boundaries etc
+            double minX;
+            double minY;
+            double maxX;
+            double maxY;
+            double xi;
 
         };
     }

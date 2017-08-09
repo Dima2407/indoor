@@ -10,6 +10,7 @@
 #include "Navigator/Beacons/BeaconReceivedData.h"
 #include "Navigator/Beacons/BeaconProcessor.h"
 #include "Navigator/Beacons/Beacon.h"
+#include "Navigator/INavigator.h"
 
 namespace Navigator {
     namespace Beacons {
@@ -27,7 +28,7 @@ namespace Navigator {
          *
          * }
          * @enduml */
-        class AbstractBeaconNavigator {
+        class AbstractBeaconNavigator : public INavigator{
         public:
             /// Process a single input data
             virtual const Math::Position3D &process(const BeaconReceivedData & brd) = 0;
@@ -37,6 +38,10 @@ namespace Navigator {
 
             /// Get last position
             virtual const Math::Position3D &getLastPosition() const = 0;
+
+            virtual Math::Position3D obtainLastPosition() override {
+                return getLastPosition();
+            }
 
             /// Add a new beacon
             virtual void addBeacon(const Beacon &beacon) = 0;

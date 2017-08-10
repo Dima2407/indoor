@@ -39,6 +39,7 @@ import pro.i_it.indoor.OnInitializationCompletedListener;
 import pro.i_it.indoor.OnLocationUpdateListener;
 import pro.i_it.indoor.config.NativeConfigMap;
 import pro.i_it.indoor.masks.ResourcesMaskTableFetcher;
+import pro.i_it.indoor.providers.OnBeaconsChangeListener;
 import pro.i_it.indoor.region.InMemoryBeaconsLoader;
 import pro.i_it.indoor.routing.Route;
 import pro.i_it.indoor.routing.Step;
@@ -236,6 +237,13 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             public void onInitializationCompleted() {
                 //progressBar.setVisibility(View.GONE);
                 progressDialog.hide();
+            }
+        });
+        getLocalManager().setOnBeaconsChangeListener(new OnBeaconsChangeListener() {
+            @Override
+            public void onBeaconsChanged(int count) {
+                Toast.makeText(getActivity(), String.format("found %d beacons", count),
+                        Toast.LENGTH_SHORT).show();
             }
         });
         getLocalManager().start();

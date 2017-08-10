@@ -23,6 +23,11 @@ public class IndoorLocationManager {
     private volatile boolean active  = false;
     private boolean initialized = false;
     private OnInitializationCompletedListener onInitializationCompletedListener;
+    private OnBeaconsChangeListener onBeaconsChangeListener;
+
+    public void setOnBeaconsChangeListener(OnBeaconsChangeListener onBeaconsChangeListener) {
+        this.onBeaconsChangeListener = onBeaconsChangeListener;
+    }
 
     public void setOnInitializationCompletedListener(OnInitializationCompletedListener onInitializationCompletedListener) {
         this.onInitializationCompletedListener = onInitializationCompletedListener;
@@ -97,6 +102,10 @@ public class IndoorLocationManager {
         active = true;
         initialized = false;
         for (MeasurementProvider provider : providers) {
+            if (provider instanceof BluetoothMeasurementProvider) {
+                BluetoothMeasurementProvider blProvider = (BluetoothMeasurementProvider) provider;
+                blProvider.setOnBeaconsChangeListener(onBeaconsChangeListener);
+            }
             provider.start();
         }
         nativeInit(configuration);

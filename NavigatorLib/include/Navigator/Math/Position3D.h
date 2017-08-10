@@ -29,6 +29,10 @@ namespace Navigator {
                 y += rhs.y;
                 return *this;
             }
+            
+            Position2D operator-(const Position2D &rhs) {
+                return Position2D(x-rhs.x, y-rhs.y);
+            }
 
             double abs() {
                 return sqrt(x * x + y * y);

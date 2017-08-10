@@ -1,5 +1,6 @@
 #include <string>
 #include <memory>
+#include <vector>
 
 // CImg
 #define cimg_use_png
@@ -11,8 +12,12 @@
 /// Global data and config for PartDemo
 struct Glob{
     //========= Config =======
-    std::string strDir; /// Working dir
-    double pixel; /// Pixel size
+    /// Working dir
+    std::string strDir; 
+    /// Pixel size
+    double pixel; 
+    /// Path to travel
+    std::vector<Navigator::Math::Position2D> path; 
     
     //========= Map Image
     /// Map Image

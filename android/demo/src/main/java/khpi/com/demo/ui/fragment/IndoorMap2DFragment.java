@@ -61,6 +61,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     private RecyclerView.OnScrollListener listener;
     private Floor floor;
     private View cameraBtn;
+    private ProgressDialog initializationProgressDialog;
     //private RelativeLayout progressBar;
 
 
@@ -144,6 +145,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         });
 
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initializationProgressDialog = new ProgressDialog(getContext());
     }
 
     @Override
@@ -228,15 +231,16 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                 applyNewCoordinate(position.x, position.y, 1, 1, route);
             }
         });
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Please wait");
-        progressDialog.setTitle("Initialization");
-        progressDialog.show();
+
+        initializationProgressDialog.setMessage("Please wait");
+        initializationProgressDialog.setTitle("Initialization");
+        initializationProgressDialog.show();
         getLocalManager().setOnInitializationCompletedListener(new OnInitializationCompletedListener() {
             @Override
             public void onInitializationCompleted() {
                 //progressBar.setVisibility(View.GONE);
-                progressDialog.hide();
+                mapView.setInitializationCompleted(true);
+                initializationProgressDialog.dismiss();
             }
         });
         getLocalManager().setOnBeaconsChangeListener(new OnBeaconsChangeListener() {
@@ -251,6 +255,8 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onPause() {
+        initializationProgressDialog.dismiss();
+        mapView.setInitializationCompleted(false);
         Log.d("onLocationChanged", "onPause: ");
         super.onPause();
         getLocalManager().stop();

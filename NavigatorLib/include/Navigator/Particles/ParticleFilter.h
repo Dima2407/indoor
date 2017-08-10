@@ -5,7 +5,7 @@
 #include <functional>
 #include <random>
 #include <ctime>
-
+#include "cmath"
 
 #include "Navigator/Math/Position3D.h"
 
@@ -67,15 +67,24 @@ namespace Navigator {
                 return std::uniform_real_distribution<double>(x1, x2)(randomEngine);
             }
 
+            /// Generate uniform random number between 0 and border
+            int randInt(int border) {
+                return std::uniform_int_distribution<int>(0, border)(randomEngine);
+            }
+
             /// Generate normal (Gaussian) distributed number with average 0
             double randNorm(double sigma){
                 return std::normal_distribution<double>(0.0, sigma)(randomEngine);
             }
 
+            double gause(const Math::Position2D &particle, const Math::Position2D &z);
 
         private: //======= Fields =====
             /// Config
             ParticleFilterConfig config;
+
+            /// OldLocationParticles
+            std::vector<Math::Position2D> oldParticles;
 
             /// Particles
             std::vector<Math::Position2D> particles;

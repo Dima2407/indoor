@@ -9,6 +9,7 @@ import pro.i_it.indoor.region.BluetoothBeacon;
 import pro.i_it.indoor.region.SpaceBeacon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -158,10 +159,16 @@ public class Floor implements Parcelable {
     }
 
     public List<Integer> getInpointIdList() {
+        if (inpointIdList == null) {
+            return Collections.emptyList();
+        }
         return inpointIdList;
     }
 
     public List<BeaconModel> getBeacons() {
+        if (beacons == null) {
+            return Collections.emptyList();
+        }
         return beacons;
     }
 

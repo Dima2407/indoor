@@ -33,7 +33,7 @@ public class FileUtil {
     }
 
     public static File getLocacPath(Context context, String url){
-        return new File(context.getExternalFilesDir("MapData")+url + ".jpg");
+        return new File(context.getExternalFilesDir("MapData"), url + ".jpg");
     }
 
     public static File getLocacPath(String baseFolder, String mapId, String floorId, String filename){

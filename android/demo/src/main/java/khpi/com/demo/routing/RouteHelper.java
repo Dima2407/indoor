@@ -68,8 +68,9 @@ public class RouteHelper {
                             listener.onMapProcessed();
                         }
                     });
-                } catch (final IOException e) {;
-                    e.printStackTrace();
+                } catch (final Exception e) {
+                    ;
+                    Log.e(RouteHelper.class.getSimpleName(), "run: ", e);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

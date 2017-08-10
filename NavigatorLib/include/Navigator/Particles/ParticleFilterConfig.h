@@ -8,8 +8,8 @@ namespace Navigator {
     namespace Particles {
         struct ParticleFilterConfig {
             /// Number of particles
-            int numPart = 1000;
-
+            int numPart = 20;
+            double sigma = 0.1;
 
         };
 

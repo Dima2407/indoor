@@ -69,6 +69,7 @@ public class IndoorMapView extends SubsamplingScaleImageView {
     private List<BeaconModel> beacons;
     private Bitmap positionBitmap;
     private Rect positionBitmapRect;
+    private boolean isInitializationCompleted;
 
 
     public IndoorMapView(Context context, AttributeSet attr) {
@@ -99,6 +100,7 @@ public class IndoorMapView extends SubsamplingScaleImageView {
         positionBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.map_pin_icn);
         positionBitmapRect = new Rect();
 
+        isInitializationCompleted = false;
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -210,7 +212,7 @@ public class IndoorMapView extends SubsamplingScaleImageView {
 
 
         // draw coordinates
-        if (coordinates != null) {
+        if (coordinates != null && isInitializationCompleted) {
             PointF p = sourceToViewCoord(coordinates.x, coordinates.y);
             canvas.drawBitmap(positionBitmap, p.x - positionBitmap.getWidth()/2, p.y - positionBitmap.getHeight(), null);
         }
@@ -241,6 +243,14 @@ public class IndoorMapView extends SubsamplingScaleImageView {
                 canvas.drawBitmap(inpointBitmap, null, rect, null);
             }
         }
+    }
+
+    public boolean isInitializationCompleted() {
+        return isInitializationCompleted;
+    }
+
+    public void setInitializationCompleted(boolean initializationCompleted) {
+        isInitializationCompleted = initializationCompleted;
     }
 
     public void setCoordinates(double trilatX, double trilatY, double bx, double by) {

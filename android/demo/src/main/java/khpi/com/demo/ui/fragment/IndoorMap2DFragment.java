@@ -236,6 +236,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             @Override
             public void onInitializationCompleted() {
                 //progressBar.setVisibility(View.GONE);
+                mapView.setInitializationCompleted(true);
                 progressDialog.hide();
             }
         });
@@ -251,6 +252,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
     @Override
     public void onPause() {
+        mapView.setInitializationCompleted(false);
         Log.d("onLocationChanged", "onPause: ");
         super.onPause();
         getLocalManager().stop();

@@ -79,25 +79,27 @@ namespace Navigator {
                 }
             }
 
-            bool first = false;
-            int randomStart = randRange(0, weights.size());
+            bool start = true;
             double beta = randRange(0, 2 * maxWeight);
             while (true) {
                 for (int i = 0; i < weights.size(); ++i) {
-                    if (first == false) {
-                        i = randomStart;
-                        first = true;
+                    if (start) {                                ///  entry condition
+                        i = randInt(weights.size());
+                        start = false;
                     }
+
                     if (weights[i] > 0) {
                         if (beta > weights[i]) {
                             beta -= weights[i];
                         } else {
                            newParticles.push_back(particles[i]);
-                           if (newParticles.size() == weights.size()) {
-                               goto out;
-                           }
                            beta = randRange(0, 2 * maxWeight);
+                           i--;
                         }
+                    }
+
+                    if (newParticles.size() == weights.size()) { ///  exit condition
+                        goto out;
                     }
                 }
             }

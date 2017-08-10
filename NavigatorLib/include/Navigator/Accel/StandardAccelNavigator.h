@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <mutex>
+#include <memory>
+
 #include "./TrajectoryDetection.h"
 #include "./ToGlobal.h"
 
@@ -48,14 +51,24 @@ public: //==== Methods
         return lastPosition;
     }
 
+    /// Get delta and reset it to 0 (thread safe)
+    virtual Math::Position2D getResetDelta() override;
+
 private: //===== Data
     /// ZUPT algorithm, walls, mesh
     TrajectoryDetection trajectoryDetection;
+
     /// Rotation to global coordinates, filter step detection
     ToGlobal toGlobal;
 
     /// Last position
     Math::Position3D lastPosition;
+
+    /// The raw shift (delta) from the last checked position, no mesh/mask here, for the particle navigator
+    Math::Position2D delta{0, 0};
+
+    /// Mutex protecting delta
+    std::mutex deltaMutex;
 };
 }
 }

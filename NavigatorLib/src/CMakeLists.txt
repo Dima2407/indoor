@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(arch arm64)
 
 set(SOURCE_FILES
+        ../include/Navigator.h
+        ../include/Navigator/INavigator.h
+        #
         ../include/Navigator/Beacons/AbstractBeaconNavigator.h
         ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
         ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
@@ -17,7 +20,7 @@ set(SOURCE_FILES
         ./Navigator/Beacons/BeaconProcessor.cpp ../include/Navigator/Beacons/BeaconProcessor.h
         ./Navigator/Beacons/KalmanBeaconProcessor.cpp ../include/Navigator/Beacons/KalmanBeaconProcessor.h
         #
-        ../include/Navigator/Math/Position3D.h
+        ./Navigator/Math/Position3D.cpp ../include/Navigator/Math/Position3D.h
         ./Navigator/Math/Filter/AlphaBetaFilter.cpp ../include/Navigator/Math/Filter/AlphaBetaFilter.h
         ./Navigator/Math/Filter/AlphaTrimmedFilter.cpp ../include/Navigator/Math/Filter/AlphaTrimmedFilter.h
         ./Navigator/Math/Filter/MovingAverageFilter.cpp ../include/Navigator/Math/Filter/MovingAverageFilter.h
@@ -40,6 +43,7 @@ set(SOURCE_FILES
         ./Navigator/Beacons/BeaconProcessor.cpp
 
         #
+        ../include/Navigator/Mesh/MeshData.h
         ./Navigator/Mesh/RectanMesh.cpp ../include/Navigator/Mesh/RectanMesh.h
         #
         ../include/Navigator/Dijkstra/Edge.h
@@ -60,6 +64,9 @@ set(SOURCE_FILES
         #
         ./Navigator/Particles/ParticleFilter.cpp ../include/Navigator/Particles/ParticleFilter.h
         ../include/Navigator/Particles/ParticleFilterConfig.h
+        ../include/Navigator/Particles/ParticleNavigatorConfig.h
+        Navigator/Particles/ParticleNavigator.cpp ../include/Navigator/Particles/ParticleNavigator.h
+        ../include/Navigator/Particles/ParticleNavigatorConfig.h
         )
 
 include_directories(

@@ -6,25 +6,38 @@
 
 #include <cmath>
 #include <limits>
-//#include <gmpxx.h>
 
 namespace Navigator {
     namespace Math {
-    
+
+        struct Position3D;
+
         /// Point in 2-dimension space
         struct Position2D {
+        public:
             /// Constructors
             Position2D(double x, double y)
                     : x(x), y(y) {}
-    
-            Position2D() {}
-        
+
+            Position2D() = default;
+
+            // Type cast
+            operator Position3D() const;
+
+            Position2D &operator+=(const Position2D &rhs) {
+                x += rhs.x;
+                y += rhs.y;
+                return *this;
+            }
+
+            double abs() {
+                return sqrt(x * x + y * y);
+            }
+
             double x = nan("");
             double y = nan("");
         };
 
-        //-------------------------------------------
-        
         /// Point in 3d space
         struct Position3D
         {
@@ -33,6 +46,9 @@ namespace Navigator {
                     : x(x), y(y), z(z) {}
 
             Position3D() = default;
+
+            // Type cast
+            operator Position2D() const;
 
         public:  // == VARIABLES / FIELDS ==
             double x = nan("");
@@ -65,6 +81,7 @@ namespace Navigator {
                 return x==other.x && y==other.y && z==other.z;
             }
         };
+
 
         //-------------------------------------------
 

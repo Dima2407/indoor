@@ -60,7 +60,7 @@
 #pragma mark - Get map list from own server -
 -(void) getMapListWithComplitionBlock:(void(^)(NSArray *buildingList))complitionBlock{
     
-        NSURL *url = [NSURL URLWithString:@"http://kaa-solutions.onthewifi.com:8081/mob/building"];
+        NSURL *url = [NSURL URLWithString:@"http://185.86.79.154:8081/mob/building"];
         [self createRequestWith:url httpBody:nil complitionBlock:^(NSData *data) {
             
             if (!data) {
@@ -90,9 +90,9 @@
 {
   
     
- NSString* pathLogin = @"http://kaa-solutions.onthewifi.com:8081/mobile/login";
-    NSDictionary* params = @{@"username" : @"iosUser",
-                             @"password" : @"iosUser"};
+ NSString* pathLogin = @"http://185.86.79.154:8081/mobile/login";
+    NSDictionary* params = @{@"username" : @"ios",
+                             @"password" : @"12345678"};
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -126,8 +126,8 @@
            dataType:(NSString*)typefile
          floorModel:(FloorModel*)floor
  withCoplitionBlock:(void(^)(FloorModel *map))complitionBlock{
-    
-    NSString *urlStr = [NSString stringWithFormat:@"http://kaa-solutions.onthewifi.com:8081/mob%@",path];
+ //dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
+    NSString *urlStr = [NSString stringWithFormat:@"http://185.86.79.154:8081/mob%@",path];
     NSURL *url = [NSURL URLWithString:urlStr];
     
     [self createRequestWith:url httpBody:nil complitionBlock:^(NSData *data) {
@@ -146,6 +146,7 @@
         }
         complitionBlock(floor);
     }];
+  //});
 }
 #pragma mark - Get google route points -
 -(void) getRouteWithStartLocation:(CLLocationCoordinate2D)startLocation finishLocation:(CLLocationCoordinate2D)finishLocation complitionBlock:(void(^)(NSString *routeLine,NSArray *routePoints))complitionBlock{
@@ -185,7 +186,7 @@
 -(void) getIndoorPoiForMapID:(NSString*)mapID complitionBlock:(void(^)(NSDictionary *poiDictionary))complitionBlock{
     
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://kaa-solutions.onthewifi.com:8081/mob/%@/inpoint",mapID]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://185.86.79.154:8081/mob/%@/inpoint",mapID]];
     [self createRequestWith:url httpBody:nil complitionBlock:^(NSData *data) {
     
         NSError *error = nil;
@@ -207,7 +208,7 @@
 -(void) getIndoorPoiForFloorID:(NSString*)floorID complitionBlock:(void(^)(NSDictionary *poiDictionary))complitionBlock{
     
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://kaa-solutions.onthewifi.com:8081/mob/%@/inpoint",floorID]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://185.86.79.154:8081/mob/%@/inpoint",floorID]];
     [self createRequestWith:url httpBody:nil complitionBlock:^(NSData *data) {
         
         NSError *error = nil;

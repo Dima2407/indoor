@@ -79,6 +79,7 @@
 		0617DD741E4DE1E6000FE59C /* RouteInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteInfoView.h; sourceTree = "<group>"; };
 		0617DD751E4DE1E6000FE59C /* RouteInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteInfoView.m; sourceTree = "<group>"; };
 		0617DD7C1E4DE256000FE59C /* RoutePoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutePoint.h; sourceTree = "<group>"; };
+		0624B6251F325CE300AA8055 /* IndoorHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndoorHeader.h; sourceTree = "<group>"; };
 		063A7A391EB36D8900ABA37F /* UIColor+HEX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HEX.h"; sourceTree = "<group>"; };
 		063A7A3A1EB36D8900ABA37F /* UIColor+HEX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HEX.m"; sourceTree = "<group>"; };
 		06A592921EAE46F9007760A2 /* BeaconConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconConfig.h; sourceTree = "<group>"; };
@@ -369,6 +370,7 @@
 				853208C71D9D51FB00476ECA /* UIImage+ManeuverImage.m */,
 				8513E2AD1D9E73510001BBFB /* ConverterPointAndPixel.h */,
 				8513E2AE1D9E73510001BBFB /* ConverterPointAndPixel.m */,
+				0624B6251F325CE300AA8055 /* IndoorHeader.h */,
 			);
 			path = helpers;
 			sourceTree = "<group>";

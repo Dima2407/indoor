@@ -6,10 +6,14 @@
 
 namespace Navigator {
     namespace Accel {
-        Math::Position3D StandardAccelNavigator::process(const AccelReceivedData &ard) {
+        const Math::Position3D  & StandardAccelNavigator::process(const AccelReceivedData &ard) {
+            // Convert accel to global coords + step detection
             AccelOutputData aod = toGlobal.process(ard);
 
-            return trajectoryDetection.process(aod);
+            // Use either ZUPT or Dummy alorithm
+//            lastPosition = trajectoryDetection.processZUPT(aod);
+            lastPosition = trajectoryDetection.processDummy(aod);
+            return lastPosition;
         }
     }
 }

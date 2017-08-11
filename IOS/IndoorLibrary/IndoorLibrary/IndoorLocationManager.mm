@@ -11,9 +11,11 @@
 #import "GPSMeasurementProvider.h"
 #import "SensorMeasurementProvider.h"
 #import "BluetoothBridge.h"
+#import "KalmanBridge.hpp"
 #import "SensorBridge.h"
 #import "IndoorError.h"
-
+#include <iostream>
+#include <vector>
 
 
 @interface IndoorLocationManager()<IosMeasurementTransferDelegate>
@@ -28,10 +30,12 @@
 @property (nonatomic, assign) IndoorLocationManagerMode managerMode;
 @property (nonatomic, assign) BOOL initSensorNavigator;
 @property (nonatomic, assign) double startTimestamp;
+@property (nonatomic, strong) NSDictionary *config;
 @end
 
 
 @implementation IndoorLocationManager
+
 - (instancetype)init
 {
     self = [super init];
@@ -49,53 +53,54 @@
         self.startTimestamp =  [[NSDate date] timeIntervalSince1970];
         _initSensorNavigator = NO;
         
+        
     }
     return self;
 }
 
 #pragma mark - Logic
-    
+
 -(void)addProvider:(MeasurementProviderType)type{
     if (self.startProviderFlag)
     {
         NSLog(@"You can't add provider when IndoorLocationManager started");
     }
     else{
-    MeasurementProvider * provider = nil;
-    switch (type) {
-        case GPS_PROVIDER:
-            provider = [[GPSMeasurementProvider alloc] initWithTransfer: self.transfer];
-            if(provider != nil){
-            
-                [self.providers addObject:provider];
-            }
-
-            break;
-        case BLE_PROVIDER:
-            if (self.beaconsUUIDs.count == 0)
-            {
-                NSLog(@"Add UUID before start BLE_PROVIDER");
-            }
-            provider = [[BluetoothMeasurementProvider alloc] initWithTransfer:self.transfer andUUIDs:self.beaconsUUIDs];
-            if(provider != nil){
-                
-                [self.providers addObject:provider];
-            }
-            
-            break;
-        case SENSOR_PROVIDER:
-            provider = [[SensorMeasurementProvider alloc] initWithTransfer: self.transfer];
-            if(provider != nil){
-                
-                [self.providers addObject:provider];
-            }
-            
-            break;
-        default:
-            break;
+        MeasurementProvider * provider = nil;
+        switch (type) {
+            case GPS_PROVIDER:
+                provider = [[GPSMeasurementProvider alloc] initWithTransfer: self.transfer];
+                if(provider != nil){
+                    
+                    [self.providers addObject:provider];
                 }
+                
+                break;
+            case BLE_PROVIDER:
+                if (self.beaconsUUIDs.count == 0)
+                {
+                    NSLog(@"Add UUID before start BLE_PROVIDER");
+                }
+                provider = [[BluetoothMeasurementProvider alloc] initWithTransfer:self.transfer andUUIDs:self.beaconsUUIDs];
+                if(provider != nil){
+                    
+                    [self.providers addObject:provider];
+                }
+                
+                break;
+            case SENSOR_PROVIDER:
+                provider = [[SensorMeasurementProvider alloc] initWithTransfer: self.transfer];
+                if(provider != nil){
+                    
+                    [self.providers addObject:provider];
+                }
+                
+                break;
+            default:
+                break;
+        }
     }
-   }
+}
 
 -(void)removeProvider: (MeasurementProviderType) type{
     
@@ -104,44 +109,44 @@
         NSLog(@"You can't remove provider when IndoorLocationManager started");
     }
     else{
-    
-                if (type == BLE_PROVIDER)
+        
+        if (type == BLE_PROVIDER)
+        {
+            
+            [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
+                if (obj.type == BLE_PROVIDER)
                 {
-      
-                    [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
-                        if (obj.type == BLE_PROVIDER)
-                        {
-                            obj = nil;
-                            [self.providers removeObject:obj];
-                        }
-                        
-                    }];
-
+                    obj = nil;
+                    [self.providers removeObject:obj];
                 }
-                 
-                else if (type == GPS_PROVIDER){
-                    [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
-                        if (obj.type == BLE_PROVIDER)
-                        {
-                            obj = nil;
-                            [self.providers removeObject:obj];
-                        }
-                    }];
+                
+            }];
+            
+        }
+        
+        else if (type == GPS_PROVIDER){
+            [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
+                if (obj.type == BLE_PROVIDER)
+                {
+                    obj = nil;
+                    [self.providers removeObject:obj];
                 }
-                else if (type == SENSOR_PROVIDER){
-                    [self.providers enumerateObjectsUsingBlock:^(SensorMeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
-                        if (obj.type == SENSOR_PROVIDER)
-                        {
-                            obj = nil;
-                            [self.providers removeObject:obj];
-                        }
-                    }];
+            }];
+        }
+        else if (type == SENSOR_PROVIDER){
+            [self.providers enumerateObjectsUsingBlock:^(SensorMeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
+                if (obj.type == SENSOR_PROVIDER)
+                {
+                    obj = nil;
+                    [self.providers removeObject:obj];
                 }
-                else{
-                    NSLog(@"Unrecognized provider type");
-                }
+            }];
+        }
+        else{
+            NSLog(@"Unrecognized provider type");
         }
     }
+}
 
 
 
@@ -151,83 +156,81 @@
 -(void)addUUID:(NSString*)uuid{
     
     
-        [self.beaconsUUIDs addObject:uuid];
+    [self.beaconsUUIDs addObject:uuid];
     
     
 }
 
 
 -(void)setBeaconConfig:(BeaconConfig*) config{
-    std::string uuid = std::string([config.uuid UTF8String]);
-    BluetoothBridge_initBeacon(uuid,(int) config.major, (int)config.minor, config.txPower, config.damp, config.x, config.y, config.z);
+    if([[self.config objectForKey:@"bleKalmanFilter"] boolValue]||[[self.config objectForKey:@"sensorKalman"] boolValue])
+    {
+        std::string uuid = std::string([config.uuid UTF8String]);
+        KalmanBridge_initBeacon(uuid,(int) config.major, (int)config.minor, config.txPower, config.damp, config.x, config.y, config.z);
+    }
+    else{
+        std::string uuid = std::string([config.uuid UTF8String]);
+        BluetoothBridge_initBeacon(uuid,(int) config.major, (int)config.minor, config.txPower, config.damp, config.x, config.y, config.z);
+    }
     
     
 }
 -(void)setMode:(IndoorLocationManagerMode)mode{
     self.managerMode = mode;
     
-
+    
     
 }
 
--(void)setMeshConfig:(NSArray*)meshIn andOut:(NSArray*) masktableOut{
-    switch (self.managerMode) {
-        case STANDART_MODE:
-            NSLog(@"You can't add config in STANDART_MODE");
-            
-            break;
-            
-            case MESH_MODE:
-            [self _createMesh:meshIn andOut:masktableOut type:MESH_MODE];
-            break;
-        case SENSOR_MODE:
-             [self _createMesh:meshIn andOut:masktableOut type:SENSOR_MODE];
-            
-            break;
-
-
-    }
-
-}
--(void)_createMesh:(NSArray*)meshIn andOut:(NSArray*) masktableOut type:(IndoorLocationManagerMode)type{
-    double nx = [[meshIn objectAtIndex:0] intValue], ny = [[meshIn objectAtIndex:1] intValue];
-    double dx =[[meshIn objectAtIndex:2] doubleValue], dy = [[meshIn objectAtIndex:3] doubleValue];
-    double x0 = [[meshIn objectAtIndex:4] doubleValue], y0 = [[meshIn objectAtIndex:5] doubleValue];
-    if (type == SENSOR_MODE)
-    {
-        SensorBridge_createMesh(nx, ny, dx, dy, x0, y0);
-    }
-    else if (type == MESH_MODE){
-        BluetoothBridge_createMesh(nx, ny, dx, dy, x0, y0);
-    }
+-(void)_createMesh:(IndoorLocationManagerMode)type{
+    double nx = [[self.config objectForKey:@"nx"] floatValue], ny = [[self.config objectForKey:@"ny"] floatValue];
+    double dx = [[self.config objectForKey:@"dx"] floatValue], dy =  [[self.config objectForKey:@"dy"] floatValue];
+    double x0 =  [[self.config objectForKey:@"x0"] floatValue], y0 =  [[self.config objectForKey:@"y0"] floatValue];
     
     
+    NSArray *masktableOut = [self.config objectForKey:@"mask"];
     std::vector<int> buffer(masktableOut.count);
     for (int i = 0; i < masktableOut.count; i++) {
         buffer[i] = [[masktableOut objectAtIndex:i] intValue];
     }
     if (type == SENSOR_MODE)
     {
-      SensorBridge_setMaskTable(buffer);
+        SensorBridge_createMesh(nx, ny, dx, dy, x0, y0);
+        SensorBridge_setMaskTable(buffer);
     }
-    else if (type == MESH_MODE){
+    else if (type == BLE_MODE){
+        BluetoothBridge_createMesh(nx, ny, dx, dy, x0, y0);
         BluetoothBridge_setMaskTable(buffer);
     }
     
 }
--(void)setGraph:(NSString*)graph and:(CGFloat) scale;{
-    if (graph == nil)
+-(void)setGraph:(IndoorLocationManagerMode)type{
+    
+    if (type == BLE_MODE)
     {
-        NSLog(@" Graph is nil");
-    }
-    else{
-    std::string graphConfig = std::string([graph UTF8String]);
+        std::string graphConfig = std::string([[self.config objectForKey:@"graph"] UTF8String]);
+        double scale = [[self.config objectForKey:@"scale"] floatValue];
         try {
-            BluetoothBridge_readGraph(graphConfig, (double)scale);
+            BluetoothBridge_readGraph(graphConfig, scale);
         } catch (const std::runtime_error& error) {
-             NSLog(@"Exception: invalid  Graph");
+            NSLog(@"Exception: invalid  Graph");
         }
     }
+    if (type == SENSOR_MODE)
+    {
+        std::string graphConfig = std::string([[self.config objectForKey:@"graph"] UTF8String]);
+        double scale = [[self.config objectForKey:@"scale"] floatValue];
+        try {
+            SensorBridge_readGraph(graphConfig, scale);
+        } catch (const std::runtime_error& error) {
+            NSLog(@"Exception: invalid  Graph");
+        }
+    }
+}
+#pragma Set Config
+-(void)setConfiguration:(NSDictionary*) config{
+    self.config = config;
+    
 }
 
 #pragma mark - Get Coordinates
@@ -237,38 +240,115 @@
     double outPosition[] = {0.0, 0.0, 0.0};
     if (self.managerMode == SENSOR_MODE)
     {
-        if (!_initSensorNavigator)
+        
+        if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue])
         {
-        BOOL initialise = BluetoothBridge_isInitialise();
-        if (initialise)
-        {
-            SensorBridge_setAccelConfig(0, true);
-            double output[] = {-1.0, -1.0};
-            BluetoothBridge_getInitialisePosition(output);
-            if(output[0] != -1.0 && output[1] != -1.0){
-               // SensorBridge_init(output[0], output[1]);
-                SensorBridge_init(3, 13);
-                self.initSensorNavigator = YES;
+            if (!_initSensorNavigator)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    [coordinates addObject:@(outPosition[i])];
+                    
+                }
+                [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+                BOOL initialise = BluetoothBridge_isInitialise();
+                if (initialise)
+                {
+                    
+                    double output[] = {-1.0, -1.0};
+                    BluetoothBridge_getInitialisePosition(output);
+                    
+                    if(output[0] != -1.0 && output[1] != -1.0){
+                        SensorBridge_init(output[0], output[1]);
+                        self.initSensorNavigator = YES;
+                        
+                    }
+                }
+            }
+            else{
+                SensorBridge_getLastPosition(outPosition);
+                for (int i = 0; i < 3; i++)
+                {
+                    [coordinates addObject:@(outPosition[i])];
+                    
+                }
+                [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
             }
         }
+        else if([[self.config objectForKey:@"sensorKalman"] boolValue])
+        {
+            if (!_initSensorNavigator)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    [coordinates addObject:@(outPosition[i])];
+                    
+                }
+                [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+                BOOL initialise = KalmanBridge_isInitialise();
+                if (initialise)
+                {
+                    
+                    double output[] = {-1.0, -1.0};
+                    KalmanBridge_getInitialisePosition(output);
+                    
+                    if(output[0] != -1.0 && output[1] != -1.0){
+                        SensorBridge_init(output[0], output[1]);
+                        self.initSensorNavigator = YES;
+                        
+                    }
+                }
+            }
+            else{
+                SensorBridge_getLastPosition(outPosition);
+                for (int i = 0; i < 3; i++)
+                {
+                    [coordinates addObject:@(outPosition[i])];
+                    
+                }
+                [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+            }
+
         }
         else{
-        SensorBridge_getLastPosition(outPosition);
+            SensorBridge_getLastPosition(outPosition);
+            for (int i = 0; i < 3; i++)
+            {
+                [coordinates addObject:@(outPosition[i])];
+                
+            }
+            [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
         }
     }
-    else if (self.managerMode == MESH_MODE){
-        BluetoothBridge_getLastPosition(outPosition);
+    else if (self.managerMode == BLE_MODE){
+        if([[self.config objectForKey:@"bleKalmanFilter"] boolValue]){
+            
+            KalmanBridge_getLastPosition(outPosition);
+            
+            for (int i = 0; i < 3; i++)
+            {
+                [coordinates addObject:@(outPosition[i])];
+                
+            }
+            [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+        }
+        else
+        {
+            BluetoothBridge_getLastPosition(outPosition);
+            
+            for (int i = 0; i < 3; i++)
+            {
+                [coordinates addObject:@(outPosition[i])];
+                
+            }
+            [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+        }
     }
-    else if (self.managerMode == STANDART_MODE){
-        BluetoothBridge_getLastPosition(outPosition);
-    }
-    for (int i = 0; i < 3; i++)
-    {
-        [coordinates addObject:@(outPosition[i])];
-        
-        
-    }
-    [self.locationListener onLocation:[NSArray arrayWithArray:coordinates]];
+    //    else if (self.managerMode == FILTER_MODE){
+    //
+    //    }
+    
+    
     
 }
 
@@ -276,45 +356,115 @@
 #pragma mark - Get Routing
 -(void)setDectinationPosition:(NSArray*)destination
 {
-    if (_isRouting)
-    {
-        position p;
-        p.x = [[destination objectAtIndex:0] doubleValue];
-        p.y = [[destination objectAtIndex:1] doubleValue];
-        //p.z = [[destination objectAtIndex:2] doubleValue];
-        BluetoothBridge_setDestination(p);
-          }
-    
+    if([[self.config objectForKey:@"bleKalmanFilter"] boolValue]){
+        
+        if (_isRouting)
+        {
+            kalmanPosition p;
+            p.x = [[destination objectAtIndex:0] doubleValue];
+            p.y = [[destination objectAtIndex:1] doubleValue];
+            //p.z = [[destination objectAtIndex:2] doubleValue];
+            KalmanBridge_setDestination(p);
+        }
+        
+        else{
+            NSLog(@"Set isRouting first");
+        }
+    }
     else{
-        NSLog(@"Set isRouting first");
+        if (_isRouting)
+        {
+            IndoorPosition p;
+            p.x = [[destination objectAtIndex:0] doubleValue];
+            p.y = [[destination objectAtIndex:1] doubleValue];
+            //p.z = [[destination objectAtIndex:2] doubleValue];
+            BluetoothBridge_setDestination(p);
+        }
+        
+        else{
+            NSLog(@"Set isRouting first");
+        }
     }
 }
 -(NSMutableArray*)getRouting{
     if (_isRouting)
     {
-    NSMutableArray *routCoordinates = [NSMutableArray new];
-   
-    std::vector<position> way;
-    
-    
-    BluetoothBridge_getPositionFromGraph(way);
-    for (int i = 0; i < way.size(); i++) {
-        position p = way[i];
-        NSDictionary* coordinate = [NSDictionary dictionaryWithObjectsAndKeys:
-                              @(p.x),@"x",
-                              @(p.y),@"y",
-                              @(p.z),@"z",nil];
-
-        [routCoordinates addObject:coordinate];
+        if (self.managerMode == BLE_MODE)
+        {
+            if([[self.config objectForKey:@"bleKalmanFilter"] boolValue])
+            {
+                NSMutableArray *routCoordinates = [NSMutableArray new];
+                
+                std::vector<IndoorPosition> way;
+                
+                for (int i = 0; i < way.size(); i++)
+                {
+                    IndoorPosition p = way[i];
+                    NSDictionary* coordinate = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                @(p.x),@"x",
+                                                @(p.y),@"y",
+                                                @(p.z),@"z",nil];
+                    
+                    [routCoordinates addObject:coordinate];
+                }
+                
+                return routCoordinates;
+            }
+            
+            else {
+                
+                
+                NSMutableArray *routCoordinates = [NSMutableArray new];
+                
+                std::vector<IndoorPosition> way;
+                
+                
+                BluetoothBridge_getPositionFromGraph(way);
+                for (int i = 0; i < way.size(); i++)
+                {
+                    IndoorPosition p = way[i];
+                    NSDictionary* coordinate = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                @(p.x),@"x",
+                                                @(p.y),@"y",
+                                                @(p.z),@"z",nil];
+                    
+                    [routCoordinates addObject:coordinate];
+                }
+                
+                return routCoordinates;
+            }
+        }
+        else if(self.managerMode == SENSOR_MODE)
+        {
+            NSMutableArray *routCoordinates = [NSMutableArray new];
+            
+            std::vector<position> way;
+            
+            
+            SensorBridge_getPositionFromGraph(way);
+            for (int i = 0; i < way.size(); i++)
+            {
+                position p = way[i];
+                NSDictionary* coordinate = [NSDictionary dictionaryWithObjectsAndKeys:
+                                            @(p.x),@"x",
+                                            @(p.y),@"y",
+                                            @(p.z),@"z",nil];
+                
+                [routCoordinates addObject:coordinate];
+            }
+            return routCoordinates;
+        }
+        else
+        {
+            return nil;
+        }
     }
-
-    return routCoordinates;
-    }
     
-    else{
+    else
+    {
         NSLog(@"Set isRouting first");
- 
-    return nil;
+        
+        return nil;
     }
 }
 -(CGFloat)getDistance{
@@ -326,16 +476,59 @@
 -(void) prepare{
     if (self.managerMode == SENSOR_MODE)
     {
+        [self setGraph:SENSOR_MODE];
+        [self _createMesh:SENSOR_MODE];
+        
+        if ([[self.config objectForKey:@"sensorInitManual"] boolValue])
+        {
+            
+            SensorBridge_setAccelConfig([[self.config objectForKey:@"orientationAngle"] intValue], true, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+            double x = [[self.config objectForKey:@"x"] floatValue];
+            double y = [[self.config objectForKey:@"y"] floatValue];
+            NSLog(@"sensorInitManual Init X ---- %f",x);
+            NSLog(@"sensorInitManual Init Y ----%f",y);
+            SensorBridge_init(x, y);
+            
+        }
+        
+        else if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue]){
+            SensorBridge_setAccelConfig([[self.config
+                                          objectForKey:@"orientationAngle"] intValue], true, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+            
+            BluetoothBridge_setConfig(true, false, true, false);
+            BluetoothBridge_init();
+            
+        }
+        else if([[self.config objectForKey:@"sensorKalman"] boolValue]){
+            SensorBridge_setAccelConfig([[self.config
+                                          objectForKey:@"orientationAngle"] intValue], true, [[self.config objectForKey:@"sensorMap"] boolValue], [[self.config objectForKey:@"sensorWalls"] boolValue], [[self.config objectForKey:@"sensorMesh"] boolValue]);
+            
+            KalmanBridge_setConfig(true, false, true, false);
+            KalmanBridge_init();
+        }
+        
+    }
+    else if (self.managerMode == BLE_MODE){
+        [self setGraph:BLE_MODE];
+        [self _createMesh:BLE_MODE];
+        if([[self.config objectForKey:@"bleKalmanFilter"] boolValue])
+        {
+
+        KalmanBridge_setConfig([[self.config objectForKey:@"bleCircleBuffers"] boolValue], [[self.config objectForKey:@"bleTrilatiration"] boolValue], [[self.config objectForKey:@"bleMap"] boolValue], [[self.config objectForKey:@"bleMesh"] boolValue]);
+        KalmanBridge_init();
+        }
+        
+      else {
+            
+            BluetoothBridge_setConfig([[self.config objectForKey:@"bleCircleBuffers"] boolValue], [[self.config objectForKey:@"bleTrilatiration"] boolValue], [[self.config objectForKey:@"bleMap"] boolValue], [[self.config objectForKey:@"bleMesh"] boolValue]);
+            BluetoothBridge_init();
+        }
+    }
+    else if (self.managerMode == FILTER_MODE){
         BluetoothBridge_init();
     }
-    else if (self.managerMode == MESH_MODE){
-         BluetoothBridge_init();
-    }
-    else if (self.managerMode == STANDART_MODE){
-         BluetoothBridge_init();
-    }
     
-      
+    
 }
 
 -(void) start{
@@ -346,25 +539,36 @@
             if (obj.type == BLE_PROVIDER)
             {
                 
-                 
+                
                 
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
                                                               target:self
                                                             selector:@selector(getCoordinates)
                                                             userInfo:nil
                                                              repeats:YES];
-                }}];
+            }
+            else  if (obj.type == SENSOR_PROVIDER)
+            {
+                
+                
+                
+                self.timer = [NSTimer scheduledTimerWithTimeInterval:self.time
+                                                              target:self
+                                                            selector:@selector(getCoordinates)
+                                                            userInfo:nil
+                                                             repeats:YES];
+            }}];
     }
     else{
         
         NSLog(@"Add the provider before calls the start method");
     }
-   
+    
     
 }
 
 -(void) stop{
-    
+    self.initSensorNavigator = NO;
     self.startProviderFlag = NO;
     [self.providers enumerateObjectsUsingBlock:^(MeasurementProvider*  _Nonnull obj, BOOL * _Nonnull stop) {
         [obj stop];
@@ -372,8 +576,18 @@
         {
             [self.timer  invalidate];
             self.timer = nil;
-     
-        }}];
+        }
+        if (obj.type == SENSOR_PROVIDER)
+        {
+            [self.timer  invalidate];
+            self.timer = nil;
+            if([[self.config objectForKey:@"sensorRSSIAveraging"] boolValue]||[[self.config objectForKey:@"sensorKalman"] boolValue]){
+                BluetoothBridge_stop();
+                KalmanBridge_stop();
+            }
+        }
+    }];
+    
 }
 
 -(void)deleteMesh{
@@ -389,58 +603,98 @@
 -(void)processEvent: (MeasurementEvent *) event{
     if (event.type == BLE_VALUE)
     {
-        std::string uuid = std::string([[NSString stringWithFormat:@"%@", event.beacon.proximityUUID] UTF8String]);
-        double timestamp = event.timestamp;
-        BluetoothBridge_proces(timestamp, uuid, [event.beacon.major intValue], [event.beacon.minor intValue], event.beacon.rssi);
         
-        
-    if (self.isStartLog)
-    {
-        NSString *time = [NSString stringWithFormat:@"%.3f",(timestamp -  self.startTimestamp)];
+        if([[self.config objectForKey:@"bleKalmanFilter"] boolValue]||[[self.config objectForKey:@"sensorKalman"] boolValue])
+        {
+            double timestamp = event.timestamp;
+            __block std::vector<Navigator::Beacons::BeaconReceivedData> bleBeacons;
+            [event.beacons enumerateObjectsUsingBlock:^(CLBeacon*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                std::string uuid = std::string([[NSString stringWithFormat:@"%@", obj.proximityUUID] UTF8String]);
+                Navigator::Beacons::BeaconUID uidStr(uuid,[obj.major intValue],[obj.minor intValue]);
+                Navigator::Beacons::BeaconReceivedData brd(timestamp, uidStr,obj.rssi);
+                bleBeacons.push_back(brd);
+            }];
+            KalmanBridge_process(bleBeacons);
+            
+        }
+        else
+        {
+            double timestamp = event.timestamp;
+            __block std::vector<Navigator::Beacons::BeaconReceivedData> bleBeacons;
+            [event.beacons enumerateObjectsUsingBlock:^(CLBeacon*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                std::string uuid = std::string([[NSString stringWithFormat:@"%@", obj.proximityUUID] UTF8String]);
+                Navigator::Beacons::BeaconUID uidStr(uuid,[obj.major intValue],[obj.minor intValue]);
+                
+                    Navigator::Beacons::BeaconReceivedData brd(timestamp, uidStr,obj.rssi);
+                    bleBeacons.push_back(brd);
 
-        NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
-                              @([time floatValue]),@"timestamp",
-                              @([event.beacon.major intValue]),@"major",
-                              @([event.beacon.minor intValue]),@"minor",
-                              @(event.beacon.proximity),@"proximity",
-                              [event.beacon.proximityUUID UUIDString],@"proximityUUID",
-                              @(event.beacon.accuracy),@"accuracy",
-                              @(event.beacon.rssi),@"rssi",nil];
-        [self.beaconLogs addObject:data];
+                
+            }];
+            BluetoothBridge_process(bleBeacons);
+            
+            
+        }
+        
+        
+        
+        if (self.isStartLog)
+        {
+            double timestamp = event.timestamp;
+            NSString *time = [NSString stringWithFormat:@"%.3f",(timestamp -  self.startTimestamp)];
+            
+            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @([time floatValue]),@"timestamp",
+                                  @([event.beacon.major intValue]),@"major",
+                                  @([event.beacon.minor intValue]),@"minor",
+                                  @(event.beacon.proximity),@"proximity",
+                                  [event.beacon.proximityUUID UUIDString],@"proximityUUID",
+                                  @(event.beacon.accuracy),@"accuracy",
+                                  @(event.beacon.rssi),@"rssi",nil];
+            if(data){
+                [self.beaconLogs addObject:data];
+            }
+        }
     }
-  }
     if (event.type == SENSOR_VALUE)
     {
-        float azimuth = (RADIANS_TO_DEGREES(event.motion.attitude.yaw))+90;
+        
+        float azimuth = (RADIANS_TO_DEGREES(event.motion.attitude.yaw))-0 +90;
         
         if (azimuth > 180) {
-            azimuth = azimuth -360;
+            azimuth =  -360 +azimuth;
         }
-        SensorBridge_proces(event.timestamp, event.accelerometerData.acceleration.x, event.accelerometerData.acceleration.y, event.accelerometerData.acceleration.z, RADIANS_TO_DEGREES(event.motion.attitude.pitch),  azimuth,  RADIANS_TO_DEGREES(event.motion.attitude.roll));
+        else if (azimuth < -180){
+            azimuth =  360 +azimuth;
+        }
+        
+        SensorBridge_process(event.timestamp, (event.accelerometerData.acceleration.x * -1), (event.accelerometerData.acceleration.y * -1), (event.accelerometerData.acceleration.z * -1), RADIANS_TO_DEGREES(event.motion.attitude.pitch),  azimuth,  RADIANS_TO_DEGREES(event.motion.attitude.roll));
         if (self.isStartLog)
             
         {
             if(self.initSensorNavigator){
-            NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  @(event.timestamp),@"timestamp",
-                                  @(event.accelerometerData.acceleration.x),@"x",
-                                  @(event.accelerometerData.acceleration.y),@"y",
-                                  @(event.accelerometerData.acceleration.z),@"z",
-                                  nil];
-            [self.acselLogs addObject:data];
-           
-            
-          
-            
-            NSDictionary *dataMouting = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         @(event.timestamp),@"timestamp",
-                                         @( RADIANS_TO_DEGREES(event.motion.attitude.pitch)),@"pitch",
-                                         @(azimuth),@"yaw",
-                                         @( RADIANS_TO_DEGREES(event.motion.attitude.roll)),@"roll",nil];
-             [self.moutingLogs addObject:dataMouting];
+                NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      @(event.timestamp),@"timestamp",
+                                      @(event.accelerometerData.acceleration.x),@"x",
+                                      @(event.accelerometerData.acceleration.y),@"y",
+                                      @(event.accelerometerData.acceleration.z),@"z",
+                                      nil];
+                if(data){
+                    [self.acselLogs addObject:data];
+                }
+                
+                
+                
+                NSDictionary *dataMouting = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             @(event.timestamp),@"timestamp",
+                                             @( RADIANS_TO_DEGREES(event.motion.attitude.pitch)),@"pitch",
+                                             @(azimuth),@"yaw",
+                                             @( RADIANS_TO_DEGREES(event.motion.attitude.roll)),@"roll",nil];
+                if(dataMouting){
+                    [self.moutingLogs addObject:dataMouting];
+                }
+            }
         }
-        }
-
+        
     }
 }
 

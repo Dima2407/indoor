@@ -15,4 +15,5 @@
 @property (weak, nonatomic) IBOutlet UISwitch *useMesh;
 @property (weak, nonatomic) IBOutlet UISwitch *onLogs;
 @property (weak, nonatomic) IBOutlet UIButton *sendLogButton;
+
 @end

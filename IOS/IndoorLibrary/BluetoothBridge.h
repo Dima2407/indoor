@@ -17,12 +17,12 @@
 
 
 #endif /* BluetoothBridge_hpp */
-typedef struct position
+typedef struct IndoorPosition
 {
     double x;
     double y;
     double z;
-} position;
+} IndoorPosition;
 
 
 //init Navigator
@@ -30,14 +30,6 @@ typedef struct position
 extern "C"
 #endif
 void BluetoothBridge_init();
-
-//set position
-#ifdef __cplusplus
-extern "C"
-#endif
-void BluetoothBridge_setPosition();
-
-
 
 //init beacon
 #ifdef __cplusplus
@@ -49,6 +41,11 @@ void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, doubl
 extern "C"
 #endif
 void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi);
+//proces data
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_process( const std::vector<Navigator::Beacons::BeaconReceivedData> beacons);
 //get position
 #ifdef __cplusplus
 extern "C"
@@ -68,7 +65,7 @@ void BluetoothBridge_setMaskTable(const std::vector<int> &mTable);
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_setDestination(struct position p );
+void BluetoothBridge_setDestination(IndoorPosition p);
 //realese mesh
 #ifdef __cplusplus
 extern "C"
@@ -83,7 +80,7 @@ void BluetoothBridge_readGraph(std::string graph, double scale );
 #ifdef __cplusplus
 extern "C"
 #endif
-void BluetoothBridge_getPositionFromGraph(std::vector<position> &position);
+void BluetoothBridge_getPositionFromGraph(std::vector<IndoorPosition> &pos);
 //get distance
 #ifdef __cplusplus
 extern "C"
@@ -99,3 +96,12 @@ bool BluetoothBridge_isInitialise();
 extern "C"
 #endif
 void BluetoothBridge_getInitialisePosition(double * output);
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges, bool useMeshMask);
+#ifdef __cplusplus
+extern "C"
+#endif
+void BluetoothBridge_stop();

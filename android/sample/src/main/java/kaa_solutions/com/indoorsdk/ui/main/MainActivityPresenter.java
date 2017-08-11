@@ -22,16 +22,16 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     public void init(IMainActivity view) {
         this.view = view;
         localManager = new IndoorLocationManager();
-        localManager.addProvider(view.getActivity(), MeasurementType.BLUETOOTH_VALUE);
-        localManager.addProvider(view.getActivity(), MeasurementType.GEO_VALUE);
-        localManager.addProvider(view.getActivity(), MeasurementType.SENSOR_VALUE);
-        localManager.addProvider(view.getActivity(), MeasurementType.WIFI_VALUE);
+        // localManager.addProvider(view.getActivity(), MeasurementType.BLUETOOTH_VALUE);
+        //localManager.addProvider(view.getActivity(), MeasurementType.GEO_VALUE);
+        //localManager.addProvider(view.getActivity(), MeasurementType.SENSOR_VALUE);
+        //localManager.addProvider(view.getActivity(), MeasurementType.WIFI_VALUE);
         localManager.setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
             public void onLocationChanged(PointF position, float[] route) {
 
             }
         });
-        localManager.start();
+        localManager.start(view.getActivity(), null);
     }
 }

@@ -2,7 +2,6 @@ package khpi.com.demo.ui.activity;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -14,17 +13,13 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Switch;
 
 import khpi.com.demo.R;
 import khpi.com.demo.core.SharedHelper;
-import khpi.com.demo.utils.PermissionUtil;
 
 public final class SettingsActivity extends GenericActivity {
 
@@ -42,6 +37,7 @@ public final class SettingsActivity extends GenericActivity {
     private Switch settingMapCorrSwitch;
     private Switch settingMeshCorrSwitch;
     private Switch settingWallCorrSwitch;
+    private Switch settingLoggerSwitch;
     private LinearLayout beaconModsLayout;
     private LinearLayout sensorModsLayout;
     private LinearLayout settingsWallCorrLayout;
@@ -297,6 +293,22 @@ public final class SettingsActivity extends GenericActivity {
                 } else {
                     settingWallCorrSwitch.setChecked(false);
                     getProjectApplication().getSharedHelper().setWallCoordinateCorrection(false);
+                }
+            }
+        });
+
+        settingLoggerSwitch = (Switch) findViewById(R.id.setting_logger_switch);
+        settingLoggerSwitch.setChecked(getProjectApplication().getSharedHelper().isLoggerEnable());
+        settingLoggerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    settingLoggerSwitch.setChecked(true);
+                    getProjectApplication().getSharedHelper().setLoggerEnable(true);
+                    Log.d("Switch", "onCheckedChanged: " + getProjectApplication().getSharedHelper().isLoggerEnable());
+                } else {
+                    settingLoggerSwitch.setChecked(false);
+                    getProjectApplication().getSharedHelper().setLoggerEnable(false);
                 }
             }
         });

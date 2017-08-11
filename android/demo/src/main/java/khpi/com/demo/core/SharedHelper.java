@@ -31,12 +31,22 @@ public final class SharedHelper {
     private static final String MESH_CORRECTION = "mesh correction";
     private static final String WALLS_CORRECTION = "walls correction";
 
+    public static final String LOGGER_ENABLE = "logger enable";
+
     private static final String MULTI_LATERATION_ENABLED = "multi lateration enabled";
 
     private final SharedPreferences sharedPreferences;
 
     SharedHelper(Context context) {
         sharedPreferences = context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+    }
+
+    public boolean isLoggerEnable() {
+        return sharedPreferences.getBoolean(LOGGER_ENABLE, false);
+    }
+
+    public void setLoggerEnable(boolean loggerEnable) {
+        sharedPreferences.edit().putBoolean(LOGGER_ENABLE, loggerEnable).apply();
     }
 
     public boolean useProduction() {
@@ -140,4 +150,6 @@ public final class SharedHelper {
     public void setMultiLaterationEnabled(boolean enabled) {
         sharedPreferences.edit().putBoolean(MULTI_LATERATION_ENABLED, enabled).apply();
     }
+
+
 }

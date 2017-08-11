@@ -3,9 +3,12 @@ package pro.i_it.indoor;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import pro.i_it.indoor.config.NativeConfigMap;
+import pro.i_it.indoor.events.MeasurementEvent;
 import pro.i_it.indoor.events.MeasurementType;
+import pro.i_it.indoor.logger.AndroidLoggableMeasurementTransfer;
 import pro.i_it.indoor.logger.LoggableLocationUpdateListener;
 import pro.i_it.indoor.providers.*;
 import pro.i_it.indoor.routing.IndoorRouter;
@@ -22,8 +25,14 @@ public class IndoorLocationManager {
     public static final int POSITION_REQUEST_DELAY = 700;
     private volatile boolean active  = false;
     private boolean initialized = false;
+    private boolean loggerEnable = false;
     private OnInitializationCompletedListener onInitializationCompletedListener;
     private OnBeaconsChangeListener onBeaconsChangeListener;
+
+    public void enableLogger() {
+        Log.d("LOGGER", "enableLogger: ");
+        loggerEnable = true;
+    }
 
     public void setOnBeaconsChangeListener(OnBeaconsChangeListener onBeaconsChangeListener) {
         this.onBeaconsChangeListener = onBeaconsChangeListener;
@@ -43,7 +52,6 @@ public class IndoorLocationManager {
     private Handler positionRequester;
 
     private Set<MeasurementProvider> providers;
-    private NativeConfigMap configuration;
     private final IndoorRouter router = new IndoorRouter();
 
     public IndoorLocationManager() {
@@ -93,14 +101,24 @@ public class IndoorLocationManager {
         }
     }
 
-    public void addProvider(Context context, MeasurementType type) {
-        this.addProvider(context, type, AndroidMeasurementTransfer.TRANSFER);
-        //this.addProvider(context, type, new AndroidLoggableMeasurementTransfer(new AndroidDebuggableMeasurementTransfer()));
-    }
-
-    public void start() {
+    public void start(Context context, NativeConfigMap configuration) {
         active = true;
         initialized = false;
+
+
+        MeasurementTransfer measurementTransfer = AndroidMeasurementTransfer.TRANSFER;
+        if (loggerEnable) {
+            measurementTransfer = new AndroidLoggableMeasurementTransfer(measurementTransfer);
+        }
+
+        if (configuration.getBoolean(NativeConfigMap.KEY_USE_BEACONS)) {
+            this.addProvider(context, MeasurementType.BLUETOOTH_VALUE,
+                    measurementTransfer);
+        }
+        if (configuration.getBoolean(NativeConfigMap.KEY_USE_SENSORS)) {
+            this.addProvider(context, MeasurementType.SENSOR_VALUE,
+                    measurementTransfer);
+        }
         for (MeasurementProvider provider : providers) {
             if (provider instanceof BluetoothMeasurementProvider) {
                 BluetoothMeasurementProvider blProvider = (BluetoothMeasurementProvider) provider;
@@ -115,11 +133,12 @@ public class IndoorLocationManager {
 
     public void stop() {
         initialized = false;
-        configuration = null;
         active = false;
+        loggerEnable = false;
         for (MeasurementProvider provider : providers) {
             provider.stop();
         }
+        providers.clear();
         onLocationUpdateListener = null;
         positionRequester.removeCallbacksAndMessages(null);
         nativeRelease();
@@ -135,11 +154,6 @@ public class IndoorLocationManager {
     private native void nativeRelease();
 
     private native void nativeTakeLastPositionWithDestination(IndoorRouter router);
-
-
-    public void setConfiguration(NativeConfigMap configuration) {
-        this.configuration = configuration;
-    }
 
     public void clearDestination() {
         router.clearDestination();

@@ -13,6 +13,27 @@ class FileLogger {
 
     private boolean logErrorOnce = true;
 
+    protected final void appendToFile(String name, String data) {
+        File f = fileOf(name);
+
+        try (FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            if (data.endsWith("\n")) {
+                bw.write(data);
+            } else {
+                bw.write(data);
+                bw.write("\n");
+            }
+            bw.flush();
+        } catch (IOException e) {
+            if (logErrorOnce) {
+                Log.w(FileLogger.class.getSimpleName(), "appendToFile: ", e);
+                logErrorOnce = false;
+            }
+        }
+    }
+
+
     protected final void appendToFile(String name, JSONObject data) {
         File f = fileOf(name);
         boolean firstRecord = !f.exists();

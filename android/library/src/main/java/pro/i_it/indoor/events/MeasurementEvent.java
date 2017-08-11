@@ -81,4 +81,12 @@ public class MeasurementEvent {
         }
         return new MeasurementEvent(MeasurementType.BLUETOOTH_VALUE, events);
     }
+
+    public MeasurementEvent[] getNested() {
+        return nested;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
 }

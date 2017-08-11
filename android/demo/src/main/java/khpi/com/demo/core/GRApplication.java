@@ -55,16 +55,8 @@ public final class GRApplication extends Application {
         orientationBridge = new OrientationFacade(this);
         getNetBridge().logIn(BuildConfig.USERNAME, BuildConfig.PASSWORD);
         mapCacheHelper = new MapCacheHelper(this,sharedHelper.useProduction() ? BuildConfig.PRODUCTION_SERVER_URL : BuildConfig.DEVELOPER_SERVER_URL);
+        localManager = new IndoorLocationManager();
     }
-
-    public void init(Context context){
-        if(localManager == null) {
-            localManager = new IndoorLocationManager();
-            localManager.addProvider(context, MeasurementType.BLUETOOTH_VALUE);
-            localManager.addProvider(context, MeasurementType.SENSOR_VALUE);
-        }
-    }
-
     private void clearApplicationData() {
         File cacheDirectory = getCacheDir();
         File applicationDirectory = new File(cacheDirectory.getParent());

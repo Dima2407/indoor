@@ -30,8 +30,6 @@ public final class MainActivity extends GenericActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final GRApplication application = (GRApplication) getApplication();
-        application.init(this);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

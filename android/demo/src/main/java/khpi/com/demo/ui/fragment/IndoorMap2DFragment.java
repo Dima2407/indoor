@@ -223,7 +223,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         configs.set(NativeConfigMap.KEY_GRAPH_PATH, FileUtil.getLocacPath(getActivity(), floor.getGraphPath()).getAbsolutePath());
         configs.set(NativeConfigMap.KEY_GRAPH_SCALE, 1.0);
 
-        getLocalManager().setConfiguration(configs);
 
         getLocalManager().setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
@@ -250,7 +249,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                         Toast.LENGTH_SHORT).show();
             }
         });
-        getLocalManager().start();
+        if (getSharedHelper().isLoggerEnable()) {
+            getLocalManager().enableLogger();
+        }
+        getLocalManager().start(getActivity(), configs);
     }
 
     @Override

@@ -17,13 +17,13 @@ namespace Navigator {
              * @brief sigmaX
              * The accuracy of the model describing the process
              */
-            double sigmaX = 0.1;
+            double sigmaX = 1.0;
 
             /**
              * @brief sigmaY
              * The accuracy of the model describing the process
              */
-            double sigmaY = 0.1;
+            double sigmaY = 1.0;
 
             /**
              * @brief alpha

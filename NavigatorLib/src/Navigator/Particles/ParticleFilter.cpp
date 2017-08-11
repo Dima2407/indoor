@@ -2,6 +2,9 @@
 // Created by  Oleksiy Grechnyev on 8/7/2017.
 //
 
+#include <iostream>
+#include <cstdio>
+
 #include "Navigator/Particles/ParticleFilter.h"
 
 namespace Navigator {
@@ -49,13 +52,16 @@ namespace Navigator {
             double sum = 0.0;
             for (int i = 0; i < particles.size(); ++i) {
                 if (allowMove(oldParticles[i], particles[i])) {
+                    // printf("pi = %lf %lf  z = %lf %lf \n", particles[i].x, particles[i].y, z.x, z.y);
                     weights[i] = gauss(particles[i], z);
+                    // printf("wi = %lf\n", weights[i]);
                     sum += weights[i];
                 } else {
                     weights[i] = 0;
                 }
             }
-            if (sum == 0) {
+            // printf("sum = %lf \n", sum);
+            if (sum < 1.0e-10) {
                 for (int i = 0; i < particles.size(); ++i) {
                     particles[i] = meshCorrect(particles[i]);
                     weights[i] = gauss(particles[i], z);
@@ -97,27 +103,24 @@ namespace Navigator {
         //===================================================
 
         void ParticleFilter::calcLastPosition() {
-            int sumX = 0;
-            int sumY = 0;
+            double sumX = 0;
+            double sumY = 0;
 
-            for (Math::Position2D iter : particles) {
+            for (const Math::Position2D & iter : particles) {
                 sumX += iter.x;
                 sumY += iter.y;
             }
 
-            lastPosition.x = sumX;
-            lastPosition.y = sumY;
+            lastPosition.x = sumX / config.numPart;
+            lastPosition.y = sumY / config.numPart;
         }
         //===================================================
 
         double ParticleFilter::gauss(const Math::Position2D &particle, const Math::Position2D &z) {
-            double expressionX = 1 / (config.sigmaX * std::sqrt(2 * M_PI));
-            double expressionY = 1 / (config.sigmaY * std::sqrt(2 * M_PI));
-            double degreeEforX = -(std::pow(particle.x - z.x, 2) / (2 * config.sigmaX * config.sigmaX));
-            double degreeEforY = -(std::pow(particle.y - z.y, 2) / (2 * config.sigmaY * config.sigmaY));
-            double weightX = expressionX * std::exp(degreeEforX);
-            double weightY = expressionY * std::exp(degreeEforY);
-            return weightX * weightY;
+            double expr = 1 / (config.sigmaX * config.sigmaY * 2 * M_PI) ;
+            double degX = std::pow(particle.x - z.x, 2) / (2 * config.sigmaX * config.sigmaX);
+            double degY = std::pow(particle.y - z.y, 2) / (2 * config.sigmaY * config.sigmaY);
+            return expr * std::exp(- degX - degY);
         }
 
     }

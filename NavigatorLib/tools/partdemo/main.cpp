@@ -123,7 +123,6 @@ int main(int argc, char *argv[]){
         if (i > 0)
             glob.imgMap.draw_line(pixelX(glob, p1old), pixelY(glob, p1old), 
                 pixelX(glob, p1), pixelY(glob, p1), cRed);
-        p1old = p1;        
                 
         // Calculate the simulated BLE position (exact + error)        
         Position2D pB = p1;
@@ -139,11 +138,14 @@ int main(int argc, char *argv[]){
             delta.x *= 1.0 + gaussA(randomEngine);
             delta.y *= 1.0 + gaussA(randomEngine);
         }
+        p1old = p1;        
         
         // Run the Particle filter
-        /*
         auto meshCorrect = [&glob](const Position2D &p)->Position2D{
-            return glob.rMesh->process(p);
+            if (glob.rMesh->checkBlack(p.x, p.y))
+                return glob.rMesh->process(p);
+            else 
+                return p;
         };
         auto allowMove = [&glob](const Position2D &p1, const Position2D &p2) -> bool {
             return  glob.rMesh->checkWall(p1.x, p1.y, p2.x, p2.y);
@@ -154,9 +156,11 @@ int main(int argc, char *argv[]){
             p2 = pB;
         } else {
             p2 = pFilter.process(delta, pB, allowMove, meshCorrect);
-        }*/
+        }
         
-        p2 = pB; // For now only !
+        // p2 = pB; // For now only !
+        
+        p2 = glob.rMesh->process(p2);
         
         // Display the green (calculated) path
         glob.imgMap.draw_circle(pixelX(glob, p2), pixelY(glob, p2), 2, cGreen);
@@ -168,19 +172,19 @@ int main(int argc, char *argv[]){
         // Calculate and Display particles
         imgFrame.assign(glob.imgMap);  // Copy to frame
         
-        /*
+        
         // Get particles from the filter
         const vector<Position2D> & particles = pFilter.getParticles();
-        */
+        
         
         // Simulated particles
-        vector<Position2D> particles;
+        /*vector<Position2D> particles;
         for (int j=0; j<20; ++j) {
             Position2D p = p1;
             p.x += gaussB(randomEngine)/2;
             p.y += gaussB(randomEngine)/2;
             particles.push_back(p);
-        }
+        }*/
         
         // Draw particles
         for (auto & p : particles) {
@@ -189,13 +193,21 @@ int main(int argc, char *argv[]){
             imgFrame.draw_circle(ix, iy, 1, cBlue);
         }
         
+        // cout << "Particles  for pB = " << pB.x << " " << pB.y << endl;
+        // for (const auto & p:particles)
+            // cout << p.x << " " << p.y << endl;
+        
         // Display the frame        
         mainWin.display(imgFrame); // Display the image
-        this_thread::sleep_for(chrono::milliseconds(200));      
+        // this_thread::sleep_for(chrono::milliseconds(200));      
         
-        /*mainWin.wait();
-        while (!mainWin.is_key())
-            mainWin.wait();*/
+        for(;;){
+            mainWin.wait();
+            if (mainWin.is_closed())
+                exit(0);
+            else if (mainWin.is_key())
+                break;
+        }
     }
     
     mainWin.wait();    

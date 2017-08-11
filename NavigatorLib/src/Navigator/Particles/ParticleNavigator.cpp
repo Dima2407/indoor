@@ -20,7 +20,7 @@ namespace Navigator {
 
             // Lambdas
             auto meshCorrect = [this](const Position2D &p) -> Position2D{
-                if (rMesh==nullptr)
+                if (rMesh==nullptr || !rMesh->checkBlack(p.x, p.y))
                     return p; 
                 else if (config.useWalls || config.useMeshMask)  // Check mask
                     return  rMesh->process(p);
@@ -58,7 +58,7 @@ namespace Navigator {
             if (isnan(delta.x) || isnan(delta.y))
                 throw runtime_error("ParticleNavigator : ACC gives NAN !");
 
-            printf("delta = %lf %lf \n", delta.x, delta.y);
+            // printf("delta = %lf %lf \n", delta.x, delta.y);
             // Don't run the filter if delta is zero
             if (delta.abs() < 1.e-10)
                 return lastPosition;

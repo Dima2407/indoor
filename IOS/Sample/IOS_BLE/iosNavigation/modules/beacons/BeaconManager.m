@@ -197,14 +197,12 @@
 }
 #pragma mark - Set Graph -
 -(void) setGraph:(FloorModel*)floor withGraph:(NSString*)gpaphJsonString{
-    //NSLog(@"%@",gpaphJsonString);
     NSString* parsedString = [gpaphJsonString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
     if (parsedString == nil)
     {
         NSLog(@"Graph is nil");
     }
     else{
-          //  NSLog(@"parsedString ----------------%@",parsedString);
         [self.config setValue:@(1) forKey:@"useGraph"];
         [self.config setValue:@(floor.pixelSize) forKey:@"scale"];
         [self.config setValue:parsedString forKey:@"graph"];

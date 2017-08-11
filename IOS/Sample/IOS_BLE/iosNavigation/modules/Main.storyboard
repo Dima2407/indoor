@@ -420,7 +420,7 @@
                         <viewControllerLayoutGuide type="top" id="1OD-tE-ECf"/>
                         <viewControllerLayoutGuide type="bottom" id="Xqf-Rl-Mqe"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Wyg-iG-Usl">
+                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="Wyg-iG-Usl">
                         <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1004,7 +1004,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <switch opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="h5o-d8-bbX">
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h5o-d8-bbX">
                                             <rect key="frame" x="305" y="39" width="51" height="31"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="49" id="F0w-ms-Cey"/>
@@ -1013,7 +1013,7 @@
                                                 <constraint firstAttribute="height" constant="31" id="gDH-n9-Lgl"/>
                                             </constraints>
                                             <connections>
-                                                <action selector="BLESwitchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="Nf4-de-GzK"/>
+                                                <action selector="BLESwitchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="oDy-Id-vkq"/>
                                                 <action selector="switchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="Tfw-lG-htV"/>
                                             </connections>
                                         </switch>
@@ -1144,14 +1144,14 @@
                                                 <action selector="switchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="sGl-UJ-u7Q"/>
                                             </connections>
                                         </switch>
-                                        <switch opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3T1-ve-zhG">
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3T1-ve-zhG">
                                             <rect key="frame" x="305" y="154" width="51" height="31"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="31" id="COK-8Z-h65"/>
                                                 <constraint firstAttribute="width" constant="49" id="Kds-2w-cVX"/>
                                             </constraints>
                                             <connections>
-                                                <action selector="SensorSwitchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="dFE-fL-bCb"/>
+                                                <action selector="SensorSwitchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="tm9-0U-zTU"/>
                                                 <action selector="switchChanged:" destination="8mY-qX-4Jg" eventType="valueChanged" id="N6c-lt-lZS"/>
                                             </connections>
                                         </switch>
@@ -1559,6 +1559,7 @@
                         <outlet property="BLESettingsView" destination="wGJ-qI-u6G" id="pBR-Z2-ypN"/>
                         <outlet property="BLETrilatirationSwitch" destination="aGE-yZ-K8f" id="vuY-X3-k3Z"/>
                         <outlet property="BLEWallsSwitch" destination="tYP-7p-XVV" id="jfs-Ck-jVo"/>
+                        <outlet property="SensorKalmanSwitch" destination="3T1-ve-zhG" id="UlM-wh-nJZ"/>
                         <outlet property="SensorManual" destination="Pw5-5f-krn" id="PjK-6S-If1"/>
                         <outlet property="SensorMapCorrectionSwitch" destination="SAz-WG-STA" id="9dW-Fb-fVB"/>
                         <outlet property="SensorMeshCorrectionSwitch" destination="NTc-AH-1dj" id="FZd-AW-lXD"/>
@@ -1583,7 +1584,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2rD-uj-C1g" userLabel="Indoor Map Nav" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" image="ic_explore.png" id="DSj-e6-qUF"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ei0-ml-Ehy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Ei0-ml-Ehy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

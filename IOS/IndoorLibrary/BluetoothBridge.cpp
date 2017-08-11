@@ -36,7 +36,7 @@ extern "C"
 void BluetoothBridge_initBeacon(std::string uuidstr, int major, int minor, double txPower, double damp, double x, double y, double z){
     Navigator::Beacons::Beacon beacon(Navigator::Beacons::BeaconUID(uuidstr,major,minor), txPower, damp, Navigator::Math::Position3D(x,y,z), "");
     if(navigator){
-    navigator->addBeacon(beacon);
+        navigator->addBeacon(beacon);
     }
     
 }
@@ -47,20 +47,18 @@ void BluetoothBridge_proces(double timestamp, std::string uuidStr, int major, in
     Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
     // Process it
     if(navigator){
-         navigator->process(brd);
+        navigator->process(brd);
     }
     
 }
 extern "C"
 void BluetoothBridge_process( const std::vector<Navigator::Beacons::BeaconReceivedData> beacons) {
     // Process it
-    if(navigator){
-        //for (auto i: beacons)
-           // printf("timestamp = %f, rssi = %f,count = %lu ",i.timestamp, i.rssi, beacons.size());
-        Navigator::Math::Position3D outPos = navigator->process(beacons);
-        }
-    
+    if(navigator != NULL){
+    navigator->process(beacons);
+    }
 }
+
 extern "C"
 void BluetoothBridge_getLastPosition(double * output){
     
@@ -97,8 +95,8 @@ void BluetoothBridge_readGraph(std::string graph, double scale ){
     mapScale = scale;
     if (gr == NULL)
     {
-      
-   // gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
+        
+        // gr =  std::make_shared<Navigator::Dijkstra::PointGraph>(graph, scale);
         
     }
 }
@@ -130,7 +128,7 @@ void BluetoothBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
             lastPosition.y = lastPosition.y / mapScale;
             
             int startVertext = gr->findNearestVertex(Navigator::Math::Position3D(navigator->getLastPosition()));
-            dictance =  gr->dijkstraP(startVertext, destinationPosition, pointPath);
+            dictance = gr->dijkstraP(startVertext, destinationPosition, pointPath);
             
             for (int i = 0; i < pointPath.size(); i++) {
                 Navigator::Math::Position3D coordinates = pointPath[i];

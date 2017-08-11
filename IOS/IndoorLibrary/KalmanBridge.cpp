@@ -10,7 +10,8 @@
 std::shared_ptr<Navigator::Beacons::KalmanBeaconNavigator> kalmanNavigator;
 std::shared_ptr<Navigator::Mesh::RectanMesh> mesh;
 std::shared_ptr<Navigator::Dijkstra::PointGraph> gr;
-Navigator::Beacons::StandardBeaconNavigatorConfig conf;
+Navigator::Beacons::KalmanBeaconNavigatorConfig conf;
+Navigator::Math::Kalman::KalmanConfig filterConfig;
 int destinationPosition;
 double mapScale;
 double dictance;
@@ -19,12 +20,13 @@ extern "C"
 void KalmanBridge_init() {
     if (mesh == nullptr)
     {
-        kalmanNavigator = std::make_shared<Navigator::Beacons::KalmanBeaconNavigator>(nullptr,true,conf);
-        printf("Create Navigator");
+        kalmanNavigator = std::make_shared<Navigator::Beacons::KalmanBeaconNavigator>(nullptr,conf);
+        printf("Create Kalman Navigator");
     }
     else{
-        kalmanNavigator = std::make_shared<Navigator::Beacons::KalmanBeaconNavigator>(mesh,true,conf);
-        printf("Create Mesh Navigator");
+         Navigator::Math::Kalman::KalmanConfig filterConfig;
+        kalmanNavigator = std::make_shared<Navigator::Beacons::KalmanBeaconNavigator>(mesh,conf,filterConfig);
+        printf("Create Kalman Mesh Navigator");
         
     }
     
@@ -33,28 +35,21 @@ void KalmanBridge_init() {
 extern "C"
 void KalmanBridge_initBeacon(std::string uuidstr, int major, int minor, double txPower, double damp, double x, double y, double z){
     Navigator::Beacons::Beacon beacon(Navigator::Beacons::BeaconUID(uuidstr,major,minor), txPower, damp, Navigator::Math::Position3D(x,y,z), "");
+  
     if(kalmanNavigator){
+        
         kalmanNavigator->addBeacon(beacon);
     }
     
 }
 
-extern "C"
-void KalmanBridge_proces(double timestamp, std::string uuidStr, int major, int minor, double rssi) {
-    Navigator::Beacons::BeaconUID uuid(uuidStr,major,minor);
-    Navigator::Beacons::BeaconReceivedData brd(timestamp, uuid, rssi);
-    // Process it
-    if(kalmanNavigator){
-        kalmanNavigator->process(brd);
-    }
-}
+
 extern "C"
 void KalmanBridge_process( const std::vector<Navigator::Beacons::BeaconReceivedData> beacons) {
     // Process it
     if(kalmanNavigator){
-        //for (auto i: beacons)
-        // printf("timestamp = %f, rssi = %f,count = %lu ",i.timestamp, i.rssi, beacons.size());
-        Navigator::Math::Position3D outPos = kalmanNavigator->process(beacons);
+       
+       kalmanNavigator->process(beacons);
     }
     
 }
@@ -100,7 +95,7 @@ void BluetoothBridge_readGraph(std::string graph, double scale ){
     }
 }
 extern "C"
-void KalmanBridge_setDestination(IndoorPosition p ){
+void KalmanBridge_setDestination(kalmanPosition p ){
     if (gr==NULL)
     {
         printf("Set graph first");
@@ -112,7 +107,7 @@ void KalmanBridge_setDestination(IndoorPosition p ){
 }
 
 extern "C"
-void KalmanBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
+void KalmanBridge_getPositionFromGraph(std::vector<kalmanPosition> &way){
     if (KalmanBridge_isInitialise())
     {
         
@@ -126,13 +121,13 @@ void KalmanBridge_getPositionFromGraph(std::vector<IndoorPosition> &way){
             lastPosition.x = lastPosition.x / mapScale;
             lastPosition.y = lastPosition.y / mapScale;
             
-            int startVertext = gr->findNearestVertex(Navigator::Math::Position3D(navigator->getLastPosition()));
+            int startVertext = gr->findNearestVertex(Navigator::Math::Position3D(kalmanNavigator->getLastPosition()));
             dictance =  gr->dijkstraP(startVertext, destinationPosition, pointPath);
             
             for (int i = 0; i < pointPath.size(); i++) {
                 Navigator::Math::Position3D coordinates = pointPath[i];
                 
-                IndoorPosition p = {
+                kalmanPosition p = {
                     .x = static_cast<double>(coordinates.x),
                     .y = static_cast<double>(coordinates.y)
                 };
@@ -166,12 +161,14 @@ bool KalmanBridge_isInitialise(){
 
 extern "C"
 void KalmanBridge_getInitialisePosition(double * output){
-    Navigator::Math::Position3D outPos =  kalmanNavigator->getInitPosition();
+    if (KalmanBridge_isInitialise())
+    {
+    Navigator::Math::Position3D outPos =  kalmanNavigator->getLastPosition();
     if(!std::isnan(outPos.x) && !std::isnan(outPos.y)){
         output[0] = outPos.x;
         output[1] = outPos.y;
     }
-    
+    }
     
 }
 extern "C"
@@ -180,9 +177,6 @@ void KalmanBridge_setConfig(bool useInit, bool use3DTrilat, bool useMapEdges, bo
     if (use3DTrilat)
     {
         conf.useNearest = 0;
-    }
-    if(useInit){
-        conf.useInit = true;
     }
     conf.useMeshMask = useMeshMask;
     conf.useMapEdges = useMapEdges;

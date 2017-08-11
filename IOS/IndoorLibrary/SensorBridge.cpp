@@ -83,7 +83,6 @@ void SensorBridge_setAccelConfig(int orientationAngle, bool useFilter, bool useM
     config.useMapEdges = useMapEdges;
     config.useWalls = useWalls;
     config.useMeshMask = useMeshMask;
-   // printf("porog-----%f\n",config.accThreshold);
 
     
     

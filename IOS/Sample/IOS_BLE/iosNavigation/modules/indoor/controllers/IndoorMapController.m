@@ -261,7 +261,7 @@
 #pragma mark - Call BeaconManager -
 -(void) callBeaconManager{
     [[BeaconManager sharedManager] startBeacon];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBLENavigationSwitch] || [[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging])
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBLENavigationSwitch] || [[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging] ||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorKalmanSwitch])
     {
         [[BeaconManager sharedManager] setBeaconMap:self.floor withBeaconData:self.floor.beacons];
     }
@@ -422,7 +422,7 @@
 #pragma mark - BeaconManagerDelegate -
 -(void)currentLocation:(CGPoint)location{
  
-    if([[NSUserDefaults standardUserDefaults] boolForKey:kBLECircleSwitch]||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging]){
+    if([[NSUserDefaults standardUserDefaults] boolForKey:kBLECircleSwitch]||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorRSSIAveraging]||[[NSUserDefaults standardUserDefaults] boolForKey:kSensorKalmanSwitch]){
         if (CGPointEqualToPoint(location, CGPointZero))
         {
             

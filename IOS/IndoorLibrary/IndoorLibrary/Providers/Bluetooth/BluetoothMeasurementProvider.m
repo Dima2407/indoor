@@ -85,22 +85,22 @@
 #pragma mark - CLLocationManagerDelegate -
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region{
     NSMutableArray *indoorBeacons = [NSMutableArray new];
-    [self.beaconsUUIDs enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    //[self.beaconsUUIDs enumerateObjectsUsingBlock:^(NSString*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:obj];
+        NSUUID *beaconUUID = [[NSUUID alloc]initWithUUIDString:[self.beaconsUUIDs objectAtIndex:0]];
         for(CLBeacon *beacon in beacons){
             if([beacon.proximityUUID isEqual:beaconUUID]){
                 
 //                MeasurementEvent * event =[[MeasurementEvent alloc] initWithBeacon:beacon];
 //                [self.transfer deliver:event];
-                
+               
                 [indoorBeacons addObject:beacon];
-                
             }
             MeasurementEvent * event = [[MeasurementEvent alloc] initWithBeacons:[indoorBeacons copy]];
+           
             [self.transfer deliver:event];
         }
-    }];
+   // }];
 
     
     

@@ -18,10 +18,36 @@ namespace Navigator {
             if (isnan(z.x) || isnan(z.y))
                 throw runtime_error("ParticleNavigator : BLE gives NAN !");
 
+            // Lambdas
+            auto meshCorrect = [this](const Position2D &p) -> Position2D{
+                if (rMesh==nullptr)
+                    return p; 
+                else if (config.useWalls || config.useMeshMask)  // Check mask
+                    return  rMesh->process(p);
+                else if (config.useMapEdges)  // Check map edges only
+                    return  rMesh->checkEdges(p);
+                else
+                    return (Position2D)p; 
+            };
+            
+            auto allowMove = [this](const Position2D &p1, const Position2D &p2) -> bool {
+                if (rMesh==nullptr)
+                    return true; // Always allowed
+                else if (config.useWalls)  // Check walls+mask (slower)
+                    return  !rMesh->checkWall(p1.x, p1.y, p2.x, p2.y);
+                else if (config.useMeshMask)  // Check endpoints only (faster)
+                    return !rMesh->checkBlack(p1.x, p1.y) && !rMesh->checkBlack(p2.x, p2.y);
+                else if (config.useMapEdges)  // Check map edges only
+                    return !rMesh->isOutsideMap(p1.x, p1.y) && !rMesh->isOutsideMap(p2.x, p2.y);
+                else
+                    return true; // Always allowed
+            };
+            
+            // Initialize
             if (!isInitialized) {
                 // Initialize the particle filter
                 isInitialized = true;
-                pFilter.initialize(z);
+                pFilter.initialize(z, meshCorrect);
                 aNav->getResetDelta();  // Start delta from this time point, important !
                 lastPosition = postProcess(z); // Mesh + mask
                 return lastPosition;
@@ -38,19 +64,7 @@ namespace Navigator {
                 return lastPosition;
 
             // One step of the particle filter, with wall detection
-            Position2D result = pFilter.process(delta, z, [this](const Math::Position2D &p1,
-                                                                 const Math::Position2D &p2) -> bool {
-                if (rMesh==nullptr)
-                    return true; // Always allowed
-                else if (config.useWalls)  // Check walls+mask (slower)
-                    return  !rMesh->checkWall(p1.x, p1.y, p2.x, p2.y);
-                else if (config.useMeshMask)  // Check endpoints only (faster)
-                    return !rMesh->checkBlack(p1.x, p1.y) && !rMesh->checkBlack(p2.x, p2.y);
-                else if (config.useMapEdges)  // Check map edges only
-                    return !rMesh->isOutsideMap(p1.x, p1.y) && !rMesh->isOutsideMap(p2.x, p2.y);
-                else
-                    return true; // Always allowed
-            });
+            Position2D result = pFilter.process(delta, z, allowMove, meshCorrect);
 
             lastPosition = postProcess(result); // Mesh + mask
             return lastPosition;

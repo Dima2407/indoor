@@ -141,14 +141,19 @@ int main(int argc, char *argv[]){
         }
         
         // Run the Particle filter
-        /*if (i==0) {
-            pFilter.initialize(pB);
+        /*
+        auto meshCorrect = [&glob](const Position2D &p)->Position2D{
+            return glob.rMesh->process(p);
+        };
+        auto allowMove = [&glob](const Position2D &p1, const Position2D &p2) -> bool {
+            return  glob.rMesh->checkWall(p1.x, p1.y, p2.x, p2.y);
+        };
+        
+        if (i==0) {
+            pFilter.initialize(pB, meshCorrect);
             p2 = pB;
         } else {
-            p2 = pFilter.process(delta, pB, [&glob](const Position2D &p1,
-                                                                 const Position2D &p2) -> bool {
-                    return  glob.rMesh->checkWall(p1.x, p1.y, p2.x, p2.y);
-            });
+            p2 = pFilter.process(delta, pB, allowMove, meshCorrect);
         }*/
         
         p2 = pB; // For now only !

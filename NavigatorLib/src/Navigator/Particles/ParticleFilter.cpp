@@ -8,7 +8,8 @@ namespace Navigator {
     namespace Particles {
 
         //===================================================
-        void ParticleFilter::initialize(const Math::Position2D &pos) {
+        void ParticleFilter::initialize(const Math::Position2D &pos,
+                            const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect) {
             // TODO implement seeding particles, fills vector 'particles' with positions
             // Input : pos
             // Output : particles
@@ -17,7 +18,8 @@ namespace Navigator {
 
         Math::Position2D &ParticleFilter::process(const Math::Position2D &delta, const Math::Position2D &z,
                                                   const std::function<bool(const Math::Position2D &,
-                                                                           const Math::Position2D &)> &allowMove) {
+                                                                           const Math::Position2D &)> &allowMove,
+                                       const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect) {
 
             // This is fine, don't change
             moveParticles(delta);

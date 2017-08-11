@@ -25,7 +25,8 @@ namespace Navigator {
             }
 
             /// Initialize with a position (seed particles)
-            void initialize(const Math::Position2D &pos);
+            void initialize(const Math::Position2D &pos,
+                            const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect);
 
 
             /**  @brief  Process one step of the particle filter aglorithm
@@ -38,7 +39,8 @@ namespace Navigator {
             Math::Position2D & process(const Math::Position2D & delta,
                                        const Math::Position2D & z,
                                        const std::function<bool(const Math::Position2D &,
-                                                                const Math::Position2D &)> & allowMove
+                                                                const Math::Position2D &)> & allowMove,
+                                       const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect
                                        );
 
             const Math::Position2D &getLastPosition() const {

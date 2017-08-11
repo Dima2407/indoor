@@ -2,6 +2,9 @@
 // Created by  Oleksiy Grechnyev on 8/7/2017.
 //
 
+#include <iostream>
+#include <cstdio>
+
 #include "Navigator/Particles/ParticleFilter.h"
 
 namespace Navigator {
@@ -10,20 +13,22 @@ namespace Navigator {
         //===================================================
         void ParticleFilter::initialize(const Math::Position2D &pos,
                             const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect) {
-            // TODO implement seeding particles, fills vector 'particles' with positions
-            // Input : pos
-            // Output : particles
+            for (auto& iter : particles) {
+                iter.x = pos.x + randRange(-config.alpha, config.alpha);
+                iter.y = pos.x + randRange(-config.alpha, config.alpha);
+                iter = meshCorrect(iter);
+            }
         }
         //===================================================
 
-        Math::Position2D &ParticleFilter::process(const Math::Position2D &delta, const Math::Position2D &z,
+        Math::Position2D &ParticleFilter::process(const Math::Position2D &delta,
+                                                  const Math::Position2D &z,
                                                   const std::function<bool(const Math::Position2D &,
-                                                                           const Math::Position2D &)> &allowMove,
+                                                  const Math::Position2D &)> &allowMove,
                                        const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect) {
-
             // This is fine, don't change
             moveParticles(delta);
-            calcWeights(z, allowMove);
+            calcWeights(z, allowMove, meshCorrect);
             resample();
             calcLastPosition();
 
@@ -32,47 +37,44 @@ namespace Navigator {
         //===================================================
 
         void ParticleFilter::moveParticles(const Math::Position2D &delta) {
-            // TODO move particles to the new position using delta (position shift from accel)
-            // and adding a random value
-            // Input: particles, delta
-            // Output : particles
             oldParticles = particles;
-
             for (int i = 0; i < particles.size(); ++i) {
-                particles[i].x = oldParticles[i].x + delta.x + randNorm(config.sigma);
-                particles[i].y = oldParticles[i].y + delta.y + randNorm(config.sigma);
+                particles[i].x = oldParticles[i].x + delta.x + randNorm(config.sigmaX);
+                particles[i].y = oldParticles[i].y + delta.y + randNorm(config.sigmaY);
             }
         }
         //===================================================
 
-        void ParticleFilter::calcWeights(const Math::Position2D &z, const std::function<bool(const Math::Position2D &,
-                                                                                             const Math::Position2D &)> &allowMove) {
-            // TODO calculate particle weights using z (BLE position) and allowMove
-            // Input: particles, z, allowMove
-            // Output : weights
-            double sum = 0;
+        void ParticleFilter::calcWeights(const Math::Position2D &z,
+                                         const std::function<bool(const Math::Position2D &,
+                                         const Math::Position2D &)> &allowMove,
+                                         const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect) {
+            double sum = 0.0;
             for (int i = 0; i < particles.size(); ++i) {
                 if (allowMove(oldParticles[i], particles[i])) {
-                    weights[i] = gause(particles[i], z);
+                    // printf("pi = %lf %lf  z = %lf %lf \n", particles[i].x, particles[i].y, z.x, z.y);
+                    weights[i] = gauss(particles[i], z);
+                    // printf("wi = %lf\n", weights[i]);
                     sum += weights[i];
                 } else {
                     weights[i] = 0;
                 }
             }
-
-            for (auto iter : weights) {
+            // printf("sum = %lf \n", sum);
+            if (sum < 1.0e-10) {
+                for (int i = 0; i < particles.size(); ++i) {
+                    particles[i] = meshCorrect(particles[i]);
+                    weights[i] = gauss(particles[i], z);
+                    sum += weights[i];
+                }
+            }
+            for (auto &iter : weights) {
                 iter /= sum;
             }
         }
         //===================================================
 
         void ParticleFilter::resample() {
-            // TODO resample particles
-            // Input : particles, weights
-            // Output : particles
-
-            // Note: you will need another vector newParticles, and something like (in the end)
-            //  particles=newParticles;
             std::vector<Math::Position2D> newParticles;
             double maxWeight = 0;
             for (double iter :weights) {
@@ -81,59 +83,44 @@ namespace Navigator {
                 }
             }
 
-            bool start = true;
-            double beta = randRange(0, 2 * maxWeight);
-            while (true) {
-                for (int i = 0; i < weights.size(); ++i) {
-                    if (start) {                                ///  entry condition
-                        i = randInt(weights.size());
-                        start = false;
-                    }
-
-                    if (weights[i] > 0) {
-                        if (beta > weights[i]) {
-                            beta -= weights[i];
-                        } else {
-                           newParticles.push_back(particles[i]);
-                           beta = randRange(0, 2 * maxWeight);
-                           i--;
+            int i = randInt(weights.size() - 1);
+            for (int j = 0; j < weights.size(); ++j) {
+                double beta = randRange(0, 2 * maxWeight);
+                while (true) {
+                    if (beta > weights[i]) {
+                        beta -= weights[i];
+                        if (++i == weights.size()) {
+                            i = 0;
                         }
-                    }
-
-                    if (newParticles.size() == weights.size()) { ///  exit condition
-                        goto out;
+                    } else {
+                       newParticles.push_back(particles[i]);
+                       break;
                     }
                 }
             }
-            out:
             particles = newParticles;
         }
         //===================================================
 
         void ParticleFilter::calcLastPosition() {
-            // TODO calculate the position (average over particles)
-            // Input : particles
-            // Output : lastPosition
-            int sumX = 0;
-            int sumY = 0;
+            double sumX = 0;
+            double sumY = 0;
 
-            for (Math::Position2D iter : particles) {
+            for (const Math::Position2D & iter : particles) {
                 sumX += iter.x;
                 sumY += iter.y;
             }
 
-            lastPosition.x = sumX;
-            lastPosition.y = sumY;
+            lastPosition.x = sumX / config.numPart;
+            lastPosition.y = sumY / config.numPart;
         }
         //===================================================
 
-        double ParticleFilter::gause(const Math::Position2D &particle, const Math::Position2D &z) {
-            double expression = 1 / (config.sigma * std::sqrt(2 * M_PI));
-            double degreeEforX = -(std::pow(particle.x - z.x, 2) / (2 * config.sigma * config.sigma));
-            double degreeEforY = -(std::pow(particle.y - z.y, 2) / (2 * config.sigma * config.sigma));
-            double weightX = expression * std::pow(M_E, degreeEforX);
-            double weightY = expression * std::pow(M_E, degreeEforY);
-            return weightX * weightY;
+        double ParticleFilter::gauss(const Math::Position2D &particle, const Math::Position2D &z) {
+            double expr = 1 / (config.sigmaX * config.sigmaY * 2 * M_PI) ;
+            double degX = std::pow(particle.x - z.x, 2) / (2 * config.sigmaX * config.sigmaX);
+            double degY = std::pow(particle.y - z.y, 2) / (2 * config.sigmaY * config.sigmaY);
+            return expr * std::exp(- degX - degY);
         }
 
     }

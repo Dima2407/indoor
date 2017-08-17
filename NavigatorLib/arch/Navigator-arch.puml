@@ -18,7 +18,7 @@ class "**TrilatBeaconNavigator**" as TrilatBeaconNavigator {
 ..
 - beaconTimeout : double
 - use3DTrilat : bool
-- useNearest : unsigned
+- useStrongest : unsigned
 --
 + TrilatBeaconNavigator(rssiFilterFactory : const std::shared_ptr<IFilterFactory> &,
                distanceFilterFactory : const std::shared_ptr<IFilterFactory> &)

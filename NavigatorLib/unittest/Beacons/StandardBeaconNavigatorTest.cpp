@@ -35,7 +35,7 @@ namespace NaviTest {
                     make_shared<NoFilterFactory>()
             );
 
-            trNav1.setUseNearest(3);
+            trNav1.setUseStrongest(3);
 
             // trNav2: The Android after-init config
             TrilatBeaconNavigator trNav2(
@@ -44,7 +44,7 @@ namespace NaviTest {
             );
 
             trNav2.setBeaconTimeout(1.5);
-            trNav2.setUseNearest(3);
+            trNav2.setUseStrongest(3);
 
             // Now let's create some beacons and add them
             const Beacon beacons[] = {

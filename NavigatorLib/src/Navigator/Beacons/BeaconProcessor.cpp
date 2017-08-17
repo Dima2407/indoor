@@ -14,6 +14,8 @@ namespace Navigator {
             if (rssiFilter != nullptr) // Apply rssi filter if defined
                 rssiPair = rssiFilter->process(rssiPair);
 
+            lastRssi = rssiPair.val; // Save RSSI
+
             // Calculate raw distance from the filtered RSSI
             double distance = calculateDistance(rssiPair.val);
 

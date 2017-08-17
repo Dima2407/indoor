@@ -131,6 +131,10 @@ namespace Navigator {
                 return lastTimeStamp;
             }
 
+            double getLastRssi() const {
+                return lastRssi;
+            }
+
             double getLastDistance() const {
                 return lastDistance;
             }
@@ -185,6 +189,9 @@ namespace Navigator {
 
             /// The last distance calculated
             double lastDistance = nan("");
+
+            /// The last filtered RSSI
+            double lastRssi = nan("");
 
             /// Is the beacon active (has last distance ,timestamp) ?
             bool active = false;

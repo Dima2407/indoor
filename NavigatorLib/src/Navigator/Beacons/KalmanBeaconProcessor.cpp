@@ -15,6 +15,8 @@ double KalmanBeaconProcessor::processOnlyPredict(double timeStamp)
     // Filter rssi
     IFilter::Value rssiPair = ((KalmanFilter &)(*rssiFilter)).processOnlyPredict(timeStamp);
 
+    lastRssi = rssiPair.val; // Save rssi
+
     // Calculate raw distance from the filtered RSSI
     double distance = calculateDistance(rssiPair.val);
     lastDistance = distance; // Save distance but NOT timestamp !

@@ -67,6 +67,10 @@ public: // ====== Methods
         return true;
     }
 
+    const std::vector<BeaconUID> &getLastTrilatUids() const {
+        return lastTrilatUids;
+    }
+
 private: //========= Methods
 
     /// Run the trilateration once based on current active beacons
@@ -96,6 +100,9 @@ private: //========= Data
 
     /// Last located position
     Math::Position3D lastPosition = Math::Position3D();
+
+    /// Beacons that took part in the latest trilateration
+    std::vector <BeaconUID> lastTrilatUids;
 };
 
 }

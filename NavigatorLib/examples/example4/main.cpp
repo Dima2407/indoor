@@ -72,7 +72,7 @@ int main() {
     KalmanConfig filterConfig;
 
     // Some possible options, these are the defaults
-    //    config.useNearest = 3;  // 3 = trilat, 0 = multilat
+    //    config.useStrongest = 3;  // 3 = trilat, 0 = multilat
     //    config.useMeshMask = true;
     //    config.useMapEdges = true;
 

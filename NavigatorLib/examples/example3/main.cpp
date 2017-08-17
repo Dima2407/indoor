@@ -88,7 +88,7 @@ int main() {
     StandardBeaconNavigatorConfig config;
 
     // Some possible options, these are the defaults
-//    config.useNearest = 3;  // 3 = trilat, 0 = multilat
+//    config.useStrongest = 3;  // 3 = trilat, 0 = multilat
 //    config.useInit = true;
 //    config.useMeshMask = true;
 //    config.useMapEdges = true;

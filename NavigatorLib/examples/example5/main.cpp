@@ -56,6 +56,9 @@ int main() {
     };
     bNav->addBeacons(beacons);
 
+    for (const Beacon &b: beacons)
+        cout << "Beacon = " << b.getUid() << endl;
+
     /* 3) Create and accel navigator with some starting point,
      * starting point could come from beacon navigation*/
     AccelConfig aConfig;

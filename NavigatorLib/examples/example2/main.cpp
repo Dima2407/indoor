@@ -67,7 +67,7 @@ int main() {
 
     // Max number of nearest beacons to use on each trilateration
     // 0 = unlimited, default = 0
-    navigator.setUseNearest(3);
+    navigator.setUseStrongest(3);
 
     /* Create 4 beacons
      * I used array of beacons in the example

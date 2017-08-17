@@ -13,8 +13,8 @@ struct KalmanBeaconNavigatorConfig{
     /// Do we use full 3D trilat instead of 2D ? (default = false)
     bool use3DTrilat = false;
 
-    /// Max number of nearest beacons to use on each trilateration, 0 = unlimited (so-called multilateration)
-    int useNearest = 3;
+    /// Max number of strongest (larger rssi) beacons to use on each trilateration, 0 = unlimited (so-called multilateration)
+    int useStrongest = 3;
 
     // ======== Mesh+mask config
     /// Apply map edges

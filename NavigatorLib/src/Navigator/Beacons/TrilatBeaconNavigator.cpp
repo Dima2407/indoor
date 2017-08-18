@@ -46,15 +46,17 @@ namespace Navigator {
             for (const auto &pair: beaconProcessorList) {
                 BeaconProcessor &processor = *pair.second;
                 if (processor.isActive()) {
-                    records.push_back(TrilatRecord(processor.getBeacon().getPos(), processor.getLastDistance()));
+                    records.push_back(TrilatRecord(processor.getBeacon().getPos(),
+                                                   processor.getLastRssi(),
+                                                   processor.getLastDistance()));
                 }
             }
 
-            // Select useNearest nearest beacons only
-            if (useNearest > 0 && useNearest < records.size()) {
+            // Select useStrongest nearest beacons only
+            if (useStrongest > 0 && useStrongest < records.size()) {
                 // Sort
                 std::sort(records.begin(), records.end());
-                records.resize(useNearest); // Use only useNearest beacons
+                records.resize(useStrongest); // Use only useStrongest beacons
             }
 
             // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors

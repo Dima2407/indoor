@@ -18,7 +18,7 @@ namespace Navigator {
             // Do we use full 3D trilat instead of 2D ? (default = false)
             triNav.setUse3DTrilat(config.use3DTrilat);
             // Max number of nearest beacons to use on each trilateration, 0 = unlimited
-            triNav.setUseNearest(config.useNearest);
+            triNav.setUseStrongest(config.useStrongest);
 
             if (config.useInit) {
                 // Set up the filters for the init phase

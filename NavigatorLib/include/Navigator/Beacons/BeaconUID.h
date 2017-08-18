@@ -6,9 +6,11 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 #include <string>
 #include <vector>
 #include <initializer_list>
+#include <iomanip>
 
 namespace Navigator {
     namespace Beacons {
@@ -48,9 +50,24 @@ namespace Navigator {
             /// List constructor
             BeaconUID(std::initializer_list<std::uint8_t> iList) :
                     vector(iList) {}
+
+            friend std::ostream &operator<<(std::ostream &os, const BeaconUID &uid);
         };
+
+
+        inline std::ostream &operator<<(std::ostream &os, const Navigator::Beacons::BeaconUID &uid) {
+            for (uint8_t c : uid) {
+                if (c >= 32)
+                    os << (char)c;
+                else
+                    os << std::hex << std::setw(2) << (int)c;
+
+            }
+            return os;
+        }
     }
 }
+
 
 namespace std {
     /// Hash function for BeaconUID

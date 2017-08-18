@@ -82,18 +82,26 @@ void KalmanBeaconNavigator::runTrilat() {
     for (const auto &pair: beaconProcessorList) {
         BeaconProcessor &processor = *pair.second;
         if (processor.isActive()) {
-            records.push_back(TrilatRecord(processor.getBeacon().getPos(), processor.getLastDistance()));
+            records.push_back(TrilatRecord(processor.getBeacon().getPos(),
+                                           processor.getLastRssi(),
+                                           processor.getLastDistance(),
+                                           processor.getBeacon().getUid()));
         }
     }
 
 //    std::cout << "Trilat for " << records.size() << " beacons !" << std::endl;
 
-    // Select useNearest nearest beacons only
-    if (config.useNearest > 0 && config.useNearest < records.size()) {
+    // Select useStrongest nearest beacons only
+    if (config.useStrongest > 0 && config.useStrongest < records.size()) {
         // Sort
         std::sort(records.begin(), records.end());
-        records.resize(config.useNearest); // Use only useNearest beacons
+        records.resize(config.useStrongest); // Use only useStrongest beacons
     }
+
+    // Save their UIDS
+    lastTrilatUids.clear();
+    for (const TrilatRecord & r: records)
+        lastTrilatUids.push_back(r.uid);
 
     // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors
     // Result is written to lastPosition

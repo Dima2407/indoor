@@ -41,7 +41,7 @@ namespace NaviTest {
                 vector<TrilatRecord> records;
 
                 for (const Position3D & p : points) {
-                    records.push_back(TrilatRecord(p, p.distance(refPoint)));
+                    records.push_back(TrilatRecord(p, 0, p.distance(refPoint)));
                 }
 
                 // Result point
@@ -78,7 +78,7 @@ namespace NaviTest {
                 vector<TrilatRecord> records;
 
                 for (const Position3D & p : points) {
-                    records.push_back(TrilatRecord(p, p.distance(refPoint)));
+                    records.push_back(TrilatRecord(p, 0,  p.distance(refPoint)));
                 }
 
                 // Result point

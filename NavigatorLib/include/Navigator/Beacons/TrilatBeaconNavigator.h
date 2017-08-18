@@ -151,12 +151,12 @@ namespace Navigator {
                 TrilatBeaconNavigator::use3DTrilat = use3DTrilat;
             }
 
-            unsigned int getUseNearest() const {
-                return useNearest;
+            unsigned int getUseStrongest() const {
+                return useStrongest;
             }
 
-            void setUseNearest(unsigned int useNearest) {
-                TrilatBeaconNavigator::useNearest = useNearest;
+            void setUseStrongest(unsigned int useNearest) {
+                TrilatBeaconNavigator::useStrongest = useNearest;
             }
 
             const std::shared_ptr<Factory::IFilterFactory> &getRssiFilterFactory() const {
@@ -231,8 +231,8 @@ namespace Navigator {
             /// Use 3D trilateration instead of the 2D one. This requires at least 4 beacons.
             bool use3DTrilat = false;
 
-            /// How many nearest beacon to use at most (0 = unlimited), 3(4) are needed for trilat 2D(3D)
-            unsigned useNearest = 0;
+            /// How many strongest (largest RSSI) beacons to use at most (0 = unlimited), 3(4) are needed for trilat 2D(3D)
+            unsigned useStrongest = 0;
         };
     }
 }

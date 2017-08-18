@@ -49,15 +49,19 @@ int main() {
     shared_ptr<AbstractBeaconNavigator> bNav = make_shared<KalmanBeaconNavigator>(rMesh);
     // Create 4 beacons and add them to the navigator
     const Beacon beacons[] = {
-            Beacon(BeaconUID("Guinea Pig", 1, 0), -30.0, 2.0, Position3D(0.6, 0.2, 0.0), ""),
-            Beacon(BeaconUID("Guinea Pig", 1, 1), -35.0, 2.5, Position3D(9.8, 0.3, 0.0), ""),
-            Beacon(BeaconUID("Guinea Pig", 1, 2), -40.0, 3.0, Position3D(-0.1, 10.4, 0.0), ""),
-            Beacon(BeaconUID("Guinea Pig", 1, 3), -45.0, 2.4, Position3D(9.9, 10.1, 0.0), "")
+            Beacon(BeaconUID("Guinea Pig", 1234, 1900), -30.0, 2.0, Position3D(0.6, 0.2, 0.0), ""),
+            Beacon(BeaconUID("Guinea Pig", 1234, 1901), -35.0, 2.5, Position3D(9.8, 0.3, 0.0), ""),
+            Beacon(BeaconUID("Guinea Pig", 1234, 1902), -40.0, 3.0, Position3D(-0.1, 10.4, 0.0), ""),
+            Beacon(BeaconUID("Guinea Pig", 1234, 1903), -45.0, 2.4, Position3D(9.9, 10.1, 0.0), "")
     };
     bNav->addBeacons(beacons);
 
-    for (const Beacon &b: beacons)
-        cout << "Beacon = " << b.getUid() << endl;
+    for (const Beacon &b: beacons) {
+//        cout << "Beacon = " << b.getUid().getString() << " " << b.getUid().getMajor() << " " << b.getUid().getMinor()
+//             << endl;
+
+        cout << "BEACON = " << b.getUid() << endl;
+    }
 
     /* 3) Create and accel navigator with some starting point,
      * starting point could come from beacon navigation*/

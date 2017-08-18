@@ -9,6 +9,7 @@
     <string name="sensor_mod_2_switch_name">Sensor Modification 2 (initialization via RSSI averaging)</string>
     <string name="sensor_mod_3_switch_name">Sensor Modification 3 (initialization via RSSI Kalman filter)</string>
     <string name="settings_logger_switch_name">Logger</string>
+    <string name="particle_filter_switch_name">Particle filter</string>
 
     <string name="settings_dialog_string">Select one of the modes and the modifications.</string>
 

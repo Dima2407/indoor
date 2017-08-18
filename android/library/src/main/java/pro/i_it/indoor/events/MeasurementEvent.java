@@ -10,7 +10,7 @@ public class MeasurementEvent {
 
     //WARNING: don't rename this fields
     private final MeasurementType type;
-    private final long timestamp;
+    private long timestamp;
     private final double[] data;
     private final String uuid;
     private final MeasurementEvent [] nested;
@@ -75,9 +75,11 @@ public class MeasurementEvent {
     public static MeasurementEvent createBluetooth(Collection<Beacon> collection) {
         MeasurementEvent[] events = new MeasurementEvent[collection.size()];
         int i = 0;
-        for (Beacon b :
-                collection) {
-            events[i++] = MeasurementEvent.createBluetooth(b);
+        long time = System.currentTimeMillis();
+        for (Beacon b : collection) {
+            MeasurementEvent bluetooth = MeasurementEvent.createBluetooth(b);
+            bluetooth.timestamp = time;
+            events[i++] = bluetooth;
         }
         return new MeasurementEvent(MeasurementType.BLUETOOTH_VALUE, events);
     }

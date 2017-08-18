@@ -22,9 +22,12 @@ using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 using namespace Navigator::Math::Kalman;
+using namespace Navigator::Particles;
+
 
 shared_ptr<AbstractBeaconNavigator> navigator;
 shared_ptr<StandardAccelNavigator> sensorNavigator;
+shared_ptr<ParticleNavigator> particleNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
 
@@ -67,6 +70,7 @@ typedef struct IndoorSdkApi {
     int kUseWallsField = 19;
     int kActiveBLEModeField = 20;
     int kMultiLaterationEnabledField = 21;
+    int kParticleEnabledField = 22;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -103,6 +107,7 @@ typedef struct IndoorSdkConfigs{
     bool useWalls = false;
     int activeBLEMode = 1;
     bool multiLaterationEnabled = false;
+    bool particleEnabled = false;
 } IndoorSdkConfigs;
 
 double timeS = 0;
@@ -258,6 +263,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
                                                 api.kUseBeaconsField);
     configs.useSensors = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                 api.kUseSensorsField);
+    configs.particleEnabled = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                     api.kParticleEnabledField);
     configs.useMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMaskField);
     configs.mapAngle = env->CallIntMethod(config, api.kGetIntMethod, api.kMapAngleField);
     configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitXField);
@@ -406,10 +413,17 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
 
         sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, aConfig);
         configs.sensorsActive = true;
+        if (configs.particleEnabled && configs.useBeacons) {
+            particleNavigator = make_shared<ParticleNavigator>(navigator, sensorNavigator, mesh);
+        }
     }
 
-    if (configs.useSensors) {
+    if (configs.useSensors && !configs.particleEnabled) {
         outPos = sensorNavigator->getLastPosition();
+    }
+
+    if (configs.particleEnabled) {
+        outPos = particleNavigator->obtainLastPosition();
     }
 
     LOGD("last position (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
@@ -453,4 +467,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     env->SetObjectField(router, api.kIndoorRouterRouteField, output);
 
     LOGD("IndoorLocationManager_nativeTakeLastPosition -");
+
+
 }

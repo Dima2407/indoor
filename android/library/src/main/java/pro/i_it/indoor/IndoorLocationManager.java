@@ -22,7 +22,7 @@ public class IndoorLocationManager {
 
     private static final String TAG = IndoorLocationManager.class.getSimpleName();
     public static final int POSITION_REQUEST = 101;
-    public static final int POSITION_REQUEST_DELAY = 700;
+    public static final int POSITION_REQUEST_DELAY = 1000;
     private volatile boolean active  = false;
     private boolean initialized = false;
     private boolean loggerEnable = false;
@@ -136,10 +136,15 @@ public class IndoorLocationManager {
         active = false;
         loggerEnable = false;
         for (MeasurementProvider provider : providers) {
+            if (provider instanceof BluetoothMeasurementProvider) {
+                BluetoothMeasurementProvider blProvider = (BluetoothMeasurementProvider) provider;
+                blProvider.setOnBeaconsChangeListener(null);
+            }
             provider.stop();
         }
         providers.clear();
         onLocationUpdateListener = null;
+        onBeaconsChangeListener = null;
         positionRequester.removeCallbacksAndMessages(null);
         nativeRelease();
         router.clear();

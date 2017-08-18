@@ -65,7 +65,6 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     //private RelativeLayout progressBar;
 
 
-
     public static String KEY_FLOOR_MAP = "floorMap";
     public static int REGION_RADIUS = 10;
 
@@ -154,11 +153,11 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         super.onResume();
         Log.d("onLocationChanged", "onResume: ");
         NativeConfigMap configs = new NativeConfigMap();
-        if(getSharedHelper().getActiveModeKey() == SharedHelper.MODE_BLE){
+        if (getSharedHelper().getActiveModeKey() == SharedHelper.MODE_BLE) {
             configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
             configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
             configs.set(NativeConfigMap.KEY_MULTI_LATERATION, getSharedHelper().isMultiLaterationEnabled());
-            switch (getSharedHelper().getBLESubMode()){
+            switch (getSharedHelper().getBLESubMode()) {
                 case SharedHelper.SUB_MODE_BLE_1:
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);
                     break;
@@ -167,9 +166,9 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                     break;
 
             }
-        } else if(getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS) {
+        } else if (getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS) {
             configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
-            switch (getSharedHelper().getSensorsSubMode()){
+            switch (getSharedHelper().getSensorsSubMode()) {
                 case SharedHelper.SUB_MODE_SENSORS_1:
                     PointF initPosition = getSharedHelper().getInitPosition();
                     configs.set(NativeConfigMap.KEY_INIT_X, initPosition.x);
@@ -187,11 +186,41 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                     break;
             }
 
-        }else if(getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN){
-            //TODO
+        } else if (getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN) {
+            configs.set(NativeConfigMap.KEY_PARTICLE_ENABLED, true);
+            configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
+            configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
+            configs.set(NativeConfigMap.KEY_MULTI_LATERATION, getSharedHelper().isMultiLaterationEnabled());
+            switch (getSharedHelper().getBLESubMode()) {
+                case SharedHelper.SUB_MODE_BLE_1:
+                    configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);
+                    break;
+                case SharedHelper.SUB_MODE_BLE_2:
+                    configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
+                    break;
+
+            }
+            configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
+            switch (getSharedHelper().getSensorsSubMode()) {
+                case SharedHelper.SUB_MODE_SENSORS_1:
+                    PointF initPosition = getSharedHelper().getInitPosition();
+                    configs.set(NativeConfigMap.KEY_INIT_X, initPosition.x);
+                    configs.set(NativeConfigMap.KEY_INIT_Y, initPosition.y);
+                    break;
+                case SharedHelper.SUB_MODE_SENSORS_2:
+                    configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
+                    configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
+                    configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);
+                    break;
+                case SharedHelper.SUB_MODE_SENSORS_3:
+                    configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
+                    configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
+                    configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
+                    break;
+            }
         }
         final boolean useBinaryMask = getSharedHelper().useMapCoordinateCorrection()
-                 || getSharedHelper().useMeshCoordinateCorrection()
+                || getSharedHelper().useMeshCoordinateCorrection()
                 || getSharedHelper().useWallCoordinateCorrection();
         configs.set(NativeConfigMap.KEY_USE_MAP_EDGES, getSharedHelper().useMapCoordinateCorrection());
         configs.set(NativeConfigMap.KEY_USE_MESH_MASK, getSharedHelper().useMeshCoordinateCorrection());
@@ -362,14 +391,14 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
     }
 
 
-    private void applyNewCoordinate(float x, float y, float tx, float ty, float [] route) {
+    private void applyNewCoordinate(float x, float y, float tx, float ty, float[] route) {
         if (getActivity() == null) {
             return;
         }
         mapView.setCoordinates(tx, ty, x, y);
         mapView.setRoute(route);
 
-        if(route.length == 0){
+        if (route.length == 0) {
             bottomSheet.getBottomViewWrapper().setVisibility(View.GONE);
             bottomSheet.getCancelButton().setVisibility(View.GONE);
             bottomSheet.getHintContainer().setVisibility(View.GONE);

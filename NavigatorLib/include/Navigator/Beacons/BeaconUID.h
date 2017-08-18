@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <initializer_list>
@@ -51,18 +52,46 @@ namespace Navigator {
             BeaconUID(std::initializer_list<std::uint8_t> iList) :
                     vector(iList) {}
 
+            /// Get string only if string-minor-major format
+            std::string getString() const{
+                using namespace std;
+
+                if (size() <= 4)  // Wrong format
+                    return "";
+
+                ostringstream oss;
+                for (int i=0; i<size()-4; ++i)
+                    oss << (char)(*this)[i];
+                
+                return  oss.str();
+            }
+
+            /// Get major
+            int getMajor() const{
+                unsigned int sz = size();
+                if (sz < 4)   // Wrong format
+                    return 0;
+
+                return (*this)[sz-4] + 0x100*(*this)[sz-3];
+            }
+
+            /// Get minor
+            int getMinor() const{
+                unsigned int sz = size();
+                if (sz < 4)   // Wrong format
+                    return 0;
+
+                return (*this)[sz-2] + 0x100*(*this)[sz-1];
+            }
+
             friend std::ostream &operator<<(std::ostream &os, const BeaconUID &uid);
         };
 
 
         inline std::ostream &operator<<(std::ostream &os, const Navigator::Beacons::BeaconUID &uid) {
-            for (uint8_t c : uid) {
-                if (c >= 32)
-                    os << (char)c;
-                else
-                    os << std::hex << std::setw(2) << (int)c;
 
-            }
+             os  << uid.getString() << " " << uid.getMajor() << " " << uid.getMinor();
+
             return os;
         }
     }

@@ -25,7 +25,7 @@ using namespace Navigator::Math::Kalman;
 using namespace Navigator::Particles;
 
 
-shared_ptr<AbstractBeaconNavigator> navigator;
+shared_ptr<AbstractBeaconNavigator> bluetoothNavigator;
 shared_ptr<StandardAccelNavigator> sensorNavigator;
 shared_ptr<ParticleNavigator> particleNavigator;
 shared_ptr<PointGraph> pointGraph;
@@ -216,7 +216,16 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             env->ReleaseStringUTFChars(uuidString, uuid);
             env->ReleaseDoubleArrayElements(dataArray, data, 0);
         }
-        Position3D outPos = navigator->process(beacons);
+        std::ofstream fos("/sdcard/Download/logFile.txt", std::ofstream::out | std::ofstream::ate);
+        Position3D outPos = bluetoothNavigator->process(beacons);
+        if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
+                bluetoothNavigator)) {
+            vector<BeaconUID> uids = nav->getLastTrilatUids();
+            for (auto value: uids) {
+                fos << value << endl;
+            }
+        }
+        fos.close();
         LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
 
     } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
@@ -318,21 +327,21 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             nConfig.useInit = true;
 
             if (configs.multiLaterationEnabled) {
-                nConfig.useNearest = 0;
+                nConfig.useStrongest = 0;
             }
-            navigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
+            bluetoothNavigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
         } else if (configs.activeBLEMode == 2) {
             KalmanBeaconNavigatorConfig nConfig;
             nConfig.useMeshMask = configs.useMeshMask;
             nConfig.useMapEdges = configs.useMapEdges;
 
             if (configs.multiLaterationEnabled) {
-                nConfig.useNearest = 0;
+                nConfig.useStrongest = 0;
             }
 
             KalmanConfig filterConfig;
 
-            navigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
+            bluetoothNavigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
         }
 
         jobjectArray beacons = (jobjectArray) env->CallObjectMethod(config, api.kGetObjectMethod,
@@ -353,9 +362,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             const char *uuid = env->GetStringUTFChars(id, 0);
 
             BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
-            navigator->addBeacon(Beacon(uid, elements[2], elements[3],
-                                        Position3D(elementsPos[0], elementsPos[1], elementsPos[2]),
-                                        ""));
+            bluetoothNavigator->addBeacon(Beacon(uid, elements[2], elements[3],
+                                                 Position3D(elementsPos[0], elementsPos[1],
+                                                            elementsPos[2]),
+                                                 ""));
 
             env->ReleaseFloatArrayElements(values, elements, 0);
             env->ReleaseStringUTFChars(id, uuid);
@@ -389,10 +399,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     Position3D outPos(configs.startX, configs.startY, 0.0f);
 
     if (configs.useBeacons) {
-        if (!navigator->isInitFinished()) {
+        if (!bluetoothNavigator->isInitFinished()) {
             return;
         }
-        outPos = navigator->getLastPosition();
+        outPos = bluetoothNavigator->getLastPosition();
 
     }
 
@@ -414,7 +424,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
         sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, aConfig);
         configs.sensorsActive = true;
         if (configs.particleEnabled && configs.useBeacons) {
-            particleNavigator = make_shared<ParticleNavigator>(navigator, sensorNavigator, mesh);
+            particleNavigator = make_shared<ParticleNavigator>(bluetoothNavigator, sensorNavigator,
+                                                               mesh);
         }
     }
 

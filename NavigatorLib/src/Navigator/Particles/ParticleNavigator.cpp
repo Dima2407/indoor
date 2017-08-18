@@ -53,7 +53,7 @@ namespace Navigator {
                 return lastPosition;
             }
 
-            // Get delta from the acc navigator and reset delta
+            // Get delta from the acc bluetoothNavigator and reset delta
             Position2D delta = aNav->getResetDelta();
             if (isnan(delta.x) || isnan(delta.y))
                 throw runtime_error("ParticleNavigator : ACC gives NAN !");

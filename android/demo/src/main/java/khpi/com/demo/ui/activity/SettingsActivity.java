@@ -115,6 +115,7 @@ public final class SettingsActivity extends GenericActivity {
                     sensorModsLayout.setVisibility(View.GONE);
                 } else if (sensorSwitch.isChecked() && !particlefilterSwitch.isChecked()) {
                     sensorSwitch.setChecked(true);
+                    settingsWallCorrLayout.setVisibility(View.VISIBLE);
                 } else {
                     particlefilterSwitch.setChecked(true);
                     settingsWallCorrLayout.setVisibility(View.VISIBLE);
@@ -131,6 +132,7 @@ public final class SettingsActivity extends GenericActivity {
                     int submode = getProjectApplication().getSharedHelper().getSensorsSubMode();
                     updateActiveSensorSubmode(submode);
                     sensorModsLayout.setVisibility(View.VISIBLE);
+
                     bleSwitch.setChecked(false);
                     particlefilterSwitch.setChecked(false);
                     if (!particlefilterSwitch.isChecked()) {

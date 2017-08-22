@@ -110,6 +110,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         beaconManager.setForegroundBetweenScanPeriod(configModel.getForegroundBetweenScanPeriod());
         beaconManager.setBackgroundScanPeriod(configModel.getBackgroundScanPeriod());
         beaconManager.setBackgroundBetweenScanPeriod(configModel.getBackgroundBetweenScanPeriod());
+        beaconManager.setEnableScheduledScanJobs(true);
 
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
     }

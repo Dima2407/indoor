@@ -25,11 +25,13 @@ using namespace Navigator::Math::Kalman;
 using namespace Navigator::Particles;
 
 
+
 shared_ptr<AbstractBeaconNavigator> bluetoothNavigator;
 shared_ptr<StandardAccelNavigator> sensorNavigator;
 shared_ptr<ParticleNavigator> particleNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
+string logFilePath;
 
 typedef struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
@@ -192,11 +194,12 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
         std::vector<BeaconReceivedData> beacons;
 
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
 
             jobject event = env->GetObjectArrayElement(nestedEvents, i);
 
-            jstring uuidString = (jstring) env->GetObjectField(event, api.kMeasurementEventUUIDField);
+            jstring uuidString = (jstring) env->GetObjectField(event,
+                                                               api.kMeasurementEventUUIDField);
 
             jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(event,
                                                                         api.kMeasurementEventDataField);
@@ -216,16 +219,20 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             env->ReleaseStringUTFChars(uuidString, uuid);
             env->ReleaseDoubleArrayElements(dataArray, data, 0);
         }
-        std::ofstream fos("/sdcard/Download/logFile.txt", std::ofstream::out | std::ofstream::ate);
         Position3D outPos = bluetoothNavigator->process(beacons);
-        if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
-                bluetoothNavigator)) {
-            vector<BeaconUID> uids = nav->getLastTrilatUids();
-            for (auto value: uids) {
-                fos << value << endl;
+        if (logFilePath.c_str()) {
+
+            std::ofstream fos(logFilePath, ios::app);
+
+            if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
+                    bluetoothNavigator)) {
+                vector<BeaconUID> uids = nav->getLastTrilatUids();
+                for (auto value: uids) {
+                    fos << timeStamp << " " << value << endl;
+                }
             }
+            fos.close();
         }
-        fos.close();
         LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
 
     } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
@@ -265,6 +272,7 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jobject config) {
     LOGD("IndoorLocationManager_nativeInit");
+
     prepare_sdk(env);
 
     configs = {};
@@ -285,6 +293,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.activeBLEMode = env->CallIntMethod(config, api.kGetIntMethod, api.kActiveBLEModeField);
     configs.multiLaterationEnabled = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                             api.kMultiLaterationEnabledField);
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+
+    std::stringstream ss;
+    ss << "/sdcard/Download/" << "trilat_beacon_log" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+       << ".txt";
+    logFilePath = ss.str();
 
 
     if (configs.useMask) {

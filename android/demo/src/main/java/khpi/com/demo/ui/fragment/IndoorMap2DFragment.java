@@ -271,13 +271,13 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                 initializationProgressDialog.dismiss();
             }
         });
-        getLocalManager().setOnBeaconsChangeListener(new OnBeaconsChangeListener() {
+        /*getLocalManager().setOnBeaconsChangeListener(new OnBeaconsChangeListener() {
             @Override
             public void onBeaconsChanged(int count) {
                 Toast.makeText(getActivity(), String.format("found %d beacons", count),
                         Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         if (getSharedHelper().isLoggerEnable()) {
             getLocalManager().enableLogger();
         }

@@ -74,15 +74,14 @@ void KalmanBeaconNavigator::runTrilat() {
     using namespace Math;
     using namespace Math::Trilat;
 
-    // Trilateration records (position, distance) each
-    std::vector<TrilatRecord> records;
+    trilatRecords.clear();
 
     // Now loop over all active beacon processors again
     // Note: only active processors have meaningful lastDistance
     for (const auto &pair: beaconProcessorList) {
         BeaconProcessor &processor = *pair.second;
         if (processor.isActive()) {
-            records.push_back(TrilatRecord(processor.getBeacon().getPos(),
+            trilatRecords.push_back(TrilatRecord(processor.getBeacon().getPos(),
                                            processor.getLastRssi(),
                                            processor.getLastDistance(),
                                            processor.getBeacon().getUid()));
@@ -92,25 +91,25 @@ void KalmanBeaconNavigator::runTrilat() {
 //    std::cout << "Trilat for " << records.size() << " beacons !" << std::endl;
 
     // Select useStrongest nearest beacons only
-    if (config.useStrongest > 0 && config.useStrongest < records.size()) {
+    if (config.useStrongest > 0 && config.useStrongest < trilatRecords.size()) {
         // Sort
-        std::sort(records.begin(), records.end());
-        records.resize(config.useStrongest); // Use only useStrongest beacons
+        std::sort(trilatRecords.begin(), trilatRecords.end());
+        trilatRecords.resize(config.useStrongest); // Use only useStrongest beacons
     }
 
     // Save their UIDS
     lastTrilatUids.clear();
-    for (const TrilatRecord & r: records)
+    for (const TrilatRecord & r: trilatRecords)
         lastTrilatUids.push_back(r.uid);
 
     // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors
     // Result is written to lastPosition
     if (config.use3DTrilat) {
-        if (records.size() >= 4)
-            lastPosition = Math::Trilat::trilatLocation3d(records);
+        if (trilatRecords.size() >= 4)
+            lastPosition = Math::Trilat::trilatLocation3d(trilatRecords);
     } else {
-        if (records.size() >= 3)
-            lastPosition = Math::Trilat::trilatLocation2d(records);
+        if (trilatRecords.size() >= 3)
+            lastPosition = Math::Trilat::trilatLocation2d(trilatRecords);
     }
 }
 //====================================================

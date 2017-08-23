@@ -169,7 +169,10 @@ namespace Navigator {
              */
             double calculateDistance(double rssi) const
             {
-                return pow(10.0, (beacon.getTxPower() - rssi) / (10.0 * beacon.getDamp()));
+                double dist = pow(10.0, (beacon.getTxPower() - rssi) / (10.0 * beacon.getDamp()));
+                if (dist < 1.0)  // 1-meter corrrection
+                    dist = 1.0;
+                return dist;
             }
             //---------------------------------------------
             // Private fields

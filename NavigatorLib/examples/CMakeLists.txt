@@ -35,4 +35,6 @@ add_subdirectory(example5)
 
 #add_subdirectory(kalmantest)
 
+add_subdirectory(kalmantest2)
+
 #add_subdirectory(testParticle)

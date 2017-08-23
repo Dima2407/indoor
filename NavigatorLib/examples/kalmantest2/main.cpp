@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdio>
 #include <iomanip>
 #include <cmath>
 #include <vector>
@@ -109,17 +110,16 @@ int main() {
 
     navigator.addBeacons(beacons);
 
-    vector <shared_ptr<BeaconProcessor>> processors;
-    for (const Beacon & b : beacons) {
+    vector<shared_ptr<BeaconProcessor>> processors;
+    for (const Beacon &b : beacons) {
         processors.push_back(navigator.findProcessorByUid(b.getUid()));
     }
 
     ofstream beFile("beacons.out");
-    for (const auto & p : processors) {
-        beFile << p->getBeacon().getUid() << endl;
+    for (int i = 0; i < processors.size(); ++i) {
+        beFile << setw(3) << i + 1 << "  " << processors[i]->getBeacon().getUid() << endl;
     }
     beFile.close();
-
 
     ifstream in("in/input.csv");
     if (!in)
@@ -127,55 +127,110 @@ int main() {
     vector<BeaconReceivedData> brds;
     unsigned long long ts0 = 0;
     unsigned long long tsull = 0;
+    unsigned long long tsull0 = 0;
     double lastTs = nan("");
-    ofstream posFile("pos.out");
-    ofstream s3File("strongest3.out");
-    ofstream rsFile("rssi.out");
-    rsFile.precision(5);
+    FILE *fileFiltered = fopen("filtered.out", "w");
+    FILE *fileRaw = fopen("raw.out", "w");
+    FILE *fileS3 = fopen("strongest3.out", "w");
+    FILE *fileSR = fopen("strongestRssi.out", "w");
+    FILE *fileTrilat = fopen("trilat.out", "w");
+    FILE *filePos = fopen("pos.out", "w");
     BeaconReceivedData brd;
+    bool eof = false;
     for (;;) {
-        if (!parseBRD(in, brd, ts0, tsull))
-            break;
+        if (!parseBRD(in, brd, ts0, tsull)) // End Of File
+            eof = true;
 
         //    cout << brd.timestamp << " " << brd.rssi << " " << brd.uid << endl;
         if (isnan(lastTs))
             lastTs = brd.timestamp;
 
-        if (fabs(brd.timestamp - lastTs) < 2.0e-3) {
+        if (fabs(brd.timestamp - lastTs) < 2.0e-3 && !eof) {
             brds.push_back(brd);
         } else {
+
+            // Print raw data
+            {
+                vector<double> raw(beacons.size(), 0.0);
+
+                // Write raw RSSIs
+                fprintf(fileRaw, "%13.8lf ", brds[0].timestamp);
+                for (const auto &b:brds) {
+                    for (int i = 0; i < beacons.size(); ++i)
+                        if (b.uid == beacons[i].getUid())
+                            raw[i] = b.rssi;
+                }
+
+                for (int i = 0; i < beacons.size(); ++i)
+                    fprintf(fileRaw, "%13.8lf ", raw[i]);
+
+                fprintf(fileRaw, "\n");
+            }
+
             // Process the whole bunch of data in a single process() call
             Position3D outPos = navigator.process(brds);
-            posFile << setw(15) << tsull << outPos << endl;
+            // Log the output pos
+            fprintf(filePos, "%13.8lf ", brds[0].timestamp);
+            fprintf(filePos, "%13.8lf %13.8lf", outPos.x, outPos.y);
+            fprintf(filePos, "\n");
+
+
+            // Write trilat reecords
+            const auto & tRec = navigator.getTrilatRecords();
+            fprintf(fileTrilat, "%13.8lf ", brds[0].timestamp);
+            for (const auto & r : tRec)
+                fprintf(fileTrilat, "%13.8lf ", r.dist);
+            fprintf(fileTrilat, "\n");
 
             // Write strongest 3
-            vector <BeaconUID> strong3 = navigator.getLastTrilatUids();
-            s3File << setw(15) << tsull;
-            for (const BeaconUID & u: strong3)
-                s3File << "  " << u.getMajor()<< "  " << u.getMinor();
-            s3File << endl;
+            vector<BeaconUID> strong3 = navigator.getLastTrilatUids();
+            fprintf(fileS3, "%13.8lf ", brds[0].timestamp);
+            fprintf(fileSR, "%13.8lf ", brds[0].timestamp);
+            for (const BeaconUID &u: strong3) {
+                // Log beacon numbers
+                for (int i = 0; i < processors.size(); ++i)
+                    if (processors[i]->getBeacon().getUid() == u)
+                            fprintf(fileS3, "%2d ", i+1);
+                // Log RSSIs
+                const auto proc = navigator.findProcessorByUid(u);
+                fprintf(fileSR, "%13.8lf ", proc->getLastRssi());
 
-            // Write all RSSIs
-            rsFile << setw(15) << tsull;
-            for (const auto & p : processors) {
+            }
+//            s3File << endl;
+            fprintf(fileS3, "\n");
+            fprintf(fileSR, "\n");
+
+
+
+            // Write all filtered RSSIs
+            fprintf(fileFiltered, "%13.8lf ", brds[0].timestamp);
+            for (const auto &p : processors) {
                 double rssi;
                 if (p->isActive())
                     rssi = p->getLastRssi();
                 else
                     rssi = 0;
-                rsFile << setw(12) << fixed << rssi;
+                fprintf(fileFiltered, "%13.8lf ", rssi);
             }
-            rsFile << endl;
+            fprintf(fileFiltered, "\n");
+            if (eof)
+                break;
 
             brds.clear();
             brds.push_back(brd);
         }
 
         lastTs = brd.timestamp;
+        tsull0 = tsull;
 
 
     }
-
+    fclose(fileFiltered);
+    fclose(fileRaw);
+    fclose(fileS3);
+    fclose(fileSR);
+    fclose(fileTrilat);
+    fclose(filePos);
 
     return 0;
 }

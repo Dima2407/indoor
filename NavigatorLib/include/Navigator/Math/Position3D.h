@@ -6,6 +6,8 @@
 
 #include <cmath>
 #include <limits>
+#include <iostream>
+#include <iomanip>
 
 namespace Navigator {
     namespace Math {
@@ -84,7 +86,14 @@ namespace Navigator {
             bool operator==(Position3D const& other) const {
                 return x==other.x && y==other.y && z==other.z;
             }
+
+            friend std::ostream &operator<<(std::ostream &os, const Position3D &d) {
+                os << std::setw(15) << d.x << std::setw(15) << d.y << std::setw(15) << d.z;
+                return os;
+            }
         };
+
+
 
 
         //-------------------------------------------

@@ -32,6 +32,7 @@ shared_ptr<ParticleNavigator> particleNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
 string logFilePath;
+string logBecPosFilePath;
 
 typedef struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
@@ -236,12 +237,17 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             }
             fos.close();
         }
-        std::ofstream fiPos("/sdcard/Download/pos.txt", ios::app);
-        if (beacons.size() > 0) {
-            fiPos << timeStamp << " " << beacons[0].timestamp << " size = " << beacons.size()
-                  << " pos = " << outPos.x << " " << outPos.y << endl;
+
+        if (logBecPosFilePath.c_str()) {
+
+            std::ofstream fiPos(logBecPosFilePath, ios::app);
+
+            if (beacons.size() > 0) {
+                fiPos << timeStamp << " " << beacons[0].timestamp << " size = " << beacons.size()
+                      << " pos = " << outPos.x << " " << outPos.y << endl;
+            }
+            fiPos.close();
         }
-        fiPos.close();
 
         LOGD("Number of packets %d", beacons.size());
         if (beacons.size() > 0) {
@@ -315,6 +321,12 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     ss << "/sdcard/Download/" << "trilat_beacon_log" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
        << ".txt";
     logFilePath = ss.str();
+
+    std::stringstream sspos;
+    sspos << "/sdcard/Download/" << "position_from_beacon_log"
+          << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+          << ".txt";
+    logBecPosFilePath = sspos.str();
 
 
     if (configs.useMask) {
@@ -400,6 +412,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             env->ReleaseFloatArrayElements(values, elements, 0);
             env->ReleaseStringUTFChars(id, uuid);
         }
+
+
     }
 
     jstring graphPath_ = (jstring) env->CallObjectMethod(config, api.kGetObjectMethod,

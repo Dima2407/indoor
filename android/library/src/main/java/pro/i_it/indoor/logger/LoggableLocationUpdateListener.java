@@ -17,9 +17,6 @@ public class LoggableLocationUpdateListener extends FileLogger implements OnLoca
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");
     private final String fileName = getFileName();
 
-
-
-
     private OnLocationUpdateListener listener;
 
     public LoggableLocationUpdateListener(OnLocationUpdateListener listener) {
@@ -32,7 +29,6 @@ public class LoggableLocationUpdateListener extends FileLogger implements OnLoca
         try {
             String measurementStr = String.format("%d,%f,%f", getTimeStamp(), position.x, position.y);
             appendToFile(fileName, measurementStr);
-            Log.d("Logging", "onLocationChanged: logging");
         } catch (Exception e) {
             Log.w(LoggableLocationUpdateListener.class.getSimpleName(), "onLocationChanged: ", e);
         }

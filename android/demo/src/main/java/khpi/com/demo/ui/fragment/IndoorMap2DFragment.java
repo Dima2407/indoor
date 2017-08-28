@@ -190,8 +190,10 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             configs.set(NativeConfigMap.KEY_PARTICLE_ENABLED, true);
             configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
             configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
-            configs.set(NativeConfigMap.KEY_MULTI_LATERATION, getSharedHelper().isMultiLaterationEnabled());
-            switch (getSharedHelper().getBLESubMode()) {
+            configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
+            //configs.set(NativeConfigMap.KEY_MULTI_LATERATION, getSharedHelper().isMultiLaterationEnabled());
+
+            /*switch (getSharedHelper().getBLESubMode()) {
                 case SharedHelper.SUB_MODE_BLE_1:
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);
                     break;
@@ -199,9 +201,9 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
                     break;
 
-            }
+            }*/
             configs.set(NativeConfigMap.KEY_USE_SENSORS, true);
-            switch (getSharedHelper().getSensorsSubMode()) {
+            /*switch (getSharedHelper().getSensorsSubMode()) {
                 case SharedHelper.SUB_MODE_SENSORS_1:
                     PointF initPosition = getSharedHelper().getInitPosition();
                     configs.set(NativeConfigMap.KEY_INIT_X, initPosition.x);
@@ -217,7 +219,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
                     configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 2);
                     break;
-            }
+            }*/
         }
         final boolean useBinaryMask = getSharedHelper().useMapCoordinateCorrection()
                 || getSharedHelper().useMeshCoordinateCorrection()
@@ -262,7 +264,9 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
         initializationProgressDialog.setMessage("Please wait");
         initializationProgressDialog.setTitle("Initialization");
+        initializationProgressDialog.setCanceledOnTouchOutside(false);
         initializationProgressDialog.show();
+
         getLocalManager().setOnInitializationCompletedListener(new OnInitializationCompletedListener() {
             @Override
             public void onInitializationCompleted() {

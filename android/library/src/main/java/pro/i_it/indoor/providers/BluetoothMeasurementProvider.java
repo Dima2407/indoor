@@ -78,8 +78,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         @Override
         public void unbindService(ServiceConnection serviceConnection) {
             Log.d(TAG, "unbindService: ");
-            //beaconManager.removeMonitorNotifier(monitorNotifier);
-            beaconManager.removeRangeNotifier(rangeNotifier);
+            beaconManager.removeMonitorNotifier(monitorNotifier);
             context.unbindService(serviceConnection);
         }
 
@@ -122,6 +121,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
 
     @Override
     public void stop() {
+        beaconManager.removeRangeNotifier(rangeNotifier);
         beaconManager.unbind(beaconConsumer);
     }
 

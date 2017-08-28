@@ -298,20 +298,20 @@ public final class SettingsActivity extends GenericActivity {
         });
 
         particlefilterSwitch = (Switch) findViewById(R.id.particle_filter_switch);
-        particlefilterSwitch.setChecked(getProjectApplication().getSharedHelper().isParticleFilterEnable());
+        //particlefilterSwitch.setChecked(getProjectApplication().getSharedHelper().isParticleFilterEnable());
         particlefilterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     particlefilterSwitch.setChecked(true);
-                    getProjectApplication().getSharedHelper().setParticleFilterEnable(true);
-                    beaconModsLayout.setVisibility(View.VISIBLE);
-                    sensorModsLayout.setVisibility(View.VISIBLE);
+                    /*beaconModsLayout.setVisibility(View.VISIBLE);
+                    sensorModsLayout.setVisibility(View.VISIBLE);*/
+                    beaconModsLayout.setVisibility(View.GONE);
+                    sensorModsLayout.setVisibility(View.GONE);
                     bleSwitch.setChecked(false);
                     sensorSwitch.setChecked(false);
                 } else if (!bleSwitch.isChecked() && !sensorSwitch.isChecked()) {
                     particlefilterSwitch.setChecked(true);
-                    getProjectApplication().getSharedHelper().setParticleFilterEnable(false);
                 }
             }
         });
@@ -349,13 +349,16 @@ public final class SettingsActivity extends GenericActivity {
             int submode = getProjectApplication().getSharedHelper().getSensorsSubMode();
             updateActiveSensorSubmode(submode);
         } else if (activeMode == SharedHelper.MODE_MIXIN) {
-            beaconModsLayout.setVisibility(View.VISIBLE);
-            sensorModsLayout.setVisibility(View.VISIBLE);
+            /*beaconModsLayout.setVisibility(View.VISIBLE);
+            sensorModsLayout.setVisibility(View.VISIBLE);*/
+            beaconModsLayout.setVisibility(View.GONE);
+            sensorModsLayout.setVisibility(View.GONE);
             bleSwitch.setChecked(false);
             sensorSwitch.setChecked(false);
-            updateActiveBLESubmode();
+            particlefilterSwitch.setChecked(true);
+            /*updateActiveBLESubmode();
             int submode = getProjectApplication().getSharedHelper().getSensorsSubMode();
-            updateActiveSensorSubmode(submode);
+            updateActiveSensorSubmode(submode);*/
         } else {
             sensorSwitch.setChecked(true);
             bleSwitch.setChecked(false);
@@ -414,16 +417,16 @@ public final class SettingsActivity extends GenericActivity {
             getProjectApplication().getSharedHelper().setActiveModeKey(SharedHelper.MODE_SENSORS);
             getProjectApplication().getSharedHelper().setBLESubMode(-1);
         } else if (particlefilterSwitch.isChecked()) {
-            getProjectApplication().getSharedHelper().setParticleFilterEnable(true);
+            //getProjectApplication().getSharedHelper().setParticleFilterEnable(true);
             getProjectApplication().getSharedHelper().setActiveModeKey(SharedHelper.MODE_MIXIN);
-            getProjectApplication().getSharedHelper().setMultiLaterationEnabled(beaconMod3Switch.isChecked());
+            //getProjectApplication().getSharedHelper().setMultiLaterationEnabled(beaconMod3Switch.isChecked());
         } else {
             getProjectApplication().getSharedHelper().setActiveModeKey(SharedHelper.MODE_BLE);
             getProjectApplication().getSharedHelper().setSensorsSubMode(-1);
         }
 
         if (getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_BLE
-                || getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN) {
+                /*|| getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN*/) {
             if (beaconMod1Switch.isChecked()) {
                 getProjectApplication().getSharedHelper().setBLESubMode(SharedHelper.SUB_MODE_BLE_1);
             } else if (beaconMod2Switch.isChecked()) {
@@ -434,7 +437,7 @@ public final class SettingsActivity extends GenericActivity {
         }
 
         if (getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS
-                || getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN) {
+                /*|| getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN*/) {
             if (sensorMod1Switch.isChecked()) {
                 getProjectApplication().getSharedHelper().setSensorsSubMode(SharedHelper.SUB_MODE_SENSORS_1);
             } else if (sensorMod2Switch.isChecked()) {
@@ -446,7 +449,7 @@ public final class SettingsActivity extends GenericActivity {
             }
         }
         if ((getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_SENSORS
-                || getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN)
+                /*|| getProjectApplication().getSharedHelper().getActiveModeKey() == SharedHelper.MODE_MIXIN*/)
                 && getProjectApplication().getSharedHelper().getSensorsSubMode() == SharedHelper.SUB_MODE_SENSORS_1) {
             getProjectApplication().getSharedHelper().setInitPosition(xPosition.getText().toString(),
                     yPosition.getText().toString());

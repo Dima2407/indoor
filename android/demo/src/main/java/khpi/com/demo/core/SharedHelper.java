@@ -32,7 +32,7 @@ public final class SharedHelper {
     private static final String WALLS_CORRECTION = "walls correction";
 
     public static final String LOGGER_ENABLE = "logger enable";
-    public static final String PARTICLE_FILTER_ENABLE = "particle filter";
+    //public static final String PARTICLE_FILTER_ENABLE = "particle filter";
 
     private static final String MULTI_LATERATION_ENABLED = "multi lateration enabled";
 
@@ -42,13 +42,13 @@ public final class SharedHelper {
         sharedPreferences = context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setParticleFilterEnable(boolean particleFilterEnable) {
+    /*public void setParticleFilterEnable(boolean particleFilterEnable) {
         sharedPreferences.edit().putBoolean(PARTICLE_FILTER_ENABLE, particleFilterEnable).apply();
-    }
+    }*/
 
-    public boolean isParticleFilterEnable() {
+    /*public boolean isParticleFilterEnable() {
         return sharedPreferences.getBoolean(PARTICLE_FILTER_ENABLE, false);
-    }
+    }*/
 
     public boolean isLoggerEnable() {
         return sharedPreferences.getBoolean(LOGGER_ENABLE, false);

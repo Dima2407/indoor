@@ -19,9 +19,6 @@ const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconR
         // Timestamp of the first element is forced as the common one
         double timeStamp = brds[0].timestamp;
 
-        // Check for timeout: only once
-        checkTimeout(timeStamp);
-
         // Process each packet in turn
         for (BeaconReceivedData b : brds) {
             // We make a copy to modify it
@@ -29,6 +26,10 @@ const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconR
             processPacket(b);
             uids.insert(b.uid); // Store the uid in set
         }
+
+        // Check for timeout: only once AFTER processing incoming packets
+        // The 5 second (by default) timeout 2 only applies if no new packet
+        checkTimeout(timeStamp);
 
         // Now run prediction for all active beacons without a packet
         for (const auto &pair: beaconProcessorList) {

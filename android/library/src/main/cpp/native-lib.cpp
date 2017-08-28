@@ -112,7 +112,7 @@ typedef struct IndoorSdkConfigs{
     bool particleEnabled = false;
 } IndoorSdkConfigs;
 
-double timeS = 0;
+double timeS = -1;
 
 IndoorSdkApi api;
 IndoorSdkConfigs configs;
@@ -187,6 +187,9 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
     jobjectArray nestedEvents = (jobjectArray)env->GetObjectField(obj, api.kMeasurementEventNestedField);
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
+    if (timeS <= 0) {
+        timeS = timeStamp;
+    }
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
     if (eventTypeCode == 2 && configs.useBeacons) {
 
@@ -233,7 +236,18 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             }
             fos.close();
         }
-        LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
+        std::ofstream fiPos("/sdcard/Download/pos.txt", ios::app);
+        if (beacons.size() > 0) {
+            fiPos << timeStamp << " " << beacons[0].timestamp << " size = " << beacons.size()
+                  << " pos = " << outPos.x << " " << outPos.y << endl;
+        }
+        fiPos.close();
+
+        LOGD("Number of packets %d", beacons.size());
+        if (beacons.size() > 0) {
+            LOGD("position from beacons ( %f, %f, %f, %f )", beacons[0].timestamp, outPos.x,
+                 outPos.y, outPos.z);
+        }
 
     } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
         jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
@@ -272,6 +286,7 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jobject config) {
     LOGD("IndoorLocationManager_nativeInit");
+    timeS = -1;
 
     prepare_sdk(env);
 

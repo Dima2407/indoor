@@ -15,7 +15,6 @@ class FileLogger {
 
     protected final void appendToFile(String name, String data) {
         File f = fileOf(name);
-
         try (FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
              BufferedWriter bw = new BufferedWriter(fw)) {
             if (data.endsWith("\n")) {

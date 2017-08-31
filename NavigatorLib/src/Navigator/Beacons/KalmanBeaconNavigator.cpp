@@ -13,7 +13,7 @@ namespace Beacons {
 const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds)
 {
     using namespace std;
-    //if (! brds.empty()) {
+    if (! brds.empty()) {
         unordered_set<BeaconUID> uids;  // UIDs of all received packets
 
         // Timestamp of the first element is forced as the common one
@@ -43,7 +43,7 @@ const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconR
         runTrilat();
 
         lastPosition = postProcess(lastPosition); // Use mesh+mask
-    //}
+    }
     return lastPosition;
 }
 

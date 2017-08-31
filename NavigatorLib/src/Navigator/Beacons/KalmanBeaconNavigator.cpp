@@ -13,7 +13,7 @@ namespace Beacons {
 const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds)
 {
     using namespace std;
-    if (! brds.empty()) {
+    //if (! brds.empty()) {
         unordered_set<BeaconUID> uids;  // UIDs of all received packets
 
         // Timestamp of the first element is forced as the common one
@@ -43,7 +43,7 @@ const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconR
         runTrilat();
 
         lastPosition = postProcess(lastPosition); // Use mesh+mask
-    }
+    //}
     return lastPosition;
 }
 
@@ -108,9 +108,13 @@ void KalmanBeaconNavigator::runTrilat() {
     if (config.use3DTrilat) {
         if (trilatRecords.size() >= 4)
             lastPosition = Math::Trilat::trilatLocation3d(trilatRecords);
+        else
+            lastPosition = Math::Position3D(); // NaN
     } else {
         if (trilatRecords.size() >= 3)
             lastPosition = Math::Trilat::trilatLocation2d(trilatRecords);
+        else
+            lastPosition = Math::Position3D(); // NaN
     }
 }
 //====================================================

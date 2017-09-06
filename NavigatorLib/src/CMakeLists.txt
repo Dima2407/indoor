@@ -29,7 +29,9 @@ set(SOURCE_FILES
         ../include/Navigator/Math/Filter/NoFilter.h
         ../include/Navigator/Math/Filter/RingBuffer.h
         ./Navigator/Math/Kalman/KalmanFilter.cpp ../include/Navigator/Math/Kalman/KalmanFilter.h
+        ./Navigator/Math/KalmanXY/KalmanXYFilter.cpp ../include/Navigator/Math/KalmanXY/KalmanXYFilter.h
         ../include/Navigator/Math/Kalman/KalmanConfig.h
+        ../include/Navigator/Math/KalmanXY/KalmanXYConfig.h
         #
         ../include/Navigator/Beacons/Factory/NoFilterFactory.h
         ../include/Navigator/Beacons/Factory/MovingAverageFilterFactory.h

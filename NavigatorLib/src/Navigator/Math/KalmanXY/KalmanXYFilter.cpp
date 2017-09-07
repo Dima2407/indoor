@@ -17,6 +17,7 @@ namespace Navigator {
                     lastX << 0, 0;
                     lastP = config.matrixInitP;
                     isInitialized = true;
+                    // add return !!!!!!!!!!!!!!!!!
                 }
 
                 tempX = predictCurrentMoment();
@@ -85,10 +86,8 @@ namespace Navigator {
 
             // -----------------
 
-            Eigen::Matrix<double, 2, 1> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 2, 2>& tempP,
-                                                                      const Eigen::Matrix<double, 2, 3> &distanceToBeacons) {
-//                double smallExpression = pow((config.H * tempP * config.H.transpose() + config.R), -1);
-//                return tempP * config.H.transpose() * smallExpression;
+            Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 2, 2>& tempP,
+                                                                      const Eigen::Matrix<double, 3, 2> &distanceToBeacons) {
                 Eigen::Matrix<double, 1, 2> first = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
                 Eigen::Matrix<double, 1, 2> second = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
                 Eigen::Matrix<double, 1, 2> third = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
@@ -98,8 +97,7 @@ namespace Navigator {
                            second(0,0), second(0,1),
                            third(0,0), third(0,1);
 
-                Eigen::Matrix<double, 2, 1> result(0, 0);
-                return result;
+                return lastP * matrixH.transpose() * (matrixH * lastP * matrixH.transpose() + config.matrixR);
             }
 
             // -----------------
@@ -118,15 +116,15 @@ namespace Navigator {
 //            }
 
             Eigen::Matrix<double, 1, 2> KalmanXYFilter::helpExpression(double x, double y) {
-                double topX = tempX(0, 0) - x;
-                double bottomX = std::sqrt(std::pow(tempX(0, 0) - x, 2)
+                double top = tempX(0, 0) - x;
+                double bottom = std::sqrt(std::pow(tempX(0, 0) - x, 2)
                                           + std::pow(tempX(1, 0) - y, 2));
-                double dSa_Dx = topX/bottomX;
+                double dSa_Dx = top/bottom;
 
-                double topY = tempX(1, 0) - y;
-                double bottomY = std::sqrt(std::pow(tempX(0, 0) - x, 2)
+                top = tempX(1, 0) - y;
+                bottom = std::sqrt(std::pow(tempX(0, 0) - x, 2)
                                           + std::pow(tempX(1, 0) - y, 2));
-                double dSa_Dy = topY/bottomY;
+                double dSa_Dy = top/bottom;
                 return Eigen::Matrix<double, 1, 2>(dSa_Dx, dSa_Dy);
             }
         }

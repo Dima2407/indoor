@@ -12,7 +12,7 @@ namespace Navigator {
         namespace KalmanXY {
 
             Eigen::Matrix<double, 1, 2> KalmanXYFilter::process(const Eigen::Matrix<double, 1, 2> &locationXY,
-                                                                const Eigen::Matrix<double, 1, 3> &distanceToBeacons) {
+                                                                const Eigen::Matrix<double, 3, 2> &distanceToBeacons) {
                 if (!isInitialized) {
                     lastX << 0, 0;
                     lastP = config.matrixInitP;
@@ -23,7 +23,7 @@ namespace Navigator {
                 tempX = predictCurrentMoment();
                 tempP = predictError();
 
-//                Eigen::Matrix<double, 2, 1> kalmansCoefficient = correctKalman(tempP);
+                Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(distanceToBeacons);
 //                cout << "K = \n" << kalmansCoefficient << endl;
 
                 // мои расчеты (0.999257  0.399677)  --- программа посчитала (0.999201  0.399677)
@@ -86,8 +86,7 @@ namespace Navigator {
 
             // -----------------
 
-            Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 2, 2>& tempP,
-                                                                      const Eigen::Matrix<double, 3, 2> &distanceToBeacons) {
+            Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons) {
                 Eigen::Matrix<double, 1, 2> first = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
                 Eigen::Matrix<double, 1, 2> second = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
                 Eigen::Matrix<double, 1, 2> third = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
@@ -97,7 +96,7 @@ namespace Navigator {
                            second(0,0), second(0,1),
                            third(0,0), third(0,1);
 
-                return lastP * matrixH.transpose() * (matrixH * lastP * matrixH.transpose() + config.matrixR);
+                return tempP * matrixH.transpose() * (matrixH * tempP * matrixH.transpose() + config.matrixR);
             }
 
             // -----------------

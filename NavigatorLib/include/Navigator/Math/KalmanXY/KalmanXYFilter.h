@@ -21,7 +21,7 @@ namespace Navigator {
                 {}
 
                 Eigen::Matrix<double, 1, 2> process(const Eigen::Matrix<double, 1, 2> &locationXY,
-                                                    const Eigen::Matrix<double, 1, 3> &distanceToBeacons);
+                                                    const Eigen::Matrix<double, 3, 2> &distanceToBeacons);
 
 //                Value processOnlyPredict(double timestamp);
 
@@ -63,8 +63,7 @@ namespace Navigator {
 
                 Eigen::Matrix<double, 2, 2> predictError();
 
-                Eigen::Matrix<double, 2, 3> correctKalman(const Eigen::Matrix<double, 2, 2>& tempP,
-                                                          const Eigen::Matrix<double, 3, 2> &distanceToBeacons);
+                Eigen::Matrix<double, 2, 3> correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons);
 
 //                void correctCurrentMoment(Eigen::Matrix<double, 2, 1> tempX,
 //                                                                 const Eigen::Matrix<double, 2, 1>& kalmansCoefficient,

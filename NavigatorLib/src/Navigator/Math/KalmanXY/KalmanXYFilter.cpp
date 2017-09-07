@@ -17,34 +17,24 @@ namespace Navigator {
                     lastX << 0, 0;
                     lastP = config.matrixInitP;
                     isInitialized = true;
-                    // add return !!!!!!!!!!!!!!!!!
+                    return lastX;
                 }
 
-                tempX = predictCurrentMoment();
-                tempP = predictError();
-
-                Eigen::Matrix<double, 1, 2> first = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
-                Eigen::Matrix<double, 1, 2> second = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
-                Eigen::Matrix<double, 1, 2> third = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
+                Eigen::Matrix<double, 1, 2> dtb1 = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
+                Eigen::Matrix<double, 1, 2> dtb2 = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
+                Eigen::Matrix<double, 1, 2> dtb3 = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
 
                 Eigen::Matrix<double, 3, 2> matrixH;
-                matrixH << first(0,0), first(0,1),
-                           second(0,0), second(0,1),
-                           third(0,0), third(0,1);
+                matrixH << dtb1(0,0), dtb1(0,1),
+                           dtb2(0,0), dtb2(0,1),
+                           dtb3(0,0), dtb3(0,1);
 
+                predictCurrentMoment();
+                predictError();
                 Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(distanceToBeacons, matrixH);
-
                 correctCurrentMoment(locationXY, kalmansCoefficient, matrixH);
+                correctError(kalmansCoefficient, matrixH);
 
-//                correctError(tempP, kalmansCoefficient);
-                // ----------------
-//                std::cout << " lastP(0,0) = " << lastP(0,0) << " lastP(0,1) = " << lastP(0,1)
-//                          << " lastP(1,0) = " << lastP(1,0) << " lastP(1,1) = " << lastP(1,1) << std::endl;
-//                cout << " -----------  end step correction  ------------" << endl;
-                // ----------------
-//                cout << "lastX = \n" << lastX << endl;
-//                cout << "lastP = \n" << lastP << endl;
-//                lastTime = in.timeStamp;
                 return Eigen::Matrix<double, 1, 2>(0, 0);
             }
 
@@ -74,21 +64,27 @@ namespace Navigator {
 
             // ------------ private -----------------
 
-            Eigen::Matrix<double, 2, 1> KalmanXYFilter::predictCurrentMoment() {
-                return config.matrixAk * lastX;
+            void KalmanXYFilter::predictCurrentMoment() {
+                tempX = config.matrixAk * lastX;
             }
 
             // -----------------
 
-            Eigen::Matrix<double, 2, 2> KalmanXYFilter::predictError() {
-                return config.matrixAk * lastP * config.matrixAk.transpose() + config.matrixQ;
+            void KalmanXYFilter::predictError() {
+                tempP = config.matrixAk * lastP * config.matrixAk.transpose() + config.matrixQ;
             }
 
             // -----------------
 
             Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons,
                                                                       const Eigen::Matrix<double, 3, 2> &matrixH) {
-                return tempP * matrixH.transpose() * (matrixH * tempP * matrixH.transpose() + config.matrixR);
+                Eigen::Matrix<double, 3, 3> expression = matrixH * tempP * matrixH.transpose() + config.matrixR;
+                for (int i = 0; i < 3; ++i) {
+                    for (int j = 0; j < 3; ++j) {
+                        expression(i, j) = pow(expression(i, j), -1);
+                    }
+                }       // maybe need refactor, maybe exist standart function in eigen lib... i didn't found
+                return tempP * matrixH.transpose() * expression;
             }
 
             // -----------------
@@ -101,20 +97,17 @@ namespace Navigator {
 
             // -----------------
 
-//            void KalmanXYFilter::correctError(const Eigen::Matrix<double, 2, 2>& tempP,
-//                                            const Eigen::Matrix<double, 2, 1>& kalmansCoefficient) {
-//                lastP = (config.matrixI - kalmansCoefficient * config.H) * tempP;
-//            }
+            void KalmanXYFilter::correctError(const Eigen::Matrix<double, 2, 3>& kalmansCoefficient,
+                                              const Eigen::Matrix<double, 3, 2> &matrixH) {
+                lastP = (config.matrixI - kalmansCoefficient * matrixH) * tempP;
+
+            }
 
             Eigen::Matrix<double, 1, 2> KalmanXYFilter::helpExpression(double x, double y) {
                 double top = tempX(0, 0) - x;
-                double bottom = std::sqrt(std::pow(tempX(0, 0) - x, 2)
-                                          + std::pow(tempX(1, 0) - y, 2));
+                double bottom = sqrt(pow(tempX(0, 0) - x, 2) + pow(tempX(1, 0) - y, 2));
                 double dSa_Dx = top/bottom;
-
                 top = tempX(1, 0) - y;
-                bottom = std::sqrt(std::pow(tempX(0, 0) - x, 2)
-                                          + std::pow(tempX(1, 0) - y, 2));
                 double dSa_Dy = top/bottom;
                 return Eigen::Matrix<double, 1, 2>(dSa_Dx, dSa_Dy);
             }

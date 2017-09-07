@@ -23,19 +23,19 @@ namespace Navigator {
                 tempX = predictCurrentMoment();
                 tempP = predictError();
 
-                Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(distanceToBeacons);
-//                cout << "K = \n" << kalmansCoefficient << endl;
+                Eigen::Matrix<double, 1, 2> first = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
+                Eigen::Matrix<double, 1, 2> second = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
+                Eigen::Matrix<double, 1, 2> third = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
 
-                // мои расчеты (0.999257  0.399677)  --- программа посчитала (0.999201  0.399677)
-                // ----------------
-//                std::cout << " kalmansCoefficient(0,0) = " << kalmansCoefficient(0,0)
-//                          << " kalmansCoefficient(1,0) = " << kalmansCoefficient(1,0) << std::endl;
-//                cout << " -----------  end step calculated kalmansCoefficient  ------------" << endl;
-                // ----------------
-//                correctCurrentMoment(tempX, kalmansCoefficient, val);
-                // ----------------
-//                std::cout << " lastX(0,0) = " << lastX(0,0) << " lastX(1,0) = " << lastX(1,0) << " ";
-                // ----------------
+                Eigen::Matrix<double, 3, 2> matrixH;
+                matrixH << first(0,0), first(0,1),
+                           second(0,0), second(0,1),
+                           third(0,0), third(0,1);
+
+                Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(distanceToBeacons, matrixH);
+
+                correctCurrentMoment(locationXY, kalmansCoefficient, matrixH);
+
 //                correctError(tempP, kalmansCoefficient);
                 // ----------------
 //                std::cout << " lastP(0,0) = " << lastP(0,0) << " lastP(0,1) = " << lastP(0,1)
@@ -86,26 +86,18 @@ namespace Navigator {
 
             // -----------------
 
-            Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons) {
-                Eigen::Matrix<double, 1, 2> first = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
-                Eigen::Matrix<double, 1, 2> second = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
-                Eigen::Matrix<double, 1, 2> third = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
-
-                Eigen::Matrix<double, 3, 2> matrixH;
-                matrixH << first(0,0), first(0,1),
-                           second(0,0), second(0,1),
-                           third(0,0), third(0,1);
-
+            Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons,
+                                                                      const Eigen::Matrix<double, 3, 2> &matrixH) {
                 return tempP * matrixH.transpose() * (matrixH * tempP * matrixH.transpose() + config.matrixR);
             }
 
             // -----------------
 
-//            void KalmanXYFilter::correctCurrentMoment(Eigen::Matrix<double, 2, 1> tempX,
-//                                                                           const Eigen::Matrix<double, 2, 1>& kalmansCoefficient,
-//                                                                           const double val) {
-//                lastX = tempX + kalmansCoefficient * (val - config.H * tempX);
-//            }
+            void KalmanXYFilter::correctCurrentMoment(const Eigen::Matrix<double, 1, 2> &locationXY,
+                                                      const Eigen::Matrix<double, 2, 3> &kalmansCoefficient,
+                                                      const Eigen::Matrix<double, 3, 2> &matrixH) {
+                lastX = tempX + kalmansCoefficient * (matrixH * locationXY.transpose() - matrixH * tempX);
+            }
 
             // -----------------
 

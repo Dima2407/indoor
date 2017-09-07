@@ -63,11 +63,12 @@ namespace Navigator {
 
                 Eigen::Matrix<double, 2, 2> predictError();
 
-                Eigen::Matrix<double, 2, 3> correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons);
+                Eigen::Matrix<double, 2, 3> correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons,
+                                                          const Eigen::Matrix<double, 3, 2> &matrixH);
 
-//                void correctCurrentMoment(Eigen::Matrix<double, 2, 1> tempX,
-//                                                                 const Eigen::Matrix<double, 2, 1>& kalmansCoefficient,
-//                                                                 const double val);
+                void correctCurrentMoment(const Eigen::Matrix<double, 1, 2> &locationXY,
+                                          const Eigen::Matrix<double, 2, 3> &kalmansCoefficient,
+                                          const Eigen::Matrix<double, 3, 2> &matrixH);
 
 //                void correctError(const Eigen::Matrix<double, 2, 2>& tempP,
 //                                                         const Eigen::Matrix<double, 2, 1>& kalmansCoefficient);

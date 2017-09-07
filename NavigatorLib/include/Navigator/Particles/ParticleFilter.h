@@ -132,7 +132,7 @@ namespace Navigator {
              * @param particle
              * @param z
              * @return
-             * help method for incapsulate Mathematical calculations
+             * Normalized Gaussian distribution for x,y with sigmaX, sigmaY
              */
             double gauss(const Math::Position2D &particle, const Math::Position2D &z);
 
@@ -152,8 +152,18 @@ namespace Navigator {
             /// Last position
             Math::Position2D lastPosition;
 
-            // Seeded random engine
+            /// Time-Seeded random engine
             std::mt19937 randomEngine = std::mt19937(time(nullptr));
+
+        public: //======= Fields for simulated random
+            /// Simulated random shifts for each particle for initialization or prediction
+            std::vector<Math::Position2D> simRandP;
+
+            /// Simulatted random i (particle chosen at resampling)
+            int simRandI;
+
+            /// Simulated betas for N particles
+            std::vector<double> simRandBeta;
         };
     }
 }

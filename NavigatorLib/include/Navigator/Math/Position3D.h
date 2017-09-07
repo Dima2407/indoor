@@ -31,8 +31,12 @@ namespace Navigator {
                 y += rhs.y;
                 return *this;
             }
-            
-            Position2D operator-(const Position2D &rhs) {
+
+            Position2D operator+ (const Position2D &rhs) const {
+                return Position2D(x+rhs.x, y+rhs.y);
+            }
+
+            Position2D operator-(const Position2D &rhs) const {
                 return Position2D(x-rhs.x, y-rhs.y);
             }
 

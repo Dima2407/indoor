@@ -35,32 +35,9 @@ namespace Navigator {
                 correctCurrentMoment(locationXY, kalmansCoefficient, matrixH);
                 correctError(kalmansCoefficient, matrixH);
 
-                return Eigen::Matrix<double, 1, 2>(0, 0);
+                return Eigen::Matrix<double, 1, 2>(lastX(0,0), lastX(1,0));
             }
 
-            // -----------------
-
-//            Filter::IFilter::Value KalmanXYFilter::processOnlyPredict(double timestamp) {
-//                if (timestamp - lastPacketTime > config.timeout) {
-////                    isInitialized = false;
-//                    lastTime = timestamp;
-//                    return Filter::IFilter::Value(lastX(0,0), timestamp);
-//                }
-//                double deltaT = timestamp - lastTime;
-//                Eigen::Matrix<double, 2, 2> Ak;
-//                Ak(0, 0) = 1;
-//                Ak(0, 1) = deltaT;
-//                Ak(1, 0) = 0;
-//                Ak(1, 1) = 1;
-
-//                lastX = predictCurrentMoment(Ak);
-//                lastP = predictError(Ak);
-//                tempX = lastX;
-//                tempP = lastP;
-
-//                lastTime = timestamp;
-//                return Filter::IFilter::Value(lastX(0,0), timestamp);
-//            }
 
             // ------------ private -----------------
 
@@ -79,12 +56,7 @@ namespace Navigator {
             Eigen::Matrix<double, 2, 3> KalmanXYFilter::correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons,
                                                                       const Eigen::Matrix<double, 3, 2> &matrixH) {
                 Eigen::Matrix<double, 3, 3> expression = matrixH * tempP * matrixH.transpose() + config.matrixR;
-                for (int i = 0; i < 3; ++i) {
-                    for (int j = 0; j < 3; ++j) {
-                        expression(i, j) = pow(expression(i, j), -1);
-                    }
-                }       // maybe need refactor, maybe exist standart function in eigen lib... i didn't found
-                return tempP * matrixH.transpose() * expression;
+                return tempP * matrixH.transpose() * expression.inverse();
             }
 
             // -----------------

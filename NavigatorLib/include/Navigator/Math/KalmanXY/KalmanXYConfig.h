@@ -44,10 +44,6 @@ namespace Navigator {
                  */
                 Eigen::Matrix<double, 2, 2> matrixAk;
 
-                const double B = 0;
-
-                const double Uk = 0;
-
                 /**
                  * @brief matrixInitP
                  * start values covariant matrix

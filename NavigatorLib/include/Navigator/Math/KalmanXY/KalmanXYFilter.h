@@ -7,12 +7,11 @@
 //#define EIGEN_DONT_ALIGN
 
 #include "KalmanXYConfig.h"
-#include "Navigator/Math/Filter/IFilter.h"
 
 namespace Navigator {
     namespace Math {
         namespace KalmanXY {
-            class KalmanXYFilter: public Filter::IFilter {
+            class KalmanXYFilter {
 
             public:
 
@@ -23,9 +22,7 @@ namespace Navigator {
                 Eigen::Matrix<double, 1, 2> process(const Eigen::Matrix<double, 1, 2> &locationXY,
                                                     const Eigen::Matrix<double, 3, 2> &distanceToBeacons);
 
-//                Value processOnlyPredict(double timestamp);
-
-                void reset() override {
+                void reset() {
                     isInitialized = false;
                 }
 
@@ -47,14 +44,6 @@ namespace Navigator {
 
 //                bool getIsInitialized() const {
 //                    return isInitialized;
-//                }
-
-//                double getLastTime() const {
-//                    return lastTime;
-//                }
-
-//                double getLastPacketTime() const {
-//                    return lastPacketTime;
 //                }
 
             private:

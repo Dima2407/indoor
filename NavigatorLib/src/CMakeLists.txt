@@ -9,6 +9,7 @@ set(SOURCE_FILES
         ../include/Navigator/INavigator.h
         #
         ../include/Navigator/Beacons/AbstractBeaconNavigator.h
+        ../include/Navigator/Beacons/KalmanXYNavigator.h
         ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
         ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
         ../include/Navigator/Beacons/KalmanBeaconNavigatorConfig.h

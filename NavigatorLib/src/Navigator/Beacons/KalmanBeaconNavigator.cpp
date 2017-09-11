@@ -100,8 +100,11 @@ void KalmanBeaconNavigator::runTrilat() {
 
     // Save their UIDS
     lastTrilatUids.clear();
-    for (const TrilatRecord & r: records)
+    lastTrilatPosition.clear();
+    for (const TrilatRecord & r: records) {
         lastTrilatUids.push_back(r.uid);
+        lastTrilatPosition.push_back(r.pos);
+    }
 
     // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors
     // Result is written to lastPosition

@@ -67,11 +67,11 @@ namespace Navigator {
 
             virtual const bool isInitFinished() const = 0;
 
-            std::vector<Math::Position2D> getLastTrilatPosition() {
+            const std::vector<Math::Position2D> &getLastTrilatPosition() const {
                 return lastTrilatPosition;
             }
 
-        private:
+        protected:
             std::vector <Math::Position2D> lastTrilatPosition;
         };
     }

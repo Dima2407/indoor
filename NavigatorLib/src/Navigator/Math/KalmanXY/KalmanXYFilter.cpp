@@ -23,8 +23,8 @@ namespace Navigator {
                 Eigen::Matrix<double, 1, 2> locationXY(location.x, location.y);
                 Eigen::Matrix<double, 3, 2> distanceToBeacons;
                 for (int i = 0; i < 3; ++i) {
-                    distanceToBeacons << distances[i].x;
-                    distanceToBeacons << distances[i].y;
+                    distanceToBeacons(i, 0) = distances[i].x;
+                    distanceToBeacons(i, 1) = distances[i].y;
                 }
 
                 Eigen::Matrix<double, 1, 2> dtb1 = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
@@ -37,12 +37,18 @@ namespace Navigator {
                            dtb3(0,0), dtb3(0,1);
 
                 predictCurrentMoment();
+//                cout << "tempX = \n" << tempX << endl;
+//                cout << " tempX(0,0) = " << tempX(0,0) << " tempX(1,0) = " << tempX(1,0) << endl;
+
                 predictError();
+//                cout << "tempP = \n" << tempP << endl;
+//                std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
+//                             << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
+
                 Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(distanceToBeacons, matrixH);
                 correctCurrentMoment(locationXY, kalmansCoefficient, matrixH);
                 correctError(kalmansCoefficient, matrixH);
 
-//                return Eigen::Matrix<double, 1, 2>(lastX(0,0), lastX(1,0));
                 return Math::Position2D(lastX(0,0), lastX(1,0));
             }
 

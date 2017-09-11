@@ -33,6 +33,8 @@ add_subdirectory(example5)
 
 #add_subdirectory(testKalmanFilterByVictor)
 
+add_subdirectory(testKalmanXYFilterByVictor)
+
 #add_subdirectory(kalmantest)
 
 #add_subdirectory(testParticle)

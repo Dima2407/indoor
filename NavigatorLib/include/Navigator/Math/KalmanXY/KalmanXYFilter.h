@@ -7,6 +7,7 @@
 //#define EIGEN_DONT_ALIGN
 
 #include "KalmanXYConfig.h"
+#include "Navigator/Math/Position3D.h"
 
 namespace Navigator {
     namespace Math {
@@ -19,8 +20,8 @@ namespace Navigator {
                     config(config)
                 {}
 
-                Eigen::Matrix<double, 1, 2> process(const Eigen::Matrix<double, 1, 2> &locationXY,
-                                                    const Eigen::Matrix<double, 3, 2> &distanceToBeacons);
+                Math::Position2D process(const Math::Position2D &location,
+                                         const std::vector<Math::Position2D> distances);
 
                 void reset() {
                     isInitialized = false;

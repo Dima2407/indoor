@@ -148,25 +148,33 @@ int main() {
     for (int i = 1; i <= accDelta.size(); ++i)
         cout <<  i << " : " << accDelta[i-1] << endl;*/
 
-    ofstream("particles.txt");
-    ofstream("position.txt");
+    ofstream filePar("particles.txt");
+    ofstream filePos("position.txt");
+
     Position2D outPos;
     for (int i = 1; i <= beaconZ.size(); ++i) {
         if (1 == i) {
             // Initialize
             pf.initialize(beaconZ.at(i - 1), meshCorrect);
             outPos = beaconZ.at(i - 1);
+            {
+                // Calculate all the possible particle positions at time 2 (second input pos)
+                // This are the position before resampling
+                ofstream filePart2("part2.txt");
+                for (int p = 0; p < pf.getParticles().size(); ++p)
+                    filePart2 << pf.getParticles().at(p) + pf.simRandPP.at(p) << endl;
+            }
         } else {
             // Normal run, Starting with i == 2
             outPos = pf.process(accDelta.at(i - 1), beaconZ.at(i - 1), allowMove, meshCorrect);
         }
 
-//        cout <<  i << " " << outPos << endl;
+        filePos <<  i << " " << outPos << endl;
         // Print particles
-        cout << i << "  ";
+        filePar << i << "  ";
         for (const Position2D & p : pf.getParticles())
-            cout << '[' << p << "]  ";
-        cout << endl;
+            filePar << '[' << p << "]  ";
+        filePar << endl;
     }
 
 

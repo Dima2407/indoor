@@ -66,6 +66,13 @@ namespace Navigator {
             virtual void reset() = 0;
 
             virtual const bool isInitFinished() const = 0;
+
+            std::vector<Math::Position2D> getLastTrilatPosition() {
+                return lastTrilatPosition;
+            }
+
+        private:
+            std::vector <Math::Position2D> lastTrilatPosition;
         };
     }
 }

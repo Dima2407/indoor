@@ -21,7 +21,7 @@ namespace Navigator {
                 {}
 
                 Math::Position2D process(const Math::Position2D &location,
-                                         const std::vector<Math::Position2D> distances);
+                                         const std::vector<Math::Position2D> beacPosition);
 
                 void reset() {
                     isInitialized = false;
@@ -53,7 +53,7 @@ namespace Navigator {
 
                 void predictError();
 
-                Eigen::Matrix<double, 2, 3> correctKalman(const Eigen::Matrix<double, 3, 2> &distanceToBeacons,
+                Eigen::Matrix<double, 2, 3> correctKalman(const Eigen::Matrix<double, 3, 2> &posBeacons,
                                                           const Eigen::Matrix<double, 3, 2> &matrixH);
 
                 void correctCurrentMoment(const Eigen::Matrix<double, 1, 2> &locationXY,
@@ -63,7 +63,7 @@ namespace Navigator {
                 void correctError(const Eigen::Matrix<double, 2, 3>& kalmansCoefficient,
                                   const Eigen::Matrix<double, 3, 2> &matrixH);
 
-                Eigen::Matrix<double, 1, 2> helpExpression(double x, double y);
+                Eigen::Matrix<double, 1, 2> helpExpression(const Math::Position2D &location, double x, double y);
 
 
             private:

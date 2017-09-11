@@ -12,24 +12,25 @@ namespace Navigator {
         namespace KalmanXY {
 
             Math::Position2D KalmanXYFilter::process(const Math::Position2D &location,
-                                     const std::vector<Math::Position2D> distances) {
+                                     const std::vector<Math::Position2D> beacPosition) {
                 if (!isInitialized) {
-                    lastX << 0, 0;
+                    lastX(0,0) = location.x;
+                    lastX(1,0) = location.y;
                     lastP = config.matrixInitP;
                     isInitialized = true;
                     return Math::Position2D(lastX(0,0), lastX(1,0));
                 }
 
                 Eigen::Matrix<double, 1, 2> locationXY(location.x, location.y);
-                Eigen::Matrix<double, 3, 2> distanceToBeacons;
+                Eigen::Matrix<double, 3, 2> posBeacons;
                 for (int i = 0; i < 3; ++i) {
-                    distanceToBeacons(i, 0) = distances[i].x;
-                    distanceToBeacons(i, 1) = distances[i].y;
+                    posBeacons(i, 0) = beacPosition[i].x;
+                    posBeacons(i, 1) = beacPosition[i].y;
                 }
 
-                Eigen::Matrix<double, 1, 2> dtb1 = helpExpression(distanceToBeacons(0,0), distanceToBeacons(0, 1));
-                Eigen::Matrix<double, 1, 2> dtb2 = helpExpression(distanceToBeacons(1,0), distanceToBeacons(1, 1));
-                Eigen::Matrix<double, 1, 2> dtb3 = helpExpression(distanceToBeacons(2,0), distanceToBeacons(2, 1));
+                Eigen::Matrix<double, 1, 2> dtb1 = helpExpression(location, posBeacons(0,0), posBeacons(0, 1));
+                Eigen::Matrix<double, 1, 2> dtb2 = helpExpression(location, posBeacons(1,0), posBeacons(1, 1));
+                Eigen::Matrix<double, 1, 2> dtb3 = helpExpression(location, posBeacons(2,0), posBeacons(2, 1));
 
                 Eigen::Matrix<double, 3, 2> matrixH;
                 matrixH << dtb1(0,0), dtb1(0,1),
@@ -45,7 +46,7 @@ namespace Navigator {
 //                std::cout << " tempP(0,0) = " << tempP(0,0) << " tempP(0,1) = " << tempP(0,1)
 //                             << " tempP(1,0) = " << tempP(1,0) << " tempP(1,1) = " << tempP(1,1) << std::endl;
 
-                Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(distanceToBeacons, matrixH);
+                Eigen::Matrix<double, 2, 3> kalmansCoefficient = correctKalman(posBeacons, matrixH);
                 correctCurrentMoment(locationXY, kalmansCoefficient, matrixH);
                 correctError(kalmansCoefficient, matrixH);
 
@@ -89,11 +90,12 @@ namespace Navigator {
 
             }
 
-            Eigen::Matrix<double, 1, 2> KalmanXYFilter::helpExpression(double x, double y) {
-                double top = tempX(0, 0) - x;
+            Eigen::Matrix<double, 1, 2> KalmanXYFilter::helpExpression(const Math::Position2D &location,
+                                                                       double x, double y) {
+                double top = location.x - x;
                 double bottom = sqrt(pow(tempX(0, 0) - x, 2) + pow(tempX(1, 0) - y, 2));
                 double dSa_Dx = top/bottom;
-                top = tempX(1, 0) - y;
+                top = location.y - y;
                 double dSa_Dy = top/bottom;
                 return Eigen::Matrix<double, 1, 2>(dSa_Dx, dSa_Dy);
             }

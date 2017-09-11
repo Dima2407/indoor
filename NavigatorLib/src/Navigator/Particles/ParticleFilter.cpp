@@ -22,7 +22,7 @@ namespace Navigator {
             for (int i = 0; i < particles.size(); ++i) {
                 Math::Position2D r;  // Random shift in x,y
                 if (config.simulatedRandom) {
-                    r = simRandP.at(i);  // Simulated random shift
+                    r = simRandPI.at(i);  // Simulated random shift
                 } else {
                     // Generate random
                     r.x = randRange(-config.alpha, config.alpha);
@@ -55,7 +55,7 @@ namespace Navigator {
             for (int i = 0; i < particles.size(); ++i) {
                 Math::Position2D r;  // Random shift in x,y
                 if (config.simulatedRandom) {
-                    r = simRandP.at(i);  // Simulated random shift
+                    r = simRandPP.at(i);  // Simulated random shift
                 } else {
                     // Generate random
                     r.x = randNorm(config.sigmaX);

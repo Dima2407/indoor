@@ -8,6 +8,8 @@ include_directories(
                     ../../include/
                     )
 
+file (COPY filesForTests DESTINATION .)
+
 set(SOURCE_FILES
         main.cpp
         )

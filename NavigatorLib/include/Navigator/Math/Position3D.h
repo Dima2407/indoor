@@ -46,6 +46,11 @@ namespace Navigator {
 
             double x = nan("");
             double y = nan("");
+
+            friend std::ostream &operator<<(std::ostream &os, const Position2D &d) {
+                os <<  d.x << "  " << d.y;
+                return os;
+            }
         };
 
         /// Point in 3d space

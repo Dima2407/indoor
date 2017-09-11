@@ -156,8 +156,11 @@ namespace Navigator {
             std::mt19937 randomEngine = std::mt19937(time(nullptr));
 
         public: //======= Fields for simulated random
-            /// Simulated random shifts for each particle for initialization or prediction
-            std::vector<Math::Position2D> simRandP;
+            /// Simulated random shifts for each particle for initialization (initial seed)
+            std::vector<Math::Position2D> simRandPI;
+
+            /// Simulated random shifts for each particle for prediction (particle move)
+            std::vector<Math::Position2D> simRandPP;
 
             /// Simulatted random i (particle chosen at resampling)
             int simRandI;

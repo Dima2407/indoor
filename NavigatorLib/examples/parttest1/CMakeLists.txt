@@ -8,7 +8,7 @@ include_directories(
                     ../../include/
                     )
 
-file (COPY filesForTests DESTINATION .)
+file (COPY filesForTests2 DESTINATION .)
 
 set(SOURCE_FILES
         main.cpp

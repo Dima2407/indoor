@@ -12,6 +12,8 @@
 
 #include "Navigator.h"
 
+const std::string  prefix("filesForTests2/");
+
 //===================================
 // Read 4 input files and set up simulated random numbers
 void setUpSimRand(Navigator::Particles::ParticleFilter &pf) {
@@ -19,7 +21,7 @@ void setUpSimRand(Navigator::Particles::ParticleFilter &pf) {
     using namespace Navigator::Particles;
     using namespace Navigator::Math;
     {
-        string fileName("filesForTests/firstStageCoords30particles.txt");
+        string fileName(prefix + "firstStageCoords30particles.txt");
         ifstream in(fileName);
         if (!in)
             throw logic_error("Cannot open file " + fileName + " !");
@@ -32,7 +34,7 @@ void setUpSimRand(Navigator::Particles::ParticleFilter &pf) {
         }
     }
     {
-        string fileName("filesForTests/secondStageCoords30particles.txt");
+        string fileName(prefix + "secondStageCoords30particles.txt");
         ifstream in(fileName);
         if (!in)
             throw logic_error("Cannot open file " + fileName + " !");
@@ -45,14 +47,14 @@ void setUpSimRand(Navigator::Particles::ParticleFilter &pf) {
         }
     }
     {
-        string fileName("filesForTests/thirdStageParticleNumber.txt");
+        string fileName(prefix + "thirdStageParticleNumber.txt");
         ifstream in(fileName);
         in >> pf.simRandI;
         if (!in)
             throw logic_error("Cannot open file " + fileName + " !");
     }
     {
-        string fileName("filesForTests/forthStage30Particles.txt");
+        string fileName(prefix + "forthStage30Particles.txt");
         ifstream in(fileName);
         if (!in)
             throw logic_error("Cannot open file " + fileName + " !");
@@ -74,7 +76,7 @@ void readZD(std::vector<Navigator::Math::Position2D> &z, std::vector<Navigator::
     using namespace Navigator::Math;
 
     {
-        string fileName("filesForTests/INPUTbeaconsCoords.txt");
+        string fileName(prefix + "INPUTbeaconsCoords.txt");
         ifstream in(fileName);
         if (!in)
             throw logic_error("Cannot open file " + fileName + " !");
@@ -92,7 +94,7 @@ void readZD(std::vector<Navigator::Math::Position2D> &z, std::vector<Navigator::
         }
     }
     {
-        string fileName("filesForTests/INPUTAccelXYIncrement.txt");
+        string fileName(prefix + "INPUTAccelXYIncrement.txt");
         ifstream in(fileName);
         if (!in)
             throw logic_error("Cannot open file " + fileName + " !");
@@ -149,6 +151,7 @@ int main() {
         cout <<  i << " : " << accDelta[i-1] << endl;*/
 
     ofstream filePar("particles.txt");
+    ofstream filePar0("particles0.txt");
     ofstream filePos("position.txt");
 
     Position2D outPos;
@@ -160,9 +163,9 @@ int main() {
             {
                 // Calculate all the possible particle positions at time 2 (second input pos)
                 // This are the position before resampling
-                ofstream filePart2("part2.txt");
+                ofstream fileP2("part2.txt");
                 for (int p = 0; p < pf.getParticles().size(); ++p)
-                    filePart2 << pf.getParticles().at(p) + pf.simRandPP.at(p) << endl;
+                    fileP2 << pf.getParticles().at(p) + pf.simRandPP.at(p) << endl;
             }
         } else {
             // Normal run, Starting with i == 2
@@ -174,7 +177,11 @@ int main() {
         filePar << i << "  ";
         for (const Position2D & p : pf.getParticles())
             filePar << '[' << p << "]  ";
-        filePar << endl;
+        // Print particles0 (before resampling)
+        filePar0 << i << "  ";
+        for (const Position2D & p : pf.getTmpParticles())
+            filePar0 << '[' << p << "]  ";
+        filePar0 << endl;
     }
 
 

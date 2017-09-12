@@ -102,12 +102,7 @@ namespace Navigator {
             }
         };
 
-
-
-
         //-------------------------------------------
-
-
         /// Point in 3d space + floor number (optional, may be will be needed)
         struct Position3DFloor : Position3D
         {

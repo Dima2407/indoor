@@ -51,8 +51,7 @@ namespace Navigator {
         //===================================================
 
         void ParticleFilter::moveParticles(const Math::Position2D &delta) {
-            oldParticles = particles;
-            for (int i = 0; i < particles.size(); ++i) {
+            for (int i = 0; i < config.numPart; ++i) {
                 Math::Position2D r;  // Random shift in x,y
                 if (config.simulatedRandom) {
                     r = simRandPP.at(i);  // Simulated random shift
@@ -61,7 +60,7 @@ namespace Navigator {
                     r.x = randNorm(config.sigmaX);
                     r.y = randNorm(config.sigmaY);
                 }
-                particles[i] = oldParticles[i] + delta + r;
+                tmpParticles[i] = particles[i] + delta + r;
             }
         }
         //===================================================
@@ -71,11 +70,9 @@ namespace Navigator {
                                                                   const Math::Position2D &)> &allowMove,
                                          const std::function<Math::Position2D(const Math::Position2D &)> &meshCorrect) {
             double sum = 0.0;
-            for (int i = 0; i < particles.size(); ++i) {
-                if (allowMove(oldParticles[i], particles[i])) {
-                    // printf("pi = %lf %lf  z = %lf %lf \n", particles[i].x, particles[i].y, z.x, z.y);
-                    weights[i] = gauss(particles[i], z);
-                    // printf("wi = %lf\n", weights[i]);
+            for (int i = 0; i < config.numPart; ++i) {
+                if (allowMove(particles[i], tmpParticles[i])) {
+                    weights[i] = gauss(tmpParticles[i], z);
                     sum += weights[i];
                 } else {
                     weights[i] = 0;
@@ -83,12 +80,14 @@ namespace Navigator {
             }
             // printf("sum = %lf \n", sum);
             if (sum < 1.0e-10) {
-                for (int i = 0; i < particles.size(); ++i) {
-                    particles[i] = meshCorrect(particles[i]);
-                    weights[i] = gauss(particles[i], z);
+                // All particles with zero weight, apply mesh correction
+                for (int i = 0; i < config.numPart; ++i) {
+                    tmpParticles[i] = meshCorrect(tmpParticles[i]);
+                    weights[i] = gauss(tmpParticles[i], z);
                     sum += weights[i];
                 }
             }
+            // Normalize weights
             for (auto &iter : weights) {
                 iter /= sum;
             }
@@ -96,23 +95,24 @@ namespace Navigator {
         //===================================================
 
         void ParticleFilter::resample() {
-            std::vector<Math::Position2D> newParticles;
-            newParticles.reserve(config.numPart);
-            double maxWeight = 0;
+            double maxWeight = 0;   // Find max weight
             for (double iter :weights) {
                 if (maxWeight < iter) {
                     maxWeight = iter;
                 }
             }
 
-            int i;  // Choose a random particle
+            int i;  // Choose a random particle i
             if (config.simulatedRandom) {
                 i = simRandI;
             } else {
                 i = randInt(weights.size() - 1);
             }
-            for (int j = 0; j < weights.size(); ++j) {
-                double beta; if (config.simulatedRandom) {
+
+            for (int j = 0; j < config.numPart; ++j) {
+                // Random beta
+                double beta;
+                if (config.simulatedRandom) {
                     beta = simRandBeta.at(j) * 2 * maxWeight;
                 } else {
                     beta = randRange(0, 2 * maxWeight);
@@ -124,12 +124,11 @@ namespace Navigator {
                             i = 0;
                         }
                     } else {
-                        newParticles.push_back(particles[i]);
+                        particles[j] = tmpParticles[i];  // j-th resampled particle
                         break;
                     }
                 }
             }
-            particles = std::move(newParticles);
         }
         //===================================================
 
@@ -149,8 +148,8 @@ namespace Navigator {
 
         double ParticleFilter::gauss(const Math::Position2D &particle, const Math::Position2D &z) {
             double expr = 1 / (config.sigmaX * config.sigmaY * 2 * M_PI);
-            double degX = std::pow(particle.x - z.x, 2) / (2 * config.sigmaX * config.sigmaX);
-            double degY = std::pow(particle.y - z.y, 2) / (2 * config.sigmaY * config.sigmaY);
+            double degX = (particle.x - z.x)*(particle.x - z.x) / (2 * config.sigmaX * config.sigmaX);
+            double degY = (particle.y - z.y)*(particle.y - z.y) / (2 * config.sigmaY * config.sigmaY);
             return expr * std::exp(-degX - degY);
         }
 

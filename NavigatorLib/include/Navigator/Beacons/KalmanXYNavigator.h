@@ -17,23 +17,24 @@ namespace Navigator {
     namespace Beacons {
         class KalmanXYBeaconNavigator: public AbstractBeaconNavigator {
         public:
-            KalmanXYBeaconNavigator(const std::shared_ptr<AbstractBeaconNavigator> &navigator)
-                : beaconNavigator(navigator)
+            KalmanXYBeaconNavigator(const std::shared_ptr<AbstractBeaconNavigator> &navigator,
+                                    const std::shared_ptr<Mesh::RectanMesh> &mesh = nullptr)
+                : beaconNavigator(navigator),
+                  mesh(mesh)
             {}
 
         public:
             virtual const Math::Position3D &process(const BeaconReceivedData & brd) = 0;  // TODO
 
-            virtual const Math::Position3D &process(const std::vector<BeaconReceivedData> & brds) = 0; // TODO
+            virtual const Math::Position3D &process(const std::vector<BeaconReceivedData> & brds) override;
 
-            virtual const Math::Position3D &getLastPosition() const = 0; // TODO
+            virtual const Math::Position3D &getLastPosition() const override {
+                return lastPostion;
+            }
 
             virtual Math::Position3D obtainLastPosition() override {
                 return getLastPosition();
             }
-
-
-
 
             virtual void addBeacon(const Beacon &beacon) override {
                 beaconNavigator->addBeacon(beacon);
@@ -66,10 +67,34 @@ namespace Navigator {
             }
 
 
+            bool getUseMapEdges() const {
+                return useMapEdges;
+            }
+
+            void setUseMapEdges(bool value) {
+                useMapEdges = value;
+            }
+
+            bool getUseMeshMask() const {
+                return useMeshMask;
+            }
+
+            void setUseMeshMask(bool value) {
+                useMeshMask = value;
+            }
+
         private:
+            Math::Position2D postProcess(Math::Position2D pos);
+
             std::shared_ptr<AbstractBeaconNavigator> beaconNavigator;
             Math::KalmanXY::KalmanXYFilter filter;
             Math::Position3D lastPostion; // result
+
+            std::shared_ptr<Mesh::RectanMesh> mesh;
+
+            bool useMapEdges = true;
+
+            bool useMeshMask = true;
         };
     }
 }

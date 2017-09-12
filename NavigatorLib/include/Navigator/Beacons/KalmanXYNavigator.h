@@ -24,7 +24,7 @@ namespace Navigator {
             {}
 
         public:
-            virtual const Math::Position3D &process(const BeaconReceivedData & brd) = 0;  // TODO
+            virtual const Math::Position3D &process(const BeaconReceivedData & brd) override;
 
             virtual const Math::Position3D &process(const std::vector<BeaconReceivedData> & brds) override;
 

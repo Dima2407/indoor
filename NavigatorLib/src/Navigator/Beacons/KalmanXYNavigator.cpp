@@ -8,12 +8,19 @@
 namespace Navigator {
     namespace Beacons {
 
-        const Math::Position3D &KalmanXYBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds) {
+    const Math::Position3D &KalmanXYBeaconNavigator::process(const BeaconReceivedData &brd) {
+        Math::Position3D temp3D = beaconNavigator->process(brd);
+        Math::Position2D temp2D(temp3D);
+        temp2D = filter.process(temp2D, beaconNavigator->getLastTrilatPosition());
+        lastPostion = postProcess(temp2D);
+        return lastPostion;
+    }
+
+    const Math::Position3D &KalmanXYBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds) {
             Math::Position3D temp3D = beaconNavigator->process(brds);
             Math::Position2D temp2D(temp3D);
-            temp2D = filter.process(temp2D, beaconNavigator->getLastTrilatPosition());  // 2d arg std::vector<Math::Position2D>  3 items
+            temp2D = filter.process(temp2D, beaconNavigator->getLastTrilatPosition());
             lastPostion = postProcess(temp2D);
-
             return lastPostion;
         }
 

@@ -31,8 +31,12 @@ namespace Navigator {
                 y += rhs.y;
                 return *this;
             }
-            
-            Position2D operator-(const Position2D &rhs) {
+
+            Position2D operator+ (const Position2D &rhs) const {
+                return Position2D(x+rhs.x, y+rhs.y);
+            }
+
+            Position2D operator-(const Position2D &rhs) const {
                 return Position2D(x-rhs.x, y-rhs.y);
             }
 
@@ -42,6 +46,11 @@ namespace Navigator {
 
             double x = nan("");
             double y = nan("");
+
+            friend std::ostream &operator<<(std::ostream &os, const Position2D &d) {
+                os <<  d.x << "  " << d.y;
+                return os;
+            }
         };
 
         /// Point in 3d space
@@ -93,12 +102,7 @@ namespace Navigator {
             }
         };
 
-
-
-
         //-------------------------------------------
-
-
         /// Point in 3d space + floor number (optional, may be will be needed)
         struct Position3DFloor : Position3D
         {

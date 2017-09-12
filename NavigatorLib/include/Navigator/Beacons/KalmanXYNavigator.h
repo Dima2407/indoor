@@ -16,10 +16,14 @@ namespace Navigator {
     namespace Beacons {
         class KalmanXYBeaconNavigator: public AbstractBeaconNavigator {
         public:
+            KalmanXYBeaconNavigator(const std::shared_ptr<AbstractBeaconNavigator> &navigator,
+                                    const Math::KalmanXY::KalmanXYFilter filtr)
+                : beaconNavigator(navigator),
+                  filter(filtr)
+            {}
 
         private:
-//            std::vector<double> vec;
-            std::shared_ptr<AbstractBeaconNavigator> ptr;
+            std::shared_ptr<AbstractBeaconNavigator> beaconNavigator;
             Math::KalmanXY::KalmanXYFilter filter;
             Math::Position3D lastPostion; // result
         };

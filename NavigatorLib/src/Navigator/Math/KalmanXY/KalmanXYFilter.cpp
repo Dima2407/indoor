@@ -18,7 +18,7 @@ namespace Navigator {
                     lastX(1,0) = location.y;
                     lastP = config.matrixInitP;
                     isInitialized = true;
-                    return Math::Position2D(lastX(0,0), lastX(1,0));
+                    return location;
                 }
 
                 Eigen::Matrix<double, 1, 2> locationXY(location.x, location.y);
@@ -93,7 +93,7 @@ namespace Navigator {
             Eigen::Matrix<double, 1, 2> KalmanXYFilter::helpExpression(const Math::Position2D &location,
                                                                        double x, double y) {
                 double top = location.x - x;
-                double bottom = sqrt(pow(tempX(0, 0) - x, 2) + pow(tempX(1, 0) - y, 2));
+                double bottom = sqrt(pow(location.x - x, 2) + pow(location.y - y, 2));
                 double dSa_Dx = top/bottom;
                 top = location.y - y;
                 double dSa_Dy = top/bottom;

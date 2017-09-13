@@ -14,7 +14,7 @@ namespace Navigator {
 //            lastPosition = trajectoryDetection.processZUPT(aod);
             lastPosition = trajectoryDetection.processDummy(aod);
 
-            // Accumulate delta for the particle navigator
+            // Accumulate delta for the particle bluetoothNavigator
             deltaMutex.lock(); // Thread safe
             delta += trajectoryDetection.getDelta();
             deltaMutex.unlock();

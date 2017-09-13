@@ -1,1 +1,1 @@
-include ':library', ':sample', ':demo', ':tool/network', ':tool/models',':tool/main'
+include ':library', ':sample', ':demo', ':tool/network', ':tool/models', ':tool/main', ':android-beacon-library-2.12'

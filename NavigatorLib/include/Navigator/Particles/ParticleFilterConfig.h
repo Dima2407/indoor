@@ -13,6 +13,8 @@ namespace Navigator {
              */
             int numPart = 20;
 
+            // Accuracy parameters,
+
             /**
              * @brief sigmaX
              * The accuracy of the model describing the process
@@ -30,6 +32,13 @@ namespace Navigator {
              * accuracy position by beacons
              */
             double alpha = 1.0;
+
+            // The following options are used for testing and debugging only
+            /// Use simulated random numbers instead of random numbers
+            bool simulatedRandom = false;
+
+            /// Do we use resampling?
+            bool useResampling = true;
         };
 
     }

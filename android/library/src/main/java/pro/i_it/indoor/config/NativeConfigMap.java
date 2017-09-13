@@ -35,6 +35,8 @@ public class NativeConfigMap {
 
     public static final int KEY_MULTI_LATERATION = 21;
 
+    public static final int KEY_PARTICLE_ENABLED = 22;
+
     private final SparseArray<Object> configs = new SparseArray<>();
 
     public float getFloat(int key) {

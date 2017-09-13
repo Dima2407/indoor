@@ -22,11 +22,17 @@ using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 using namespace Navigator::Math::Kalman;
+using namespace Navigator::Particles;
 
-shared_ptr<AbstractBeaconNavigator> navigator;
+
+
+shared_ptr<AbstractBeaconNavigator> bluetoothNavigator;
 shared_ptr<StandardAccelNavigator> sensorNavigator;
+shared_ptr<ParticleNavigator> particleNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
+string logFilePath;
+string logBecPosFilePath;
 
 typedef struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
@@ -67,6 +73,7 @@ typedef struct IndoorSdkApi {
     int kUseWallsField = 19;
     int kActiveBLEModeField = 20;
     int kMultiLaterationEnabledField = 21;
+    int kParticleEnabledField = 22;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -103,9 +110,10 @@ typedef struct IndoorSdkConfigs{
     bool useWalls = false;
     int activeBLEMode = 1;
     bool multiLaterationEnabled = false;
+    bool particleEnabled = false;
 } IndoorSdkConfigs;
 
-double timeS = 0;
+double timeS = -1;
 
 IndoorSdkApi api;
 IndoorSdkConfigs configs;
@@ -180,6 +188,9 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
     jobjectArray nestedEvents = (jobjectArray)env->GetObjectField(obj, api.kMeasurementEventNestedField);
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
+    if (timeS <= 0) {
+        timeS = timeStamp;
+    }
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
     if (eventTypeCode == 2 && configs.useBeacons) {
 
@@ -187,11 +198,12 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
         std::vector<BeaconReceivedData> beacons;
 
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
 
             jobject event = env->GetObjectArrayElement(nestedEvents, i);
 
-            jstring uuidString = (jstring) env->GetObjectField(event, api.kMeasurementEventUUIDField);
+            jstring uuidString = (jstring) env->GetObjectField(event,
+                                                               api.kMeasurementEventUUIDField);
 
             jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(event,
                                                                         api.kMeasurementEventDataField);
@@ -211,8 +223,37 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             env->ReleaseStringUTFChars(uuidString, uuid);
             env->ReleaseDoubleArrayElements(dataArray, data, 0);
         }
-        Position3D outPos = navigator->process(beacons);
-        LOGD("position from beacons ( %f , %f , %f )", outPos.x, outPos.y, outPos.z);
+        Position3D outPos = bluetoothNavigator->process(beacons);
+        if (logFilePath.c_str()) {
+
+            std::ofstream fos(logFilePath, ios::app);
+
+            if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
+                    bluetoothNavigator)) {
+                vector<BeaconUID> uids = nav->getLastTrilatUids();
+                for (auto value: uids) {
+                    fos << timeStamp << " " << value << endl;
+                }
+            }
+            fos.close();
+        }
+
+        if (logBecPosFilePath.c_str()) {
+
+            std::ofstream fiPos(logBecPosFilePath, ios::app);
+
+            if (beacons.size() > 0) {
+                fiPos << timeStamp << " " << beacons[0].timestamp << " size = " << beacons.size()
+                      << " pos = " << outPos.x << " " << outPos.y << endl;
+            }
+            fiPos.close();
+        }
+
+        LOGD("Number of packets %d", beacons.size());
+        if (beacons.size() > 0) {
+            LOGD("position from beacons ( %f, %f, %f, %f )", beacons[0].timestamp, outPos.x,
+                 outPos.y, outPos.z);
+        }
 
     } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
         jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
@@ -251,6 +292,8 @@ JNIEXPORT void JNICALL
 Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         JNIEnv *env, jobject instance, jobject config) {
     LOGD("IndoorLocationManager_nativeInit");
+    timeS = -1;
+
     prepare_sdk(env);
 
     configs = {};
@@ -258,6 +301,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
                                                 api.kUseBeaconsField);
     configs.useSensors = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                 api.kUseSensorsField);
+    configs.particleEnabled = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                     api.kParticleEnabledField);
     configs.useMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMaskField);
     configs.mapAngle = env->CallIntMethod(config, api.kGetIntMethod, api.kMapAngleField);
     configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitXField);
@@ -269,6 +314,19 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.activeBLEMode = env->CallIntMethod(config, api.kGetIntMethod, api.kActiveBLEModeField);
     configs.multiLaterationEnabled = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                             api.kMultiLaterationEnabledField);
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+
+    std::stringstream ss;
+    ss << "/sdcard/Download/" << "trilat_beacon_log" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+       << ".txt";
+    logFilePath = ss.str();
+
+    std::stringstream sspos;
+    sspos << "/sdcard/Download/" << "position_from_beacon_log"
+          << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+          << ".txt";
+    logBecPosFilePath = sspos.str();
 
 
     if (configs.useMask) {
@@ -311,21 +369,21 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             nConfig.useInit = true;
 
             if (configs.multiLaterationEnabled) {
-                nConfig.useNearest = 0;
+                nConfig.useStrongest = 0;
             }
-            navigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
+            bluetoothNavigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
         } else if (configs.activeBLEMode == 2) {
             KalmanBeaconNavigatorConfig nConfig;
             nConfig.useMeshMask = configs.useMeshMask;
             nConfig.useMapEdges = configs.useMapEdges;
 
             if (configs.multiLaterationEnabled) {
-                nConfig.useNearest = 0;
+                nConfig.useStrongest = 0;
             }
 
             KalmanConfig filterConfig;
 
-            navigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
+            bluetoothNavigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
         }
 
         jobjectArray beacons = (jobjectArray) env->CallObjectMethod(config, api.kGetObjectMethod,
@@ -346,13 +404,16 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             const char *uuid = env->GetStringUTFChars(id, 0);
 
             BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
-            navigator->addBeacon(Beacon(uid, elements[2], elements[3],
-                                        Position3D(elementsPos[0], elementsPos[1], elementsPos[2]),
-                                        ""));
+            bluetoothNavigator->addBeacon(Beacon(uid, elements[2], elements[3],
+                                                 Position3D(elementsPos[0], elementsPos[1],
+                                                            elementsPos[2]),
+                                                 ""));
 
             env->ReleaseFloatArrayElements(values, elements, 0);
             env->ReleaseStringUTFChars(id, uuid);
         }
+
+
     }
 
     jstring graphPath_ = (jstring) env->CallObjectMethod(config, api.kGetObjectMethod,
@@ -382,10 +443,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     Position3D outPos(configs.startX, configs.startY, 0.0f);
 
     if (configs.useBeacons) {
-        if (!navigator->isInitFinished()) {
+        if (!bluetoothNavigator->isInitFinished()) {
             return;
         }
-        outPos = navigator->getLastPosition();
+        outPos = bluetoothNavigator->getLastPosition();
 
     }
 
@@ -406,10 +467,18 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
 
         sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, aConfig);
         configs.sensorsActive = true;
+        if (configs.particleEnabled && configs.useBeacons) {
+            particleNavigator = make_shared<ParticleNavigator>(bluetoothNavigator, sensorNavigator,
+                                                               mesh);
+        }
     }
 
-    if (configs.useSensors) {
+    if (configs.useSensors && !configs.particleEnabled) {
         outPos = sensorNavigator->getLastPosition();
+    }
+
+    if (configs.particleEnabled) {
+        outPos = particleNavigator->obtainLastPosition();
     }
 
     LOGD("last position (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
@@ -453,4 +522,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     env->SetObjectField(router, api.kIndoorRouterRouteField, output);
 
     LOGD("IndoorLocationManager_nativeTakeLastPosition -");
+
+
 }

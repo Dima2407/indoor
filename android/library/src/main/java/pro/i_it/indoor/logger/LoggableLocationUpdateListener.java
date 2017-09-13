@@ -5,29 +5,44 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import pro.i_it.indoor.OnLocationUpdateListener;
 
 public class LoggableLocationUpdateListener extends FileLogger implements OnLocationUpdateListener {
 
-    private static final String POSITIONS_JSON = "positions.json";
+    private static final String POSITIONS_CSV = "positions-%s.csv";
+    private static long timeStamp;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");
+    private final String fileName = getFileName();
+
     private OnLocationUpdateListener listener;
 
     public LoggableLocationUpdateListener(OnLocationUpdateListener listener) {
         this.listener = listener;
-        delete(POSITIONS_JSON);
+        delete(fileName);
     }
 
     @Override
     public void onLocationChanged(PointF position, float[] route) {
         try {
-            JSONObject object = new JSONObject();
-            object.put("x", position.x);
-            object.put("y", position.y);
-            appendToFile(POSITIONS_JSON, object);
+            String measurementStr = String.format("%d,%f,%f", getTimeStamp(), position.x, position.y);
+            appendToFile(fileName, measurementStr);
         } catch (Exception e) {
             Log.w(LoggableLocationUpdateListener.class.getSimpleName(), "onLocationChanged: ", e);
         }
         listener.onLocationChanged(position, route);
+    }
+
+    private long getTimeStamp() {
+        return timeStamp = System.currentTimeMillis();
+    }
+
+    private String getFileName() {
+        String dateStr = dateFormat.format(new Date());
+        String fileName = String.format(POSITIONS_CSV, dateStr);
+        return fileName;
     }
 
 }

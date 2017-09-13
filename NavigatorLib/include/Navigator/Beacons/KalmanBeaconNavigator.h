@@ -11,6 +11,7 @@
 #include "Navigator/Math/Kalman/KalmanConfig.h"
 #include "Navigator/Math/Position3D.h"
 #include "Navigator/Mesh/RectanMesh.h"
+#include "Navigator/Math/Trilat/TrilatRecord.h"
 
 namespace Navigator {
 namespace Beacons {
@@ -71,6 +72,10 @@ public: // ====== Methods
         return lastTrilatUids;
     }
 
+    const std::vector<Math::Trilat::TrilatRecord> &getTrilatRecords() const {
+        return trilatRecords;
+    }
+
 private: //========= Methods
 
     /// Run the trilateration once based on current active beacons
@@ -103,6 +108,9 @@ private: //========= Data
 
     /// Beacons that took part in the latest trilateration
     std::vector <BeaconUID> lastTrilatUids;
+
+    // Trilateration records (position, distance) each
+    std::vector<Math::Trilat::TrilatRecord> trilatRecords;
 };
 
 }

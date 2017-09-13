@@ -78,8 +78,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         @Override
         public void unbindService(ServiceConnection serviceConnection) {
             Log.d(TAG, "unbindService: ");
-            //beaconManager.removeMonitorNotifier(monitorNotifier);
-            beaconManager.removeRangeNotifier(rangeNotifier);
+            beaconManager.removeMonitorNotifier(monitorNotifier);
             context.unbindService(serviceConnection);
         }
 
@@ -110,6 +109,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         beaconManager.setForegroundBetweenScanPeriod(configModel.getForegroundBetweenScanPeriod());
         beaconManager.setBackgroundScanPeriod(configModel.getBackgroundScanPeriod());
         beaconManager.setBackgroundBetweenScanPeriod(configModel.getBackgroundBetweenScanPeriod());
+        beaconManager.setEnableScheduledScanJobs(true);
 
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
     }
@@ -121,6 +121,7 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
 
     @Override
     public void stop() {
+        beaconManager.removeRangeNotifier(rangeNotifier);
         beaconManager.unbind(beaconConsumer);
     }
 

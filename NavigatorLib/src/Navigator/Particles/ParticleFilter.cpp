@@ -86,6 +86,9 @@ namespace Navigator {
                     weights[i] = gauss(tmpParticles[i], z);
                     sum += weights[i];
                 }
+
+                if (sum < 1.0e-10)  // Still zero, mesh didn't help (or no mesh)
+                    throw std::runtime_error("Cannot fix zero weight sum in the particle filter !");
             }
             // Normalize weights
             for (auto &iter : weights) {
@@ -95,7 +98,7 @@ namespace Navigator {
         //===================================================
 
         void ParticleFilter::resample() {
-            double maxWeight = 0;   // Find max weight
+            maxWeight = 0;   // Find max weight
             for (double iter :weights) {
                 if (maxWeight < iter) {
                     maxWeight = iter;
@@ -126,6 +129,7 @@ namespace Navigator {
                         }
                     } else {
                         particles[j] = tmpParticles[i];  // j-th resampled particle
+                        chosen[j] = i + 1;
                         break;
                     }
                 }

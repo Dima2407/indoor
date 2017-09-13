@@ -23,7 +23,8 @@ namespace Navigator {
                     particles(config.numPart),
                     weights(config.numPart),
                     tmpParticles(config.numPart),
-                    betas(config.numPart)
+                    betas(config.numPart),
+                    chosen(config.numPart)
             {}
 
             /**
@@ -73,6 +74,14 @@ namespace Navigator {
 
             const std::vector<double> &getBetas() const {
                 return betas;
+            }
+
+            double getMaxWeight() const {
+                return maxWeight;
+            }
+
+            const std::vector<int> &getChosen() const {
+                return chosen;
             }
 
         private: //======= Methods ==============
@@ -164,6 +173,12 @@ namespace Navigator {
             /// Betas calculated at resampling
             std::vector<double> betas;
 
+            /// Chosen particles at resampling (starting with 1)
+            std::vector<int> chosen;
+
+            /// Max weight at the resampling
+            double maxWeight;
+
             /// Weights
             std::vector<double> weights;
 
@@ -172,6 +187,7 @@ namespace Navigator {
 
             /// Time-Seeded random engine
             std::mt19937 randomEngine = std::mt19937(time(nullptr));
+
 
         public: //======= Fields for simulated random
             /// Simulated random shifts for each particle for initialization (initial seed)

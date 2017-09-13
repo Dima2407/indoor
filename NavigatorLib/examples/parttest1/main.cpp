@@ -153,7 +153,10 @@ int main() {
     ofstream filePar("particles.txt");
     ofstream filePar0("particles0.txt");
     ofstream filePos("position.txt");
-
+    ofstream fileBe("betas.txt");
+    ofstream fileWe("weights.txt");
+    ofstream fileMaxWe("maxweight.txt");
+    ofstream fileCho("chosen.txt");
 
     Position2D outPos;
     for (int i = 1; i <= beaconZ.size(); ++i) {
@@ -173,16 +176,41 @@ int main() {
             outPos = pf.process(accDelta.at(i - 1), beaconZ.at(i - 1), allowMove, meshCorrect);
         }
 
-        filePos <<  i << " " << outPos << endl;
+        filePos << i << " " << outPos << endl;
+
         // Print particles
         filePar << i << "  ";
         for (const Position2D & p : pf.getParticles())
             filePar << '[' << p << "]  ";
+        filePar << endl;
+
         // Print particles0 (before resampling)
         filePar0 << i << "  ";
         for (const Position2D & p : pf.getTmpParticles())
             filePar0 << '[' << p << "]  ";
         filePar0 << endl;
+
+        // Print weights
+        fileWe << i << "    ";
+        for (double d : pf.getWeights())
+            fileWe <<  d << "  ";
+        fileWe << endl;
+
+        // Print betas
+        fileBe << i << "    ";
+        for (double d : pf.getBetas())
+            fileBe <<  d << "  ";
+        fileBe << endl;
+
+        // Prints chosen (particle numbers chosen at resample, start with 1)
+        fileCho << i << "    ";
+        for (int  i: pf.getChosen())
+            fileCho <<  i << "  ";
+        fileCho << endl;
+
+
+        // Print max weights
+        fileMaxWe << i << "  " << pf.getMaxWeight() << endl;
     }
 
 

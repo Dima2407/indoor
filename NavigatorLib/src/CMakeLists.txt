@@ -9,6 +9,7 @@ set(SOURCE_FILES
         ../include/Navigator/INavigator.h
         #
         ../include/Navigator/Beacons/AbstractBeaconNavigator.h
+        ./Navigator/Beacons/KalmanXYNavigator.cpp ../include/Navigator/Beacons/KalmanXYNavigator.h
         ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
         ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
         ../include/Navigator/Beacons/KalmanBeaconNavigatorConfig.h
@@ -29,7 +30,9 @@ set(SOURCE_FILES
         ../include/Navigator/Math/Filter/NoFilter.h
         ../include/Navigator/Math/Filter/RingBuffer.h
         ./Navigator/Math/Kalman/KalmanFilter.cpp ../include/Navigator/Math/Kalman/KalmanFilter.h
+        ./Navigator/Math/KalmanXY/KalmanXYFilter.cpp ../include/Navigator/Math/KalmanXY/KalmanXYFilter.h
         ../include/Navigator/Math/Kalman/KalmanConfig.h
+        ../include/Navigator/Math/KalmanXY/KalmanXYConfig.h
         #
         ../include/Navigator/Beacons/Factory/NoFilterFactory.h
         ../include/Navigator/Beacons/Factory/MovingAverageFilterFactory.h

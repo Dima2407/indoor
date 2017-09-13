@@ -11,6 +11,7 @@
 #include "Navigator/Math/Kalman/KalmanConfig.h"
 #include "Navigator/Math/Position3D.h"
 #include "Navigator/Mesh/RectanMesh.h"
+#include "Navigator/Math/Trilat/TrilatRecord.h"
 
 namespace Navigator {
 namespace Beacons {

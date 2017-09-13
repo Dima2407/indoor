@@ -17,6 +17,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 #add_subdirectory(example5)
 
+add_subdirectory(example6)
+
 #add_subdirectory(exampleCalibrate)
 
 #add_subdirectory(exampleDijkstra)
@@ -32,6 +34,8 @@ set(CMAKE_CXX_STANDARD 14)
 #add_subdirectory(exampleAccel)
 
 #add_subdirectory(testKalmanFilterByVictor)
+
+add_subdirectory(testKalmanXYFilterByVictor)
 
 #add_subdirectory(kalmantest)
 

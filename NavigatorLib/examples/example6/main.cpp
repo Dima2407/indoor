@@ -29,6 +29,10 @@ int main() {
 
     auto mesh1 = make_shared<RectanMesh>("in/mesh.in", "in/masktable.out");
     KalmanBeaconNavigatorConfig config;
+
+    // used this config for correct on "map" before arraive result into filter
+    config.useMeshMask = false;
+    config.useMapEdges = true;
     KalmanConfig filterConfig;
 
     shared_ptr<KalmanBeaconNavigator> navigator = make_shared<KalmanBeaconNavigator>(mesh1, config, filterConfig);
@@ -45,6 +49,7 @@ int main() {
     // ------------------------------------------------------------------------------
 
     KalmanXYBeaconNavigator beaconNavigator(navigator, mesh1);
+    // used this config for correct on "mesh" after execute result in filter
     beaconNavigator.setUseMapEdges(true);
     beaconNavigator.setUseMeshMask(true);
 

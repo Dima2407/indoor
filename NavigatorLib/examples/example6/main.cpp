@@ -31,16 +31,7 @@ int main() {
     KalmanBeaconNavigatorConfig config;
     KalmanConfig filterConfig;
 
-    shared_ptr<KalmanBeaconNavigator> nav = make_shared<KalmanBeaconNavigator>(mesh1, config, filterConfig);
-
-    // ------------------------------------------------------------------------------
-
-    KalmanXYBeaconNavigator beaconNavigator(nav, mesh1);
-    beaconNavigator.setUseMapEdges(true);
-    beaconNavigator.setUseMeshMask(true);
-
-
-    // ------------------------------------------------------------------------------
+    shared_ptr<KalmanBeaconNavigator> navigator = make_shared<KalmanBeaconNavigator>(mesh1, config, filterConfig);
 
     const Beacon beacons[] = {
         Beacon(BeaconUID("Guinea Pig", 1, 0), -30.0, 2.0, Position3D(0.6, 0.2, 0.0), ""),
@@ -49,94 +40,68 @@ int main() {
         Beacon(BeaconUID("Guinea Pig", 1, 3), -45.0, 2.4, Position3D(9.9, 10.1, 0.0), "")
     };
 
-    vector<Beacon> vec(beacons, beacons + 4);
+    navigator->addBeacons(beacons);
 
-    /* Add beacons: to the navigator
-     *
-     * You can add them one by one, or as an array/container
-     * /
-     *
-    /*for (const Beacon &b : beacons)
-        navigator.addBeacon(b);*/
-//    navigator.addBeacons(beacons);
+    // ------------------------------------------------------------------------------
 
-    /* 3) Create and process events
-     * For the example, I generate fake events for a point inPos
-     * In real life, you receive events (timestamp, beacon uid, rssi) from you device
-     * And send them to the navigator
-     */
-//    Position3D inPos(2.31, 6.95, 0.0); // Some given position
+    KalmanXYBeaconNavigator beaconNavigator(navigator, mesh1);
+    beaconNavigator.setUseMapEdges(true);
+    beaconNavigator.setUseMeshMask(true);
+
+    // ------------------------------------------------------------------------------
+
+    vector<BeaconReceivedData> brds;
+    double timeStamp = 1.7;
+    Position3D inPos(2.31, 6.95, 0.0);
+
+    for (int i = 0; i < 4; i++) {
+        const Beacon &b = beacons[i];
+        double rssi = fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp());
+        BeaconUID uid = BeaconUID("Guinea Pig", 1, i);
+        brds.push_back(BeaconReceivedData(timeStamp, uid, rssi));
+    }
+
+    Position3D outPos = beaconNavigator.process(brds);
+    cout << "  x  \t  y  \t  z  " << endl;
+    cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
 
 
-    // Create a vector of packets which share the same timestamp
-//    vector<BeaconReceivedData> brds;
+    // ------------------------------------------------------------------------------
 
-//    double timeStamp = 1.7;
+    brds.clear();
 
-//    for (int i = 0; i < 4; i++) {
+    timeStamp = 6.69;
+    inPos = Position3D(3.1415, 0.1234, 0.0);
+    for (int i = 0; i < 4; i++) {
+        const Beacon &b = beacons[i];
+        double rssi = fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp());
+        BeaconUID uid = BeaconUID("Guinea Pig", 1, i);
+        if (i != 2)
+            brds.push_back(BeaconReceivedData(timeStamp, uid, rssi));
+    }
+    outPos = beaconNavigator.process(brds);
+    cout << "  x  \t  y  \t  z  " << endl;
+    cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
 
-        /* For the example, I create a fake RSSI for each beacon
-         * In real life you get rssi from your mobile device
-         */
-//        const Beacon &b = beacons[i];
-//        double rssi = fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp());
+    // ------------------------------------------------------------------------------
 
-        /* Create UID for the data packet
-         * It must correctly identify one of the beacons addded to the navigator before
-         */
-//        BeaconUID uid = BeaconUID("Guinea Pig", 1, i);
+    brds.clear();
 
-        // Create a data packet for our data
-//        brds.push_back(BeaconReceivedData(timeStamp, uid, rssi));
-//    }
+    timeStamp = 8.33;
+    inPos = Position3D(7.9451, 4.8172, 0.0);
+    for (int i = 0; i < 4; i++) {
+        const Beacon &b = beacons[i];
+        double rssi = fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp());
+        BeaconUID uid = BeaconUID("Guinea Pig", 1, i);
+        if (i != 2)
+            brds.push_back(BeaconReceivedData(timeStamp, uid, rssi));
+    }
+    outPos = beaconNavigator.process(brds);
+    cout << "  x  \t  y  \t  z  " << endl;
+    cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
 
-    // Process the whole bunch of data in a single process() call
-//    Position3D outPos = navigator.process(brds);
+    // ------------------------------------------------------------------------------
 
-//    // Write it to stdout
-//    cout << "  x  \t  y  \t  z  " << endl;
-
-//    cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
-
-//    // Try findProcessorByUid, useful for debugging
-//    auto processor = navigator.findProcessorByUid(BeaconUID("Guinea Pig", 1, 2));
-//    if (processor == nullptr) {
-//        cout << "Beacon Processor not found !!! " << endl;
-//    } else {
-//        cout << "Last distance = " << processor -> getLastDistance() << endl;
-//        cout << "Last timestamp = " << processor -> getLastTimeStamp() << endl;
-//    }
-
-//    // If you want to remove a beacon
-//    // navigator.deleteBeacon(BeaconUID("Guinea Pig", 1, 2));
-
-//    // Or remove all beacons
-//    // navigator.clear();
-
-//    // Process another packet
-//    brds.clear();
-//    timeStamp = 6.69; // < 5 seconds
-////    timeStamp = 6.71; // > 5 seconds
-//    inPos = Position3D(3.1415, 0.1234, 0.0);
-//    for (int i = 0; i < 4; i++) {
-//        const Beacon &b = beacons[i];
-//        double rssi = fakeRSSI(inPos, b.getPos(), b.getTxPower(), b.getDamp());
-//        BeaconUID uid = BeaconUID("Guinea Pig", 1, i);
-//        // Skip beacon 2, but Kalman Filter will re-create the packet unless 5 seconds have passed
-//        if (i != 2)
-//            brds.push_back(BeaconReceivedData(timeStamp, uid, rssi));
-//    }
-//    outPos = navigator.process(brds);
-//    cout << "  x  \t  y  \t  z  " << endl;
-//    cout << outPos.x << "\t" << outPos.y << "\t" << outPos.z << endl;
-
-//    processor = navigator.findProcessorByUid(BeaconUID("Guinea Pig", 1, 2));
-//    if (processor == nullptr) {
-//        cout << "Beacon Processor not found !!! " << endl;
-//    } else {
-//        cout << "Last distance = " << processor -> getLastDistance() << endl;
-//        cout << "Last timestamp = " << processor -> getLastTimeStamp() << endl;
-//    }
 
     return 0;
 }

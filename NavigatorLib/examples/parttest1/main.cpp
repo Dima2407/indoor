@@ -154,6 +154,7 @@ int main() {
     ofstream filePar0("particles0.txt");
     ofstream filePos("position.txt");
 
+
     Position2D outPos;
     for (int i = 1; i <= beaconZ.size(); ++i) {
         if (1 == i) {

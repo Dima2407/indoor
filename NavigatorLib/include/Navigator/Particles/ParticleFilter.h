@@ -22,7 +22,9 @@ namespace Navigator {
                     config(config),
                     particles(config.numPart),
                     weights(config.numPart),
-                    tmpParticles(config.numPart) {}
+                    tmpParticles(config.numPart),
+                    betas(config.numPart)
+            {}
 
             /**
              * @brief initialize
@@ -63,6 +65,14 @@ namespace Navigator {
             // tmpParticles are moved particles before resampling after running process()
             const std::vector<Math::Position2D> &getTmpParticles() const {
                 return tmpParticles;
+            }
+
+            const std::vector<double> &getWeights() const {
+                return weights;
+            }
+
+            const std::vector<double> &getBetas() const {
+                return betas;
             }
 
         private: //======= Methods ==============
@@ -150,6 +160,9 @@ namespace Navigator {
 
             /// Particles
             std::vector<Math::Position2D> particles;
+
+            /// Betas calculated at resampling
+            std::vector<double> betas;
 
             /// Weights
             std::vector<double> weights;

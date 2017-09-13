@@ -117,6 +117,7 @@ namespace Navigator {
                 } else {
                     beta = randRange(0, 2 * maxWeight);
                 }
+                betas[j] = beta;
                 while (true) {
                     if (beta > weights[i]) {
                         beta -= weights[i];
@@ -129,6 +130,8 @@ namespace Navigator {
                     }
                 }
             }
+
+
         }
         //===================================================
 

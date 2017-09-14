@@ -24,16 +24,16 @@ int main() {
 
     string line;
     cout << fixed << setprecision(6);
-    regex rx("(\\d+\.\\d+)(\\s*)(\\d+\.\\d+)");
-    cmatch res;
+    regex regExp("(\\d+\.\\d+)(\\s*)(\\d+\.\\d+)");
+    cmatch resRegExp;
 
 // ------------- read coordsINPUT.txt
     ifstream fin("C:/QtProjects/testLogFiles/coordsINPUT.txt");
     getline(fin, line);
 
     while (getline(fin, line)) {
-        regex_search(line.c_str(), res, rx);
-        vecXY.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
+        regex_search(line.c_str(), resRegExp, regExp);
+        vecXY.push_back(Math::Position2D(stod(resRegExp[1]), stod(resRegExp[3])));
     }
     fin.close();
 // ------------- end read coordsINPUT.txt
@@ -53,10 +53,12 @@ int main() {
     while (getline(finBeacons, line)) {
         vector<Math::Position2D> tempVec;
         tempVec.reserve(3);
-        while(regex_search(line.c_str(), rx)) {
-            regex_search(line.c_str(), res, rx);
-            tempVec.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
-            line = regex_replace(line.c_str(), rx, "!", regex_constants::format_first_only);
+        sregex_iterator next(line.begin(), line.end(), regExp);
+        sregex_iterator end;
+        while(next != end) {
+            smatch match = *next;
+            tempVec.push_back(Math::Position2D(stod(match[1].str()), stod(match[3].str())));
+            next++;
         }
         vecPosition3Beacon.push_back(tempVec);
     }
@@ -78,8 +80,8 @@ int main() {
     getline(finOut, line);
 
     while (getline(finOut, line)) {
-        regex_search(line.c_str(), res, rx);
-        vecResult.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
+        regex_search(line.c_str(), resRegExp, regExp);
+        vecResult.push_back(Math::Position2D(stod(resRegExp[1]), stod(resRegExp[3])));
     }
     finOut.close();
 // ------------- end read coordsINPUT.txt
@@ -91,6 +93,8 @@ int main() {
 //    }
 // ------------- end vecResult vecXY ----------
 
+
+// ------------- start testing KalmanXYFilter -----------
     KalmanXY::KalmanXYFilter filter;
 
     for (int i = 0; i < vecXY.size(); ++i) {
@@ -98,5 +102,6 @@ int main() {
         cout << "result: X = " << result.x << ", Y = " << result.y <<
                 " :: expected: X = " << vecResult[i].x << ", Y = " << vecResult[i].y << endl;
     }
+// ------------- end testing KalmanXYFilter -----------
     return 0;
 }

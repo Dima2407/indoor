@@ -28,45 +28,44 @@ int main() {
     cmatch res;
 
 // ------------- read coordsINPUT.txt
-//    ifstream fin("C:/QtProjects/testLogFiles/coordsINPUT.txt");
-//    getline(fin, line);
+    ifstream fin("C:/QtProjects/testLogFiles/coordsINPUT.txt");
+    getline(fin, line);
 
-//    while (getline(fin, line)) {
-//        regex_search(line.c_str(), res, rx);
-//        vecXY.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
-//    }
-//    fin.close();
+    while (getline(fin, line)) {
+        regex_search(line.c_str(), res, rx);
+        vecXY.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
+    }
+    fin.close();
 // ------------- end read coordsINPUT.txt
 
 // ------------- check vecXY ----------
 //    cout << " vecXY containce : " << endl;
-//    for (Math::Position2D iter : vecXY) {
+//    for (Math::Position2D &iter : vecXY) {
 //        cout << iter.x << " " << iter.y << endl;
 //    }
 // ------------- end check vecXY ----------
 
 
 // ------------- read beaconsINPUT.txt
-//    ifstream finBeacons("C:/QtProjects/testLogFiles/beaconsINPUT.txt");
-//    getline(finBeacons, line);
+    ifstream finBeacons("C:/QtProjects/testLogFiles/beaconsINPUT.txt");
+    getline(finBeacons, line);
 
-//    while (getline(finBeacons, line)) {
-//        vector<Math::Position2D> tempVec;
-//        tempVec.reserve(3);
-//        while(regex_search(line.c_str(), rx)) {
-//            regex_search(line.c_str(), res, rx);
-//            tempVec.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
-//            line = regex_replace(line.c_str(), rx, "!", regex_constants::format_first_only);
-//        }
-//        vecPosition3Beacon.push_back(tempVec);
-//        cout << endl;
-//    }
-//    finBeacons.close();
+    while (getline(finBeacons, line)) {
+        vector<Math::Position2D> tempVec;
+        tempVec.reserve(3);
+        while(regex_search(line.c_str(), rx)) {
+            regex_search(line.c_str(), res, rx);
+            tempVec.push_back(Math::Position2D(stod(res[1]), stod(res[3])));
+            line = regex_replace(line.c_str(), rx, "!", regex_constants::format_first_only);
+        }
+        vecPosition3Beacon.push_back(tempVec);
+    }
+    finBeacons.close();
 // ------------- end read beaconsINPUT ----------
 
 // ------------- check vecPosition3Beacon ----------
 //        cout << " vecPosition3Beacon containce : " << endl;
-//        for (vector<Math::Position2D> iter : vecPosition3Beacon) {
+//        for (vector<Math::Position2D> &iter : vecPosition3Beacon) {
 //            for (Math::Position2D innerIter : iter) {
 //                cout << innerIter.x << " " << innerIter.y << "\t";
 //            }
@@ -86,33 +85,18 @@ int main() {
 // ------------- end read coordsINPUT.txt
 
 // ------------- check vecResult ----------
-    cout << " vecResult containce : " << endl;
-    for (Math::Position2D iter : vecResult) {
-        cout << iter.x << " " << iter.y << endl;
-    }
+//    cout << " vecResult containce : " << endl;
+//    for (Math::Position2D &iter : vecResult) {
+//        cout << iter.x << " " << iter.y << endl;
+//    }
 // ------------- end vecResult vecXY ----------
 
     KalmanXY::KalmanXYFilter filter;
-//    Position2D loc(1, 1);
-//    Position2D loc2(3.1, 1.9);
-//    Position2D loc3(17.48, 7.4);
-//    Position2D loc4(0.0, 0.0);
-//    Position2D loc5(-10.2, 1);
-//    Position2D loc6(-10.2, -71.7);
 
-//    vector<Position2D> vec{{7,7},{14,1},{9,7}};
-
-//    Position2D answer = filter.process(loc, vec);
-//    cout << answer.x << " " << answer.y << endl;
-
-//    Position2D answer2 = filter.process(loc2, vec);
-//    cout << answer2.x << " " << answer2.y << endl;
-
-
-//    Position2D answer3 = filter.process(loc3, vec);
-//    cout << answer3.x << " " << answer3.y << endl;
-
-//    Position2D answer4 = filter.process(loc4, vec);
-//    cout << answer4.x << " " << answer4.y << endl;
+    for (int i = 0; i < vecXY.size(); ++i) {
+        Math::Position2D result = filter.process(vecXY[i], vecPosition3Beacon[i]);
+        cout << "result: X = " << result.x << ", Y = " << result.y <<
+                " :: expected: X = " << vecResult[i].x << ", Y = " << vecResult[i].y << endl;
+    }
     return 0;
 }

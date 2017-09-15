@@ -10,6 +10,7 @@
 #include <string>
 #include <android/log.h>
 #include <Navigator.h>
+#include <Navigator/Beacons/KalmanXYNavigator.h>
 
 #define  LOG_TAG    "ILMNative"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
@@ -23,7 +24,6 @@ using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
 using namespace Navigator::Math::Kalman;
 using namespace Navigator::Particles;
-
 
 
 shared_ptr<AbstractBeaconNavigator> bluetoothNavigator;
@@ -74,6 +74,7 @@ typedef struct IndoorSdkApi {
     int kActiveBLEModeField = 20;
     int kMultiLaterationEnabledField = 21;
     int kParticleEnabledField = 22;
+    int kUseKalmanFilter = 23;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -92,7 +93,7 @@ typedef struct IndoorSdkApi {
 
 } IndoorSdkApi;
 
-typedef struct IndoorSdkConfigs{
+typedef struct IndoorSdkConfigs {
     bool useBeacons;
     bool useSensors;
     bool useMask;
@@ -111,6 +112,7 @@ typedef struct IndoorSdkConfigs{
     int activeBLEMode = 1;
     bool multiLaterationEnabled = false;
     bool particleEnabled = false;
+    bool useKalmanFilter = false;
 } IndoorSdkConfigs;
 
 double timeS = -1;
@@ -133,7 +135,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
         JNIEnv *, jobject);
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestination(JNIEnv *, jobject, jobject);
+Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestination(JNIEnv *, jobject,
+                                                                                  jobject);
 
 }
 //endregion
@@ -153,7 +156,8 @@ void prepare_sdk(JNIEnv *env) {
     api.kMeasurementEventTimestampField = env->GetFieldID(api.kMeasurementEventClass, "timestamp",
                                                           "J");
     api.kMeasurementEventDataField = env->GetFieldID(api.kMeasurementEventClass, "data", "[D");
-    api.kMeasurementEventNestedField = env->GetFieldID(api.kMeasurementEventClass, "nested", "[Lpro/i_it/indoor/events/MeasurementEvent;");
+    api.kMeasurementEventNestedField = env->GetFieldID(api.kMeasurementEventClass, "nested",
+                                                       "[Lpro/i_it/indoor/events/MeasurementEvent;");
     api.kMeasurementEventUUIDField = env->GetFieldID(api.kMeasurementEventClass, "uuid",
                                                      "Ljava/lang/String;");
 
@@ -172,8 +176,10 @@ void prepare_sdk(JNIEnv *env) {
     api.kIndoorRouterClass = env->FindClass("pro/i_it/indoor/routing/IndoorRouter");
     api.kIndoorRouterOriginXField = env->GetFieldID(api.kIndoorRouterClass, "startX", "F");
     api.kIndoorRouterOriginYField = env->GetFieldID(api.kIndoorRouterClass, "startY", "F");
-    api.kIndoorRouterDestinationXField = env->GetFieldID(api.kIndoorRouterClass, "destinationX", "F");
-    api.kIndoorRouterDestinationYField = env->GetFieldID(api.kIndoorRouterClass, "destinationY", "F");
+    api.kIndoorRouterDestinationXField = env->GetFieldID(api.kIndoorRouterClass, "destinationX",
+                                                         "F");
+    api.kIndoorRouterDestinationYField = env->GetFieldID(api.kIndoorRouterClass, "destinationY",
+                                                         "F");
     api.kIndoorRouterDistanceField = env->GetFieldID(api.kIndoorRouterClass, "distance", "F");
     api.kIndoorRouterRouteField = env->GetFieldID(api.kIndoorRouterClass, "route", "[F");
     api.kIndoorRouterPixelSizeField = env->GetFieldID(api.kIndoorRouterClass, "pixelSize", "D");
@@ -185,7 +191,8 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj) {
     jobject typeObj = env->GetObjectField(obj, api.kMeasurementEventTypeField);
     jlong timeStamp = env->GetLongField(obj, api.kMeasurementEventTimestampField);
-    jobjectArray nestedEvents = (jobjectArray)env->GetObjectField(obj, api.kMeasurementEventNestedField);
+    jobjectArray nestedEvents = (jobjectArray) env->GetObjectField(obj,
+                                                                   api.kMeasurementEventNestedField);
 
     jint eventTypeCode = env->CallIntMethod(typeObj, api.kMeasurementTypeGetCodeMethod);
     if (timeS <= 0) {
@@ -308,12 +315,17 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.startX = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitXField);
     configs.startY = env->CallFloatMethod(config, api.kGetFloatMethod, api.kInitYField);
     configs.useFilter = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseFilterField);
-    configs.useMapEdges = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMapEdgesField);
-    configs.useMeshMask = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseMeshMaskField);
+    configs.useMapEdges = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                 api.kUseMapEdgesField);
+    configs.useMeshMask = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                 api.kUseMeshMaskField);
     configs.useWalls = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kUseWallsField);
     configs.activeBLEMode = env->CallIntMethod(config, api.kGetIntMethod, api.kActiveBLEModeField);
     configs.multiLaterationEnabled = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                             api.kMultiLaterationEnabledField);
+    configs.useKalmanFilter = env->CallBooleanMethod(config, api.kGetBooleanMethod,
+                                                     api.kUseKalmanFilter);
+
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
 
@@ -360,8 +372,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     }
     if (configs.useBeacons) {
 
+        shared_ptr<AbstractBeaconNavigator> navigator;
 
-        if(configs.activeBLEMode == 1) {
+        if (configs.activeBLEMode == 1) {
 
             StandardBeaconNavigatorConfig nConfig;
             nConfig.useMeshMask = configs.useMeshMask;
@@ -371,11 +384,13 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             if (configs.multiLaterationEnabled) {
                 nConfig.useStrongest = 0;
             }
-            bluetoothNavigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
+            navigator = make_shared<StandardBeaconNavigator>(mesh, false, nConfig);
+
         } else if (configs.activeBLEMode == 2) {
             KalmanBeaconNavigatorConfig nConfig;
             nConfig.useMeshMask = configs.useMeshMask;
             nConfig.useMapEdges = configs.useMapEdges;
+
 
             if (configs.multiLaterationEnabled) {
                 nConfig.useStrongest = 0;
@@ -383,7 +398,17 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
             KalmanConfig filterConfig;
 
-            bluetoothNavigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
+            navigator = make_shared<KalmanBeaconNavigator>(mesh, nConfig, filterConfig);
+
+        }
+
+        if (configs.useKalmanFilter) {
+            const shared_ptr<KalmanXYBeaconNavigator> &nav = make_shared<KalmanXYBeaconNavigator>(navigator, mesh);
+            nav->setUseMapEdges(configs.useMapEdges);
+            nav->setUseMeshMask(configs.useMeshMask);
+            bluetoothNavigator = nav;
+        } else {
+            bluetoothNavigator = navigator;
         }
 
         jobjectArray beacons = (jobjectArray) env->CallObjectMethod(config, api.kGetObjectMethod,
@@ -436,8 +461,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeRelease(
 }
 
 JNIEXPORT void JNICALL
-Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestination(JNIEnv *env, jobject instance,
-                                                                   jobject router) {
+Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestination(JNIEnv *env,
+                                                                                  jobject instance,
+                                                                                  jobject router) {
     LOGD("IndoorLocationManager_nativeTakeLastPosition");
 
     Position3D outPos(configs.startX, configs.startY, 0.0f);
@@ -489,7 +515,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
 
     double destinationX = env->GetFloatField(router, api.kIndoorRouterDestinationXField);
     double destinationY = env->GetFloatField(router, api.kIndoorRouterDestinationYField);
-    if(destinationX < 0 && destinationY < 0){
+    if (destinationX < 0 && destinationY < 0) {
         return;
     }
     double pixelSize = env->GetDoubleField(router, api.kIndoorRouterPixelSizeField);
@@ -508,14 +534,14 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     int length = route.size() * 2 + 4;
     jfloatArray output = env->NewFloatArray(length);  //
     jfloat *destArrayElems = env->GetFloatArrayElements(output, NULL);
-    destArrayElems[0] = (float)startX;
-    destArrayElems[1] = (float)startY;
-    for (int i = 0, j = 2; i < route.size(); i++, j+=2) {
-        destArrayElems[j] = (float)route[i].x;
-        destArrayElems[j + 1] = (float)route[i].y;
+    destArrayElems[0] = (float) startX;
+    destArrayElems[1] = (float) startY;
+    for (int i = 0, j = 2; i < route.size(); i++, j += 2) {
+        destArrayElems[j] = (float) route[i].x;
+        destArrayElems[j + 1] = (float) route[i].y;
     }
-    destArrayElems[length - 2] = (float)destinationX;
-    destArrayElems[length - 1] = (float)destinationY;
+    destArrayElems[length - 2] = (float) destinationX;
+    destArrayElems[length - 1] = (float) destinationY;
 
     env->ReleaseFloatArrayElements(output, destArrayElems, NULL);
 

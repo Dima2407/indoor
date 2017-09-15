@@ -157,6 +157,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
             configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
             configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());
             configs.set(NativeConfigMap.KEY_MULTI_LATERATION, getSharedHelper().isMultiLaterationEnabled());
+            configs.set(NativeConfigMap.KEY_USE_KALMAN_FILTER, getSharedHelper().useKalmanFilter());
             switch (getSharedHelper().getBLESubMode()) {
                 case SharedHelper.SUB_MODE_BLE_1:
                     configs.set(NativeConfigMap.KEY_ACTIVE_BLE_MODE, 1);

@@ -15,9 +15,9 @@ import pro.i_it.indoor.providers.MeasurementTransfer;
 public class AndroidLoggableMeasurementTransfer extends FileLogger implements MeasurementTransfer {
 
 
-    private static final String ACCELEROMETER_FILE = "accelerometer-%s.csv";
-    private static final String ANGLES_FILE = "angles-%s.csv";
-    private static final String BLE_FILE = "ble-%s.csv";
+    private static final String ACCELEROMETER_FILE = "accelerometer-%s.txt";
+    private static final String ANGLES_FILE = "angles-%s.txt";
+    private static final String BLE_FILE = "ble-%s.txt";
     public static final String TAG = AndroidLoggableMeasurementTransfer.class.getSimpleName();
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss");
@@ -59,17 +59,17 @@ public class AndroidLoggableMeasurementTransfer extends FileLogger implements Me
     }
 
     private String bleFrom(MeasurementEvent event) {
-        return String.format("%d,%s,%d,%d,%f,%f", event.getTimestamp(), event.getUuid(),
+        return String.format("%d %s %d %d %f %f", event.getTimestamp(), event.getUuid(),
                 (int) event.getData()[0], (int) event.getData()[1], event.getData()[2], event.getData()[3]);
     }
 
     private String anglesFrom(MeasurementEvent event) {
-        return String.format("%d,%f,%f,%f", event.getTimestamp(), event.getData()[3],
+        return String.format("%d %f %f %f", event.getTimestamp(), event.getData()[3],
                 event.getData()[4], event.getData()[5]);
     }
 
     private String accelFrom(MeasurementEvent event) {
-        return String.format("%d,%f,%f,%f", event.getTimestamp(), event.getData()[0],
+        return String.format("%d %f %f %f", event.getTimestamp(), event.getData()[0],
                 event.getData()[1], event.getData()[2]);
     }
 

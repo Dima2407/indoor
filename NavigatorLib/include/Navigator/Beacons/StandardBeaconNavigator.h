@@ -115,6 +115,10 @@ namespace Navigator {
                 return initFinished;
             }
 
+            const std::vector<Math::Position2D> & getLastTrilatPosition() const override {
+                return triNav.getLastTrilatPosition();
+            }
+
         public: ///========= Other methods
 
             const Math::Position3D &getInitPosition() const {

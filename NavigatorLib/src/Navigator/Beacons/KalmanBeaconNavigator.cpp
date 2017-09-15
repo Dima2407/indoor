@@ -98,7 +98,7 @@ void KalmanBeaconNavigator::runTrilat() {
         trilatRecords.resize(config.useStrongest); // Use only useStrongest beacons
     }
 
-    // Save their UIDS
+    // Save their UIDS and positions
     lastTrilatUids.clear();
     lastTrilatPosition.clear();
     for (const TrilatRecord & r: trilatRecords) {

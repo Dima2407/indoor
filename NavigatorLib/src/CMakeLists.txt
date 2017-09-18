@@ -48,6 +48,7 @@ set(SOURCE_FILES
         #
         ../include/Navigator/Mesh/MeshData.h
         ./Navigator/Mesh/RectanMesh.cpp ../include/Navigator/Mesh/RectanMesh.h
+        ../include/Navigator/Mesh/MeshConfig.h
         #
         ../include/Navigator/Dijkstra/Edge.h
         ./Navigator/Dijkstra/Graph.cpp ../include/Navigator/Dijkstra/Graph.h

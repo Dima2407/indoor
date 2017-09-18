@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 
-//#define NDEBUG 0
+#define NDEBUG 0
 
 #include <iostream>
 #include <cmath>
@@ -33,6 +33,7 @@ shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
 string logFilePath;
 string logBecPosFilePath;
+string beaconsFilePath;
 
 typedef struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
@@ -203,7 +204,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
         const jsize length = env->GetArrayLength(nestedEvents);
 
-        std::vector<BeaconReceivedData> beacons;
+        std::vector<BeaconReceivedData> brds;
 
         for (int i = 0; i < length; i++) {
 
@@ -226,11 +227,11 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
                  (int) data[1], data[3], data[2]);
 
             BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
-            beacons.push_back(brd);
+            brds.push_back(brd);
             env->ReleaseStringUTFChars(uuidString, uuid);
             env->ReleaseDoubleArrayElements(dataArray, data, 0);
         }
-        Position3D outPos = bluetoothNavigator->process(beacons);
+        Position3D outPos = bluetoothNavigator->process(brds);
         if (logFilePath.c_str()) {
 
             std::ofstream fos(logFilePath, ios::app);
@@ -249,16 +250,16 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
             std::ofstream fiPos(logBecPosFilePath, ios::app);
 
-            if (beacons.size() > 0) {
-                fiPos << timeStamp << " " << beacons[0].timestamp << " size = " << beacons.size()
+            if (brds.size() > 0) {
+                fiPos << timeStamp << " " << brds[0].timestamp << " size = " << brds.size()
                       << " pos = " << outPos.x << " " << outPos.y << endl;
             }
             fiPos.close();
         }
 
-        LOGD("Number of packets %d", beacons.size());
-        if (beacons.size() > 0) {
-            LOGD("position from beacons ( %f, %f, %f, %f )", beacons[0].timestamp, outPos.x,
+        LOGD("Number of packets %d", brds.size());
+        if (brds.size() > 0) {
+            LOGD("position from beacons ( %f, %f, %f, %f )", brds[0].timestamp, outPos.x,
                  outPos.y, outPos.z);
         }
 
@@ -329,16 +330,25 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
 
-    std::stringstream ss;
-    ss << "/sdcard/Download/" << "trilat_beacon_log" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-       << ".txt";
-    logFilePath = ss.str();
-
-    std::stringstream sspos;
-    sspos << "/sdcard/Download/" << "position_from_beacon_log"
-          << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-          << ".txt";
-    logBecPosFilePath = sspos.str();
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "trilat_beacon_log" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        logFilePath = ss.str();
+    }
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "beacons" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        beaconsFilePath = ss.str();
+    }
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "position_from_beacon_log"
+              << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+              << ".txt";
+        logBecPosFilePath = ss.str();
+    }
 
 
     if (configs.useMask) {
@@ -403,7 +413,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         }
 
         if (configs.useKalmanFilter) {
-            const shared_ptr<KalmanXYBeaconNavigator> &nav = make_shared<KalmanXYBeaconNavigator>(navigator, mesh);
+            const shared_ptr<KalmanXYBeaconNavigator> &nav = make_shared<KalmanXYBeaconNavigator>(
+                    navigator, mesh);
             nav->setUseMapEdges(configs.useMapEdges);
             nav->setUseMeshMask(configs.useMeshMask);
             bluetoothNavigator = nav;
@@ -416,6 +427,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
         jint size = env->GetArrayLength(beacons);
 
+        ofstream fileB(beaconsFilePath);
         for (int i = 0; i < size; i++) {
             jobject beacon = env->GetObjectArrayElement(beacons, i);
             jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon,
@@ -428,11 +440,18 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
             const char *uuid = env->GetStringUTFChars(id, 0);
 
+            fileB << uuid << "  " << (int) elements[0] <<  "  " << (int) elements[1] <<  "  ";
+            fileB << elements[2] <<  "  " << elements[3] << "  ";
+            fileB << elementsPos[0] << "  " << elementsPos[1] << "  " << elementsPos[2] << endl;
+
+
             BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
             bluetoothNavigator->addBeacon(Beacon(uid, elements[2], elements[3],
                                                  Position3D(elementsPos[0], elementsPos[1],
                                                             elementsPos[2]),
                                                  ""));
+
+
 
             env->ReleaseFloatArrayElements(values, elements, 0);
             env->ReleaseStringUTFChars(id, uuid);
@@ -494,6 +513,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
         sensorNavigator = make_shared<StandardAccelNavigator>(mesh, startX, startY, aConfig);
         configs.sensorsActive = true;
         if (configs.particleEnabled && configs.useBeacons) {
+            LOGD(" BLE = %p, SENSOR = %p", bluetoothNavigator.get(), sensorNavigator.get());
             particleNavigator = make_shared<ParticleNavigator>(bluetoothNavigator, sensorNavigator,
                                                                mesh);
         }
@@ -504,6 +524,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
     }
 
     if (configs.particleEnabled) {
+        LOGD("PARTICLE = %p", particleNavigator.get());
         outPos = particleNavigator->obtainLastPosition();
     }
 

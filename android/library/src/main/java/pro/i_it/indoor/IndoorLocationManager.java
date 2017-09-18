@@ -2,6 +2,8 @@ package pro.i_it.indoor;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -28,6 +30,9 @@ public class IndoorLocationManager {
     private boolean loggerEnable = false;
     private OnInitializationCompletedListener onInitializationCompletedListener;
     private OnBeaconsChangeListener onBeaconsChangeListener;
+
+    private HandlerThread deliverThread;
+    private HandlerThread obtainThread;
 
     public void enableLogger() {
         Log.d("LOGGER", "enableLogger: ");
@@ -56,7 +61,10 @@ public class IndoorLocationManager {
 
     public IndoorLocationManager() {
         this.providers = new HashSet<>();
-        this.positionRequester = new Handler(){
+    }
+
+    private void startLooping(Looper looper) {
+        this.positionRequester = new Handler(looper){
             @Override
             public void handleMessage(Message msg) {
                 if(active) {
@@ -74,6 +82,8 @@ public class IndoorLocationManager {
                 }
             }
         };
+
+        positionRequester.sendEmptyMessageDelayed(POSITION_REQUEST, POSITION_REQUEST_DELAY);
     }
 
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
@@ -104,9 +114,14 @@ public class IndoorLocationManager {
     public void start(Context context, NativeConfigMap configuration) {
         active = true;
         initialized = false;
+        deliverThread = new HandlerThread(AndroidMeasurementTransfer.class.getSimpleName());
+        deliverThread.start();
+
+        obtainThread = new HandlerThread(IndoorLocationManager.class.getSimpleName());
+        obtainThread.start();
 
 
-        MeasurementTransfer measurementTransfer = AndroidMeasurementTransfer.TRANSFER;
+        MeasurementTransfer measurementTransfer = new AndroidMeasurementTransfer(deliverThread.getLooper());
         if (loggerEnable) {
             measurementTransfer = new AndroidLoggableMeasurementTransfer(measurementTransfer);
         }
@@ -128,13 +143,17 @@ public class IndoorLocationManager {
         }
         nativeInit(configuration);
         router.clear();
-        positionRequester.sendEmptyMessageDelayed(POSITION_REQUEST, POSITION_REQUEST_DELAY);
+        startLooping(obtainThread.getLooper());
     }
 
     public void stop() {
         initialized = false;
         active = false;
         loggerEnable = false;
+        deliverThread.quitSafely();
+        deliverThread = null;
+        obtainThread.quitSafely();
+        obtainThread = null;
         for (MeasurementProvider provider : providers) {
             if (provider instanceof BluetoothMeasurementProvider) {
                 BluetoothMeasurementProvider blProvider = (BluetoothMeasurementProvider) provider;

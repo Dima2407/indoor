@@ -1,6 +1,8 @@
 #pragma once
 // By Oleksiy Grechnyev
 
+#include "Navigator/Mesh/MeshConfig.h"
+
 namespace Navigator {
 namespace Beacons {
 
@@ -17,11 +19,7 @@ struct KalmanBeaconNavigatorConfig{
     int useStrongest = 3;
 
     // ======== Mesh+mask config
-    /// Apply map edges
-    bool useMapEdges = true;
-
-    /// Use mesh+mask to the final position
-    bool useMeshMask = true;
+    Mesh::MeshConfig meshConfig;
 };
 
 }

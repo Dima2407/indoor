@@ -19,6 +19,7 @@ namespace Navigator {
 
             return step(dx, dy, data.isStationary);
         }
+
 //==============================================================================
         Math::Position3D TrajectoryDetection::processDummy(const AccelOutputData &data) {
             double dt = data.timeDiff;
@@ -28,8 +29,10 @@ namespace Navigator {
 
             return step(dx, dy, data.isStationary);
         }
+
 //==============================================================================
-        double TrajectoryDetection::algorithmZUPT(double aXaY, double startVelocity, bool isStationary, double timeDiff) {
+        double
+        TrajectoryDetection::algorithmZUPT(double aXaY, double startVelocity, bool isStationary, double timeDiff) {
             double velocity;
             if (!isStationary)
                 velocity = startVelocity + config.globG * aXaY * timeDiff;
@@ -38,11 +41,12 @@ namespace Navigator {
 
             if (velocity > config.maxV)
                 velocity = config.maxV;
-             else if (velocity < -config.maxV)
+            else if (velocity < -config.maxV)
                 velocity = -config.maxV;
 
             return velocity;
         }
+
 //==============================================================================
         Math::Position3D TrajectoryDetection::step(double dx, double dy, bool isStationary) {
             double posX0 = posX; // Save old pos
@@ -56,12 +60,12 @@ namespace Navigator {
 
                 if (rMesh != nullptr) {
                     // Check map edges
-                    if (config.useMapEdges) {
+                    if (config.meshConfig.useMapEdges) {
                         posX = rMesh->checkX(posX); // Put into map boundaries
                         posY = rMesh->checkY(posY);
                     }
                     // Check walls
-                    if (config.useWalls) {
+                    if (config.meshConfig.useWalls) {
                         if (rMesh->checkWall(posX0, posY0, posX, posY)) {
                             if (!rMesh->checkWall(posX0, posY0, posX0, posY))
                                 posX = posX0;
@@ -73,10 +77,9 @@ namespace Navigator {
             }
             // Mesh + mask correction
             Math::Position3D position(posX, posY, 0.0);
-            if (rMesh != nullptr && config.useMeshMask)
-                return rMesh->process(position);
-            else
-                return position;
+            if (rMesh)
+                position = rMesh->process(position, config.meshConfig);
+            return position;
         }
 //==============================================================================
     }

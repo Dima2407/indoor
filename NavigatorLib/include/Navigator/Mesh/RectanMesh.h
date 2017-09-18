@@ -8,6 +8,7 @@
 
 #include "Navigator/Math/Position3D.h"
 #include "./MeshData.h"
+#include "./MeshConfig.h"
 
 namespace Navigator {
     namespace Mesh {
@@ -71,6 +72,9 @@ namespace Navigator {
              * @return                Output position (Nearest white mesh node to inPos)
              */
             Math::Position3D process(const Math::Position3D & inPos) const;
+
+            /// Process using mesh config
+            Math::Position3D process(const Math::Position3D & inPos, const MeshConfig & mc) const;
 
             /// Check edges of the map only
             Math::Position3D checkEdges(Math::Position3D inPos) const;

@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "Navigator/Mesh/MeshConfig.h"
+
 namespace Navigator {
     namespace Beacons {
         /// Configuration for StandardBeaconNavigator, with defaults, could be extended if needed
@@ -28,11 +30,7 @@ namespace Navigator {
             int useStrongest = 3;
 
             // ======== Mesh+mask config
-            /// Apply map edges
-            bool useMapEdges = true;
-
-            /// Use mesh+mask to the final position
-            bool useMeshMask = true;
+            Mesh::MeshConfig meshConfig;
         };
     }
 }

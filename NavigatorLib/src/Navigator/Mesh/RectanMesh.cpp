@@ -105,6 +105,19 @@ namespace Navigator {
                 return y;
         }
 //=========================================================
+        Math::Position3D RectanMesh::process(const Math::Position3D &inPos, const MeshConfig &mc) const {
+            if (mc.useMeshMask)  // Full mesh+mask correction
+                return process(inPos);
+            else if (mc.useMesh) {  // Mesh only
+                int iX = mesh.x2ix(inPos.x);
+                int iY = mesh.y2iy(inPos.y);
+                return Math::Position3D(mesh.ix2x(iX), mesh.iy2y(iY), inPos.z);
+            } else if (mc.useMapEdges)
+                return checkEdges(inPos);  // Map edges only
+            else
+                return inPos;  // No correction
+        }
+//=========================================================
 
     }
 }

@@ -42,7 +42,9 @@ const Math::Position3D &KalmanBeaconNavigator::process(const std::vector<BeaconR
         // Now run the trilateration: only once
         runTrilat();
 
-        lastPosition = postProcess(lastPosition); // Use mesh+mask
+        if (mesh)
+            lastPosition = mesh->process(lastPosition);
+//        lastPosition = postProcess(lastPosition); // Use mesh+mask
     }
     return lastPosition;
 }
@@ -161,18 +163,6 @@ void KalmanBeaconNavigator::checkTimeout(double timeStamp) {
                 processor.reset(); // Reset the processsor if timed out
         }
     }
-}
-//====================================================
-
-Math::Position3D KalmanBeaconNavigator::postProcess(Math::Position3D pos)
-{
-    // Postprocess using mesh+masktable
-    if (mesh != nullptr && config.useMeshMask)
-        return mesh->process(pos);
-    else if (mesh != nullptr && config.useMapEdges)
-        return mesh->checkEdges(pos);
-    else
-        return pos;
 }
 //====================================================
 

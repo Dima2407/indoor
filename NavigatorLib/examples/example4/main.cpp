@@ -73,8 +73,8 @@ int main() {
 
     // Some possible options, these are the defaults
     //    config.useStrongest = 3;  // 3 = trilat, 0 = multilat
-    //    config.useMeshMask = true;
-    //    config.useMapEdges = true;
+    //    config.meshConfig.useMeshMask = true;
+    //    config.meshConfig.useMapEdges = true;
 
     KalmanBeaconNavigator navigator(mesh1, config, filterConfig);
 

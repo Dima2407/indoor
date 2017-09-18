@@ -5,12 +5,16 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "Navigator/Math/Position3D.h"
 #include "Navigator/Beacons/BeaconReceivedData.h"
 #include "Navigator/Beacons/BeaconProcessor.h"
 #include "Navigator/Beacons/Beacon.h"
 #include "Navigator/INavigator.h"
+
+#include "Navigator/Mesh/MeshConfig.h"
+#include "Navigator/Mesh/RectanMesh.h"
 
 namespace Navigator {
     namespace Beacons {
@@ -30,6 +34,13 @@ namespace Navigator {
          * @enduml */
         class AbstractBeaconNavigator : public INavigator{
         public:
+            AbstractBeaconNavigator(const Mesh::MeshConfig &meshConfig,
+                                    const std::shared_ptr<Mesh::RectanMesh> &mesh)
+                    : meshConfig(meshConfig), mesh(mesh) {}
+
+            AbstractBeaconNavigator()  = default;
+
+
             /// Process a single input data
             virtual const Math::Position3D &process(const BeaconReceivedData & brd) = 0;
 
@@ -67,12 +78,39 @@ namespace Navigator {
 
             virtual const bool isInitFinished() const = 0;
 
+
+        public: //==== Getters + Setters
             virtual const std::vector<Math::Position2D> &getLastTrilatPosition() const {
                 return lastTrilatPosition;
             }
 
-        protected:
+            const Mesh::MeshConfig &getMeshConfig() const {
+                return meshConfig;
+            }
+
+            void setMeshConfig(const Mesh::MeshConfig &meshConfig) {
+                AbstractBeaconNavigator::meshConfig = meshConfig;
+            }
+
+            const std::shared_ptr<Mesh::RectanMesh> &getMesh() const {
+                return mesh;
+            }
+
+            void setMesh(const std::shared_ptr<Mesh::RectanMesh> &mesh) {
+                AbstractBeaconNavigator::mesh = mesh;
+            }
+
+        protected: //========== Fields
+            /// Last beacon positions obtained from a trilateration
             std::vector <Math::Position2D> lastTrilatPosition;
+
+            // Mesh is not used by TrilatBeaconNavigator !
+
+            /// Mesh configuration flags
+            Mesh::MeshConfig meshConfig;
+
+            /// The Mesh + MaskTable
+            std::shared_ptr<Mesh::RectanMesh> mesh = nullptr;
         };
     }
 }

@@ -22,7 +22,6 @@ public class BluetoothMeasurementProvider extends MeasurementProvider {
         @Override
         public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
             if (transfer != null) {
-                Log.d(TAG, "number of beacons " + collection.size());
                 transfer.deliver(MeasurementEvent.createBluetooth(collection));
             }
             if (onBeaconsChangeListener != null) {

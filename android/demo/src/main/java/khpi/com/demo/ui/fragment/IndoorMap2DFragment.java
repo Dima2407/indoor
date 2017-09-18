@@ -258,8 +258,14 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
         getLocalManager().setOnLocationUpdateListener(new OnLocationUpdateListener() {
             @Override
-            public void onLocationChanged(PointF position, float[] route) {
-                applyNewCoordinate(position.x, position.y, 1, 1, route);
+            public void onLocationChanged(final PointF position, final float[] route) {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        applyNewCoordinate(position.x, position.y, 1, 1, route);
+                    }
+                });
             }
         });
 

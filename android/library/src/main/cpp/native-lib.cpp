@@ -10,7 +10,6 @@
 #include <string>
 #include <android/log.h>
 #include <Navigator.h>
-#include <Navigator/Beacons/KalmanXYNavigator.h>
 
 #define  LOG_TAG    "ILMNative"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
@@ -398,8 +397,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         if (configs.activeBLEMode == 1) {
 
             StandardBeaconNavigatorConfig nConfig;
-            nConfig.useMeshMask = configs.useMeshMask;
-            nConfig.useMapEdges = configs.useMapEdges;
+            nConfig.meshConfig.useMeshMask = configs.useMeshMask;
+            nConfig.meshConfig.useMapEdges = configs.useMapEdges;
             nConfig.useInit = true;
 
             if (configs.multiLaterationEnabled) {
@@ -409,8 +408,8 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
         } else if (configs.activeBLEMode == 2) {
             KalmanBeaconNavigatorConfig nConfig;
-            nConfig.useMeshMask = configs.useMeshMask;
-            nConfig.useMapEdges = configs.useMapEdges;
+            nConfig.meshConfig.useMeshMask = configs.useMeshMask;
+            nConfig.meshConfig.useMapEdges = configs.useMapEdges;
 
 
             if (configs.multiLaterationEnabled) {
@@ -424,10 +423,11 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         }
 
         if (configs.useKalmanFilter) {
+            MeshConfig meshConfig;
+            meshConfig.useMapEdges = configs.useMapEdges;
+            meshConfig.useMeshMask = configs.useMeshMask;
             const shared_ptr<KalmanXYBeaconNavigator> &nav = make_shared<KalmanXYBeaconNavigator>(
-                    navigator, mesh);
-            nav->setUseMapEdges(configs.useMapEdges);
-            nav->setUseMeshMask(configs.useMeshMask);
+                    navigator, meshConfig, mesh);
             bluetoothNavigator = nav;
         } else {
             bluetoothNavigator = navigator;
@@ -518,9 +518,9 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeTakeLastPositionWithDestinatio
         AccelConfig aConfig;
         aConfig.mapOrientationAngle = configs.mapAngle;
         aConfig.useFilter = configs.useFilter;
-        aConfig.useMapEdges = configs.useMapEdges;
-        aConfig.useMeshMask = configs.useMeshMask;
-        aConfig.useWalls = configs.useWalls;
+        aConfig.meshConfig.useMapEdges = configs.useMapEdges;
+        aConfig.meshConfig.useMeshMask = configs.useMeshMask;
+        aConfig.meshConfig.useWalls = configs.useWalls;
         LOGD("init position  at (%f %f)", outPos.x, outPos.y);
 
         double startX = outPos.x, startY = outPos.y;

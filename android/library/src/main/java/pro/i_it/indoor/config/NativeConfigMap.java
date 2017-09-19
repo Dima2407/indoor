@@ -39,6 +39,8 @@ public class NativeConfigMap {
 
     public static final int KEY_USE_KALMAN_FILTER = 23;
 
+    public static final int KEY_ENABLE_LOGGER = 24;
+
     private final SparseArray<Object> configs = new SparseArray<>();
 
     public float getFloat(int key) {

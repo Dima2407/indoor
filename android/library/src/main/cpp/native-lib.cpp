@@ -175,7 +175,6 @@ void prepare_sdk(JNIEnv *env) {
     api.kGetObjectMethod = env->GetMethodID(api.kConfigMapClass, "getObject",
                                             "(I)Ljava/lang/Object;");
 
-    api.kIndoorRouterClass = env->FindClass("pro/i_it/indoor/routing/IndoorRouter");
     api.kIndoorRouterOriginXField = env->GetFieldID(api.kIndoorRouterClass, "startX", "F");
     api.kIndoorRouterOriginYField = env->GetFieldID(api.kIndoorRouterClass, "startY", "F");
     api.kIndoorRouterDestinationXField = env->GetFieldID(api.kIndoorRouterClass, "destinationX",
@@ -232,6 +231,12 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         Position3D outPos = bluetoothNavigator->process(brds);
         const double position[3] = {outPos.x, outPos.y, outPos.z};
         env->SetDoubleArrayRegion(positionResult, 0, 3, position);
+        if ( logBecPosFilePath.size() > 0 ) {
+            ofstream fos(logBecPosFilePath, ios::app);
+            fos << eventTime << " " << outPos << endl;
+        }
+
+
         if (logFilePath.c_str()) {
 
             std::ofstream fos(logFilePath, ios::app);
@@ -313,8 +318,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
 
-    if (configs.enableLogger) {
-
         {
             std::stringstream ss;
             ss << "/sdcard/Download/" << "trilat_beacon_log"
@@ -335,8 +338,6 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
                << ".txt";
             logBecPosFilePath = ss.str();
         }
-
-    }
 
 
     if (configs.useMask) {
@@ -432,11 +433,11 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
             const char *uuid = env->GetStringUTFChars(id, 0);
 
-            if (configs.enableLogger) {
+            //if (configs.enableLogger) {
                 fileB << uuid << "  " << (int) elements[0] << "  " << (int) elements[1] << "  ";
                 fileB << elements[2] << "  " << elements[3] << "  ";
                 fileB << elementsPos[0] << "  " << elementsPos[1] << "  " << elementsPos[2] << endl;
-            }
+           // }
 
             BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
             bluetoothNavigator->addBeacon(Beacon(uid, elements[2], elements[3],

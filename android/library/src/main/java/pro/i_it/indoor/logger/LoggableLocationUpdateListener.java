@@ -13,7 +13,6 @@ import pro.i_it.indoor.OnLocationUpdateListener;
 public class LoggableLocationUpdateListener extends FileLogger implements OnLocationUpdateListener {
 
     private static final String POSITIONS_CSV = "positions-%s.txt";
-    private static long timeStamp;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");
     private final String fileName = getFileName();
 
@@ -27,16 +26,12 @@ public class LoggableLocationUpdateListener extends FileLogger implements OnLoca
     @Override
     public void onLocationChanged(PointF position, float[] route) {
         try {
-            String measurementStr = String.format("%d %f %f", getTimeStamp(), position.x, position.y);
+            String measurementStr = String.format("%d %f %f", System.currentTimeMillis(), position.x, position.y);
             appendToFile(fileName, measurementStr);
         } catch (Exception e) {
             Log.w(LoggableLocationUpdateListener.class.getSimpleName(), "onLocationChanged: ", e);
         }
         listener.onLocationChanged(position, route);
-    }
-
-    private long getTimeStamp() {
-        return timeStamp = System.currentTimeMillis();
     }
 
     private String getFileName() {

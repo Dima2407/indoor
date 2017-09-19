@@ -55,6 +55,14 @@ class FileLogger {
     }
 
     protected final File fileOf(String name) {
+        String[] parts = name.split("/");
+        if(parts.length > 1){
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                    parts[0]);
+            if(!file.exists()){
+                file.mkdir();
+            }
+        }
         return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                 name);
     }

@@ -14,11 +14,11 @@ import pro.i_it.indoor.events.MeasurementType;
 public class AndroidLoggableMeasurementTransfer extends FileLogger implements MeasurementTransferLogger {
 
 
-    private static final String ACCELEROMETER_FILE = "accelerometer-%s.txt";
-    private static final String ANGLES_FILE = "angles-%s.txt";
-    private static final String BLE_FILE = "ble-%s.txt";
-    private static final String POSITION_BLE_FILE = "ble-position-%s.txt";
-    private static final String POSITION_SENSORS_FILE = "sensors-position-%s.txt";
+    private static final String ACCELEROMETER_FILE = "%s/accelerometer.txt";
+    private static final String ANGLES_FILE = "%s/angles.txt";
+    private static final String BLE_FILE = "%s/ble.txt";
+    private static final String POSITION_BLE_FILE = "%s/ble-position.txt";
+    private static final String POSITION_SENSORS_FILE = "%s/sensors-position.txt";
     public static final String TAG = AndroidLoggableMeasurementTransfer.class.getSimpleName();
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss");

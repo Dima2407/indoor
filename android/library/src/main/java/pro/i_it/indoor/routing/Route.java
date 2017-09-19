@@ -1,8 +1,5 @@
 package pro.i_it.indoor.routing;
 
-import android.location.Location;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Route {

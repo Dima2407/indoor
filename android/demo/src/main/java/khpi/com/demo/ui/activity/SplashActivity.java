@@ -4,10 +4,17 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import khpi.com.demo.R;
 import khpi.com.demo.utils.PermissionUtil;
@@ -15,19 +22,24 @@ import khpi.com.demo.utils.PermissionUtil;
 
 public class SplashActivity extends GenericActivity {
     private static final int REQUEST_ENABLE_BT = 25;
+    private GoogleApiClient googleApiClient;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera_outdoor);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (PermissionUtil.checkAllPermissions(this)) {
+            turnOnBluetooth();
+        }
+    }
 
+    private void turnOnBluetooth() {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -35,10 +47,7 @@ public class SplashActivity extends GenericActivity {
             builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (PermissionUtil.checkAllPermissions(SplashActivity.this)) {
-                        MainActivity.start(SplashActivity.this);
-                        finish();
-                    }
+                    checkAndGo();
                 }
             });
             builder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
@@ -48,15 +57,18 @@ public class SplashActivity extends GenericActivity {
                 }
             });
             builder.create().show();
-            return;
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
                 enableBluetooth();
-                return;
+            } else {
+                checkAndGo();
             }
         }
+    }
+
+    private void checkAndGo() {
         if (PermissionUtil.checkAllPermissions(this)) {
-            MainActivity.start(this);
+            MainActivity.start(SplashActivity.this);
             finish();
         }
     }
@@ -91,18 +103,23 @@ public class SplashActivity extends GenericActivity {
             return;
         }
 
-        if (PermissionUtil.checkAllPermissions(this)) {
-            MainActivity.start(this);
-            finish();
-        }
+        checkAndGo();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[]
             grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MainActivity.start(this);
-        finish();
+        if (PermissionUtil.checkAllPermissions(this)) {
+            turnOnBluetooth();
+        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (googleApiClient != null) {
+            googleApiClient.disconnect();
+        }
+    }
 }

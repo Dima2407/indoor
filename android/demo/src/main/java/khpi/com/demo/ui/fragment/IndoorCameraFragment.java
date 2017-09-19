@@ -189,83 +189,11 @@ public final class IndoorCameraFragment extends BaseCameraFragment {
         radarView.initMapImage(FileUtil.getLocacPath(getActivity(), floor.getMapPath()).getAbsolutePath(), floor.getPixelSize());
     }
 
-    private void onNewPosition(final float x, final float y) {
-        if (getContext() == null) {
-            return;
-        }
-        indoorCameraOverlay.onCurrentPositionChanged(x * floor.getPixelSize(), y * floor.getPixelSize());
-
-        List<Inpoint> inpoints = getActivityBridge().getDbBridge().getInpointByFloorId(floor.getId());
-        if (destinationPoint == null) {
-            indoorCameraOverlay.updateInpoints(inpoints, floor);
-        } else {
-            ArrayList<Point> data = new ArrayList<>();
-            data.add(destinationPoint);
-            indoorCameraOverlay.setPoiData(data);
-        }
-
-        radarView.setInpoints(inpoints);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                radarView.setCoordinates(0, 0, x, y);
-            }
-        });
-
-
-        PointF currentPosition = new PointF((float) (x / floor.getPixelSize()), (float) (y / floor.getPixelSize()));
-
-        /*if (destinationPoint != null) {
-            getActivityBridge().getRouteHelper().findPath(currentPosition, new PointF((float) (destinationPoint.getMercatorX() / floor.getPixelSize()), (float) (destinationPoint.getMercatorY() / floor.getPixelSize())), instance, routeListener);
-        } else {
-            getActivityBridge().getRouteHelper().updateRoute(currentPosition, instance, routeListener);
-        }*/
-    }
-
     @Override
     public void onResume() {
         super.onResume();
 
         indoorCameraOverlay.onResume();
-    }
-
-    private void onNewRoute(float[] route) {
-        radarView.setRoute(route);
-
-        bottomSheet.getBottomViewWrapper().setVisibility(View.VISIBLE);
-        bottomSheet.getCancelButton().setVisibility(View.VISIBLE);
-
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) radarView.getLayoutParams();
-        layoutParams.bottomMargin = PixelsUtil.dpToPx(96, getContext());
-        radarView.setLayoutParams(layoutParams);
-
-
-        final Route r = getLocalManager().buildRoute();
-
-        indoorCameraOverlay.queueEvent(new Runnable() {
-            @Override
-            public void run() {
-                indoorCameraOverlay.onNewRoute(r);
-            }
-        });
-
-        if (r == null || r.getSteps().isEmpty()) {
-            return;
-        }
-
-
-        initHint(r);
-        initTotalData(r);
-
-        bottomSheet.getDataList().addOnScrollListener(scrollListener);
-
-        Step destinationStep = new Step();
-        destinationStep.setHint(r.getEndAddress());
-
-        List<Step> steps = new ArrayList<>(r.getSteps());
-        steps.add(destinationStep);
-
-        ((RouteDataAdapter) bottomSheet.getDataList().getAdapter()).putData(steps);
     }
 
     private void initHint(final Route route) {

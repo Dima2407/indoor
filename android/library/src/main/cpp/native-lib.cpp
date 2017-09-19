@@ -124,7 +124,7 @@ IndoorSdkConfigs configs;
 
 extern "C" {
 
-JNIEXPORT void JNICALL
+JNIEXPORT jdoubleArray JNICALL
 Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj);
 
@@ -188,7 +188,7 @@ void prepare_sdk(JNIEnv *env) {
 
 }
 
-JNIEXPORT void JNICALL
+JNIEXPORT jdoubleArray JNICALL
 Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         JNIEnv *env, jobject, jobject obj) {
     jobject typeObj = env->GetObjectField(obj, api.kMeasurementEventTypeField);
@@ -201,6 +201,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         timeS = timeStamp;
     }
     double eventTime = (1.0 * ((timeStamp - timeS) / 1000));
+    jdoubleArray positionResult = env->NewDoubleArray(3);
     if (eventTypeCode == 2 && configs.useBeacons) {
 
         const jsize length = env->GetArrayLength(nestedEvents);
@@ -223,50 +224,27 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
             BeaconUID uid(uuid, (int) data[0], (int) data[1]);
 
-            LOGD("beacon at (%f) %s, major ( %d ), minor ( %d ), rssi ( %f ), tx ( %f ) ",
-                 eventTime, uuid, (int) data[0],
-                 (int) data[1], data[3], data[2]);
-
             BeaconReceivedData brd(eventTime, uid, data[3], data[2]);
             brds.push_back(brd);
             env->ReleaseStringUTFChars(uuidString, uuid);
             env->ReleaseDoubleArrayElements(dataArray, data, 0);
         }
         Position3D outPos = bluetoothNavigator->process(brds);
+        const double position[3] = {outPos.x, outPos.y, outPos.z};
+        env->SetDoubleArrayRegion(positionResult, 0, 3, position);
+        if (logFilePath.c_str()) {
 
-        if (configs.enableLogger) {
-            if (logFilePath.c_str()) {
+            std::ofstream fos(logFilePath, ios::app);
 
-                std::ofstream fos(logFilePath, ios::app);
-
-                if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
-                        bluetoothNavigator)) {
-                    vector<BeaconUID> uids = nav->getLastTrilatUids();
-                    for (auto value: uids) {
-                        fos << timeStamp << " " << value << endl;
-                    }
+            if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
+                    bluetoothNavigator)) {
+                vector<BeaconUID> uids = nav->getLastTrilatUids();
+                for (auto value: uids) {
+                    fos << timeStamp << " " << value << endl;
                 }
-                fos.close();
             }
-
-            if (logBecPosFilePath.c_str()) {
-
-                std::ofstream fiPos(logBecPosFilePath, ios::app);
-
-                if (brds.size() > 0) {
-                    fiPos << timeStamp << " " << brds[0].timestamp << " size = " << brds.size()
-                          << " pos = " << outPos.x << " " << outPos.y << endl;
-                }
-                fiPos.close();
-            }
+            fos.close();
         }
-
-        LOGD("Number of packets %d", brds.size());
-        if (brds.size() > 0) {
-            LOGD("position from beacons ( %f, %f, %f, %f )", brds[0].timestamp, outPos.x,
-                 outPos.y, outPos.z);
-        }
-
     } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
         jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
                                                                     api.kMeasurementEventDataField);
@@ -283,8 +261,6 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         } else if (azimut < -180) {
             azimut = 360 + azimut;
         }
-        LOGD("sensor ax ( %f ), ay ( %f ), az ( %f ), azimut ( %f ) , pitch ( %f ) , roll ( %f ) ",
-             ax, ay, az, azimut, pitch, roll);
 
         AccelReceivedData ard{
                 .timestamp = eventTime,
@@ -295,9 +271,11 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
                 .roll = roll,
                 .yaw = azimut};
         Position3D outPos = sensorNavigator->process(ard);
-        LOGD("position from sensors (%f,%f,%f)", outPos.x, outPos.y, outPos.z);
+        const double position[3] = {outPos.x, outPos.y, outPos.z};
+        env->SetDoubleArrayRegion(positionResult, 0, 3, position);
         env->ReleaseDoubleArrayElements(dataArray, data, 0);
     }
+    return positionResult;
 }
 
 JNIEXPORT void JNICALL

@@ -1,6 +1,5 @@
 package khpi.com.demo.model;
 
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,25 +63,4 @@ public final class Route {
         this.warnings = warnings;
     }
 
-    public List<LatLng> convertSteps() {
-        List<LatLng> latLngs = new ArrayList<>();
-
-        for (int i = 0; i < steps.size(); i++) {
-            Step step = steps.get(i);
-
-            latLngs.add(new LatLng(step.getStartLatitude(), step.getStartLongitude()));
-
-            if (i == steps.size() - 1) {
-                latLngs.add(new LatLng(step.getEndLatitude(), step.getEndLongitude()));
-            }
-        }
-
-        return latLngs;
-    }
-
-    public LatLng getDestinationPoint() {
-        Step last = steps.get(steps.size() - 1);
-
-        return new LatLng(last.getEndLatitude(), last.getEndLongitude());
-    }
 }

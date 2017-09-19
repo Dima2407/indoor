@@ -1,5 +1,6 @@
 package pro.i_it.indoor.logger;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -12,37 +13,41 @@ import pro.i_it.indoor.events.MeasurementEvent;
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.providers.MeasurementTransfer;
 
-public class AndroidLoggableMeasurementTransfer extends FileLogger implements MeasurementTransfer {
+public class AndroidLoggableMeasurementTransfer extends FileLogger implements MeasurementTransferLogger {
 
 
     private static final String ACCELEROMETER_FILE = "accelerometer-%s.txt";
     private static final String ANGLES_FILE = "angles-%s.txt";
     private static final String BLE_FILE = "ble-%s.txt";
+    private static final String POSITION_BLE_FILE = "ble-position-%s.txt";
+    private static final String POSITION_SENSOES_FILE = "sensors-position-%s.txt";
     public static final String TAG = AndroidLoggableMeasurementTransfer.class.getSimpleName();
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss");
 
-    private final MeasurementTransfer transfer;
-
     private final String accelerometerFile;
     private final String anglesFile;
     private final String bleFile;
+    private final String blePositionFile;
+    private final String sensorsPositionFile;
 
-    public AndroidLoggableMeasurementTransfer(MeasurementTransfer transfer) {
-        this.transfer = transfer;
+    public AndroidLoggableMeasurementTransfer() {
         String dateStr = dateFormat.format(new Date());
         accelerometerFile = String.format(ACCELEROMETER_FILE, dateStr);
         anglesFile = String.format(ANGLES_FILE, dateStr);
         bleFile = String.format(BLE_FILE, dateStr);
+        blePositionFile = String.format(POSITION_BLE_FILE, dateStr);
+        sensorsPositionFile = String.format(POSITION_SENSOES_FILE, dateStr);
     }
 
 
     @Override
-    public void deliver(MeasurementEvent event) {
+    public void log(MeasurementEvent event, double[] position) {
         if (event.getType() == MeasurementType.SENSOR_VALUE) {
             try {
                 appendToFile(accelerometerFile, accelFrom(event));
                 appendToFile(anglesFile, anglesFrom(event));
+                appendToFile(sensorsPositionFile, positionsFrom( event, position));
             } catch (Exception e) {
                 Log.w(TAG, "deliver: ", e);
             }
@@ -51,11 +56,15 @@ public class AndroidLoggableMeasurementTransfer extends FileLogger implements Me
                 for (MeasurementEvent e : event.getNested()) {
                     appendToFile(bleFile, bleFrom(e));
                 }
+                appendToFile(blePositionFile, positionsFrom(event, position));
             } catch (Exception e) {
                 Log.w(TAG, "deliver: ", e);
             }
         }
-        transfer.deliver(event);
+    }
+
+    private String positionsFrom(MeasurementEvent event, double [] position) {
+        return String.format("%d %f %f %f", event.getTimestamp(), position[0], position[1], position[2]);
     }
 
     private String bleFrom(MeasurementEvent event) {

@@ -54,7 +54,6 @@ public class IndoorMapView extends SubsamplingScaleImageView {
     private short[][] calculatedMapNodes;
     private int nodeSize;
     private PointF destPoint;
-    private PointF trilatCoordinates;
     private PointF coordinates;
     protected float pixelSize;
 
@@ -254,7 +253,6 @@ public class IndoorMapView extends SubsamplingScaleImageView {
     }
 
     public void setCoordinates(double trilatX, double trilatY, double bx, double by) {
-        trilatCoordinates = createPoint(trilatX / pixelSize, trilatY / pixelSize);
         coordinates = createPoint(bx / pixelSize, by / pixelSize);
     }
 
@@ -343,6 +341,7 @@ public class IndoorMapView extends SubsamplingScaleImageView {
 
 
     private PointF createPoint(double x, double y) {
+        Log.d("applyNewCoordinate", "createPoint: " + x + " " + y);
         return new PointF((float) x, (float) y);
     }
 }

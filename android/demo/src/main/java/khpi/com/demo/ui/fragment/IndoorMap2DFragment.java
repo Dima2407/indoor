@@ -233,15 +233,15 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         configs.set(NativeConfigMap.KEY_MESH_D_Y, 0.3);
         configs.set(NativeConfigMap.KEY_MESH_X_0, 0.0);
         configs.set(NativeConfigMap.KEY_MESH_Y_0, 0.0);
-        if (floor.getGraphPath().contains("/mapData/8/")) {
+        if (floor.getBuildingTitle().startsWith("IT-Jim")) {
             //it-jim
             configs.set(NativeConfigMap.KEY_MAP_ANGLE, 20);
             if (useBinaryMask) {
-                configs.set(NativeConfigMap.KEY_MESH_N_X, 36.0);
-                configs.set(NativeConfigMap.KEY_MESH_N_Y, 24.0);
+                configs.set(NativeConfigMap.KEY_MESH_N_X, 37.0);
+                configs.set(NativeConfigMap.KEY_MESH_N_Y, 25.0);
                 configs.set(NativeConfigMap.KEY_MASK, new ResourcesMaskTableFetcher(getResources(), R.raw.masktable1));
             }
-        } else {
+        } else if(floor.getBuildingTitle().startsWith("Kaa")){
             //kaa
             configs.set(NativeConfigMap.KEY_MAP_ANGLE, 0);
             if (useBinaryMask) {
@@ -403,6 +403,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
 
 
     private void applyNewCoordinate(float x, float y, float tx, float ty, float[] route) {
+        Log.d("applyNewCoordinate", "applyNewCoordinate: " + x + " " + y);
         if (getActivity() == null) {
             return;
         }

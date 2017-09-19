@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.google.android.gms.maps.model.LatLng;
 import khpi.com.demo.model.Step;
 import com.hackoeur.jglm.Vec3;
 
@@ -18,7 +17,7 @@ public final class DirectionRenderer extends BaseRender {
     private Arrow secondArrow;
 
     private Step step;
-    private LatLng currentPosition;
+    private Location currentPosition= new Location(LocationManager.GPS_PROVIDER);
     private float azimuth;
 
     public DirectionRenderer(Context context) {
@@ -71,8 +70,8 @@ public final class DirectionRenderer extends BaseRender {
         }
 
         Location location = new Location(LocationManager.GPS_PROVIDER);
-        location.setLatitude(currentPosition.latitude);
-        location.setLongitude(currentPosition.longitude);
+        location.setLatitude(currentPosition.getLatitude());
+        location.setLongitude(currentPosition.getLongitude());
 
         Location location1 = new Location(LocationManager.GPS_PROVIDER);
         location1.setLatitude(step.getEndLatitude());
@@ -92,6 +91,7 @@ public final class DirectionRenderer extends BaseRender {
     }
 
     void onCurrentPositionChanged(double longitude, double latitude) {
-        currentPosition = new LatLng(latitude, longitude);
+        currentPosition.setLatitude(latitude);
+        currentPosition.setLongitude(longitude);
     }
 }

@@ -8,7 +8,6 @@ import android.os.Message;
 import android.util.Log;
 
 import pro.i_it.indoor.config.NativeConfigMap;
-import pro.i_it.indoor.events.MeasurementEvent;
 import pro.i_it.indoor.events.MeasurementType;
 import pro.i_it.indoor.logger.AndroidLoggableMeasurementTransfer;
 import pro.i_it.indoor.logger.LoggableLocationUpdateListener;
@@ -121,9 +120,9 @@ public class IndoorLocationManager {
         obtainThread.start();
 
 
-        MeasurementTransfer measurementTransfer = new AndroidMeasurementTransfer(deliverThread.getLooper());
+        AndroidMeasurementTransfer measurementTransfer = new AndroidMeasurementTransfer(deliverThread.getLooper());
         if (loggerEnable) {
-            measurementTransfer = new AndroidLoggableMeasurementTransfer(measurementTransfer);
+            measurementTransfer.setTransfer(new AndroidLoggableMeasurementTransfer());
         }
 
         if (configuration.getBoolean(NativeConfigMap.KEY_USE_BEACONS)) {

@@ -10,7 +10,7 @@
 
 // This includes everything you need
 #include "Navigator.h"
-#include "Navigator/Beacons/KalmanXYNavigator.h"
+#include "Navigator/Beacons/KalmanXYBeaconNavigator.h"
 
 // There are a few namespaces in the librrary
 using namespace std;
@@ -31,8 +31,8 @@ int main() {
     KalmanBeaconNavigatorConfig config;
 
     // used this config for correct on "map" before arraive result into filter
-    config.useMeshMask = false;
-    config.useMapEdges = true;
+    config.meshConfig.useMeshMask = false;
+    config.meshConfig.useMapEdges = true;
     KalmanConfig filterConfig;
 
     shared_ptr<KalmanBeaconNavigator> navigator = make_shared<KalmanBeaconNavigator>(mesh1, config, filterConfig);
@@ -48,11 +48,10 @@ int main() {
 
     // ------------------------------------------------------------------------------
 
-    KalmanXYBeaconNavigator beaconNavigator(navigator, mesh1);
     // used this config for correct on "mesh" after execute result in filter
-    beaconNavigator.setUseMapEdges(true);
-    beaconNavigator.setUseMeshMask(true);
+    MeshConfig meshConfig;
 
+    KalmanXYBeaconNavigator beaconNavigator(navigator, meshConfig, mesh1);
     // ------------------------------------------------------------------------------
 
     vector<BeaconReceivedData> brds;

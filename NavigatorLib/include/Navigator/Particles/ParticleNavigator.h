@@ -12,7 +12,6 @@
 #include "Navigator/Mesh/RectanMesh.h"
 
 #include "Navigator/Particles/ParticleFilter.h"
-#include "Navigator/Particles/ParticleNavigatorConfig.h"
 
 namespace Navigator {
     namespace Particles {
@@ -23,11 +22,11 @@ namespace Navigator {
             ParticleNavigator(const std::shared_ptr<Beacons::AbstractBeaconNavigator> &bNav,
                               const std::shared_ptr<Accel::AbstractAccelNavigator> &aNav,
                               const std::shared_ptr<Mesh::RectanMesh> &rMesh,
-                              const ParticleNavigatorConfig &config = ParticleNavigatorConfig())
+                              const Mesh::MeshConfig &meshConfig = Mesh::MeshConfig())
                     : bNav(bNav),
                       aNav(aNav),
                       rMesh(rMesh),
-                      config(config) {}
+                      meshConfig(meshConfig) {}
 
             /// Run a particle filter step and return last position
             Math::Position3D obtainLastPosition() override;
@@ -48,7 +47,7 @@ namespace Navigator {
             std::shared_ptr<Mesh::RectanMesh> rMesh;
 
             /// Config
-            ParticleNavigatorConfig config;
+            Mesh::MeshConfig meshConfig ;
 
             /// Particle filter
             ParticleFilter pFilter;

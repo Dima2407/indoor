@@ -23,6 +23,11 @@ namespace Navigator {
 
                 Eigen::Matrix<double, 1, 2> locationXY(location.x, location.y);
                 Eigen::Matrix<double, 3, 2> posBeacons;
+
+                // Check that we have exactly 3 beacons
+                if (beacPosition.size() != 3)
+                    throw runtime_error("KalmanXYFilter::process : beacPosition.size() != 3 !");
+
                 for (int i = 0; i < 3; ++i) {
                     posBeacons(i, 0) = beacPosition[i].x;
                     posBeacons(i, 1) = beacPosition[i].y;

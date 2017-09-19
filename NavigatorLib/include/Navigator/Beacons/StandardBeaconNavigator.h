@@ -126,9 +126,6 @@ namespace Navigator {
             }
 
         private: //======== Methods
-            /// The post-processing with mesh and masktable
-            Math::Position3D postProcess(Math::Position3D pos);
-
             /// Check timestamps and change navigator filters if needed
             void checkTimes();
 
@@ -144,9 +141,6 @@ namespace Navigator {
 
             /// The trilat navigator wrapped with this object
             TrilatBeaconNavigator triNav;
-
-            /// The Mesh + MaskTable
-            std::shared_ptr<Mesh::RectanMesh> mesh;
 
             /// Last located position
             Math::Position3D lastPosition;

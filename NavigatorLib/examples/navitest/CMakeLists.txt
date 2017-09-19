@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
-project(testParticle)
+project(navitest)
 
 set(CMAKE_CXX_STANDARD 14)
+
+file(COPY in DESTINATION .)
 
 # Include path to navigator_lib for *.h files
 include_directories(

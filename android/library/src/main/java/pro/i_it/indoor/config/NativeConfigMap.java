@@ -42,6 +42,8 @@ public class NativeConfigMap {
 
     public static final int KEY_USE_KALMAN_FILTER = 23;
 
+    public static final int KEY_ENABLE_LOGGER = 24;
+
     private final SparseArray<Object> configs = new SparseArray<>();
 
     public float getFloat(int key) {
@@ -106,6 +108,8 @@ public class NativeConfigMap {
 
             case KEY_USE_KALMAN_FILTER:
                 return "KEY_USE_KALMAN_FILTER";
+            case KEY_ENABLE_LOGGER:
+                return "KEY_ENABLE_LOGGER";
         }
         return "undefined";
     }

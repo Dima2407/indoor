@@ -1,6 +1,5 @@
 package pro.i_it.indoor.logger;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -11,7 +10,6 @@ import java.util.Date;
 
 import pro.i_it.indoor.events.MeasurementEvent;
 import pro.i_it.indoor.events.MeasurementType;
-import pro.i_it.indoor.providers.MeasurementTransfer;
 
 public class AndroidLoggableMeasurementTransfer extends FileLogger implements MeasurementTransferLogger {
 
@@ -20,7 +18,7 @@ public class AndroidLoggableMeasurementTransfer extends FileLogger implements Me
     private static final String ANGLES_FILE = "angles-%s.txt";
     private static final String BLE_FILE = "ble-%s.txt";
     private static final String POSITION_BLE_FILE = "ble-position-%s.txt";
-    private static final String POSITION_SENSOES_FILE = "sensors-position-%s.txt";
+    private static final String POSITION_SENSORS_FILE = "sensors-position-%s.txt";
     public static final String TAG = AndroidLoggableMeasurementTransfer.class.getSimpleName();
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss");
@@ -37,7 +35,7 @@ public class AndroidLoggableMeasurementTransfer extends FileLogger implements Me
         anglesFile = String.format(ANGLES_FILE, dateStr);
         bleFile = String.format(BLE_FILE, dateStr);
         blePositionFile = String.format(POSITION_BLE_FILE, dateStr);
-        sensorsPositionFile = String.format(POSITION_SENSOES_FILE, dateStr);
+        sensorsPositionFile = String.format(POSITION_SENSORS_FILE, dateStr);
     }
 
 

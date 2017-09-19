@@ -9,7 +9,7 @@ set(SOURCE_FILES
         ../include/Navigator/INavigator.h
         #
         ../include/Navigator/Beacons/AbstractBeaconNavigator.h
-        ./Navigator/Beacons/KalmanXYNavigator.cpp ../include/Navigator/Beacons/KalmanXYNavigator.h
+        Navigator/Beacons/KalmanXYBeaconNavigator.cpp ../include/Navigator/Beacons/KalmanXYBeaconNavigator.h
         ./Navigator/Beacons/TrilatBeaconNavigator.cpp ../include/Navigator/Beacons/TrilatBeaconNavigator.h
         ../include/Navigator/Beacons/StandardBeaconNavigatorConfig.h
         ../include/Navigator/Beacons/KalmanBeaconNavigatorConfig.h
@@ -68,9 +68,7 @@ set(SOURCE_FILES
         #
         ./Navigator/Particles/ParticleFilter.cpp ../include/Navigator/Particles/ParticleFilter.h
         ../include/Navigator/Particles/ParticleFilterConfig.h
-        ../include/Navigator/Particles/ParticleNavigatorConfig.h
         Navigator/Particles/ParticleNavigator.cpp ../include/Navigator/Particles/ParticleNavigator.h
-        ../include/Navigator/Particles/ParticleNavigatorConfig.h
         )
 
 include_directories(

@@ -11,6 +11,7 @@
 #include "./StandardBeaconNavigatorConfig.h"
 #include "./KalmanBeaconNavigator.h"
 #include "./KalmanBeaconNavigatorConfig.h"
+#include "./KalmanXYBeaconNavigator.h"
 #
 #include "./Factory/IFilterFactory.h"
 #include "./Factory/AlphaBetaFilterFactory.h"

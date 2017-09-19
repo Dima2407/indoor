@@ -9,10 +9,9 @@ namespace Navigator {
 
         StandardBeaconNavigator::StandardBeaconNavigator(const std::shared_ptr<Mesh::RectanMesh> &mesh, bool ios,
                                                          const StandardBeaconNavigatorConfig &config) :
-                mesh(mesh),
+                AbstractBeaconNavigator(config.meshConfig, mesh),
                 ios(ios),
                 config(config) {
-
 
             // Trilateration config
             // Do we use full 3D trilat instead of 2D ? (default = false)
@@ -22,7 +21,7 @@ namespace Navigator {
 
             if (config.useInit) {
                 // Set up the filters for the init phase
-                rssiFactory= std::make_shared<Factory::MovingAverageFilterFactory>(20);
+                rssiFactory = std::make_shared<Factory::MovingAverageFilterFactory>(20);
                 distanceFactory = std::make_shared<Factory::NoFilterFactory>();
 
                 // Start recording history
@@ -39,9 +38,10 @@ namespace Navigator {
 
         const Math::Position3D &StandardBeaconNavigator::process(const BeaconReceivedData &brd) {
 
-            Math::Position3D pos = triNav.process(brd);
+            lastPosition = triNav.process(brd);
 
-            lastPosition = postProcess(pos);
+            if (mesh)
+                lastPosition = mesh->process(lastPosition, meshConfig);
 
             if (config.useInit && !initFinished)
                 checkTimes(); // End the init phase if it's time
@@ -51,9 +51,10 @@ namespace Navigator {
         //====================================================================
 
         const Math::Position3D &StandardBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds) {
-            Math::Position3D pos = triNav.process(brds);
+            lastPosition = triNav.process(brds);
 
-            lastPosition = postProcess(pos);
+            if (mesh)
+                lastPosition = mesh->process(lastPosition, meshConfig);
 
             if (config.useInit && !initFinished)
                 checkTimes(); // End the init phase if it's time
@@ -62,19 +63,6 @@ namespace Navigator {
         }
 
         //====================================================================
-
-        Math::Position3D StandardBeaconNavigator::postProcess(Math::Position3D pos) {
-            // Postprocess using mesh+masktable
-            if (mesh != nullptr && config.useMeshMask)
-                return mesh->process(pos);
-            else if (mesh != nullptr && config.useMapEdges)
-                return mesh->checkEdges(pos);
-            else
-                return pos;
-        }
-
-        //====================================================================
-
         void StandardBeaconNavigator::checkTimes() {
             using namespace std;
 

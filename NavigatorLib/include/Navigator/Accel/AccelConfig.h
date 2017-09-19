@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Navigator/Mesh/MeshConfig.h"
+
 namespace Navigator {
 namespace Accel {
 /// Configuration of the Accelerometer Navigator, with reasonable defaults
@@ -54,15 +56,7 @@ struct AccelConfig{
     double userAverageVelocity = 3.2;
 
     // Different aspects of a map (mesh+mask). Note: if mesh = nullptr, it turns off all map aspects.
-
-    /// Apply map edges
-    bool useMapEdges = true;
-
-    /// Apply wall algorithm
-    bool useWalls = true;
-
-    /// Use mesh+mask to the final position
-    bool useMeshMask = true;
+    Mesh::MeshConfig meshConfig;
 };
 }
 }

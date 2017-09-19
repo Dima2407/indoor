@@ -88,6 +88,8 @@ public class IndoorLocationManager {
     public void setOnLocationUpdateListener(OnLocationUpdateListener listener) {
         if (loggerEnable) {
             this.onLocationUpdateListener = new LoggableLocationUpdateListener(listener);
+        } else {
+            this.onLocationUpdateListener = listener;
         }
     }
 

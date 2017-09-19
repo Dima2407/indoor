@@ -108,6 +108,8 @@ public class NativeConfigMap {
 
             case KEY_USE_KALMAN_FILTER:
                 return "KEY_USE_KALMAN_FILTER";
+            case KEY_ENABLE_LOGGER:
+                return "KEY_ENABLE_LOGGER";
         }
         return "undefined";
     }

@@ -153,6 +153,7 @@ public class IndoorMap2DFragment extends GenericFragment implements IndoorMapVie
         super.onResume();
         Log.d("onLocationChanged", "onResume: ");
         NativeConfigMap configs = new NativeConfigMap();
+        configs.set(NativeConfigMap.KEY_ENABLE_LOGGER, getSharedHelper().isLoggerEnable());
         if (getSharedHelper().getActiveModeKey() == SharedHelper.MODE_BLE) {
             configs.set(NativeConfigMap.KEY_USE_BEACONS, true);
             configs.set(NativeConfigMap.KEY_BEACONS, floor.getSpaceBeacons());

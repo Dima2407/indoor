@@ -18,11 +18,14 @@ namespace Navigator {
         class ParticleFilter {
         public:  // ========== Methods
             /// Constructor
-            ParticleFilter(const ParticleFilterConfig &config = ParticleFilterConfig()) : config(config) {
-                // Pre-allocate vectors
-                particles = std::vector<Math::Position2D>(config.numPart);
-                weights = std::vector<double>(config.numPart);
-            }
+            ParticleFilter(const ParticleFilterConfig &config = ParticleFilterConfig()) :
+                    config(config),
+                    particles(config.numPart),
+                    weights(config.numPart),
+                    tmpParticles(config.numPart),
+                    betas(config.numPart),
+                    chosen(config.numPart)
+            {}
 
             /**
              * @brief initialize
@@ -31,7 +34,7 @@ namespace Navigator {
              * Initialize with a position (seed particles)
              */
             void initialize(const Math::Position2D &pos,
-                            const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect);
+                            const std::function<Math::Position2D(const Math::Position2D &)> &meshCorrect);
 
 
             /**  @brief  Process one step of the particle filter aglorithm
@@ -41,12 +44,12 @@ namespace Navigator {
              * @param allowMove     Callback, returns true if move from p1 to p2 is allowed
              * @return              The measured position
              */
-            Math::Position2D & process(const Math::Position2D & delta,
-                                       const Math::Position2D & z,
-                                       const std::function<bool(const Math::Position2D &,
-                                                                const Math::Position2D &)> & allowMove,
-                                       const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect
-                                       );
+            Math::Position2D &process(const Math::Position2D &delta,
+                                      const Math::Position2D &z,
+                                      const std::function<bool(const Math::Position2D &,
+                                                               const Math::Position2D &)> &allowMove,
+                                      const std::function<Math::Position2D(const Math::Position2D &)> &meshCorrect
+            );
 
             const Math::Position2D &getLastPosition() const {
                 return lastPosition;
@@ -60,6 +63,27 @@ namespace Navigator {
                 return particles;
             }
 
+            // tmpParticles are moved particles before resampling after running process()
+            const std::vector<Math::Position2D> &getTmpParticles() const {
+                return tmpParticles;
+            }
+
+            const std::vector<double> &getWeights() const {
+                return weights;
+            }
+
+            const std::vector<double> &getBetas() const {
+                return betas;
+            }
+
+            double getMaxWeight() const {
+                return maxWeight;
+            }
+
+            const std::vector<int> &getChosen() const {
+                return chosen;
+            }
+
         private: //======= Methods ==============
 
             /**
@@ -68,7 +92,7 @@ namespace Navigator {
              * calculate new particle coordinates on the base previous coordinates with help
              * use model precess and algorithm IMU
              */
-            void moveParticles(const Math::Position2D & delta);
+            void moveParticles(const Math::Position2D &delta);
 
             /**
              * @brief calcWeights
@@ -77,10 +101,10 @@ namespace Navigator {
              * @param meshCorrect
              * calculate particle values of weight on the base information about the map and beacons
              */
-            void calcWeights(const Math::Position2D & z,
+            void calcWeights(const Math::Position2D &z,
                              const std::function<bool(const Math::Position2D &,
-                             const Math::Position2D &)> & allowMove,
-                             const std::function<Math::Position2D(const Math::Position2D &)> & meshCorrect);
+                                                      const Math::Position2D &)> &allowMove,
+                             const std::function<Math::Position2D(const Math::Position2D &)> &meshCorrect);
 
             /**
              * @brief resample
@@ -103,7 +127,7 @@ namespace Navigator {
              * @return
              * Generate uniform random number between x1(inclusive) and x2(inclusive)
              */
-            double randRange(double x1, double x2){
+            double randRange(double x1, double x2) {
                 return std::uniform_real_distribution<double>(x1, x2)(randomEngine);
             }
 
@@ -123,7 +147,7 @@ namespace Navigator {
              * @return
              * Generate normal (Gaussian) distributed number with average 0
              */
-            double randNorm(double sigma){
+            double randNorm(double sigma) {
                 return std::normal_distribution<double>(0.0, sigma)(randomEngine);
             }
 
@@ -132,7 +156,7 @@ namespace Navigator {
              * @param particle
              * @param z
              * @return
-             * help method for incapsulate Mathematical calculations
+             * Normalized Gaussian distribution for x,y with sigmaX, sigmaY
              */
             double gauss(const Math::Position2D &particle, const Math::Position2D &z);
 
@@ -140,11 +164,20 @@ namespace Navigator {
             /// Config
             ParticleFilterConfig config;
 
-            /// OldLocationParticles
-            std::vector<Math::Position2D> oldParticles;
+            /// Predicted Particles before resampling
+            std::vector<Math::Position2D> tmpParticles;
 
             /// Particles
             std::vector<Math::Position2D> particles;
+
+            /// Betas calculated at resampling
+            std::vector<double> betas;
+
+            /// Chosen particles at resampling (starting with 1)
+            std::vector<int> chosen;
+
+            /// Max weight at the resampling
+            double maxWeight;
 
             /// Weights
             std::vector<double> weights;
@@ -152,8 +185,22 @@ namespace Navigator {
             /// Last position
             Math::Position2D lastPosition;
 
-            // Seeded random engine
+            /// Time-Seeded random engine
             std::mt19937 randomEngine = std::mt19937(time(nullptr));
+
+
+        public: //======= Fields for simulated random
+            /// Simulated random shifts for each particle for initialization (initial seed)
+            std::vector<Math::Position2D> simRandPI;
+
+            /// Simulated random shifts for each particle for prediction (particle move)
+            std::vector<Math::Position2D> simRandPP;
+
+            /// Simulatted random i (particle chosen at resampling)
+            int simRandI;
+
+            /// Simulated betas for N particles
+            std::vector<double> simRandBeta;
         };
     }
 }

@@ -12,6 +12,7 @@
     <string name="particle_filter_switch_name">Particle filter</string>
 
     <string name="settings_dialog_string">Select one of the modes and the modifications.</string>
+    <string name="ble_kalman_switch_name">Use Kalman filter</string>
 
     Sensor Modification 1
 

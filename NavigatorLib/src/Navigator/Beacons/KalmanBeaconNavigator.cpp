@@ -98,19 +98,26 @@ void KalmanBeaconNavigator::runTrilat() {
         trilatRecords.resize(config.useStrongest); // Use only useStrongest beacons
     }
 
-    // Save their UIDS
+    // Save their UIDS and positions
     lastTrilatUids.clear();
-    for (const TrilatRecord & r: trilatRecords)
+    lastTrilatPosition.clear();
+    for (const TrilatRecord & r: trilatRecords) {
         lastTrilatUids.push_back(r.uid);
+        lastTrilatPosition.push_back(r.pos);
+    }
 
     // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors
     // Result is written to lastPosition
     if (config.use3DTrilat) {
         if (trilatRecords.size() >= 4)
             lastPosition = Math::Trilat::trilatLocation3d(trilatRecords);
+        else
+            lastPosition = Math::Position3D(); // NaN
     } else {
         if (trilatRecords.size() >= 3)
             lastPosition = Math::Trilat::trilatLocation2d(trilatRecords);
+        else
+            lastPosition = Math::Position3D(); // NaN
     }
 }
 //====================================================

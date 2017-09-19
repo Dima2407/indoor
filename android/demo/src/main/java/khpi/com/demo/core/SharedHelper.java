@@ -31,6 +31,7 @@ public final class SharedHelper {
     private static final String MESH_CORRECTION = "mesh correction";
     private static final String WALLS_CORRECTION = "walls correction";
 
+    public static final String USE_KALMAN_FILTER = "use_kalman_filter";
     public static final String LOGGER_ENABLE = "logger enable";
     //public static final String PARTICLE_FILTER_ENABLE = "particle filter";
 
@@ -160,5 +161,12 @@ public final class SharedHelper {
         sharedPreferences.edit().putBoolean(MULTI_LATERATION_ENABLED, enabled).apply();
     }
 
+    public void setUseKalmanFilter(boolean useKalmanFilter) {
+        sharedPreferences.edit().putBoolean(USE_KALMAN_FILTER, useKalmanFilter).apply();
+    }
+
+    public boolean useKalmanFilter() {
+        return sharedPreferences.getBoolean(USE_KALMAN_FILTER, false);
+    }
 
 }

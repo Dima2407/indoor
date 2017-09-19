@@ -59,6 +59,12 @@ namespace Navigator {
                 records.resize(useStrongest); // Use only useStrongest beacons
             }
 
+            // Save their positions
+            lastTrilatPosition.clear();
+            for (const TrilatRecord & r: records) {
+                lastTrilatPosition.push_back(r.pos);
+            }
+
             // Run trilateration if there are at least 3 (or 4 for 3D) active beacon processors
             // Result is written to lastPosition
             if (use3DTrilat) {

@@ -39,9 +39,11 @@ public final class SettingsActivity extends GenericActivity {
     private Switch settingWallCorrSwitch;
     private Switch settingLoggerSwitch;
     private Switch particlefilterSwitch;
+    private Switch kalmanFilterSwitch;
     private LinearLayout beaconModsLayout;
     private LinearLayout sensorModsLayout;
     private LinearLayout settingsWallCorrLayout;
+    private LinearLayout linearKalmanFilter;
 
     private LinearLayout sensorSettingInitLayout;
 
@@ -101,12 +103,15 @@ public final class SettingsActivity extends GenericActivity {
         beaconModsLayout = (LinearLayout) findViewById(R.id.beacon_mod_group);
         sensorModsLayout = (LinearLayout) findViewById(R.id.sensor_mod_group);
         settingsWallCorrLayout = (LinearLayout) findViewById(R.id.settings_wall_corr_layout);
+        linearKalmanFilter = (LinearLayout) findViewById(R.id.layout_Kalman);
+        kalmanFilterSwitch = (Switch) findViewById(R.id.ble_Kalman_switch);
 
         bleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
                     updateActiveBLESubmode();
+                    linearKalmanFilter.setVisibility(View.VISIBLE);
                     beaconModsLayout.setVisibility(View.VISIBLE);
                     settingWallCorrSwitch.setChecked(false);
                     settingsWallCorrLayout.setVisibility(View.GONE);
@@ -114,9 +119,11 @@ public final class SettingsActivity extends GenericActivity {
                     particlefilterSwitch.setChecked(false);
                     sensorModsLayout.setVisibility(View.GONE);
                 } else if (sensorSwitch.isChecked() && !particlefilterSwitch.isChecked()) {
+                    linearKalmanFilter.setVisibility(View.GONE);
                     sensorSwitch.setChecked(true);
                     settingsWallCorrLayout.setVisibility(View.VISIBLE);
                 } else {
+                    linearKalmanFilter.setVisibility(View.GONE);
                     particlefilterSwitch.setChecked(true);
                     settingsWallCorrLayout.setVisibility(View.VISIBLE);
 
@@ -181,6 +188,7 @@ public final class SettingsActivity extends GenericActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
                     beaconMod3Switch.setChecked(true);
+                    kalmanFilterSwitch.setChecked(false);
                 }
             }
         });
@@ -316,7 +324,15 @@ public final class SettingsActivity extends GenericActivity {
             }
         });
 
-
+        kalmanFilterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                getProjectApplication().getSharedHelper().setUseKalmanFilter(isChecked);
+                if (isChecked) {
+                    beaconMod3Switch.setChecked(false);
+                }
+            }
+        });
     }
 
     private void updateInitPosition(int activeModeKey, int submode) {
@@ -391,8 +407,9 @@ public final class SettingsActivity extends GenericActivity {
     }
 
     private void updateActiveBLESubmode() {
-        int submode = getProjectApplication().getSharedHelper().getBLESubMode();
-        boolean enabled = getProjectApplication().getSharedHelper().isMultiLaterationEnabled();
+        SharedHelper sharedHelper = getProjectApplication().getSharedHelper();
+        int submode = sharedHelper.getBLESubMode();
+        boolean enabled = sharedHelper.isMultiLaterationEnabled();
         if (submode == SharedHelper.SUB_MODE_BLE_1) {
             beaconMod1Switch.setChecked(true);
             beaconMod2Switch.setChecked(false);
@@ -404,6 +421,7 @@ public final class SettingsActivity extends GenericActivity {
             beaconMod2Switch.setChecked(false);
         }
         beaconMod3Switch.setChecked(enabled);
+        kalmanFilterSwitch.setChecked(sharedHelper.useKalmanFilter());
     }
 
     @Override

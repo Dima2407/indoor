@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 
-//#define NDEBUG 0
+#define NDEBUG 0
 
 #include <iostream>
 #include <cmath>
@@ -76,6 +76,7 @@ typedef struct IndoorSdkApi {
     int kMultiLaterationEnabledField = 21;
     int kParticleEnabledField = 22;
     int kUseKalmanFilter = 23;
+    int kEnableLogger = 24;
     jmethodID kGetFloatMethod;
     jmethodID kGetIntMethod;
     jmethodID kGetDoubleMethod;
@@ -114,6 +115,7 @@ typedef struct IndoorSdkConfigs {
     bool multiLaterationEnabled = false;
     bool particleEnabled = false;
     bool useKalmanFilter = false;
+    bool enableLogger = false;
 } IndoorSdkConfigs;
 
 double timeS = -1;
@@ -307,28 +309,34 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
                                                             api.kMultiLaterationEnabledField);
     configs.useKalmanFilter = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                      api.kUseKalmanFilter);
+    configs.enableLogger = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kEnableLogger);
 
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
 
-    {
-        std::stringstream ss;
-        ss << "/sdcard/Download/" << "trilat_beacon_log" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-           << ".txt";
-        logFilePath = ss.str();
-    }
-    {
-        std::stringstream ss;
-        ss << "/sdcard/Download/" << "beacons" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-           << ".txt";
-        beaconsFilePath = ss.str();
-    }
-    {
-        std::stringstream ss;
-        ss << "/sdcard/Download/" << "position_from_beacon_log"
-              << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-              << ".txt";
-        logBecPosFilePath = ss.str();
+    if (configs.enableLogger) {
+
+        {
+            std::stringstream ss;
+            ss << "/sdcard/Download/" << "trilat_beacon_log"
+               << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+               << ".txt";
+            logFilePath = ss.str();
+        }
+        {
+            std::stringstream ss;
+            ss << "/sdcard/Download/" << "beacons" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+               << ".txt";
+            beaconsFilePath = ss.str();
+        }
+        {
+            std::stringstream ss;
+            ss << "/sdcard/Download/" << "position_from_beacon_log"
+               << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+               << ".txt";
+            logBecPosFilePath = ss.str();
+        }
+
     }
 
 
@@ -408,7 +416,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
 
         jint size = env->GetArrayLength(beacons);
 
+
         ofstream fileB(beaconsFilePath);
+
+
         for (int i = 0; i < size; i++) {
             jobject beacon = env->GetObjectArrayElement(beacons, i);
             jfloatArray position = (jfloatArray) env->CallObjectMethod(beacon,
@@ -421,10 +432,11 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             jfloat *elementsPos = env->GetFloatArrayElements(position, 0);
             const char *uuid = env->GetStringUTFChars(id, 0);
 
-            fileB << uuid << "  " << (int) elements[0] <<  "  " << (int) elements[1] <<  "  ";
-            fileB << elements[2] <<  "  " << elements[3] << "  ";
-            fileB << elementsPos[0] << "  " << elementsPos[1] << "  " << elementsPos[2] << endl;
-
+            if (configs.enableLogger) {
+                fileB << uuid << "  " << (int) elements[0] << "  " << (int) elements[1] << "  ";
+                fileB << elements[2] << "  " << elements[3] << "  ";
+                fileB << elementsPos[0] << "  " << elementsPos[1] << "  " << elementsPos[2] << endl;
+            }
 
             BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
             bluetoothNavigator->addBeacon(Beacon(uid, elements[2], elements[3],

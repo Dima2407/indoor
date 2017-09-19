@@ -175,6 +175,7 @@ void prepare_sdk(JNIEnv *env) {
     api.kGetObjectMethod = env->GetMethodID(api.kConfigMapClass, "getObject",
                                             "(I)Ljava/lang/Object;");
 
+    api.kIndoorRouterClass = env->FindClass("pro/i_it/indoor/routing/IndoorRouter");
     api.kIndoorRouterOriginXField = env->GetFieldID(api.kIndoorRouterClass, "startX", "F");
     api.kIndoorRouterOriginYField = env->GetFieldID(api.kIndoorRouterClass, "startY", "F");
     api.kIndoorRouterDestinationXField = env->GetFieldID(api.kIndoorRouterClass, "destinationX",

@@ -15,8 +15,10 @@ namespace Navigator {
             using namespace Math;
             // Note: implicit Position2D <-> Position3D conversion through type cast operators is used here
             Position2D z = bNav->getLastPosition(); // Get Last position from BLE
-            if (isnan(z.x) || isnan(z.y))
-                throw runtime_error("ParticleNavigator : BLE gives NAN !");
+            if (isnan(z.x) || isnan(z.y)) {
+//                throw runtime_error("ParticleNavigator : BLE gives NAN !");
+                return Position3D(); // Return NaN
+            }
 
             // Lambdas
             auto meshCorrect = [this](const Position2D &p) -> Position2D{

@@ -134,7 +134,7 @@ int main() {
             brds.push_back(brd);
         } else {
             // Process the whole bunch of data in a single process() call
-            Position3D outPos = navigator.process(brds);
+            Position3D outPos = navigator2.process(brds);
             // Log the output pos
             fprintf(filePos, "%13.8lf ", brds.at(0).timestamp);
             fprintf(filePos, "%13.8lf %13.8lf", outPos.x, outPos.y);

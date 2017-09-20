@@ -20,6 +20,9 @@ namespace Navigator {
 
         const Math::Position3D &KalmanXYBeaconNavigator::process(const std::vector<BeaconReceivedData> &brds) {
             using namespace std;
+            if (brds.empty())
+                return lastPostion;
+
             Math::Position3D temp3D = beaconNavigator->process(brds);
             Math::Position2D temp2D(temp3D);
             if (!isnan(temp2D.x) && !isnan(temp2D.y))

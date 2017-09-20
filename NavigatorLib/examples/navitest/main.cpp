@@ -126,7 +126,7 @@ int main() {
         if (!parseBRD(in, brd, ts0, tsull)) // End Of File
             eof = true;
 
-        //    cout << brd.timestamp << " " << brd.rssi << " " << brd.uid << endl;
+//        cout << brd.timestamp << " " << brd.rssi << " " << brd.uid << endl;
         if (isnan(lastTs))
             lastTs = brd.timestamp;
 

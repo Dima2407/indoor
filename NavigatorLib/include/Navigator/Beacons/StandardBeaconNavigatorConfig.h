@@ -20,7 +20,14 @@ namespace Navigator {
 
             // ========= Post-init filters config
 
-            // Not yet, can be added if needed
+            /// Android filter window Size
+            int filterWinSizeAndroid = 3;
+
+            /// Android beacon timeout
+            double beaconTimeoutAndroid = 1.5;
+
+            /// IOS beacon timeout
+            double beaconTimeoutIOS = 2.5;
 
             // ======== Trilat config
             /// Do we use full 3D trilat instead of 2D ? (default = false)

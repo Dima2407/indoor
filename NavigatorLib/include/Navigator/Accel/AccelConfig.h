@@ -37,7 +37,7 @@ struct AccelConfig{
 //                                7.7654887197619541E-5, 2.2187110627891297E-5, 2.7733888284864122E-6};
 
     /// Acceleration threshold (to detect a "positive" step)
-    double accThreshold = 1.1;
+    double accThreshold = 1.075;
 
     // ZUPT algorithm
 

@@ -94,18 +94,20 @@ namespace Navigator {
         void StandardBeaconNavigator::setFilters() {
             using namespace std;
 
-            // Beacon timeout in seconds (default = 10)
-            // After that time idle the beacon's filters are reset
-            triNav.setBeaconTimeout(1.5);
 
             // Set up new filters
             if (ios) {
+
+                // Beacon timeout in seconds (default = 10)
+                // After that time idle the beacon's filters are reset
+                triNav.setBeaconTimeout(config.beaconTimeoutIOS);
                 // No filters for iOS
                 rssiFactory = make_shared<Factory::NoFilterFactory>();
                 distanceFactory = make_shared<Factory::NoFilterFactory>();
             } else {
+                triNav.setBeaconTimeout(config.beaconTimeoutAndroid);
                 // Moving average for Android
-                rssiFactory = make_shared<Factory::MovingAverageFilterFactory>(3);
+                rssiFactory = make_shared<Factory::MovingAverageFilterFactory>(config.filterWinSizeAndroid);
                 distanceFactory = make_shared<Factory::NoFilterFactory>();
             }
         }

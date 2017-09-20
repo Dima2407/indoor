@@ -19,19 +19,25 @@ namespace Navigator {
              * @brief sigmaX
              * The accuracy of the model describing the process
              */
-            double sigmaX = 1.0;
+            double sigmaModelX = 0.2;
 
             /**
              * @brief sigmaY
              * The accuracy of the model describing the process
              */
-            double sigmaY = 1.0;
+            double sigmaModelY = 0.2;
+
+
+            /// Signa for weight calculation
+            double sigmaWeightX = 0.7;
+
+            double sigmaWeightY = 0.7;
 
             /**
              * @brief alpha
              * accuracy position by beacons
              */
-            double alpha = 1.0;
+            double alpha = 2.0;
 
             // The following options are used for testing and debugging only
             /// Use simulated random numbers instead of random numbers

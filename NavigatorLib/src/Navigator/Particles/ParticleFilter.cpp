@@ -57,8 +57,8 @@ namespace Navigator {
                     r = simRandPP.at(i);  // Simulated random shift
                 } else {
                     // Generate random
-                    r.x = randNorm(config.sigmaX);
-                    r.y = randNorm(config.sigmaY);
+                    r.x = randNorm(config.sigmaModelX);
+                    r.y = randNorm(config.sigmaModelY);
                 }
                 tmpParticles[i] = particles[i] + delta + r;
             }
@@ -154,9 +154,9 @@ namespace Navigator {
         //===================================================
 
         double ParticleFilter::gauss(const Math::Position2D &particle, const Math::Position2D &z) {
-            double expr = 1 / (config.sigmaX * config.sigmaY * 2 * M_PI);
-            double degX = (particle.x - z.x)*(particle.x - z.x) / (2 * config.sigmaX * config.sigmaX);
-            double degY = (particle.y - z.y)*(particle.y - z.y) / (2 * config.sigmaY * config.sigmaY);
+            double expr = 1 / (config.sigmaWeightX * config.sigmaWeightY * 2 * M_PI);
+            double degX = (particle.x - z.x)*(particle.x - z.x) / (2 * config.sigmaWeightX * config.sigmaWeightX);
+            double degY = (particle.y - z.y)*(particle.y - z.y) / (2 * config.sigmaWeightY * config.sigmaWeightY);
             return expr * std::exp(-degX - degY);
         }
 

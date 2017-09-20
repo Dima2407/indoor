@@ -34,7 +34,7 @@ string logFilePath;
 string logBecPosFilePath;
 string beaconsFilePath;
 
-typedef struct IndoorSdkApi {
+struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
     jmethodID kSpaceBeaconGetPositionMethod;
     jmethodID kSpaceBeaconGetIdMethod;
@@ -92,9 +92,9 @@ typedef struct IndoorSdkApi {
     jfieldID kIndoorRouterRouteField;
     jfieldID kIndoorRouterPixelSizeField;
 
-} IndoorSdkApi;
+};
 
-typedef struct IndoorSdkConfigs {
+struct IndoorSdkConfigs {
     bool useBeacons;
     bool useSensors;
     bool useMask;
@@ -115,7 +115,7 @@ typedef struct IndoorSdkConfigs {
     bool particleEnabled = false;
     bool useKalmanFilter = false;
     bool enableLogger = false;
-} IndoorSdkConfigs;
+};
 
 double timeS = -1;
 

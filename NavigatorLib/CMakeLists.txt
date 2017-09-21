@@ -25,6 +25,9 @@ include_directories(lib/rapidjson_min/include)
 # Build all examples
 add_subdirectory(examples)
 
+# A temp executable for mini-testing
+add_subdirectory(fun)
+
 # Build all tools
 add_subdirectory(tools)
 

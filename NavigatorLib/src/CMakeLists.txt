@@ -59,12 +59,13 @@ set(SOURCE_FILES
         ../include/Navigator/Accel/AbstractAccelNavigator.h
         ../include/Navigator/Accel/AccelConfig.h
         ./Navigator/Accel/StandardAccelNavigator.cpp ../include/Navigator/Accel/StandardAccelNavigator.h
-
+        #
         ./Navigator/Accel/TrajectoryDetection.cpp ../include/Navigator/Accel/TrajectoryDetection.h
         ./Navigator/Accel/ToGlobal.cpp ../include/Navigator/Accel/ToGlobal.h
         ../include/Navigator/Accel/TempData.h
         ./Navigator/Accel/FilterImpl.cpp ../include/Navigator/Accel/FilterImpl.h
-
+        ./Navigator/Accel/AngleFilt/YawFilter.cpp ../include/Navigator/Accel/AngleFilt/YawFilter.h
+        ./Navigator/Accel/AngleFilt/AngleCorrect.cpp ../include/Navigator/Accel/AngleFilt/AngleCorrect.h
         #
         ./Navigator/Particles/ParticleFilter.cpp ../include/Navigator/Particles/ParticleFilter.h
         ../include/Navigator/Particles/ParticleFilterConfig.h

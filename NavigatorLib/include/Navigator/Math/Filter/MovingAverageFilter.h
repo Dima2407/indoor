@@ -49,11 +49,11 @@ namespace Navigator {
                  *
                  * @param winSize  The filter window size
                  */
-                MovingAverageFilter(unsigned int winSize) :
+                explicit MovingAverageFilter(unsigned int winSize) :
                         winSize(winSize),
                         buffer(winSize)
                 {
-                    assert(winSize > 0);
+                    if (0 == winSize ) throw std::runtime_error("MovingAverageFilter : winSize == 0 !");
                 }
 
                 /// Run a double value through the filter

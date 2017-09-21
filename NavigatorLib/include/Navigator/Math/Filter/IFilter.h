@@ -73,7 +73,7 @@ namespace Navigator {
                 }
 
                 /// Virtual Destructor
-                virtual ~IFilter() {}
+                virtual ~IFilter() = default;
             };
         }
     }

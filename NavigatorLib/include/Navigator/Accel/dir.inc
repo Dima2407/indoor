@@ -6,3 +6,6 @@
 #include "./AccelReceivedData.h"
 #include "./FilterImpl.h"
 #include "./StandardAccelNavigator.h"
+
+#include "./AngleFilt/AngleCorrect.h"
+#include "./AngleFilt/YawFilter.h"

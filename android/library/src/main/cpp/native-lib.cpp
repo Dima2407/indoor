@@ -21,6 +21,7 @@ using namespace Navigator::Math::Trilat;
 using Navigator::Math::Position3D;
 using namespace Navigator::Mesh;
 using namespace Navigator::Accel;
+using namespace Navigator::Accel::AngleFilt;
 using namespace Navigator::Math::Kalman;
 using namespace Navigator::Particles;
 
@@ -30,6 +31,9 @@ shared_ptr<StandardAccelNavigator> sensorNavigator;
 shared_ptr<ParticleNavigator> particleNavigator;
 shared_ptr<PointGraph> pointGraph;
 shared_ptr<RectanMesh> mesh;
+unique_ptr<AngleCorrect> angleCorrect;
+
+
 string logFilePath;
 string logBecPosFilePath;
 string beaconsFilePath;
@@ -258,15 +262,21 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         double ax = data[0];
         double ay = data[1];
         double az = data[2];
-        double azimut = data[3];
+        double azimuth = data[3];
         double pitch = data[4];
         double roll = data[5];
-        azimut = azimut - configs.mapAngle;
-        if (azimut > 180) {
-            azimut = -360 + azimut;
-        } else if (azimut < -180) {
-            azimut = 360 + azimut;
-        }
+
+        // By Oleksiy Grechhnyev: use angleCorrect (moving average filter + -mapAngle + yaw corection) !
+        angleCorrect -> correct(azimuth, pitch, roll);
+
+        /*// This is already included in angleCorrect !!!
+        azimuth = azimuth - configs.mapAngle;
+
+        if (azimuth > 180) {
+            azimuth = -360 + azimuth;
+        } else if (azimuth < -180) {
+            azimuth = 360 + azimuth;
+        }*/
 
         AccelReceivedData ard{
                 .timestamp = eventTime,
@@ -275,7 +285,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
                 .az = az,
                 .pitch = pitch,
                 .roll = roll,
-                .yaw = azimut};
+                .yaw = azimuth};
         Position3D outPos = sensorNavigator->process(ard);
         const double position[3] = {outPos.x, outPos.y, outPos.z};
         env->SetDoubleArrayRegion(positionResult, 0, 3, position);
@@ -315,6 +325,10 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     configs.useKalmanFilter = env->CallBooleanMethod(config, api.kGetBooleanMethod,
                                                      api.kUseKalmanFilter);
     configs.enableLogger = env->CallBooleanMethod(config, api.kGetBooleanMethod, api.kEnableLogger);
+
+
+    // Oleksiy Grechnyev: create angleCorrect for correcting yaw, pitch, roll
+    angleCorrect = make_unique<AngleCorrect>(configs.mapAngle, 20);
 
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);

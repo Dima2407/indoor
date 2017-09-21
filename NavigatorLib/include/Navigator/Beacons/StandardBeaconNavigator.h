@@ -85,7 +85,7 @@ namespace Navigator {
             }
 
             /// Add a new beacon
-            virtual void addBeacon(const Beacon &beacon) {
+            virtual void addBeacon(const Beacon &beacon) override {
                 triNav.addBeacon(beacon);
             }
 

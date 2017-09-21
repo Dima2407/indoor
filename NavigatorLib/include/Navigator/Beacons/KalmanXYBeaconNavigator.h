@@ -46,7 +46,7 @@ namespace Navigator {
             }
 
             virtual const std::shared_ptr<BeaconProcessor> findProcessorByUid(const BeaconUID &uid) const override {
-                beaconNavigator->findProcessorByUid(uid);
+                return beaconNavigator->findProcessorByUid(uid);
             }
 
             virtual void deleteBeacon(const BeaconUID &uid) override {

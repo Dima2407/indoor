@@ -28,7 +28,7 @@ namespace Navigator {
                     filterConfig(filterConfig) {}
 
             /// Process a single input data -- not available
-            virtual const Math::Position3D &process(const BeaconReceivedData &brd) {
+            virtual const Math::Position3D &process(const BeaconReceivedData &brd)  override {
                 throw std::runtime_error("KalmanBeaconNavigator::process() with a singe packet is forbidden !");
             }
 
@@ -41,7 +41,7 @@ namespace Navigator {
             }
 
             /// Add a new beacon
-            virtual void addBeacon(const Beacon &beacon) {
+            virtual void addBeacon(const Beacon &beacon) override {
                 /// uid is the map key
                 beaconProcessorList[beacon.getUid()] = std::make_shared<KalmanBeaconProcessor>(beacon, filterConfig);
             }

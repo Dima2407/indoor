@@ -284,9 +284,9 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
         // Log ard
         if (! logAccFiltFilePath.empty()) {
-            ofstream(logAccFiltFilePath, ios::app) << setw(10) << timeStamp << setw(10) << eventTime <<
-                 setw(10) << ard.ax << setw(10) << ard.ay << setw(10) << ard.az <<
-                 setw(10) << ard.yaw << setw(10) << ard.pitch << setw(10) << ard.roll << endl;
+            ofstream(logAccFiltFilePath, ios::app) << setw(12) << timeStamp << " " << setw(12) << eventTime << " " <<
+                 setw(12) << ard.ax << " " << setw(12) << ard.ay << " " << setw(12) << ard.az << " " <<
+                 setw(12) << ard.yaw << " " << setw(12) << ard.pitch << " " << setw(12) << ard.roll << endl;
         }
 
         // Sensor (Accelerometer) Navigator process() !!!!!!!!!!
@@ -294,7 +294,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
 
         // Log outpos
         if (! logAccPosFilePath.empty()) {
-            ofstream(logAccPosFilePath, ios::app) << setw(10) << timeStamp << setw(10) << eventTime << outPos << endl;
+            ofstream(logAccPosFilePath, ios::app) << setw(12) << timeStamp << " " << setw(12) << eventTime << " " << outPos << endl;
         }
 
         const double position[3] = {outPos.x, outPos.y, outPos.z};

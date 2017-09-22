@@ -34,9 +34,11 @@ shared_ptr<RectanMesh> mesh;
 unique_ptr<AngleCorrect> angleCorrect;
 
 
-string logFilePath;
+string logTrilat3FilePath;
 string logBecPosFilePath;
-string beaconsFilePath;
+string logAccFiltFilePath;
+string logAccPosFilePath;
+string logBeaconsFilePath;
 
 struct IndoorSdkApi {
     jclass kSpaceBeaconClass;
@@ -233,29 +235,29 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             env->ReleaseStringUTFChars(uuidString, uuid);
             env->ReleaseDoubleArrayElements(dataArray, data, 0);
         }
+
+        // BLE process !!!!!!!!!!!!!!!!!!!!!!!
         Position3D outPos = bluetoothNavigator->process(brds);
+
         const double position[3] = {outPos.x, outPos.y, outPos.z};
         env->SetDoubleArrayRegion(positionResult, 0, 3, position);
-        if ( logBecPosFilePath.size() > 0 ) {
+        if (logBecPosFilePath.size() > 0) {
             ofstream fos(logBecPosFilePath, ios::app);
-            fos << eventTime << " " << outPos << endl;
+            fos.precision(8);
+            fos << setw(10) << timeStamp << " " << setw(15) << eventTime << " " << outPos << endl;
         }
 
-
-        if (logFilePath.c_str()) {
-
-            std::ofstream fos(logFilePath, ios::app);
-
+        if (! logTrilat3FilePath.empty()) {
             if (shared_ptr<KalmanBeaconNavigator> nav = dynamic_pointer_cast<KalmanBeaconNavigator>(
                     bluetoothNavigator)) {
+                ofstream fos(logTrilat3FilePath, ios::app);
                 vector<BeaconUID> uids = nav->getLastTrilatUids();
                 for (auto value: uids) {
                     fos << timeStamp << " " << value << endl;
                 }
             }
-            fos.close();
         }
-    } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {
+    } else if (eventTypeCode == 1 && configs.useSensors && configs.sensorsActive) {   // Sensors (accel)
         jdoubleArray dataArray = (jdoubleArray) env->GetObjectField(obj,
                                                                     api.kMeasurementEventDataField);
         double *data = env->GetDoubleArrayElements(dataArray, NULL);
@@ -267,7 +269,7 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
         double roll = data[5];
 
         // By Oleksiy Grechhnyev: use angleCorrect (moving average filter + -mapAngle + yaw corection) !
-        angleCorrect -> correct(azimuth, pitch, roll);
+        angleCorrect->correct(azimuth, pitch, roll);
 
         /*// This is already included in angleCorrect !!!
         azimuth = azimuth - configs.mapAngle;
@@ -278,15 +280,23 @@ Java_pro_i_1it_indoor_providers_AndroidMeasurementTransfer_nativeDeliver(
             azimuth = 360 + azimuth;
         }*/
 
-        AccelReceivedData ard{
-                .timestamp = eventTime,
-                .ax = ax,
-                .ay = ay,
-                .az = az,
-                .pitch = pitch,
-                .roll = roll,
-                .yaw = azimuth};
+        AccelReceivedData ard{eventTime, ax, ay, az, pitch, azimuth, roll};
+
+        // Log ard
+        if (! logAccFiltFilePath.empty()) {
+            ofstream(logAccFiltFilePath, ios::app) << setw(10) << timeStamp << setw(10) << eventTime <<
+                 setw(10) << ard.ax << setw(10) << ard.ay << setw(10) << ard.az <<
+                 setw(10) << ard.yaw << setw(10) << ard.pitch << setw(10) << ard.roll << endl;
+        }
+
+        // Sensor (Accelerometer) Navigator process() !!!!!!!!!!
         Position3D outPos = sensorNavigator->process(ard);
+
+        // Log outpos
+        if (! logAccPosFilePath.empty()) {
+            ofstream(logAccPosFilePath, ios::app) << setw(10) << timeStamp << setw(10) << eventTime << outPos << endl;
+        }
+
         const double position[3] = {outPos.x, outPos.y, outPos.z};
         env->SetDoubleArrayRegion(positionResult, 0, 3, position);
         env->ReleaseDoubleArrayElements(dataArray, data, 0);
@@ -333,30 +343,43 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
 
-        {
-            std::stringstream ss;
-            ss << "/sdcard/Download/" << "trilat_beacon_log"
-               << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-               << ".txt";
-            logFilePath = ss.str();
-        }
-        {
-            std::stringstream ss;
-            ss << "/sdcard/Download/" << "beacons" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-               << ".txt";
-            beaconsFilePath = ss.str();
-        }
-        {
-            std::stringstream ss;
-            ss << "/sdcard/Download/" << "position_from_beacon_log"
-               << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
-               << ".txt";
-            logBecPosFilePath = ss.str();
-        }
-
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "triplets_ble_cpp"
+           << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        logTrilat3FilePath = ss.str();
+    }
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "beaconsID_cpp" << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        logBeaconsFilePath = ss.str();
+    }
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "position_beacon_cpp"
+           << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        logBecPosFilePath = ss.str();
+    }
+    {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "position_accel_cpp"
+           << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        logAccPosFilePath = ss.str();
+    }
+    if (configs.useSensors) {
+        std::stringstream ss;
+        ss << "/sdcard/Download/" << "accel_filtered_cpp"
+           << std::put_time(&tm, "%d-%m-%Y %H-%M-%S")
+           << ".txt";
+        logAccFiltFilePath = ss.str();
+        ofstream(logAccFiltFilePath) << " TS1 TS2  ax ay az yaw pitch roll" << endl;
+    }
 
     if (configs.useMask) {
-
         jintArray maskArray = (jintArray) env->CallObjectMethod(config, api.kGetObjectMethod,
                                                                 api.kMaskField);
         const jsize length = env->GetArrayLength(maskArray);
@@ -433,7 +456,7 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
         jint size = env->GetArrayLength(beacons);
 
 
-        ofstream fileB(beaconsFilePath);
+        ofstream fileB(logBeaconsFilePath);
 
 
         for (int i = 0; i < size; i++) {
@@ -449,17 +472,16 @@ Java_pro_i_1it_indoor_IndoorLocationManager_nativeInit(
             const char *uuid = env->GetStringUTFChars(id, 0);
 
             //if (configs.enableLogger) {
-                fileB << uuid << "  " << (int) elements[0] << "  " << (int) elements[1] << "  ";
-                fileB << elements[2] << "  " << elements[3] << "  ";
-                fileB << elementsPos[0] << "  " << elementsPos[1] << "  " << elementsPos[2] << endl;
-           // }
+            fileB << uuid << "  " << (int) elements[0] << "  " << (int) elements[1] << "  ";
+            fileB << elements[2] << "  " << elements[3] << "  ";
+            fileB << elementsPos[0] << "  " << elementsPos[1] << "  " << elementsPos[2] << endl;
+            // }
 
             BeaconUID uid(uuid, (int) elements[0], (int) elements[1]);
             bluetoothNavigator->addBeacon(Beacon(uid, elements[2], elements[3],
                                                  Position3D(elementsPos[0], elementsPos[1],
                                                             elementsPos[2]),
                                                  ""));
-
 
 
             env->ReleaseFloatArrayElements(values, elements, 0);

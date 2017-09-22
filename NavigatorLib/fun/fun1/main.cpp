@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 // This includes everything you need
@@ -23,16 +24,28 @@ int main()
 {
     cout << "Maria Traydor !!!" << endl;
 
-    AngleCorrect ac(0.0, 1);
+    AngleCorrect ac(0.0, 20);
 
-    vector<YPR> in{
+    /*vector<YPR> in{
             {-201.0, -202.0, -203.0},
     };
 
     for (YPR t : in) {
         ac.correct(t.y, t.p, t.r);
         cout << "Y = " << t.y << " , P = " << t.p << " , R = " << t.r << endl;
+    }*/
+
+    double ts, p, r, y;
+
+    ifstream in("in.txt");
+    ofstream out("out.txt");
+    out.precision(10);
+
+    while (in >> ts >> p >> r >> y) {
+        ac.correct(y, p, r);
+        out << fixed << ts << " " << p << " " << r << " " << y << " " << endl;
     }
+
 
     return 0;
 }

@@ -3,6 +3,7 @@ project(fun1)
 
 set(CMAKE_CXX_STANDARD 14)
 
+file(COPY in.txt DESTINATION .)
 
 set(SOURCE_FILES
         main.cpp

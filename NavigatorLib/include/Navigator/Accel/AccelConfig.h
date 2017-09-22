@@ -53,7 +53,7 @@ struct AccelConfig{
     // Dummy algorithm
 
     /// The average velocity at the positive step only
-    double userAverageVelocity = 3.2;
+    double userAverageVelocity = 3.7;
 
     // Different aspects of a map (mesh+mask). Note: if mesh = nullptr, it turns off all map aspects.
     Mesh::MeshConfig meshConfig;
